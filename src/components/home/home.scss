@@ -1,0 +1,184 @@
+@import "../../material_design_colors";
+
+/**
+ * Main Page -> Profile
+ **/
+.profile {
+  width: 70%;
+  text-align: center;
+
+  .profile_img > div > .image-wrapper {
+    width: 256px;
+    height: 256px;
+    margin: 0 auto;
+
+    .image-wrapper-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 150px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 256px;
+        position: relative;
+      }
+    }
+  }
+
+  .profile_name {
+    h1 {
+      color: $primary-color-normal;
+    }
+
+    h3 {
+      color: $primary-color-light;
+    }
+  }
+
+  .profile_description {
+    p, p span {
+      color: $md-grey-700;
+
+      .darkmode & {
+        color: $md-grey-300;
+      }
+    }
+  }
+}
+
+/**
+ * Keyboard cheets
+ * Design and (dis)appear effect
+ **/
+.keys {
+  position: fixed;
+  bottom: 100px;
+
+  .key {
+    float: left;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    background-color: $accent-color;
+    text-align: center;
+    margin-left: 10px;
+    border-radius: 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    color: white;
+
+    animation: show .3s;
+  }
+
+  .bye {
+    animation: hide .3s;
+    opacity: 0;
+  }
+}
+
+/**
+ * Background canvas effects
+ **/
+#background {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+#background.noping {
+  animation: fadeout .5s linear;
+  opacity: 0;
+}
+
+#background.nope {
+  visibility: hidden;
+  opacity: 0;
+}
+
+@keyframes show {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  80% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+};
+
+@keyframes hide {
+  100% {
+    opacity: 0;
+    transform: scale(.3);
+  }
+
+  20% {
+    opacity: 1;
+    transform: scale(.8);
+  }
+
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+};
+
+/**
+ * Barrel roll effect
+ **/
+.barrel-roll {
+  animation: barrel-roll 4s cubic-bezier(.4,0,.4,1);
+}
+
+@keyframes barrel-roll {
+  0% {
+    transform: rotate(360deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+};
+
+/**
+ * Flip effect
+ **/
+.flip {
+  animation: flip 2s;
+  transform: scale(-1);
+}
+
+.iflip {
+  animation: iflip 2s;
+}
+
+@keyframes flip {
+  0% { transform: scale(1) }
+  100% { transform: scale(-1) }
+};
+@keyframes iflip {
+  0% { transform: scale(-1) }
+  100% { transform: scale(1) }
+};
+
+/**
+ * Fade in/out effect
+ **/
+@keyframes fadein {
+  from { opacity: 0 }
+  to { opacity: 1 }
+};
+@keyframes fadeout {
+  from { opacity: 1 }
+  to { opacity: 0 }
+};

@@ -1,0 +1,80 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+.sidebar {
+  //position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 40px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+
+  .nav-link {
+    font-weight: 500;
+    color: #333;
+  }
+
+  .nav-link .feather {
+    margin-right: 4px;
+    color: #999;
+  }
+
+  .nav-link.active {
+    color: #007bff;
+  }
+
+  .nav-link:hover .feather,
+  .nav-link.active .feather {
+    color: inherit;
+  }
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 40px;
+  height: calc(100vh - 40px - 30px - 246px); //Navbar + footer + header
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+
+  @supports ((position: -webkit-sticky) or (position: sticky)) {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+
+  @media (max-width: map_get($grid-breakpoints, 'md')) {
+    height: calc(100vh - 56px - 30px - 246px); //Navbar + footer + header
+    top: 56px;
+  }
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/*
+ * Content
+ */
+[role="main"] {
+  padding-top: 48px; /* Space for fixed navbar */
+  @media (max-width: map_get($grid-breakpoints, 'md')) {
+    padding-top: 48px + 16px; /* Space for fixed navbar */
+  }
+}
+
+/**
+ * Effect for list buttons
+ */
+.admin-list-row {
+  .admin-list-row-actions .btn {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  &:hover .admin-list-row-actions .btn {
+    visibility: visible;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Changing status bar color (iOS / Chrome on Android) -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#3f51b5">
+    <meta name="theme-color" content="#3F51B5">
+
+    <!-- Remove tap highlight on Windows Phone for Waves effect -->
+    <meta name="msapplication-tap-highlight" content="no"/>
+
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/ico/favicon.ico">
+    <title>The abode of melchor9000</title>
+
+    <style>
+      body > #root > .loading {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      }
+
+      /* Sticky footer styles
+      -------------------------------------------------- */
+
+      html,body {
+        height: 100%;
+        /* The html and body elements cannot have any padding or margin. */
+      }
+
+      /* Wrapper for page content to push down footer */
+      .wrap, #root {
+        min-height: 100%;
+        height: auto;
+      }
+
+      .wrap {
+        /* Negative indent footer by its height */
+        margin: 0 auto -30px;
+        /* Pad bottom by footer height */
+        padding: 0 0 30px;
+      }
+
+      #footer p {
+        line-height: 30px;
+        margin-bottom: 0;
+      }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=TeX-MML-AM_CHTML" async></script>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+
+    <div id="root">
+      <div class="wrap loading">
+        <img style="width: 24px; height: auto;" src="%PUBLIC_URL%/ico/favicon.png">&nbsp;&nbsp;Loading...
+      </div>
+    </div>
+
+    <footer id="footer">
+      <div class="container">
+        <p>
+          &copy; melchor9000
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

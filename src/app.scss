@@ -1,0 +1,281 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,300,100');
+
+@import "material_design_colors";
+@import "bootstrap/scss/bootstrap.scss";
+
+/**
+ * Body
+ **/
+body {
+  background-color: white;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+/**
+ * Default container
+ **/
+.wrap > .container.default-container {
+  padding-top: 70px;
+}
+
+/**
+ * Text
+ **/
+body, div, span, li {
+  color: black;
+}
+
+a {
+  transition: color .1s linear;
+}
+
+a:link, a:visited, a:focus, ~a.btn {
+  color: $primary-color-normal;
+}
+
+a:hover {
+  color: $primary-color-light;
+  text-decoration: none;
+}
+
+/**
+ * Panels
+ **/
+.panel-default {
+  border-color: transparent;
+}
+
+.panel-default > .panel-heading {
+  background: $primary-color-normal none;
+}
+
+.panel-default > .panel-heading a {
+  color: $accent-color;
+}
+
+.panel-default > .panel-heading a:hover {
+  color: $accent-color;
+}
+
+.panel-default > .panel-collapse > .panel-body {
+  background-color: $primary-color-light;
+  border-top-color: transparent;
+}
+
+/**
+ * Navbar
+ **/
+.navbar-default {
+  background-color: $primary-color-normal;
+  box-shadow: rgba(0, 0, 0, 0.4) 0 2px 5px;
+  @media (min-width: 768px) { padding: 0 1rem; }
+
+  .navbar-nav {
+    @media (max-width: 767px) {
+      margin-left: -15px;
+      margin-right: -15px !important;
+    }
+
+    .nav-item .nav-link {
+      color: white;
+      transition: background-color .2s linear, color .1s linear;
+      border-radius: 0;
+
+      @media (max-width: 767px) {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+    }
+
+    .nav-item .nav-link:hover, .nav-item .nav-link:focus {
+      color: white;
+      background-color: $primary-color-dark;
+    }
+
+    & > li.active > a {
+      color: white;
+      background: $primary-color-dark none;
+      transition: background-color .2s linear, color .1s linear;
+    }
+
+    & > li.active > a:hover {
+      color: $accent-color;
+      background-color: $primary-color-dark;
+    }
+  }
+
+  .navbar-brand {
+    color: $accent-color;
+    font-weight: 400;
+  }
+
+  .navbar-brand:hover {
+    color: $accent-color;
+  }
+
+  .navbar-collapse {
+    border-color: $primary-color-normal;
+    box-shadow: none;
+  }
+}
+
+/**
+ * Footer
+ **/
+#footer {
+  background-color: $primary-color-normal;
+  box-shadow: rgba(0,0,0,0.4) 0 2px 5px inset;
+}
+
+#footer a, #footer a:hover {
+  color: $primary-color-light;
+}
+
+#footer p {
+  color: $md-grey-100;
+}
+
+/**
+ * Code blocks
+ **/
+pre {
+  border-radius: 3px;
+  padding: 5px;
+}
+
+/**
+ * Dark mode
+ **/
+body.darkmode { background-color: rgb(40, 40, 40) }
+.darkmode {
+  h1, h2, h3, h4, h5, h6, div, span:not([class^="hljs-"]), p, li {
+    color: white;
+  }
+
+  a {
+    color: #9fa8da;
+
+    &:hover {
+      color: #3f51b5;
+    }
+  }
+
+  .zoom-overlay {
+    background: rgb(40, 40, 40);
+  }
+
+  code {
+    background-color: #1f1f1f;
+  }
+
+  pre {
+    code {
+      background-color: transparent;
+      span:not([class^="hljs-"]) {
+        color: white;
+      }
+    }
+  }
+
+  .modal-content {
+    background-color: #3f3f3f;
+  }
+}
+
+.backdrop {
+  -webkit-backdrop-filter: saturate(200%) blur(20px)
+}
+
+/**
+ * Input label group (Android-like inputs)
+ */
+.form-label-group {
+  --input-padding-x: .75rem;
+  --input-padding-y: .75rem;
+
+  position: relative;
+  margin-bottom: 1rem;
+
+  & > input,
+  & > label {
+    padding: var(--input-padding-y) var(--input-padding-x);
+  }
+
+  & > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    margin-bottom: 0; /* Override default `<label>` margin */
+    line-height: 1.5;
+    color: #495057;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    transition: all .1s ease-in-out;
+  }
+
+  input {
+    &::-webkit-input-placeholder {
+      color: transparent;
+    }
+
+    &:-ms-input-placeholder {
+      color: transparent;
+    }
+
+    &::-ms-input-placeholder {
+      color: transparent;
+    }
+
+    &::-moz-placeholder {
+      color: transparent;
+    }
+
+    &::placeholder {
+      color: transparent;
+    }
+
+    &:not(:placeholder-shown) {
+      padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+      padding-bottom: calc(var(--input-padding-y) / 3);
+    }
+
+    &:not(:placeholder-shown) ~ label {
+      padding-top: calc(var(--input-padding-y) / 3);
+      padding-bottom: calc(var(--input-padding-y) / 3);
+      font-size: 12px;
+      color: #777;
+    }
+  }
+}
+
+.form-group.material, .form-label-group.material {
+  input, textarea {
+    border: none;
+    border-bottom: 1px solid $md-grey-600;
+    border-radius: 0;
+    background: $md-grey-100;
+    transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
+
+    &:focus {
+      box-shadow: none;
+      border-bottom-color: $md-blue-400;
+    }
+
+    &:disabled, &[readonly] {
+      background-color: $md-grey-100;
+      opacity: 0.5;
+    }
+
+    &.is-invalid {
+      border-bottom-color: #dc3545;
+    }
+
+    &.is-valid {
+      border-bottom-color: #28a745;
+    }
+  }
+}
