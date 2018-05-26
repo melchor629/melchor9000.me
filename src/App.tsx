@@ -28,10 +28,6 @@ class App extends React.Component<AppPropTypes> {
         super(props);
         //Maybe this will change depending on what componentDidUpdate has in the future
         this.componentDidUpdate({ ...props, darkMode: null });
-
-        props.history.listen(() => {
-            this.props.changeTitle(null);
-        });
     }
 
     componentDidUpdate(prevProps: AppPropTypes) {
@@ -83,7 +79,8 @@ class App extends React.Component<AppPropTypes> {
                         <ul className="navbar-nav mr-auto">
                             { routes.filter(route => !route.private && route.title).map((route, pos) => (
                                 <li className={`nav-item ${linkActive(route)}`} key={ pos }>
-                                    <Link to={ route.route } className="nav-link">{ route.title }</Link>
+                                    <Link to={ route.route } className="nav-link"
+                                          onClick={ () => this.props.changeTitle(route.title) }>{ route.title }</Link>
                                 </li>
                             )) }
                         </ul>
