@@ -5,9 +5,11 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
+import { I18nextProvider } from 'react-i18next';
 import App from './App';
 import Footer from './Footer';
 import registerServiceWorker from './registerServiceWorker';
+import i18n from './i18n';
 
 import 'font-awesome/css/font-awesome.css';
 
@@ -49,7 +51,9 @@ firebase.initializeApp({
     ReactDOM.render(
         <Provider store={store}>
             <BrowserRouter>
-                <App/>
+                <I18nextProvider i18n={ i18n }>
+                    <App/>
+                </I18nextProvider>
             </BrowserRouter>
         </Provider>,
         document.getElementById('root')

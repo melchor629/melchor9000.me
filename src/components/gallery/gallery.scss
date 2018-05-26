@@ -179,7 +179,7 @@
     }
 
     .buttons {
-      position: relative;
+      position: absolute;
       top: 10px;
       right: 10px;
 
@@ -194,9 +194,8 @@
     }
 
     .change-photo {
-      position: relative;
-      float: left;
-      top: 49%;
+      position: absolute;
+      top: calc(50vh - 48px);
       color: white;
       text-shadow: 0 1px 0 black;
       cursor: pointer;
@@ -212,7 +211,7 @@
       }
 
       &.next {
-        left: 92.5%;
+        right: 10px;
       }
     }
   }

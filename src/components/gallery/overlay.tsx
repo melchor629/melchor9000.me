@@ -1,15 +1,17 @@
 import * as React from 'react';
 import * as Swipeable from 'react-swipeable';
+import { InjectedTranslateProps } from 'react-i18next';
 import ZoomImageOverlay from './zoom-image-overlay';
 import { buildLargePhotoUrl } from 'src/lib/flickr';
 import { OverlayDispatchToProps, OverlayStateToProps } from 'src/containers/gallery/overlay';
 const $ = require('jquery');
+const { Transition, animated } = require('react-spring');
 
 type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {
     userId: string;
     photosetId: string;
     perPage: number;
-};
+} & InjectedTranslateProps;
 
 export default class Overlay extends React.Component<OverlayProps> {
     private _lastTapTime: number | null = null;
@@ -92,7 +94,7 @@ export default class Overlay extends React.Component<OverlayProps> {
             currentPhoto, isZoomed, next, prev, close, zoom, hasNext,
             hasPrev, show, showInfoPanel, toggleInfoPanel, photoIsLoaded,
             hasNextPage, userId, photosetId, perPage, page, loadMorePhotosAndNext,
-            changeAnimation
+            changeAnimation, t
         } = this.props;
         const photo = currentPhoto;
         const info = photo.info ? photo.info : null;
@@ -107,9 +109,9 @@ export default class Overlay extends React.Component<OverlayProps> {
         let flash = null;
         let enlace = null;
 
-        const infoHtml = (key: string, value: string, id: string) => (
+        const infoHtml = (value: string, id: string) => (
             <p className="lead" id={ id }>
-                <strong>{ key }</strong> <span>{ value }</span>
+                <strong>{ t(`gallery.overlay.${id}`) }:</strong> <span>{ value }</span>
             </p>
         );
 
@@ -128,10 +130,14 @@ export default class Overlay extends React.Component<OverlayProps> {
                     Number(sd[5]),
                     0
                 );
-                fecha = infoHtml('Fecha de captura:', date.toLocaleDateString(), 'fecha');
+                fecha = infoHtml(date.toLocaleDateString(), 'fecha');
             }
             if(info.urls.url) {
-                enlace = <p id="enlace"><a href={ info.urls.url[0]._content } target="_blank">Ver en Flickr</a></p>;
+                enlace = (
+                    <p id="enlace">
+                        <a href={ info.urls.url[0]._content } target="_blank">{ t('gallery.overlay.seeFlickr') }</a>
+                    </p>
+                );
             }
         }
 
@@ -152,18 +158,13 @@ export default class Overlay extends React.Component<OverlayProps> {
                 }
             }
 
-            if(exif.camera) { camara = infoHtml('Capturado con:', exif.camera, 'camara'); }
-            if(_exposicion) { exposicion = infoHtml('Exposición:', _exposicion, 'exposicion'); }
-            if(_apertura) { apertura = infoHtml('Apertura:', _apertura, 'apertura'); }
-            if(_iso) { iso = infoHtml('ISO:', _iso, 'iso'); }
-            if(_distFocal) { distanciaFocal = infoHtml('Dist. Focal:', _distFocal, 'dist-focal'); }
+            if(exif.camera) { camara = infoHtml(exif.camera, 'camara'); }
+            if(_exposicion) { exposicion = infoHtml(_exposicion, 'exposicion'); }
+            if(_apertura) { apertura = infoHtml(_apertura, 'apertura'); }
+            if(_iso) { iso = infoHtml(_iso, 'iso'); }
+            if(_distFocal) { distanciaFocal = infoHtml(_distFocal, 'dist-focal'); }
             if(_flash) {
-                if(_flash.indexOf('Off') !== -1) {
-                    _flash = 'Apagado, no se disparó';
-                } else {
-                    _flash = 'Encendido, se disparó';
-                }
-                flash = infoHtml('Flash:', _flash, 'flash');
+                flash = infoHtml(t(`gallery.overlay.flash-${_flash.indexOf('Off') === -1}`), 'flash');
             }
         }
 
@@ -180,10 +181,18 @@ export default class Overlay extends React.Component<OverlayProps> {
         return (
             <div className={`photo-overlay ${show ? 'show' : ''}`}>
                 <div className="photo-overlay-container" role="document" style={{height: '100%'}}>
-                    { isZoomed ?
-                        <ZoomImageOverlay photo={ currentPhoto } onTouchStart={ this.onTouchStart }
-                                          onTouchEnd={ this.onTouchEnd } />
-                        : null }
+
+                    <Transition native={ true } from={{ t: 0 }} enter={{ t: 1 }} leave={{ t: 0 }}>
+                    { isZoomed && ((s: any) => (
+                        <animated.div style={{ opacity: s.t.interpolate((x: number) => `${x}`) }}
+                                      className="zoom-container">
+                            <ZoomImageOverlay photo={ currentPhoto }
+                                              onTouchStart={ this.onTouchStart }
+                                              onTouchEnd={ this.onTouchEnd } />
+                        </animated.div>
+                    ))}
+                    </Transition>
+
                     <Swipeable onSwipedLeft={ hasNext ? next : (hasNextPage ? nnextt : nopeWithVibration ) }
                                onSwipedRight={ hasPrev ? prev : nopeWithVibration }
                                onTap={ this.onTap }

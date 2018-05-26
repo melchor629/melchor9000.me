@@ -1,4 +1,5 @@
 import React from 'react';
+import { InjectedTranslateProps, Trans } from 'react-i18next';
 import * as toast from 'src/lib/toast';
 import Visualizer from 'src/components/visualizer';
 import Player from 'src/lib/player';
@@ -6,7 +7,7 @@ import { VizDispatchToProps, VizStateToProps } from 'src/containers/viz';
 
 const { Spring } = require('react-spring');
 
-type VizProps = VizStateToProps & VizDispatchToProps;
+type VizProps = VizStateToProps & VizDispatchToProps & InjectedTranslateProps;
 //TODO terminar
 
 interface VizState {
@@ -70,16 +71,19 @@ export default class Viz extends React.Component<VizProps, VizState> {
     render() {
         const { audioSource, visualizationMode, fileName, timePosition, timeDuration, dragging, seeking,
         startPos } = this.state;
+        const { t } = this.props;
 
         return (
             <div onDragOver={ this.enterDrag } onDragLeave={ this.exitDrag } onDrop={ this.dropped }>
                 <div className="row">
                     <p className="lead">
+                        <Trans i18nKey="viz.description">
                         Arrastra (hasta aquí) o busca (con el botón de abajo) una canción compatible con tu navegador y
                         deja que la magia actúe.
                         Con cualquier mp3 o wav debería ir, puedes probar con m4a (aac (<i>alac tambien, si usas
                         Safari</i>)) o con ogg (vorbis).
                         Ultimamente flac también va.
+                        </Trans>
                     </p>
                 </div>
 
@@ -90,7 +94,7 @@ export default class Viz extends React.Component<VizProps, VizState> {
                                    onChange={ this.fileChanged }
                                    className="custom-file-input" />
                                 <span className="custom-file-label">
-                                    { fileName || 'Selecciona un archivo de música...' }
+                                    { fileName || t('viz.selectFile') }
                                 </span>
                         </label>
                     </div>
@@ -99,21 +103,21 @@ export default class Viz extends React.Component<VizProps, VizState> {
                                 className="form-control"
                                 value={ visualizationMode }
                                 onChange={ this.visualizationModeChanged }>
-                            <option value="bars">Barras</option>
-                            <option value="wave">Onda</option>
+                            <option value="bars">{ t('viz.bars') }</option>
+                            <option value="wave">{ t('viz.wave') }</option>
                         </select>
                     </div>
                 </div>
 
-                <div className="d-flex justify-content-center btn-group" role="group"
+                <div className="d-flex justify-content-center btn-group mt-2" role="group"
                      aria-label="Botones de reproducir y pausa">
-                    <input type="button" className="btn btn-secondary" value="Play" id="play"
+                    <input type="button" className="btn btn-secondary" value={ t('viz.play') } id="play"
                            onClick={ this.playPressed } disabled={ !fileName || !!audioSource || seeking } />
-                    <input type="button" className="btn btn-secondary" value="Stop" id="stop"
+                    <input type="button" className="btn btn-secondary" value={ t('viz.pause') } id="stop"
                            onClick={ this.stopPressed } disabled={ !audioSource } />
                 </div>
 
-                <div className="row">
+                <div className="row mt-2">
                     <input type="range" id="pos" min={0} max={ timeDuration + startPos }
                            value={ startPos + (timePosition || 0) }
                            step={0.1} style={{ width: '100%' }} disabled={ !timePosition && !seeking }
@@ -144,7 +148,7 @@ export default class Viz extends React.Component<VizProps, VizState> {
                             }}
                             className="arrastrar d-flex justify-content-center align-items-center">
                             <div className="text-center">
-                                Suelta aqui la canción...
+                                { t('viz.drop') }
                             </div>
                         </div>
                     }
@@ -227,7 +231,7 @@ export default class Viz extends React.Component<VizProps, VizState> {
                 this.positionTimer = requestAnimationFrame(self);
             };
             this.positionTimer = requestAnimationFrame(self);
-        }).catch(error => Viz.showError('No se pudo reproducir la canción: ' + error.toString()));
+        }).catch(error => Viz.showError(this.props.t('viz.cannotPlay') + error.toString()));
     }
 
     private seekBarStart() {

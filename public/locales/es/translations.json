@@ -1,0 +1,162 @@
+{
+  "": {
+    "title": "Inicio",
+    "bio": {
+      "year": "{{count}} Año",
+      "year_plural": "{{count}} Años",
+      "text1": "Estudiante de Ingenería del Software en la Universidad de Málaga",
+      "text2": "Programador..."
+    },
+    "darkMode": [
+      "I'm Batman!",
+      "¿Ya es de noche?",
+      "Ahora te dolerán menos los ojos",
+      "Darkness...",
+      "Se fué la luz",
+      "Madona, que has fet amb es mistos? No puc veure res...",
+      "Modo noche, para los noctámbulos",
+      "🌚"
+    ],
+    "lightMode": [
+      "¿Cansado de la noche?",
+      "Eh ja he trobat ets mistos, que bo",
+      "Supongo que es de día ahora...",
+      "Volvió la luz",
+      "Modo de día, para los diurnos",
+      "🌞"
+    ],
+    "cheatCannotPlay": "No se pudo reproducir"
+  },
+
+
+
+  "about-me": {
+    "title": "Sobre mi",
+    "whatMusicDoIListen": {
+      "question": "¿Que música escuchas?",
+      "answer": "Pues escucho de todo… Si entráis en mi perfil de <1>Last.fm</1> podéis ver lo que suelo escuchar, pero no está todo."
+    },
+    "whatAreYouDoingNow": {
+      "question": "¿Qué haces ahora?",
+      "answer": "Estudiar..."
+    },
+    "whatOtherThingsDoYouLikeToDo": {
+      "question": "¿Qué otras cosas te gusta hacer?",
+      "answer": "Me gusta hacer vídeos, y su montaje. Blender (software para hacer modelado tridimensional) y montajes con él. Escuchar música a todas horas. Mecagoncristobendito, que has fet? Fotografía, cuando se puede. Ir en bicicleta, trayectos buenos y largos, cuando es posible."
+    },
+    "andWhatNot": {
+      "question": "¿Y qué no?",
+      "answer": "Ir a correr. Ir en moto. Discotecas."
+    },
+    "whatProgrammingLanguagesDoIKnow": {
+      "question": "¿Que lenguajes de programación conoces?",
+      "answer": "Conocer, conozco muchos, pero que sepa, ya no tantos. Esos son lo que os pondré:",
+      "answerDetail1": "Gracias a la carrera",
+      "answerDetail2": "(creo que ha cambiado mucho desde que lo usé)",
+      "answerDetail3": "Ensamblador",
+      "answerDetail4": "Para estilos en la Web: ",
+      "answerDetail5": "Y sobre lenguajes de marcado (Markup Languages), tenemos simplemente",
+      "answerDetail6": "Y por último, sobre formatos para intercambio de datos tenemos"
+    },
+    "haveYouGot<>": {
+      "question": "¿Tienes <INSERTE-NOMBRE-DE-RED-SOCIAL>?",
+      "answer1": "Puede...",
+      "answer2": "Mira en el pié de página a la derecha, hay varias redes sociales. También el código fuente de la web."
+    },
+    "isYourComputerPowerful": {
+      "question": "¿Tienes un pepino de PC?",
+      "answer": "Pues si, no me quejo de nada, menos de la RAM de la gráfica, que es muy poca."
+    },
+    "isYourPhonePowerful": {
+      "question": "¿Tienes un pepino de movris?",
+      "answer": "Sip… Motorola Moto X1 (el del 2014). Antiguo pero funciona perfecto."
+    },
+    "isYourNetworkConnectionSpeedy": {
+      "question": "¿Tienes un pepino de interné?",
+      "answer": "Bueno, empieza a estar decente ahora mismo:"
+    },
+    "IWannaKnowMore": "Quiero saber más…",
+    "why": "¿Por qué?",
+    "becausedont": "Because I don't want to"
+  },
+
+
+
+  "eugl": {
+    "title": "Espacio Euclídeo",
+    "captureSteps": [
+      "¡Mira a la cámara! - 3s",
+      "Prepárate - 2s",
+      "Allá vamos - 1s"
+    ],
+    "cannotCapture": "No pudimos capturar su cámara por lo siguiente: ",
+    "unsupportedNavigator": "Este navegador no es capaz de usar tu cámara :(",
+    "customImage": "Imagen personalizada",
+    "yourCamera": "Tu cámara",
+    "capture": "Capturar",
+    "showMyImage": "Mostrar mi imagen",
+    "wait": "Espere..."
+  },
+
+
+
+  "gallery": {
+    "title": "Galería de fotos",
+    "header": {
+      "title": "Galería de fotos",
+      "description": "Esos momentos en las que me llega la inspiración fotográfica, están capturados en esta página"
+    },
+    "overlay": {
+      "fecha": "Fecha de captura",
+      "camara": "Capturado con",
+      "exposicion": "Exposición",
+      "apertura": "Apertura",
+      "iso": "ISO",
+      "dist-focal": "Dist. Focal",
+      "flash": "Flash",
+      "flash-true": "Encendido, se disparó",
+      "flash-false": "Apagado, no se disparó",
+      "seeFlickr": "Ver en Flickr"
+    },
+    "zoomOverlay": {
+      "closepc": "En PC: ESC para cerrar",
+      "closesm": "En móvil: Mantén apretado la pantalla para cerrar"
+    }
+  },
+
+
+
+  "blog": {
+    "title": "Blog"
+  },
+
+
+
+  "projects": {
+    "title": "Projectos",
+    "subtitle": "mios o en los que he participado que tienen cierta importancia",
+    "description": "Podréis ver todo tipo de proyectos separados por categorías, de los cuales podréis probar sin ningún problema, siempre y cuando tengáis todo lo necesario",
+    "couldNotLoad": "No pudimos cargar los datos.",
+    "repo": "Repositorio",
+    "web": "Web",
+    "demo": "Demo"
+  },
+
+
+
+  "viz": {
+    "title": "Viz",
+    "description": "Arrastra (hasta aquí) o busca (con el botón de abajo) una canción compatible con tu navegador y deja que la magia actúe. Con cualquier mp3 o wav debería ir, puedes probar con m4a (aac (<1>alac tambien, si usas Safari</1>)) o con ogg (vorbis). Ultimamente flac también va.",
+    "selectFile": "Selecciona un archivo de música...",
+    "bars": "Barras",
+    "wave": "Onda",
+    "play": "Reproducir",
+    "pause": "Parar",
+    "drop": "Suelta aqui la canción...",
+    "cannotPlay": "No se pudo reproducir la canción: "
+  },
+
+  "and": "y",
+  "yes": "si",
+  "no": "no"
+}

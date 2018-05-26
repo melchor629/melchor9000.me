@@ -1,0 +1,162 @@
+{
+  "": {
+    "title": "Inici",
+    "bio": {
+      "year": "{{count}} Any",
+      "year_plural": "{{count}} Anys",
+      "text1": "Estudiant de Engenieria del Software en la Universidad de Málaga",
+      "text2": "Programador..."
+    },
+    "darkMode": [
+      "I'm Batman!",
+      "Ja es de nit?",
+      "Ara et faran menys mal els ulls",
+      "Darkness...",
+      "La llum sa fos",
+      "Madona, que has fet amb es mistos? No puc veure res...",
+      "Mode nit, per als noctàmbuls",
+      "🌚"
+    ],
+    "lightMode": [
+      "Cansat de la nit?",
+      "Eh ja he trobat ets mistos, que bo",
+      "Suponso que es de dia ara...",
+      "Ha tornat sa llum",
+      "Mode de dia, per als diurns",
+      "🌞"
+    ],
+    "cheatCannotPlay": "No s'ha pogut reproduïr"
+  },
+
+
+
+  "about-me": {
+    "title": "Sobre mi",
+    "whatMusicDoIListen": {
+      "question": "Què mùsica escoltes?",
+      "answer": "Idò de tot… Si entrau en el meu perfil de <1>Last.fm</1> veureu la mùsica que sol escoltar, però no hi es tot."
+    },
+    "whatAreYouDoingNow": {
+      "question": "Què fas ara?",
+      "answer": "Estudiar..."
+    },
+    "whatOtherThingsDoYouLikeToDo": {
+      "question": "Quines altees coses t'agrada fer?",
+      "answer": "M'agrada fer videos, i montar-los. Blender (software per fer modelat tridimensional) i cosaes amb ell. Escoltr mùsica a totes horas. Mecagoncristobendito, que has fet? Fotografia, quan es pot. Anar en bicicleta, trajectes llargs, a poder ser."
+    },
+    "andWhatNot": {
+      "question": "I què no?",
+      "answer": "Sortir a córrer. Anar en moto. Discoteques."
+    },
+    "whatProgrammingLanguagesDoIKnow": {
+      "question": "Que llenguatges de programació coneixes?",
+      "answer": "Per conèixer, conesc molts, però que jo sàpiga, no son un munter. Aquets son els que vos posaré:",
+      "answerDetail1": "Gràcias a la carrera",
+      "answerDetail2": "(crec que ha canviat un munter des de que el vaig usar)",
+      "answerDetail3": "Ensamblador",
+      "answerDetail4": "Per estils en la Web: ",
+      "answerDetail5": "I sobre llenguatges de marcat (Markup Languages), tenc",
+      "answerDetail6": "I per ùltim, sobre formats per l'intercanvi de dadess tinc"
+    },
+    "haveYouGot<>": {
+      "question": "Tens <INSERTI-NOM-DE-XARXA-SOCIAL>?",
+      "answer1": "Pot ser...",
+      "answer2": "Mira en el peu de pàgina a la dreta, hi ha diverses xarxes socials. També hi es el códi font de la web."
+    },
+    "isYourComputerPowerful": {
+      "question": "Tens un PC tocho?",
+      "answer": "Ves que si, no me queix de res, manco de la RAM de la gràfica, que es molt poca."
+    },
+    "isYourPhonePowerful": {
+      "question": "Tens un mòbil tocho?",
+      "answer": "Sip… Motorola Moto X1 (el del 2014). Antic però funcional."
+    },
+    "isYourNetworkConnectionSpeedy": {
+      "question": "Tens un internet rapidissim?",
+      "answer": "Bueno, comença a esser decent ara mateix:"
+    },
+    "IWannaKnowMore": "Vull saber més…",
+    "why": "Per què?",
+    "becausedont": "Perquè no vull"
+  },
+
+
+
+  "eugl": {
+    "title": "Espai Euclide",
+    "captureSteps": [
+      "Mira a la càmera! - 3s",
+      "Prepàra't - 2s",
+      "Que vaig - 1s"
+    ],
+    "cannotCapture": "No hem pogut capturar la seva càmara per el següent missatge: ",
+    "unsupportedNavigator": "Aquest navegador no es capaç d'usar la teva cámara :(",
+    "customImage": "Imatge personalitzada",
+    "yourCamera": "La teva càmera",
+    "capture": "Capturar",
+    "showMyImage": "Mostrar la meva imatge",
+    "wait": "Esperi..."
+  },
+
+
+
+  "gallery": {
+    "title": "Gal·leria de fotos",
+    "header": {
+      "title": "Gal·leria de fotos",
+      "description": "Aquests moments en els que m'arriba la inspiració fotogràfica, estan capturats en aquesta pàgina"
+    },
+    "overlay": {
+      "fecha": "Data de captura",
+      "camara": "Capturat con",
+      "exposicion": "Exposició",
+      "apertura": "Apertura",
+      "iso": "ISO",
+      "dist-focal": "Dist. Focal",
+      "flash": "Flash",
+      "flash-true": "Encès, es va disparar",
+      "flash-false": "Apagat, no es va disparar",
+      "seeFlickr": "Veure en Flickr"
+    },
+    "zoomOverlay": {
+      "closepc": "En PC: ESC para tancar",
+      "closesm": "En mòbil: Manté apretat la pantalla per tancar"
+    }
+  },
+
+
+
+  "blog": {
+    "title": "Blog"
+  },
+
+
+
+  "projects": {
+    "title": "Projectes",
+    "subtitle": "meus o en els que he participat que tenen certa importància",
+    "description": "Podreu veure tot tipus de projectes separats per categories, dels quals podreu provar sense cap problema, sempre que tengau tot el necessari",
+    "couldNotLoad": "No hem pogut carregar les dades.",
+    "repo": "Repositori",
+    "web": "Web",
+    "demo": "Demo"
+  },
+
+
+
+  "viz": {
+    "title": "Viz",
+    "description": "Arrastri (fins aqui) o cerca (amb el botó d'abaix) una canció compatible amb el teu navegador i deixa que la màgia actui. Amb qualsevol mp3 o wav hauria d'anar, pots provar amb m4a (aac (<1>alac també, si uses Safari</1>)) o amb ogg (vorbis). Últimament flac tambié funciona.",
+    "selectFile": "Sel·lecciona un fitxer de mùsica...",
+    "bars": "Barres",
+    "wave": "Ona",
+    "play": "Reproduïr",
+    "pause": "Aturar",
+    "drop": "Deixa aqui la canció...",
+    "cannotPlay": "No es pot reproduïr la canció: "
+  },
+
+  "and": "i",
+  "yes": "si",
+  "no": "no"
+}

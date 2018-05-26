@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { InjectedTranslateProps } from 'react-i18next';
 import * as toast from 'src/lib/toast';
 import { Cheat } from 'src/lib/cheat';
 import Player from 'src/lib/player';
@@ -60,10 +61,10 @@ specialDatesImages
         }
     });
 
-const playSoundError = function(this: string, error: Error) {
+const playSoundError = function(this: string, props: InjectedTranslateProps, error: Error) {
     toast.error(() => (
         <div>
-            No se pudo reproducir ${this} <br/>
+            { props.t('cheatCannotPlay') } <i>${this}</i> <br/>
             <span className="text-muted">{ error.message }</span>
         </div>
     ));
@@ -82,13 +83,13 @@ const cheats = new Map([
         this.player.playSound('atw').then(audioSource => {
             this.setState({ audioSource });
             audioSource.onended = () => this.setState({ audioSource: null });
-        }).catch(playSoundError.bind('Around The World'));
+        }).catch(playSoundError.bind('Around The World', this.props));
     } ],
     [ 'i n t e r s t e l l a r', function(this: Home) {
         this.player.playSound('stay').then(audioSource => {
             this.setState({ audioSource });
             audioSource.onended = () => this.setState({ audioSource: null });
-        }).catch(playSoundError.bind('Stay'));
+        }).catch(playSoundError.bind('Stay', this.props));
     } ],
     [ 's a t u r d a y space n i g h t space f e v e r', function(this: Home) {
         let sound: string;
@@ -100,7 +101,7 @@ const cheats = new Map([
         this.player.playSound(sound).then(audioSource => {
             this.setState({ audioSource });
             audioSource.onended = () => this.setState({ audioSource: null });
-        }).catch(playSoundError.bind(sound));
+        }).catch(playSoundError.bind(sound, this.props));
     } ],
     [ 'd o space a space b a r r e l space r o l l', function(this: Home) {
         this.props.doABarrelRoll();
@@ -112,7 +113,7 @@ const cheats = new Map([
         this.player.playSound('when-the-fire-starts-to-burn').then(audioSource => {
             this.setState({ audioSource });
             audioSource.onended = () => this.setState({ audioSource: null });
-        }).catch(playSoundError.bind('When the Fire Starts to Burn'));
+        }).catch(playSoundError.bind('When the Fire Starts to Burn', this.props));
     } ],
     [ 'o s c u r o', function(this: Home) {
         this.props.toggleDarkMode();
@@ -129,7 +130,7 @@ const cheats = new Map([
         this.player.playSound(name).then(audioSource => {
             this.setState({ audioSource });
             audioSource.onended = () => this.setState({ audioSource: null });
-        }).catch(playSoundError.bind(name));
+        }).catch(playSoundError.bind(name, this.props));
     } ],
     [ 'v i s u a l i z a d o r', function(this: Home) {
         this.props.changeVisualizationMode();
@@ -146,7 +147,7 @@ const cheats = new Map([
         this.player.playSound(name).then(audioSource => {
             this.setState({ audioSource });
             audioSource.onended = () => this.setState({ audioSource: null });
-        }).catch(playSoundError.bind(name));
+        }).catch(playSoundError.bind(name, this.props));
     } ],
     [ 'c y d o n i a', function(this: Home) {
         let name = '';
@@ -161,7 +162,7 @@ const cheats = new Map([
         this.player.playSound(name).then(audioSource => {
             this.setState({ audioSource });
             audioSource.onended = () => this.setState({ audioSource: null });
-        }).catch(playSoundError.bind(name));
+        }).catch(playSoundError.bind(name, this.props));
     } ],
     [ 'a n d r e s', function(this: Home) {
         if(document.querySelector('iframe') === null) {
@@ -178,7 +179,7 @@ const cheats = new Map([
     } ]
 ]);
 
-type IndexProps = IndexStateToProps & IndexDispatchToProps;
+type IndexProps = IndexStateToProps & IndexDispatchToProps & InjectedTranslateProps;
 
 interface StateProps {
     image: number;
@@ -279,26 +280,12 @@ export default class Home extends React.Component<IndexProps, StateProps> {
     componentDidUpdate(prevProps: IndexProps) {
         if(prevProps.darkMode !== this.props.darkMode) {
             if(this.props.darkMode) {
-                const mensajes = [
-                    'I\'m Batman!',
-                    '¿Ya es de noche?',
-                    'Ahora te dolerán menos los ojos',
-                    'Darkness...',
-                    'Se fué la luz',
-                    'Madona, que has fet amb es mistos? No puc veure res...',
-                    'Modo noche, para los noctámbulos',
-                    '🌚'
-                ];
+                const mensajes = this.props.t('.darkMode', { returnObjects: true });
+                console.log(mensajes);
                 toast.info(mensajes[Math.trunc(Math.random() * mensajes.length)]);
             } else {
-                const mensajes = [
-                    '¿Cansado de la noche?',
-                    'Eh ja he trobat ets mistos, que bo',
-                    'Supongo que es de día ahora...',
-                    'Volvió la luz',
-                    'Modo de día, para los diurnos',
-                    '🌞'
-                ];
+                const mensajes = this.props.t('.lightMode', { returnObjects: true });
+                console.log(mensajes);
                 toast.info(mensajes[Math.trunc(Math.random() * mensajes.length)]);
             }
         }
@@ -319,6 +306,7 @@ export default class Home extends React.Component<IndexProps, StateProps> {
 
     render() {
         const { image, keys, disappearTimeout } = this.state;
+        const { t } = this.props;
 
         const keysDiv = (
             <div className="keys">
@@ -350,9 +338,9 @@ export default class Home extends React.Component<IndexProps, StateProps> {
 
                         <div className="profile_description">
                             <p className="lead">
-                                <span id="año">{ Home._year }</span>&nbsp;
-                                Años<br />Estudiante de Ingenería del Software en la Universidad de Málaga
-                                <br />Programador...
+                                { t('.bio.year', { count: Home._year  }) }
+                                <br />{ t('.bio.text1') }
+                                <br />{ t('.bio.text2') }
                             </p>
                         </div>
                     </div>

@@ -1,16 +1,19 @@
 import * as React from 'react';
+import { translate, InjectedTranslateProps } from 'react-i18next';
 
-export default class Header extends React.Component<{ photo: string | null }> {
+class Header extends React.Component<{ photo: string | null } & InjectedTranslateProps> {
     render() {
+        const { t, photo } = this.props;
         return (
             <div className="gallery-header" style={{ position: 'absolute' }}>
-                <div className="image-background" style={ { backgroundImage: `url(${this.props.photo || ''})` } } />
+                <div className="image-background" style={ { backgroundImage: `url(${photo || ''})` } } />
                 <div>
-                    <h1>Galería de fotos</h1>
-                    <p className="lead">Esos momentos en las que me llega la inspiración fotográfica, están
-                        capturados en esta página</p>
+                    <h1>{ t('gallery.header.title') }</h1>
+                    <p className="lead">{ t('gallery.header.description') }</p>
                 </div>
             </div>
         );
     }
 }
+
+export default translate()(Header);

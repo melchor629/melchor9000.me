@@ -1,0 +1,162 @@
+{
+  "": {
+    "title": "Home",
+    "bio": {
+      "year": "{{count}} Year",
+      "year_plural": "{{count}} Years",
+      "text1": "Software Engineering Studing at Universidad de Málaga",
+      "text2": "Programmer..."
+    },
+    "darkMode": [
+      "I'm Batman!",
+      "It's already night?",
+      "Your eyes will suffer less now",
+      "Darkness...",
+      "Light has gone",
+      "Madona, que has fet amb es mistos? No puc veure res...",
+      "Night mode, for the night owls",
+      "🌚"
+    ],
+    "lightMode": [
+      "Tired of the night?",
+      "Eh ja he trobat ets mistos, que bo",
+      "I guess it's daytime now...",
+      "Light came back",
+      "Light mode, for the diurnals",
+      "🌞"
+    ],
+    "cheatCannotPlay": "Cannot play"
+  },
+
+
+
+  "about-me": {
+    "title": "About",
+    "whatMusicDoIListen": {
+      "question": "What music do you usually listen?",
+      "answer": "A bit of everything… If you access into my <1>Last.fm</1> profile, you will see what I usuaaly listen, but it's not everything."
+    },
+    "whatAreYouDoingNow": {
+      "question": "What are you doing now?",
+      "answer": "Studying..."
+    },
+    "whatOtherThingsDoYouLikeToDo": {
+      "question": "What other kind of things you like to do?",
+      "answer": "I like to make videos, and their editing. Blender (software to make three-dimensional modeling) and assemblies with it. Listen to music at all hours. Photography, when I can. Rides by bicycle, good and long journeys, when possible."
+    },
+    "andWhatNot": {
+      "question": "And, what not?",
+      "answer": "Go running. Riding a motorbike. Nightclubs."
+    },
+    "whatProgrammingLanguagesDoIKnow": {
+      "question": "Whate programming languages do you know?",
+      "answer": "I recognized a lot of them, but I only know these ones:",
+      "answerDetail1": "Thanks to the university",
+      "answerDetail2": "(I think last time I used it was a bit different)",
+      "answerDetail3": "Assembly",
+      "answerDetail4": "For styling the web: ",
+      "answerDetail5": "About Markup Languages, these ones ",
+      "answerDetail6": "Ending this list, about data interchange formats "
+    },
+    "haveYouGot<>": {
+      "question": "Have you got <INSERT-SOCIAL-NETWORK-NAME-HERE>?",
+      "answer1": "Maybe...",
+      "answer2": "Look at the right in the footer, there are some social networks. Also, you can find the source code of the web."
+    },
+    "isYourComputerPowerful": {
+      "question": "Have you got a powerful PC?",
+      "answer": "Yes indeed. I don't complain at all, except of the graphic's RAM - has a little."
+    },
+    "isYourPhonePowerful": {
+      "question": "Is your smartphone powerful",
+      "answer": "Yep… Motorola Moto X1 (2014 version). Old but functional."
+    },
+    "isYourNetworkConnectionSpeedy": {
+      "question": "Is your network connection fast?",
+      "answer": "Well, it starts to be rather fast:"
+    },
+    "IWannaKnowMore": "I wanna know more…",
+    "why": "Why?",
+    "becausedont": "Because I don't want to"
+  },
+
+
+
+  "eugl": {
+    "title": "Euclidean Space",
+    "captureSteps": [
+      "Look at the camera! - 3s",
+      "Prepare yourself - 2s",
+      "Get ready - 1s"
+    ],
+    "cannotCapture": "Camera cannot be capture due to: ",
+    "unsupportedNavigator": "This navigator cannot capture your camera :(",
+    "customImage": "Custom image",
+    "yourCamera": "Your camera",
+    "capture": "Capture",
+    "showMyImage": "Show my image",
+    "wait": "Wait..."
+  },
+
+
+
+  "gallery": {
+    "title": "Photo gallery",
+    "header": {
+      "title": "Photo gallery",
+      "description": "When photographic inspiration comes to me, this pages captures them to show them to you"
+    },
+    "overlay": {
+      "fecha": "Shot date",
+      "camara": "Show with",
+      "exposicion": "Exposition",
+      "apertura": "Aperture",
+      "iso": "ISO",
+      "dist-focal": "Focal Dist.",
+      "flash": "Flash",
+      "flash-true": "On, was shot",
+      "flash-false": "Off, wasn't shot",
+      "seeFlickr": "See at Flickr"
+    },
+    "zoomOverlay": {
+      "closepc": "On PC: ESC to close",
+      "closesm": "On smartphone: Keep pressing the screen to close"
+    }
+  },
+
+
+
+  "blog": {
+    "title": "Blog"
+  },
+
+
+
+  "projects": {
+    "title": "Projects",
+    "subtitle": "mine or on those which I participated that has some relevance",
+    "description": "You can see all kinds of projects separated by categories, which you can try without any problem, as long as you have everything you need to run them",
+    "couldNotLoad": "Projects cannot be loaded.",
+    "repo": "Repository",
+    "web": "Web",
+    "demo": "Demo"
+  },
+
+
+
+  "viz": {
+    "title": "Viz",
+    "description": "Drag here or search (with the button below) a compatible song with your browser and let the magic happen. It should go with any mp3 or wav. You can try with m4a (aac (<1>alac too, if you use Safari</1>)) or with ogg (vorbis). Recently flac also works.",
+    "selectFile": "Select a music file...",
+    "bars": "Bars",
+    "wave": "Wave",
+    "play": "Play",
+    "pause": "Stop",
+    "drop": "Drop the song here...",
+    "cannotPlay": "Song cannot be played: "
+  },
+
+  "and": "and",
+  "yes": "yes",
+  "no": "no"
+}

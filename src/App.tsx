@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router';
 import { Link, Route, RouteComponentProps } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { translate, InjectedI18nProps, InjectedTranslateProps } from 'react-i18next';
 import { routes } from './routes';
 import { State } from './redux/reducers';
 import PrivateRoute from './containers/private-route';
@@ -21,7 +22,8 @@ interface AppStateToProps {
     darkMode?: boolean | null;
 }
 
-type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & { changeTitle: (title: string | null) => void };
+type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & { changeTitle: (title: string | null) => void } &
+    InjectedI18nProps & InjectedTranslateProps;
 
 interface AppState {
     offcanvas: boolean;
@@ -65,7 +67,7 @@ class App extends React.Component<AppPropTypes, AppState> {
     }
 
     render() {
-        const { history } = this.props;
+        const { history, t } = this.props;
         const { offcanvas } = this.state;
         const linkActive = (route: any) => {
             if(route.extra && route.extra.exact) {
@@ -90,8 +92,11 @@ class App extends React.Component<AppPropTypes, AppState> {
                         <ul className="navbar-nav mr-auto">
                             { routes.filter(route => !route.private && route.title).map((route, pos) => (
                                 <li className={`nav-item ${linkActive(route)}`} key={ pos }>
-                                    <Link to={ route.route } className="nav-link"
-                                          onClick={ () => this.navLinkPressed(route) }>{ route.title }</Link>
+                                    <Link to={ route.route }
+                                          className="nav-link"
+                                          onClick={ () => this.navLinkPressed(route) }>
+                                        { t(`${route.route.substr(1)}.title`, { defaultValue: route.title }) }
+                                    </Link>
                                 </li>
                             )) }
                         </ul>
@@ -123,7 +128,7 @@ class App extends React.Component<AppPropTypes, AppState> {
     }
 
     private navLinkPressed(route: any) {
-        this.props.changeTitle(route.title);
+        this.props.changeTitle(this.props.t(`${route.route.substr(1)}.title`, { defaultValue: route.title }));
         this.setState({ offcanvas: false });
     }
 }
@@ -138,4 +143,4 @@ const mapDispatchToProps = (dispatch: any): { changeTitle: (title: string) => vo
     changeTitle: (title: string) => dispatch(changeTitle(title)),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(translate('translations')(connect(mapStateToProps, mapDispatchToProps)(App)));

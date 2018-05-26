@@ -1,5 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
+import { translate, InjectedTranslateProps } from 'react-i18next';
 import * as toast from 'src/lib/toast';
 
 const Cropper = require('react-cropper').default;
@@ -58,7 +59,7 @@ interface EuglState {
     videoCaptureText: string;
 }
 
-export default class EuglPage extends React.Component<any, EuglState> {
+class EuglPage extends React.Component<InjectedTranslateProps, EuglState> {
     private width: number;
     private height: number;
     private scene: THREE.Scene;
@@ -157,6 +158,7 @@ export default class EuglPage extends React.Component<any, EuglState> {
 
     render() {
         const { z, opacity, fps, someDataZIndex, imageToCrop, videoFromCamera, videoCaptureText } = this.state;
+        const { t } = this.props;
         return (
             <div style={{ width: '100%', height: '100%' }} ref={ this.containerRef }>
                 <div className="someData backdrop"
@@ -170,12 +172,12 @@ export default class EuglPage extends React.Component<any, EuglState> {
                     <p className="mb-0">FPS: <span id="fps">{ fps.toFixed(2) }</span></p>
                     <hr/>
                     </div> }
-                    <p className="mb-0">Custom Image [9]:</p>
+                    <p className="mb-0">{ t('eugl.customImage') } [9]:</p>
                     <input type="file" onChange={ this.selectedImage }
                            style={{ display: imageToCrop ? 'none' : 'block' }} />
-                    <p className="mb-0">Your camera [9]:</p>
+                    <p className="mb-0">{ t('eugl.yourCamera') } [9]:</p>
                     { !videoFromCamera && <button type="button" className="btn btn-sm btn-success"
-                                                onClick={ this.startCapturing }>Capture</button> }
+                                                onClick={ this.startCapturing }>{ t('eugl.capture') }</button> }
                     { videoCaptureText && <p className="lead">{ videoCaptureText }</p> }
                     <video width="400" height="225" onCanPlay={() => this.captureFromCamera() }
                            ref={ this.videoRef } style={{ display: videoFromCamera ? 'block' : 'none' }} />
@@ -183,7 +185,7 @@ export default class EuglPage extends React.Component<any, EuglState> {
                     { imageToCrop && <Cropper src={ imageToCrop } aspectRatio={ 1 }
                                               style={{ width: '400px', height: '225px' }} ref={ this.cropperRef } /> }
                     <input type="button" className="btn btn-sm btn-success mt-2" onClick={ this.croppedImage }
-                           style={{ display: imageToCrop ? 'block' : 'none' }} value="Show my image!" />
+                           style={{ display: imageToCrop ? 'block' : 'none' }} value={ t('eugl.showMyImage') } />
                 </div>
             </div>
         );
@@ -412,9 +414,9 @@ export default class EuglPage extends React.Component<any, EuglState> {
     }
 
     private startCapturing() {
-        this.setState({ videoCaptureText: 'Wait...' });
+        this.setState({ videoCaptureText: this.props.t('eugl.wait') });
         if(!navigator.getUserMedia) {
-            toast.error('Este navegador no es capaz de usar tu cámara :(');
+            toast.error(this.props.t('eugl.unsuppoertedNavigator'));
             return;
         }
         navigator['getUserMedia'](
@@ -430,16 +432,16 @@ export default class EuglPage extends React.Component<any, EuglState> {
                 this.videoRef.current!.srcObject = stream;
                 this.videoRef.current!.play().catch();
             },
-            (error) => toast.error('No pudimos capturar su cámara por lo siguiente: ' + error.message)
+            (error) => toast.error(this.props.t('eugl.cannotCapture') + error.message)
         );
     }
 
     private async captureFromCamera() {
-        this.setState({ videoCaptureText: 'Look at the camera! - 3s' });
+        this.setState({ videoCaptureText: this.props.t('eugl.captureSteps.0') });
         await sleep(1);
-        this.setState({ videoCaptureText: 'Prepare yourself - 2s' });
+        this.setState({ videoCaptureText: this.props.t('eugl.captureSteps.1') });
         await sleep(1);
-        this.setState({ videoCaptureText: 'Get ready - 1s' });
+        this.setState({ videoCaptureText: this.props.t('eugl.captureSteps.2') });
         await sleep(1);
 
         const videocanvas = document.createElement('canvas');
@@ -460,3 +462,5 @@ export default class EuglPage extends React.Component<any, EuglState> {
         });
     }
 }
+
+export default translate('translations')(EuglPage);
