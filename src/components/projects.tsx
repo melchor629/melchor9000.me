@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { toast } from 'react-toastify';
+import React from 'react';
+import * as toast from '../lib/toast';
 import LoadSpinner from './load-spinner/index';
 import { ProjectDispatchToProps, ProjectStateToProps } from '../containers/projects';
 

@@ -6,7 +6,6 @@ import { Posts } from '../../containers/admin/posts';
 import { Projects } from '../../containers/admin/projects';
 import { Logout } from '../../containers/admin/logout';
 import './admin.css';
-import 'font-awesome/css/font-awesome.css';
 
 const { Trail, animated } = require('react-spring');
 

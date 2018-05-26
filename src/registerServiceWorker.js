@@ -8,7 +8,7 @@
 // To learn more about the benefits of this model, read https://goo.gl/KwvDNy.
 // This link also includes instructions on opting out of this behavior.
 
-import { toast } from 'react-toastify';
+import { warning, info } from './lib/toast';
 
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
@@ -63,15 +63,17 @@ function registerValidSW(swUrl) {
                 // It's the perfect time to display a 'New content is
                 // available; please refresh.' message in your web app.
                 console.log('New content is available; please refresh.');
-                toast.warn('Ey, actualiza la web para obtener los últimos cambios', { autoClose: false });
+                warn('Ey, actualiza la web para obtener los últimos cambios', { autoClose: false });
               } else {
                 // At this point, everything has been precached.
                 // It's the perfect time to display a
                 // 'Content is cached for offline use.' message.
                 console.log('Content is cached for offline use.');
-                toast.info('FYI: La web se almacena en caché para que vaya hiper-rápido');
-                toast.info('Además, también se almacena en caché diversos ficheros (que ocupan poco) y bases de datos');
-                toast.info('Pásalo bien :)');
+                (async () => {
+                  await info('FYI: La web se almacena en caché para que vaya hiper-rápido', { autoClose: 4000 }).onClose;
+                  await info('Además, también se almacena en caché diversos ficheros (que ocupan poco) y bases de datos', { autoClose: 5000 }).onClose;
+                  info('Pásalo bien :)');
+                })();
               }
             }
           };
@@ -107,7 +109,7 @@ function checkValidServiceWorker(swUrl) {
       console.log(
         'No internet connection found. App is running in offline mode.'
       );
-      toast.info('Veo que no tienes internet... La web seguirá funcionando pero no todo irá bien.');
+      info('Veo que no tienes internet... La web seguirá funcionando pero no todo irá bien.');
     });
 }
 

@@ -81,26 +81,12 @@ export default () => (
             &nbsp;<em>XML</em> y <em><a href="http://www.yaml.org">YAML</a></em>.
         </p>
 
-        <h2 id="¿tienes-feisbuk">¿Tienes feisbuk?</h2>
+        <h2 id="¿tienes-feisbuk">¿Tienes &lt;INSERTE-NOMBRE-DE-RED-SOCIAL&gt;?</h2>
         <p>
-            Si, pero casi nunca lo uso… <em>No me enviéis peticiones de amistad</em> 🤔
+            Puede... 🤔
+            <br />
+            Mira en el pié de página a la derecha, hay varias redes sociales. También el código fuente de la web.
         </p>
-
-        <h2 id="¿tienes-twitter">¿Tienes Twitter?</h2>
-        <p>
-            Si, ese en cambio lo uso mucho mas, <a href="https://twitter.com/melchor629">@melchor629</a>
-        </p>
-
-        <h2 id="¿tienes-linkedout">¿Tienes LinkedIn?</h2>
-        <p>
-            Si, ahi tienes <a href="https://www.linkedin.com/in/melchor9000">Melchor Alejo Garau Madrigal</a>
-        </p>
-
-        <h2 id="¿y-github-no-lo-has-puesto...">¿Y GitHub? No lo has puesto…</h2>
-        <p><a href="https://github.com/melchor629">@melchor629</a></p>
-
-        <h2 id="¿reddit">¿Reddit?</h2>
-        <p><a href="https://www.reddit.com/user/melchor9000/">/u/melchor9000</a></p>
 
         <h2 id="¿tienes-un-pepino-de-pe-se">¿Tienes un pepino de PC?</h2>
         <p>Pues si, no me quejo de nada, menos de la RAM de la gráfica, que es muy poca.</p>

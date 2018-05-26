@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import * as toast from '../../../lib/toast';
 import { ProjectsHomeDispatchToProps, ProjectsHomeStateToProps } from '../../../containers/admin/projects/home';
 import { ProjectInfo } from '../../../containers/admin/projects';
 import DeleteModal from '../delete-modal';

@@ -6,7 +6,6 @@ import { PostPageDispatchToProps, PostPageStateToProps } from '../../containers/
 import LoadSpinner from '../load-spinner/load-spinner';
 import Zoom from '../../lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
-import 'font-awesome/css/font-awesome.css';
 
 const $ = require('jquery');
 

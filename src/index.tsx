@@ -6,7 +6,10 @@ import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import App from './App';
+import Footer from './Footer';
 import registerServiceWorker from './registerServiceWorker';
+
+import 'font-awesome/css/font-awesome.css';
 
 require('firebase/firestore');
 require('firebase/auth');
@@ -50,6 +53,11 @@ firebase.initializeApp({
             </BrowserRouter>
         </Provider>,
         document.getElementById('root')
+    );
+
+    ReactDOM.render(
+        <Footer />,
+        document.getElementById('footer')
     );
 
     registerServiceWorker();

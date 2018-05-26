@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { toast } from 'react-toastify';
+import React from 'react';
+import * as toast from '../lib/toast';
 import Visualizer from './visualizer';
 import Player from '../lib/player';
 import { VizDispatchToProps, VizStateToProps } from '../containers/viz';

@@ -1,13 +1,14 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import * as firebase from 'firebase';
-import { toast } from 'react-toastify';
+import * as toast from '../../../lib/toast';
 import LoadSpinner from '../../load-spinner';
 import { ProjectEditorStateToProps, ProjectEditorDispatchToProps } from '../../../containers/admin/projects/editor';
 import { ProjectInfo } from '../../../containers/admin/projects';
 import {
     urlOrLocalValidator,
-    urlValidator, valueValidator,
+    urlValidator,
+    valueValidator,
 } from '../../../lib/validators';
 import { AdminInput } from '../../../containers/admin/admin-input';
 

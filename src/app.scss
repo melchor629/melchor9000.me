@@ -279,3 +279,54 @@ body.darkmode { background-color: rgb(40, 40, 40) }
     }
   }
 }
+
+.toast {
+  .default,
+  .default div,
+  .default p,
+  .default span {
+
+  }
+
+  .success,
+  .success div,
+  .success p,
+  .success span {
+    color: white;
+
+    .text-muted {
+      color: #DDD !important;
+    }
+  }
+
+  .info,
+  .info div,
+  .info p,
+  .info span {
+    color: white;
+
+    .text-muted {
+      color: #DDD !important;
+    }
+  }
+
+  .warn,
+  .warn div,
+  .warn p,
+  .warn span {
+    .text-muted {
+      color: #666 !important;
+    }
+  }
+
+  .error,
+  .error div,
+  .error p,
+  .error span {
+    color: white;
+
+    .text-muted {
+      color: #CCC !important;
+    }
+  }
+}

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import * as THREE from 'three';
-import { toast } from 'react-toastify';
+import * as toast from '../lib/toast';
 
 const Cropper = require('react-cropper').default;
 import 'cropperjs/dist/cropper.css';

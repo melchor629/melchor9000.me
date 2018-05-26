@@ -3,7 +3,6 @@ import * as Swipeable from 'react-swipeable';
 import ZoomImageOverlay from './zoom-image-overlay';
 import { buildLargePhotoUrl } from '../../lib/flickr';
 import { OverlayDispatchToProps, OverlayStateToProps } from '../../containers/gallery/overlay';
-import 'font-awesome/css/font-awesome.css';
 const $ = require('jquery');
 
 type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {

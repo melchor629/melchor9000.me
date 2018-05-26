@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
-import { toast } from 'react-toastify';
 import firebase from 'firebase/app';
 import { RouteComponentProps } from 'react-router-dom';
+import * as toast from '../../../lib/toast';
 import render from '../../../lib/render-post-content';
 import { PostEditorDispatchToProps, PostEditorStateToProps } from '../../../containers/admin/posts/editor';
 import LoadSpinner from '../../load-spinner';

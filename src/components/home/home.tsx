@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { toast } from 'react-toastify';
+import * as toast from '../../lib/toast';
 import { Cheat } from '../../lib/cheat';
 import Player from '../../lib/player';
 import Visualizer from '../visualizer';
@@ -76,7 +76,7 @@ const cheats = new Map([
         });
     } ],
     [ 'f i l l space d e space p u t a', function(this: Home) {
-        toast('Com goses insultarme? Fill de meuca, al infern aniràs...');
+        toast.normal(<span><b>Com goses insultarme?</b> Fill de meuca, al infern aniràs...</span>);
     } ],
     [ 'a r o u n d space t h e space w o r l d', function(this: Home) {
         this.player.playSound('atw').then(audioSource => {

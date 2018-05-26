@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
-import { toast } from 'react-toastify';
+import * as toast from '../../../lib/toast';
 import { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home';
 import { Post } from '../../../redux/posts/reducers';
 import DeleteModal from '../delete-modal';
