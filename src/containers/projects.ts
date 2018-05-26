@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import { removeError, subscribe, unsubscribe } from '../redux/database/actions';
-import { changeTitle } from '../redux/title/actions';
-import { State } from '../redux/reducers';
-import ProjectsComponent from '../components/projects';
+import { removeError, subscribe, unsubscribe } from 'src/redux/database/actions';
+import { changeTitle } from 'src/redux/title/actions';
+import { State } from 'src/redux/reducers';
+import ProjectsComponent from 'src/components/projects';
 
 interface ProjectInfo {
     title: string;

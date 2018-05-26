@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
-import * as toast from '../lib/toast';
+import * as toast from 'src/lib/toast';
 
 const Cropper = require('react-cropper').default;
 import 'cropperjs/dist/cropper.css';

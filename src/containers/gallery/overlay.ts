@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
-import Overlay from '../../components/gallery/overlay';
+import Overlay from 'src/components/gallery/overlay';
 import {
     loadDetailedPhoto, nextDetailed, prevDetailed, hideDetailed, toggleInfoPanel, loadingPhotoImage, loadedPhotoImage,
     loadMorePhotos, enablePhotoZoom, disablePhotoZoom
-} from '../../redux/gallery/actions';
-import { State } from '../../redux/reducers';
-import { AnimationGalleryState, GalleryPhoto } from '../../redux/gallery/reducers';
+} from 'src/redux/gallery/actions';
+import { State } from 'src/redux/reducers';
+import { AnimationGalleryState, GalleryPhoto } from 'src/redux/gallery/reducers';
 
 export interface OverlayStateToProps {
     currentPhoto: GalleryPhoto;

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { State } from '../../../redux/reducers';
-import { changeTitle } from '../../../redux/title/actions';
-import { insert, removeError, update } from '../../../redux/database/actions';
-import ProjectEditorComponent from '../../../components/admin/projects/editor';
-import { ProjectInfo } from '../projects';
+import { State } from 'src/redux/reducers';
+import { changeTitle } from 'src/redux/title/actions';
+import { insert, removeError, update } from 'src/redux/database/actions';
+import ProjectEditorComponent from 'src/components/admin/projects/editor';
+import { ProjectInfo } from 'src/containers/admin/projects';
 
 export interface ProjectEditorStateToProps {
     saving: boolean;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as Swipeable from 'react-swipeable';
 import ZoomImageOverlay from './zoom-image-overlay';
-import { buildLargePhotoUrl } from '../../lib/flickr';
-import { OverlayDispatchToProps, OverlayStateToProps } from '../../containers/gallery/overlay';
+import { buildLargePhotoUrl } from 'src/lib/flickr';
+import { OverlayDispatchToProps, OverlayStateToProps } from 'src/containers/gallery/overlay';
 const $ = require('jquery');
 
 type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {

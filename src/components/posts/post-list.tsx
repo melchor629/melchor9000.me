@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { PostListDispatchToProps, PostListStateToPros } from '../../containers/posts/post-list';
-import LoadSpinner from '../load-spinner/load-spinner';
+import { PostListDispatchToProps, PostListStateToPros } from 'src/containers/posts/post-list';
+import LoadSpinner from 'src/components/load-spinner';
 import Entry from './post-entry';
 
 const $ = require('jquery');

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { State } from '../../../redux/reducers';
-import { changeTitle } from '../../../redux/title/actions';
-import { remove, removeError } from '../../../redux/database/actions';
-import PostsHomeComponent from '../../../components/admin/posts/home';
-import { Post } from '../../../redux/posts/reducers';
+import { State } from 'src/redux/reducers';
+import { changeTitle } from 'src/redux/title/actions';
+import { remove, removeError } from 'src/redux/database/actions';
+import PostsHomeComponent from 'src/components/admin/posts/home';
+import { Post } from 'src/redux/posts/reducers';
 
 export interface PostsHomeStateToProps {
     posts: Post[] | null | undefined;

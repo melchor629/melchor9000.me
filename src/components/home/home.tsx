@@ -1,13 +1,13 @@
 import * as React from 'react';
-import * as toast from '../../lib/toast';
-import { Cheat } from '../../lib/cheat';
-import Player from '../../lib/player';
-import Visualizer from '../visualizer';
-import Tapable from '../tapable';
+import * as toast from 'src/lib/toast';
+import { Cheat } from 'src/lib/cheat';
+import Player from 'src/lib/player';
+import Visualizer from 'src/components/visualizer';
+import Tapable from 'src/components/tapable';
+import { IndexDispatchToProps, IndexStateToProps } from 'src/containers/home';
 const Parallax = require('parallax-js');
 
 import './home.css';
-import { IndexDispatchToProps, IndexStateToProps } from '../../containers/home';
 
 const images = [
     'img/Pixel Art.png',

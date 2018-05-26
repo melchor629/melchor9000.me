@@ -1,8 +1,8 @@
-import { State } from '../redux/reducers';
-import { changeVisualization, doABarrelRoll, flipIt, toggleDarkMode } from '../redux/effects/actions';
-import { changeTitle } from '../redux/title/actions';
 import { connect } from 'react-redux';
-import HomeComponent from '../components/home/home';
+import { State } from 'src/redux/reducers';
+import { changeVisualization, doABarrelRoll, flipIt, toggleDarkMode } from 'src/redux/effects/actions';
+import { changeTitle } from 'src/redux/title/actions';
+import HomeComponent from 'src/components/home/home';
 
 export interface IndexStateToProps {
     flipItValue: boolean | null;

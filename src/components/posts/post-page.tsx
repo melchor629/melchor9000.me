@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { default as Ink } from 'react-ink';
-import { Post } from '../../redux/posts/reducers';
-import { PostPageDispatchToProps, PostPageStateToProps } from '../../containers/posts/post-page';
-import LoadSpinner from '../load-spinner/load-spinner';
-import Zoom from '../../lib/zoom.js/zoom';
+import { Post } from 'src/redux/posts/reducers';
+import { PostPageDispatchToProps, PostPageStateToProps } from 'src/containers/posts/post-page';
+import LoadSpinner from 'src/components/load-spinner/load-spinner';
+import Zoom from 'src/lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
 
 const $ = require('jquery');

@@ -1,7 +1,7 @@
 import React from 'react';
-import * as toast from '../lib/toast';
-import LoadSpinner from './load-spinner/index';
-import { ProjectDispatchToProps, ProjectStateToProps } from '../containers/projects';
+import * as toast from 'src/lib/toast';
+import LoadSpinner from 'src/components/load-spinner';
+import { ProjectDispatchToProps, ProjectStateToProps } from 'src/containers/projects';
 
 interface ProjectInfo {
     title: string;

@@ -1,9 +1,9 @@
-import { State } from '../../redux/reducers';
-import { changeTitle } from '../../redux/title/actions';
-import { logOut } from '../../redux/auth/actions';
-import { connect } from 'react-redux';
-import LogoutComponent from '../../components/admin/logout';
 import { User } from '@firebase/auth-types';
+import { connect } from 'react-redux';
+import { State } from 'src/redux/reducers';
+import { changeTitle } from 'src/redux/title/actions';
+import { logOut } from 'src/redux/auth/actions';
+import LogoutComponent from 'src/components/admin/logout';
 
 export interface LogoutStateToProps {
     user: User | null;

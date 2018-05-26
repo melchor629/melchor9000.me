@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import * as toast from '../../../lib/toast';
-import { ProjectsHomeDispatchToProps, ProjectsHomeStateToProps } from '../../../containers/admin/projects/home';
-import { ProjectInfo } from '../../../containers/admin/projects';
-import DeleteModal from '../delete-modal';
+import * as toast from 'src/lib/toast';
+import { ProjectsHomeDispatchToProps, ProjectsHomeStateToProps } from 'src/containers/admin/projects/home';
+import { ProjectInfo } from 'src/containers/admin/projects';
+import DeleteModal from 'src/components/admin/delete-modal';
 
 type ProjectsPageProps = ProjectsHomeStateToProps & ProjectsHomeDispatchToProps;
 

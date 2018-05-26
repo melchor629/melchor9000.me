@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { State } from '../../../redux/reducers';
-import { changeTitle } from '../../../redux/title/actions';
-import { remove, removeError } from '../../../redux/database/actions';
-import ProjectsHomeComponent from '../../../components/admin/projects/home';
-import { ProjectInfo } from '../projects';
+import { State } from 'src/redux/reducers';
+import { changeTitle } from 'src/redux/title/actions';
+import { remove, removeError } from 'src/redux/database/actions';
+import ProjectsHomeComponent from 'src/components/admin/projects/home';
+import { ProjectInfo } from 'src/containers/admin/projects';
 
 export interface ProjectsHomeStateToProps {
     projects: ProjectInfo[];

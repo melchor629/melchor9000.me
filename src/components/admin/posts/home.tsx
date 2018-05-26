@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import firebase from 'firebase/app';
-import * as toast from '../../../lib/toast';
-import { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home';
-import { Post } from '../../../redux/posts/reducers';
-import DeleteModal from '../delete-modal';
+import * as toast from 'src/lib/toast';
+import { PostsHomeDispatchToProps, PostsHomeStateToProps } from 'src/containers/admin/posts/home';
+import { Post } from 'src/redux/posts/reducers';
+import DeleteModal from 'src/components/admin/delete-modal';
 
 type PostsPageProps = PostsHomeStateToProps & PostsHomeDispatchToProps;
 

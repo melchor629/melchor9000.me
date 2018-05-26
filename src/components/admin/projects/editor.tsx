@@ -1,16 +1,16 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import * as firebase from 'firebase';
-import * as toast from '../../../lib/toast';
-import LoadSpinner from '../../load-spinner';
-import { ProjectEditorStateToProps, ProjectEditorDispatchToProps } from '../../../containers/admin/projects/editor';
-import { ProjectInfo } from '../../../containers/admin/projects';
+import * as toast from 'src/lib/toast';
+import LoadSpinner from 'src/components/load-spinner';
+import { ProjectEditorStateToProps, ProjectEditorDispatchToProps } from 'src/containers/admin/projects/editor';
+import { ProjectInfo } from 'src/containers/admin/projects';
 import {
     urlOrLocalValidator,
     urlValidator,
     valueValidator,
-} from '../../../lib/validators';
-import { AdminInput } from '../../../containers/admin/admin-input';
+} from 'src/lib/validators';
+import { AdminInput } from 'src/components/admin/admin-input';
 
 const { Transition, animated } = require('react-spring');
 

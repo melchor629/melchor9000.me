@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
-import * as toast from '../lib/toast';
-import { LoginDispatchToProps, LoginStateToProps } from '../containers/login';
-import LoadSpinner from './load-spinner/load-spinner';
+import * as toast from 'src/lib/toast';
+import { LoginDispatchToProps, LoginStateToProps } from 'src/containers/login';
+import LoadSpinner from 'src/components/load-spinner';
 
 const { Spring, animated } = require('react-spring');
 

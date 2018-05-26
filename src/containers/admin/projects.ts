@@ -1,7 +1,7 @@
-import { changeTitle } from '../../redux/title/actions';
-import { subscribe, unsubscribe } from '../../redux/database/actions';
 import { connect } from 'react-redux';
-import ProjectsComponent from '../../components/admin/projects';
+import { changeTitle } from 'src/redux/title/actions';
+import { subscribe, unsubscribe } from 'src/redux/database/actions';
+import ProjectsComponent from 'src/components/admin/projects';
 
 export interface ProjectInfo {
     _id?: string;

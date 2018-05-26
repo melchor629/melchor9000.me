@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
-import GalleryComponent from '../../components/gallery/gallery';
-import { State } from '../../redux/reducers';
-import { GalleryPhoto } from '../../redux/gallery/reducers';
-import { loadFirstPhotos, loadMorePhotos } from '../../redux/gallery/actions';
+import GalleryComponent from 'src/components/gallery/gallery';
+import { State } from 'src/redux/reducers';
+import { GalleryPhoto } from 'src/redux/gallery/reducers';
+import { loadFirstPhotos, loadMorePhotos } from 'src/redux/gallery/actions.js';
+import { changeTitle } from 'src/redux/title/actions.js';
 
 export interface GalleryStateToProps {
     primary: string | null;
@@ -17,6 +18,7 @@ export interface GalleryStateToProps {
 export interface GalleryDispatchToProps {
     loadFirstPhotos: () => void;
     loadMorePhotos: (page: number) => void;
+    changeTitle: (title: string) => void;
 }
 
 const mapStateToProps = ({ galleryList }: State): GalleryStateToProps => ({
@@ -32,6 +34,7 @@ const mapStateToProps = ({ galleryList }: State): GalleryStateToProps => ({
 const mapDispatchToProps = (dispatch: any, { userId, photosetId, perPage }: any): GalleryDispatchToProps => ({
     loadFirstPhotos: () => dispatch(loadFirstPhotos(userId, photosetId, perPage, 1)),
     loadMorePhotos: (page: number) => dispatch(loadMorePhotos(userId, photosetId, perPage, page)),
+    changeTitle: (title: string) => dispatch(changeTitle(title)),
 });
 
 export const Gallery = connect(

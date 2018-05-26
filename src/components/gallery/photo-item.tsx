@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GalleryPhoto } from '../../redux/gallery/reducers';
+import { GalleryPhoto } from 'src/redux/gallery/reducers';
 
 interface PhotoItemProps {
     photo: GalleryPhoto;

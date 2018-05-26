@@ -1,8 +1,8 @@
 import React from 'react';
-import * as toast from '../lib/toast';
-import Visualizer from './visualizer';
-import Player from '../lib/player';
-import { VizDispatchToProps, VizStateToProps } from '../containers/viz';
+import * as toast from 'src/lib/toast';
+import Visualizer from 'src/components/visualizer';
+import Player from 'src/lib/player';
+import { VizDispatchToProps, VizStateToProps } from 'src/containers/viz';
 
 const { Spring } = require('react-spring');
 

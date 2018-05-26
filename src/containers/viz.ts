@@ -1,7 +1,7 @@
-import { State } from '../redux/reducers';
-import { changeTitle } from '../redux/title/actions';
 import { connect } from 'react-redux';
-import VizComponent from '../components/viz';
+import { State } from 'src/redux/reducers';
+import { changeTitle } from 'src/redux/title/actions';
+import VizComponent from 'src/components/viz';
 
 export interface VizStateToProps {
     darkMode: boolean;

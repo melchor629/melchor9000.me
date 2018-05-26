@@ -1,5 +1,5 @@
 import { buildPhotoUrl, photos, photosets } from '../../lib/flickr';
-import { AnimationTimer } from '../timer';
+import { AnimationTimer } from '../../lib/timer';
 
 export const FIRST_PHOTOS_LOADED = 'FIRST_PHOTOS_LOADED';
 export const LOADING_MORE_PHOTOS = 'LOADING_MORE_PHOTOS';

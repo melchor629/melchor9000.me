@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { State } from '../../../redux/reducers';
-import { changeTitle } from '../../../redux/title/actions';
-import { insert, removeError, update } from '../../../redux/database/actions';
-import PostEditorComponent from '../../../components/admin/posts/editor';
-import { Post } from '../../../redux/posts/reducers';
+import { State } from 'src/redux/reducers';
+import { changeTitle } from 'src/redux/title/actions';
+import { insert, removeError, update } from 'src/redux/database/actions';
+import PostEditorComponent from 'src/components/admin/posts/editor';
+import { Post } from 'src/redux/posts/reducers';
 
 export interface PostEditorStateToProps {
     saving: boolean;

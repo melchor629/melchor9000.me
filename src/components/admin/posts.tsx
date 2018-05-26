@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { PostsDispatchToProps, PostsStateToProps } from '../../containers/admin/posts';
-import { PostsHome } from '../../containers/admin/posts/home';
-import { PostEditor } from '../../containers/admin/posts/editor';
+import { PostsDispatchToProps, PostsStateToProps } from 'src/containers/admin/posts';
+import { PostsHome } from 'src/containers/admin/posts/home';
+import { PostEditor } from 'src/containers/admin/posts/editor';
 
 type PostsPageProps = PostsStateToProps & PostsDispatchToProps;
 

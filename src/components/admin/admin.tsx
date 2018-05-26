@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, NavLink } from 'react-router-dom';
-import { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/admin';
-import { Posts } from '../../containers/admin/posts';
-import { Projects } from '../../containers/admin/projects';
-import { Logout } from '../../containers/admin/logout';
+import { AdminDispatchToProps, AdminStateToProps } from 'src/containers/admin/admin';
+import { Posts } from 'src/containers/admin/posts';
+import { Projects } from 'src/containers/admin/projects';
+import { Logout } from 'src/containers/admin/logout';
 import './admin.css';
 
 const { Trail, animated } = require('react-spring');
