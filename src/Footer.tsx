@@ -15,15 +15,16 @@ const links = [
 export default () => (
     <div className="container">
         <div className="row">
-            <div className="col-auto">
+            <div className="col col-sm-auto text-center text-sm-right">
                 <p>
                     melchor629/melchor9000 (2018)
                 </p>
             </div>
 
-            <div className="col" />
+            <div className="col-sm" />
 
-            <div className="col-auto d-flex align-items-center links">
+            <div className="col col-sm-auto d-flex align-items-center justify-content-center justify-content-sm-start
+             links">
                 { links.map(link => (
                     <a href={ link.url } key={ link.className } target="_blank" rel="noreferrer">
                         <i className={ `fa fa-${ link.className }` } />

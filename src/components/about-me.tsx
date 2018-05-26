@@ -96,7 +96,9 @@ export default () => (
 
         <h2 id="¿tienes-un-pepino-de-interné">¿Tienes un pepino de interné?</h2>
         <p>Bueno, empieza a estar decente ahora mismo:</p>
-        <p><img src="https://www.speedtest.net/result/7330550496.png" alt="Speed Test" /></p>
+        <p>
+            <img src="https://www.speedtest.net/result/7330550496.png" style={{ maxWidth: '100%' }} alt="Speed Test" />
+        </p>
 
         <h2 id="quiero-saber-más...">Quiero saber más…</h2>
         <p><strong>No.</strong> 😠</p>

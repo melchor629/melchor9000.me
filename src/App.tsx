@@ -23,11 +23,20 @@ interface AppStateToProps {
 
 type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & { changeTitle: (title: string | null) => void };
 
-class App extends React.Component<AppPropTypes> {
+interface AppState {
+    offcanvas: boolean;
+}
+
+class App extends React.Component<AppPropTypes, AppState> {
     constructor(props: AppPropTypes) {
         super(props);
+        this.state = {
+            offcanvas: false
+        };
         //Maybe this will change depending on what componentDidUpdate has in the future
         this.componentDidUpdate({ ...props, darkMode: null });
+        this.toggleNavigation = this.toggleNavigation.bind(this);
+        this.navLinkPressed = this.navLinkPressed.bind(this);
     }
 
     componentDidUpdate(prevProps: AppPropTypes) {
@@ -57,6 +66,7 @@ class App extends React.Component<AppPropTypes> {
 
     render() {
         const { history } = this.props;
+        const { offcanvas } = this.state;
         const linkActive = (route: any) => {
             if(route.extra && route.extra.exact) {
                 return history.location.pathname === route.route ? 'active' : '';
@@ -69,18 +79,19 @@ class App extends React.Component<AppPropTypes> {
 
                 <nav className="navbar navbar-default navbar-dark navbar-expand-md fixed-top">
                     <Link className="navbar-brand" to="/">The Abode of melchor9000</Link>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse"
+                    <button className="navbar-toggler" type="button" onClick={ this.toggleNavigation }
                             data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon" />
                     </button>
 
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div className={ `collapse navbar-collapse offcanvas-collapse ${offcanvas ? 'open' : ''}` }
+                         id="navbarSupportedContent">
                         <ul className="navbar-nav mr-auto">
                             { routes.filter(route => !route.private && route.title).map((route, pos) => (
                                 <li className={`nav-item ${linkActive(route)}`} key={ pos }>
                                     <Link to={ route.route } className="nav-link"
-                                          onClick={ () => this.props.changeTitle(route.title) }>{ route.title }</Link>
+                                          onClick={ () => this.navLinkPressed(route) }>{ route.title }</Link>
                                 </li>
                             )) }
                         </ul>
@@ -104,6 +115,16 @@ class App extends React.Component<AppPropTypes> {
 
             </div>
         );
+    }
+
+    private toggleNavigation(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        this.setState({ offcanvas: !this.state.offcanvas });
+    }
+
+    private navLinkPressed(route: any) {
+        this.props.changeTitle(route.title);
+        this.setState({ offcanvas: false });
     }
 }
 
