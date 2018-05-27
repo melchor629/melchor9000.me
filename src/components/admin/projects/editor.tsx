@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import * as firebase from 'firebase';
 import * as toast from 'src/lib/toast';
 import LoadSpinner from 'src/components/load-spinner';
+import Project from 'src/components/project';
 import { ProjectEditorStateToProps, ProjectEditorDispatchToProps } from 'src/containers/admin/projects/editor';
 import { ProjectInfo } from 'src/containers/admin/projects';
 import {
@@ -10,26 +11,9 @@ import {
     urlValidator,
     valueValidator,
 } from 'src/lib/validators';
-import { AdminInput } from 'src/components/admin/admin-input';
+import { AdminInput, AdminBigInput } from 'src/components/admin/admin-input';
 
 const { Transition, animated } = require('react-spring');
-
-const Project = ({ project, darkMode }: { project: ProjectInfo, darkMode: boolean }) => (
-    <div className={ `card ${darkMode ? 'bg-dark' : 'bg-light'}` }>
-        { project.image ? <img className="card-img-top" src={ project.image } alt={ project.title } /> : null }
-        <div className="card-body">
-            <h5 className="card-title">{ project.title }</h5>
-            <h6 className="card-subtitle mb-2 text-muted">{ project.technologies.join(', ') }</h6>
-            <p className="card-text" dangerouslySetInnerHTML={{ __html: project.description }} />
-            { project.repo ?
-                <a href={ project.repo } className="card-link" target="_blank" rel="nofollow">Repositorio</a> : null }
-            { project.demo ?
-                <a href={ project.demo } className="card-link" target="_blank" rel="nofollow">Demo</a> : null }
-            { project.web ?
-                <a href={ project.web } className="card-link" target="_blank" rel="nofollow">Web</a> : null }
-        </div>
-    </div>
-);
 
 type ProjectEditorProps = ProjectEditorStateToProps & ProjectEditorDispatchToProps &
     RouteComponentProps<{ id?: string }>;
@@ -37,6 +21,7 @@ type ProjectEditorProps = ProjectEditorStateToProps & ProjectEditorDispatchToPro
 interface ProjectEditorState {
     title: string;
     description: string;
+    intlDescription: [string, string][];
     repo: string;
     demo: string;
     web: string;
@@ -57,6 +42,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
         this.state = {
             title: '',
             description: '',
+            intlDescription: [],
             repo: '',
             demo: '',
             web: '',
@@ -68,7 +54,11 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
             checking: {},
         };
 
+        this.changeLangDescription = this.changeLangDescription.bind(this);
+        this.changeDescription = this.changeDescription.bind(this);
+        this.removeDescription = this.removeDescription.bind(this);
         this.removeTechnology = this.removeTechnology.bind(this);
+        this.addDescription = this.addDescription.bind(this);
         this.previewToggle = this.previewToggle.bind(this);
         this.addTechnology = this.addTechnology.bind(this);
         this.save = this.save.bind(this);
@@ -87,6 +77,8 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                     web: project.web || '',
                     image: project.image || '',
                     technologies: project.technologies,
+                    intlDescription: (project.intlDescription && Object.keys(project.intlDescription)
+                        .map(key => [ key, project.intlDescription![key] ] as [string, string])) || []
                 });
             });
         }
@@ -104,7 +96,9 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
     }
 
     render() {
-        const { title, description, repo, demo, web, image, technologies, preview, exists } = this.state;
+        const {
+            title, description, repo, demo, web, image, technologies, preview, exists, intlDescription
+        } = this.state;
 
         return (
             <div>
@@ -117,12 +111,12 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                                 value={ title }
                                 required={ true }
                                 onChange={ e => this.setState({ title: e.target.value }) } />
-                    <AdminInput type="text"
-                                id="description"
-                                placeholder="Descripción"
-                                value={ description }
-                                required={ true }
-                                onChange={ e => this.setState({ description: e.target.value }) } />
+                    <AdminBigInput type="text"
+                                   id="description"
+                                   placeholder="Descripción"
+                                   value={ description }
+                                   required={ true }
+                                   onChange={ e => this.setState({ description: e.target.value }) } />
                     <AdminInput type="url"
                                 id="repo"
                                 placeholder="Repositorio"
@@ -147,6 +141,38 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                                 value={ image }
                                 validators={ [ urlOrLocalValidator, valueValidator(exists.image) ] }
                                 onChangeAlt={ (e, v, i) => this.urlFieldChanged(e, 'image', v, i, 'image') } />
+                    <div className="row align-items-end mb-2">
+                        <div className="col-auto">Traducciones</div>
+                        <div className="col" />
+                        <div className="col-auto">
+                            <button className="btn btn-sm btn-outline-primary" onClick={ this.addDescription }>
+                                +
+                            </button>
+                        </div>
+                    </div>
+                    { intlDescription.map((pair, i) => (
+                        <div className="row" key={ i }>
+                            <div className="col-1">
+                                <AdminInput type="text"
+                                            id={ `lang-${pair[0]}` }
+                                            placeholder="Lang"
+                                            required={ true }
+                                            onChange={ e => this.changeLangDescription(e, i) }
+                                            value={ pair[0] } />
+                            </div>
+                            <div className="col">
+                                <AdminBigInput type="text"
+                                               id="description"
+                                               value={ pair[1] }
+                                               required={ true }
+                                               onChange={ e => this.changeDescription(e, i) } />
+                            </div>
+                            <div className="col-auto d-flex align-items-center pl-0">
+                                <button className="btn btn-sm btn-outline-warning"
+                                        onClick={ e => this.removeDescription(e, i) }>-</button>
+                            </div>
+                        </div>
+                    )) }
                     <div className="row align-items-end mb-2">
                         <div className="col-auto">Tecnologías</div>
                         <div className="col" />
@@ -193,15 +219,17 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
 
                 <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}>
                     { preview && ((vals: any) => (
-                        <animated.div role="main" className="ml-sm-auto px-4" style={{
+                        <animated.div className="ml-sm-auto px-4" style={{
                             position: 'fixed',
-                            top: 'calc(10vh)',
+                            top: 'calc(40px + 10px)',
                             right: 0,
                             zIndex: 1,
                             width: '300px',
+                            maxHeight: 'calc(100vh - 40px - 10px - 30px)',
+                            overflowY: 'scroll',
                             transform: vals.val.interpolate((x: number) => `translateX(${(1 - x) * 300}px)`)
                         }}>
-                            <Project project={ this.getProject() } darkMode={ false } />
+                            <Project project={ this.getProject() as ProjectInfo } darkMode={ false } />
                         </animated.div>
                     )) }
                 </Transition>
@@ -290,6 +318,46 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
         this.setState({ preview: !this.state.preview });
     }
 
+    private addDescription(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        this.setState({
+            intlDescription: [
+                ...this.state.intlDescription,
+                [ '', this.state.description ]
+            ]
+        });
+    }
+
+    private changeDescription(e: React.ChangeEvent<HTMLTextAreaElement>, i: number) {
+        this.setState({
+            intlDescription: [
+                ...this.state.intlDescription.slice(0, i),
+                [ this.state.intlDescription[i][0], e.currentTarget.value ],
+                ...this.state.intlDescription.slice(i + 1),
+            ]
+        });
+    }
+
+    private removeDescription(e: React.MouseEvent<HTMLButtonElement>, i: number) {
+        e.preventDefault();
+        this.setState({
+            intlDescription: [
+                ...this.state.intlDescription.slice(0, i),
+                ...this.state.intlDescription.slice(i + 1),
+            ]
+        });
+    }
+
+    private changeLangDescription(e: React.ChangeEvent<HTMLInputElement>, i: number) {
+        this.setState({
+            intlDescription: [
+                ...this.state.intlDescription.slice(0, i),
+                [ e.currentTarget.value.toLocaleLowerCase(), this.state.intlDescription[i][1] ],
+                ...this.state.intlDescription.slice(i + 1),
+            ]
+        });
+    }
+
     private save(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
         if(this.state.original) {
@@ -300,7 +368,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
     }
 
     private getProject() {
-        let project: ProjectInfo = {
+        let project: Partial<ProjectInfo> = {
             title: this.state.title,
             repo: this.state.repo,
             technologies: this.state.technologies,
@@ -321,6 +389,12 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
 
         if(this.state.original) {
             project._id = this.state.original._id;
+        }
+
+        if(this.state.intlDescription.length > 0) {
+            project.intlDescription = this.state.intlDescription
+                .map((pair) => ({ [pair[0]]: pair[1] }))
+                .reduce((r, i) => ({ ...r, ...i }), {});
         }
 
         return project;

@@ -8,7 +8,7 @@ i18n
     .use(LanguageDetector)
     .use(reactI18nextModule)
     .init({
-        fallbackLng: 'es',
+        fallbackLng: 'en',
         ns: ['translations'],
         defaultNS: 'translations',
         debug: process.env.NODE_ENV !== 'PRODUCTION',
@@ -18,6 +18,6 @@ i18n
         react: {
             wait: true
         }
-    }).changeLanguage('en');
+    });
 
 export default i18n;

@@ -11,8 +11,8 @@ export interface ProjectEditorStateToProps {
 }
 
 export interface ProjectEditorDispatchToProps {
-    save: (project: ProjectInfo) => void;
-    update: (projectInfo: ProjectInfo) => void;
+    save: (project: Partial<ProjectInfo>) => void;
+    update: (projectInfo: Partial<ProjectInfo>) => void;
     changeTitle: (title: string) => void;
     clearError: () => void;
 }

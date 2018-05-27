@@ -49,6 +49,7 @@ export const insert = (collection: string, values: any) => (dispatch: Dispatch<a
     const db = firebase.firestore();
     const col = db.collection(collection);
     dispatch({ type: OPERATION_DOING, collection });
+    delete values._id;
     col.add(values).then(() => dispatch({ type: OPERATION_DONE, collection }), (error) => dispatch({
         type: OPERATION_ERROR,
         collection,
@@ -61,6 +62,7 @@ export const update = (collection: string, object: any, merge: boolean = false) 
     const db = firebase.firestore();
     const item = db.collection(collection).doc(object._id);
     dispatch({ type: OPERATION_DOING, collection });
+    delete object._id;
     item.set(object, { merge }).then(() => dispatch({ type: OPERATION_DONE, collection }), (error) => dispatch({
         type: OPERATION_ERROR,
         collection,

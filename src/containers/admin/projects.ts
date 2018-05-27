@@ -2,17 +2,9 @@ import { connect } from 'react-redux';
 import { changeTitle } from 'src/redux/title/actions';
 import { subscribe, unsubscribe } from 'src/redux/database/actions';
 import ProjectsComponent from 'src/components/admin/projects';
+import { ProjectInfo as JajaProjectInfo } from 'src/containers/projects';
 
-export interface ProjectInfo {
-    _id?: string;
-    title: string;
-    repo: string;
-    demo?: string;
-    web?: string;
-    image?: string;
-    technologies: string[];
-    description: string;
-}
+export type ProjectInfo = JajaProjectInfo & { _id?: string };
 
 export interface ProjectsStateToProps {}
 
