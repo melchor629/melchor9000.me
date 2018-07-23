@@ -51,12 +51,13 @@
     "whatProgrammingLanguagesDoIKnow": {
       "question": "Que llenguatges de programació coneixes?",
       "answer": "Per conèixer, conesc molts, però que jo sàpiga, no son un munter. Aquets son els que vos posaré:",
-      "answerDetail1": "Gràcias a la carrera",
+      "answerDetail1": "Gràcies a la carrera",
       "answerDetail2": "(crec que ha canviat un munter des de que el vaig usar)",
       "answerDetail3": "Ensamblador",
       "answerDetail4": "Per estils en la Web: ",
       "answerDetail5": "I sobre llenguatges de marcat (Markup Languages), tenc",
-      "answerDetail6": "I per ùltim, sobre formats per l'intercanvi de dadess tinc"
+      "answerDetail6": "I per ùltim, sobre formats per l'intercanvi de dadess tinc",
+      "answerDetail7": "Espera, que també estic aprenent <1>Docker</1> :)"
     },
     "haveYouGot<>": {
       "question": "Tens <INSERTI-NOM-DE-XARXA-SOCIAL>?",

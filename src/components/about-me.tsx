@@ -71,12 +71,17 @@ const AboutMe = ({ t }: InjectedTranslateProps) => (
             { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail4') } CSS { t('and') } SCSS.
         </p>
         <p>
-            { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail5') } <em>HTML</em> { t('and') }&nbps;
-            <em><a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a></em>.
+            { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail5') } <em>HTML</em> { t('and') }
+            &nbsp;<em><a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a></em>.
         </p>
         <p>
             { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail6') } <em><a href="http://json.org">JSON</a></em>,
             &nbsp;<em>XML</em> { t('and') } <em><a href="http://www.yaml.org">YAML</a></em>.
+        </p>
+        <p>
+            <Trans i18nKey="about-me.whatProgrammingLanguagesDoIKnow.answerDetail7">
+                .<a href="https://docker.com">.</a>.
+            </Trans>
         </p>
 
         <h2 id="tienes">{ t('about-me.haveYouGot<>.question') }</h2>

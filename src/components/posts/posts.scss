@@ -87,6 +87,16 @@
       color: #eee;
     }
   }
+
+  blockquote {
+    background-color: #ddd;
+    border-radius: 3px;
+    padding: 5px 5px 5px 15px;
+
+    & > p:last-child {
+      margin: 0;
+    }
+  }
 }
 
 .circle-button {

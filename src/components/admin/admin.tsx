@@ -21,7 +21,9 @@ type AdminPageProps = AdminDispatchToProps & AdminStateToProps & RouteComponentP
 const pages = [ '/admin/posts', '/admin/projects' ];
 const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties }) => (
     <div className="row align-items-center justify-content-center text-center" style={{ ...containerStyle, ...style }}>
-        <h1 className="display-4">Hola { user.displayName }</h1>
+        <div className="col-auto">
+            <h1 className="display-4">Hola { user.displayName }</h1>
+        </div>
         <Trail native={ true } from={{ scale: 0 }} to={{ scale: 1 }} keys={ pages }>
             { pages.map(page => ({ scale }: any) => (
                 <animated.div

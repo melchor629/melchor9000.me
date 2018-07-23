@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux';
 import * as firebase from 'firebase/app';
-import { State } from '../reducers';
 import render from '../../lib/render-post-content';
 
 export const GETTING_POST = 'posts:GETTING_POST';
@@ -19,7 +18,7 @@ const postGot = (content: string) => ({
 
 const parseContent = (text: string, file: string) => render(text, file.endsWith('.md') ? 'md' : 'html');
 
-export const getPost = (post: any) => (dispatch: Dispatch<State>) => {
+export const getPost = (post: any) => (dispatch: Dispatch) => {
     dispatch(gettingPost());
     const storage = firebase.storage();
     storage.ref(post.file).getDownloadURL()

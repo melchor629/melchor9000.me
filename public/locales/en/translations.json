@@ -56,7 +56,8 @@
       "answerDetail3": "Assembly",
       "answerDetail4": "For styling the web: ",
       "answerDetail5": "About Markup Languages, these ones ",
-      "answerDetail6": "Ending this list, about data interchange formats "
+      "answerDetail6": "Ending this list, about data interchange formats ",
+      "answerDetail7": "Wait, I'm also learning some <1>Docker</1> :)"
     },
     "haveYouGot<>": {
       "question": "Have you got <INSERT-SOCIAL-NETWORK-NAME-HERE>?",
