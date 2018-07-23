@@ -22,6 +22,8 @@ yarn-error.log*
 
 # Generated styles
 src/**/*.css
+#This one must not be ignored
+!src/lib/zoom.js/zoom.css
 
 ###
 yarn.lock
