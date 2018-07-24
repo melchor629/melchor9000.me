@@ -92,6 +92,11 @@
     background-color: #ddd;
     border-radius: 3px;
     padding: 5px 5px 5px 15px;
+    
+    .darkmode & {
+      background-color: #666;
+      color: white;
+    }
 
     & > p:last-child {
       margin: 0;

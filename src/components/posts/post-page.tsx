@@ -8,6 +8,7 @@ import Zoom from 'src/lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
 
 const $ = require('jquery');
+const { DiscussionEmbed } = require('disqus-react');
 
 class ShareModal extends React.Component<{ post: Post | null }> {
 
@@ -157,11 +158,18 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
     }
 
     render() {
-        let domContent;
+        let domContent, disqusConfig;
         if(this.props.content) {
             domContent = (
                 <div className="postPage" dangerouslySetInnerHTML={{ __html: this.props.content }}/>
             );
+            if(this.state.entry) {
+                disqusConfig = {
+                    url: window.location.toString(),
+                    identifier: this.state.entry!._id,
+                    title: this.state.entry!.title,
+                };
+            }
         } else if(!this.state.notFound) {
             domContent = (
                 <div className="postPage d-flex justify-content-center">
@@ -187,6 +195,8 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
                 </div>
 
                 { domContent }
+
+                { disqusConfig && <DiscussionEmbed shortname={'personal-website-11'} config={disqusConfig} /> }
 
                 <ShareModal post={ this.state.entry } />
             </div>
