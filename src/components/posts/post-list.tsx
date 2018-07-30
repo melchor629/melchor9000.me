@@ -69,7 +69,7 @@ export default class PostList extends React.Component<PostListProps> {
         if(this.props.posts) {
             if(this.props.posts.length < this.props.postsCount) {
                 let abajoPos = window.scrollY + $(window).height();
-                if(abajoPos > $('.mainPage').height() + 70) {
+                if(abajoPos > $('.mainPage').height() - 70) {
                     this.props.showMore();
                     if(this.props.posts!.length + 3 >= this.props.postsCount) {
                         window.removeEventListener('scroll', this.windowScrolled);

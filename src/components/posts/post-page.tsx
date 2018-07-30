@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { default as Ink } from 'react-ink';
+import { translate, InjectedTranslateProps } from 'react-i18next';
 import { Post } from 'src/redux/posts/reducers';
 import { PostPageDispatchToProps, PostPageStateToProps } from 'src/containers/posts/post-page';
 import LoadSpinner from 'src/components/load-spinner/load-spinner';
@@ -10,17 +11,30 @@ import 'highlight.js/styles/vs2015.css';
 const $ = require('jquery');
 const { DiscussionEmbed } = require('disqus-react');
 
-class ShareModal extends React.Component<{ post: Post | null }> {
+const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, children: string }) => (
+    <div className="share-link" onClick={ onClick }>
+        <div className="row">
+            <div className="col-2"><i className={`fa fa-${fa}`}/></div>
+            <div className="col-10">{ children }</div>
+        </div>
+        <Ink />
+    </div>
+);
+
+class ShareModal extends React.Component<{ post: Post | null } & InjectedTranslateProps> {
 
     private static query(object: any): string {
         return (Object['entries'](object) as [string, string][]).map(pair => `${pair[0]}=${pair[1]}`).join('&');
     }
 
-    constructor(props: { post: Post }) {
+    constructor(props: { post: Post | null } & InjectedTranslateProps) {
         super(props);
         this.telegramButtonPressed = this.telegramButtonPressed.bind(this);
         this.whatsappButtonPressed = this.whatsappButtonPressed.bind(this);
+        this.linkedinButtonPressed = this.linkedinButtonPressed.bind(this);
+        this.facebookButtonPressed = this.facebookButtonPressed.bind(this);
         this.twitterButtonPressed = this.twitterButtonPressed.bind(this);
+        this.redditButtonPressed = this.redditButtonPressed.bind(this);
         this.emailButtonPressed = this.emailButtonPressed.bind(this);
     }
 
@@ -30,42 +44,20 @@ class ShareModal extends React.Component<{ post: Post | null }> {
                 <div className="modal-dialog modal-sm">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h2 className="modal-title">Compartir entrada</h2>
+                            <h2 className="modal-title">{this.props.t('blog.share')}</h2>
                         </div>
                         <div className="modal-body">
-                            <div className="share-link" id="share-tw" onClick={this.twitterButtonPressed}>
-                                <div className="row">
-                                    <div className="col-2"><i className="fa fa-twitter"/></div>
-                                    <div className="col-10">Twitter</div>
-                                </div>
-                                <Ink />
-                            </div>
+                            <ShareItem onClick={ this.twitterButtonPressed } fa="twitter">Twitter</ShareItem>
+                            <ShareItem onClick={ this.redditButtonPressed } fa="reddit">Reddit</ShareItem>
+                            <ShareItem onClick={ this.telegramButtonPressed } fa="telegram">Telegram</ShareItem>
 
-                            <div className="share-link" id="share-tg" onClick={this.telegramButtonPressed}>
-                                <div className="row">
-                                    <div className="col-2"><i className="fa fa-telegram"/></div>
-                                    <div className="col-10">Telegram</div>
-                                </div>
-                                <Ink />
-                            </div>
-
-                            { /ipad|iphone|ipod|android/.test(navigator.userAgent.toLowerCase()) ?
-                            <div className="share-link" id="share-wa" onClick={this.whatsappButtonPressed}>
-                                <div className="row">
-                                    <div className="col-2"><i className="fa fa-whatsapp"/></div>
-                                    <div className="col-10">WhatsApp</div>
-                                </div>
-                                <Ink />
-                            </div> : null
+                            { /ipad|iphone|ipod|android/.test(navigator.userAgent.toLowerCase()) &&
+                                <ShareItem onClick={ this.whatsappButtonPressed } fa="whatsapp">WhatsApp</ShareItem>
                             }
 
-                            <div className="share-link" id="share-email" onClick={this.emailButtonPressed}>
-                                <div className="row">
-                                    <div className="col-2"><i className="fa fa-envelope"/></div>
-                                    <div className="col-10">Email</div>
-                                </div>
-                                <Ink />
-                            </div>
+                            <ShareItem onClick={ this.linkedinButtonPressed } fa="linkedin">LinkedIn</ShareItem>
+                            <ShareItem onClick={ this.facebookButtonPressed } fa="facebook">Facebook</ShareItem>
+                            <ShareItem onClick={ this.emailButtonPressed } fa="envelope">Email</ShareItem>
                         </div>
                     </div>
                 </div>
@@ -85,12 +77,12 @@ class ShareModal extends React.Component<{ post: Post | null }> {
     }
 
     private telegramButtonPressed() {
-        window.open(`tg://msg_url?url=${encodeURIComponent(window.location.toString())}`);
+        window.location.assign(`tg://msg_url?url=${encodeURIComponent(window.location.toString())}`);
     }
 
     private whatsappButtonPressed() {
         const post = this.props.post!;
-        window.open(`whatsapp://send?text=${encodeURIComponent(post.title + ': ' + window.location)}`);
+        window.location.assign(`whatsapp://send?text=${encodeURIComponent(post.title + ': ' + window.location)}`);
     }
 
     private emailButtonPressed() {
@@ -106,7 +98,26 @@ class ShareModal extends React.Component<{ post: Post | null }> {
         window.open(`mailto:?${query}`);
     }
 
+    private redditButtonPressed() {
+        const url = encodeURIComponent(window.location.toString());
+        const title = encodeURIComponent(this.props.post!.title);
+        window.open(`https://www.reddit.com/submit?url=${url}&title=${title}`);
+    }
+
+    private linkedinButtonPressed() {
+        const url = encodeURIComponent(window.location.toString());
+        const title = encodeURIComponent(this.props.post!.title);
+        window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`);
+    }
+
+    private facebookButtonPressed() {
+        const url = encodeURIComponent(window.location.toString());
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
+    }
+
 }
+
+const ShareModalT = translate()(ShareModal);
 
 interface RouteParams {
     year: number;
@@ -115,7 +126,8 @@ interface RouteParams {
     title: string;
 }
 
-type PostPageProps = PostPageStateToProps & PostPageDispatchToProps & RouteComponentProps<RouteParams>;
+type PostPageProps = PostPageStateToProps & PostPageDispatchToProps & RouteComponentProps<RouteParams> &
+    InjectedTranslateProps;
 
 interface PostPageState {
     entry: Post | null;
@@ -198,7 +210,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
 
                 { disqusConfig && <DiscussionEmbed shortname={'personal-website-11'} config={disqusConfig} /> }
 
-                <ShareModal post={ this.state.entry } />
+                <ShareModalT post={ this.state.entry } />
             </div>
         );
     }

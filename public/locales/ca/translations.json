@@ -128,7 +128,8 @@
 
 
   "blog": {
-    "title": "Blog"
+    "title": "Blog",
+    "share": "Compartir entrada"
   },
 
 
