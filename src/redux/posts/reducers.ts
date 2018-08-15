@@ -19,7 +19,7 @@ export interface Post {
     modifiedDate?: Timestamp;
 }
 
-export const posts = (state: PostsState = { scroll: 0, posts: null, showing: 3, content: null }, action: AnyAction) => {
+export const posts = (state: PostsState = { scroll: 0, posts: null, showing: 6, content: null }, action: AnyAction) => {
     switch(action.type) {
         case GETTING_POST:
             return { ...state, content: null };

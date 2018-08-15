@@ -23,10 +23,6 @@ export default class PostList extends React.Component<PostListProps> {
 
         window.addEventListener('scroll', this.windowScrolled, { passive: true });
         window.addEventListener('resize', this.windowResized, { passive: true });
-
-        if($(window).width() >= 992) {
-            requestAnimationFrame(() => this.windowScrolled());
-        }
     }
 
     componentWillUnmount() {
@@ -43,17 +39,11 @@ export default class PostList extends React.Component<PostListProps> {
     }
 
     render() {
-        let cols = $(window).width() >= 992 ? 3 : ($(window).width() >= 768 ? 2 : 1);
         if(this.props.posts) {
             let entries = this.props.posts.map((entry, i) => <Entry entry={entry} key={i}/>);
-            let entries1 = entries.filter((v, i) => i % cols === 0);
-            let entries2 = entries.filter((v, i) => i % cols === 1);
-            let entries3 = entries.filter((v, i) => i % cols === 2);
             return (
-                <div className="mainPage row">
-                    <div className="col-md-6 col-lg-4">{entries1}</div>
-                    {cols >= 2 && <div className="col-md-6 col-lg-4">{entries2}</div>}
-                    {cols >= 3 && <div className="col-md-6 col-lg-4">{entries3}</div>}
+                <div className="mainPage d-flex flex-wrap">
+                    { entries }
                 </div>
             );
         } else {
@@ -70,7 +60,7 @@ export default class PostList extends React.Component<PostListProps> {
             if(this.props.posts.length < this.props.postsCount) {
                 let abajoPos = window.scrollY + $(window).height();
                 if(abajoPos > $('.mainPage').height() - 70) {
-                    this.props.showMore();
+                    this.props.showMore(6);
                     if(this.props.posts!.length + 3 >= this.props.postsCount) {
                         window.removeEventListener('scroll', this.windowScrolled);
                     }

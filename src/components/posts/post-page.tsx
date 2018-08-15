@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { default as Ink } from 'react-ink';
 import { translate, InjectedTranslateProps } from 'react-i18next';
+import moment from 'moment';
 import { Post } from 'src/redux/posts/reducers';
 import { PostPageDispatchToProps, PostPageStateToProps } from 'src/containers/posts/post-page';
 import LoadSpinner from 'src/components/load-spinner/load-spinner';
@@ -117,7 +118,40 @@ class ShareModal extends React.Component<{ post: Post | null } & InjectedTransla
 
 }
 
+class PostHeader extends React.Component<{ entry: Post | null } & InjectedTranslateProps> {
+    render() {
+        if(this.props.entry === null) {
+            return this.props.children;
+        } else {
+            const { entry, t } = this.props;
+            const createdDate = moment(entry.date.toDate());
+            const modifiedDate = entry.modifiedDate ? moment(entry.modifiedDate!.toDate()) : null;
+            return (
+                <article className="postPage">
+                    <header>
+                        <h4 className="display-4">{ entry.title }</h4>
+                        <section>
+                            <span>{ t('blog.created_at') }&nbsp;</span>
+                            <time dateTime={ createdDate.format('YYYY-MM-DD') }>
+                                { createdDate.format('LLL') }
+                            </time>
+                            { modifiedDate && <span> - { t('blog.modified_at') }&nbsp;</span> }
+                            { modifiedDate &&
+                            <time dateTime={ modifiedDate.format('YYYY-MM-DD') }>
+                                { modifiedDate.format('LLL') }
+                            </time> }
+                        </section>
+                    </header>
+                    <figure className="header-figure" style={{ backgroundImage: `url(${entry.img})` }} />
+                    { this.props.children }
+                </article>
+            );
+        }
+    }
+}
+
 const ShareModalT = translate()(ShareModal);
+const PostHeaderT = translate()(PostHeader);
 
 interface RouteParams {
     year: number;
@@ -173,7 +207,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
         let domContent, disqusConfig;
         if(this.props.content) {
             domContent = (
-                <div className="postPage" dangerouslySetInnerHTML={{ __html: this.props.content }}/>
+                <section className="content" dangerouslySetInnerHTML={{ __html: this.props.content }} />
             );
             if(this.state.entry) {
                 disqusConfig = {
@@ -184,15 +218,15 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
             }
         } else if(!this.state.notFound) {
             domContent = (
-                <div className="postPage d-flex justify-content-center">
+                <section className="content d-flex justify-content-center">
                     <LoadSpinner />
-                </div>
+                </section>
             );
         } else {
             domContent = (
-                <div className="postPage">
+                <section className="content">
                     No existe esto pisha
-                </div>
+                </section>
             );
         }
 
@@ -206,7 +240,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
                     <i className="fa fa-share"/>
                 </div>
 
-                { domContent }
+                <PostHeaderT entry={ this.state.entry }>{ domContent }</PostHeaderT>
 
                 { disqusConfig && <DiscussionEmbed shortname={'personal-website-11'} config={disqusConfig} /> }
 

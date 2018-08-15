@@ -129,7 +129,9 @@
 
   "blog": {
     "title": "Blog",
-    "share": "Share post"
+    "share": "Share post",
+    "created_at": "Created at",
+    "modified_at": "Created at"
   },
 
 

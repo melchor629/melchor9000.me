@@ -1,31 +1,35 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Post } from 'src/redux/posts/reducers';
 
 interface PostEntryProps {
     entry: Post;
 }
 
-export default ({ entry }: PostEntryProps) => {
+export default withRouter(({ entry, history }: PostEntryProps & RouteComponentProps<{}>) => {
     const { date, img, title } = entry;
     const _date = moment(date.toDate()).utc();
-    let fecha = date.toDate().toLocaleString();
+    let fecha = moment(date.toDate()).format('LL');
     let url = `/blog/${_date.get('year')}/${_date.get('month') + 1}/${_date.get('date')}/${entry.url}`;
+    const changeUrl = (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        history.push(url);
+    };
 
     return (
-        <div className="card mb-sm-4 mb-2">
+        <div className="card" onClick={ changeUrl }>
             <div className="card-img-top post_thumb" style={{backgroundImage: `url(${img})`}}>
-                <Link to={ url } className="post_url">
+                <div className="post_url">
                     <div className="cover" />
-                </Link>
+                </div>
             </div>
             <div className="card-body">
                 <h4 className="card-title">
-                    <Link to={ url } className="text-white">{ title }</Link>
+                    { title }
                 </h4>
-                <p className="card-text"><small className="text-light">{ fecha }</small></p>
+                <p className="card-text"><small>{ fecha }</small></p>
             </div>
         </div>
     );
-};
+});
