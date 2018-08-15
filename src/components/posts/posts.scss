@@ -44,11 +44,23 @@
     }
 
     .card-title, .card-title * {
-      color: $primary-color-normal;//#333;
+      color: $primary-color-normal;
     }
 
     .card-text, .card-text * {
       color: #777;
+    }
+
+    .darkmode & {
+      background-color: #444 !important;
+
+      .card-title, .card-title * {
+        color: $primary-color-light;
+      }
+
+      .card-text, .card-text * {
+        color: #ddd;
+      }
     }
   }
 }
@@ -64,6 +76,10 @@
 
     section, section * {
       color: #444;
+
+      .darkmode & {
+        color: #ddd;
+      }
     }
   }
 

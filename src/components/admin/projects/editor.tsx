@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import * as firebase from 'firebase';
 import * as toast from 'src/lib/toast';
 import LoadSpinner from 'src/components/load-spinner';
-import Project from 'src/components/project';
+import Project from 'src/components/projects/project';
 import { ProjectEditorStateToProps, ProjectEditorDispatchToProps } from 'src/containers/admin/projects/editor';
 import { ProjectInfo } from 'src/containers/admin/projects';
 import {

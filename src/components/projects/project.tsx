@@ -7,11 +7,14 @@ type ProjectProps = { project: ProjectInfo, darkMode: boolean } & InjectedTransl
 
 const getDescription = (project: ProjectInfo, i18n: I18n): string => {
     if(project.intlDescription) {
-        const avail = [ i18n.language, ...i18n.languages ]
-            .map(lang => project.intlDescription![lang])
-            .filter(descr => !!descr);
-        if(avail.length > 0) {
-            return avail[0];
+        let avail = project.intlDescription[i18n.language];
+        if(avail) {
+            return avail;
+        }
+
+        avail = project.intlDescription[i18n.language.replace(/-.+/, '')];
+        if(avail) {
+            return avail;
         }
     }
     return project.description;

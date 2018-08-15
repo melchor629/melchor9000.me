@@ -3,7 +3,7 @@ import { translate } from 'react-i18next';
 import { removeError, subscribe, unsubscribe } from 'src/redux/database/actions';
 import { changeTitle } from 'src/redux/title/actions';
 import { State } from 'src/redux/reducers';
-import ProjectsComponent from 'src/components/projects';
+import ProjectsComponent from 'src/components/projects/projects';
 
 export interface ProjectInfo {
     title: string;
