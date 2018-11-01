@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { Trans, WithNamespaces, withNamespaces } from 'react-i18next';
 
+const ProgressBar = ({ n, children }: { n: number, children?: any }) => (
+    <div className="progress">
+        <div className="progress-bar" style={{ width: `${n * 100}%` }}>{ children }</div>
+    </div>
+);
+
 const AboutMe = ({ t }: WithNamespaces) => (
     <div>
         <h2 id="¿que-música-escuchas">{ t('about-me.whatMusicDoIListen.question') }</h2>
@@ -23,52 +29,56 @@ const AboutMe = ({ t }: WithNamespaces) => (
         <p>
             { t('about-me.whatProgrammingLanguagesDoIKnow.answer') }
         </p>
-        <ul>
-            <li>
+        <ul className="list-unstyled">
+            <li className="mb-2">
                 <a href="https://www.java.com/">Java</a>
+                <ProgressBar n={0.7} />
             </li>
-            <li>
+            <li className="mb-2">
                 JavaScript/TypeScript
+                <ProgressBar n={0.4} />
             </li>
-            <li>
+            <li className="mb-2">
                 <a href="http://coffeescript.org/">CoffeeScript</a>
+                <ProgressBar n={0.15} />
             </li>
-            <li>
+            <li className="mb-2">
                 C++
+                <ProgressBar n={0.25} />
             </li>
-            <li>
+            <li className="mb-2">
                 C
+                <ProgressBar n={0.3} />
             </li>
-            <li>
+            <li className="mb-2">
                 <a href="https://swift.org">Swift</a>
+                <ProgressBar n={0.3} />
             </li>
-            <li>
+            <li className="mb-2">
                 <a href="https://kotlinlang.org">Kotlin</a>
+                <ProgressBar n={0.1} />
             </li>
-            <li>
+            <li className="mb-2">
                 <a href="https://www.python.org">Python</a>
+                <ProgressBar n={0.3} />
             </li>
-            <li>
+            <li className="mb-2">
                 <a href={'https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/' +
                 'ProgrammingWithObjectiveC/Introduction/Introduction.html'}>Objective-C</a>
+                <ProgressBar n={0.35} />
             </li>
-            <li>
-                <a href="http://haskell.org">Haskell</a>&nbsp;
-                <em>{ t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail1') }</em>
+            <li className="mb-2">
+                C#
+                <ProgressBar n={0.05} />
             </li>
-            <li>
-                <a href="https://www.dartlang.org/">Dart</a>&nbsp;
-                <em>{ t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail2') }</em>
-            </li>
-            <li>
-                <a href="http://php.net">PHP</a>
-            </li>
-            <li>
+            <li className="mb-2">
                 { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail3') }: ARM y MIPS
+                <ProgressBar n={0.2} />
             </li>
         </ul>
         <p>
             { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail4') } CSS { t('and') } SCSS.
+            <ProgressBar n={0.333333333333333333} />
         </p>
         <p>
             { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail5') } <em>HTML</em> { t('and') }
@@ -82,6 +92,7 @@ const AboutMe = ({ t }: WithNamespaces) => (
             <Trans i18nKey="about-me.whatProgrammingLanguagesDoIKnow.answerDetail7">
                 .<a href="https://docker.com">.</a>.
             </Trans>
+            <ProgressBar n={0.4} />
         </p>
 
         <h2 id="tienes">{ t('about-me.haveYouGot<>.question') }</h2>
