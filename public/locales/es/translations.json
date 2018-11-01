@@ -4,7 +4,7 @@
     "bio": {
       "year": "{{count}} Año",
       "year_plural": "{{count}} Años",
-      "text1": "Estudiante de Ingenería del Software en la Universidad de Málaga",
+      "text1": "Ingeniero de Software en la Universidad de Málaga",
       "text2": "Programador..."
     },
     "darkMode": [
@@ -131,7 +131,12 @@
     "title": "Blog",
     "share": "Compartir entrada",
     "created_at": "Creado el",
-    "modified_at": "Modificado el"
+    "modified_at": "Modificado el",
+    "disqus": {
+      "policy": "Hola navegante. Esta web usa <1>Disqus</1> como sistema de comentarios. Hemos deshabilitado su funcionamiento por motivos de privacidad. Si deseas usar el sistema, puedes hacerlo apretando el botón de abajo, entendiendo que conlleva aceptar las políticas de privacidad de Disqus. Si no deseas hacerlo, no hagas nada.",
+      "terms": "Llévame a los términos y condiciones, además de politicas de privacidad, de Disqus",
+      "accept": "Acceptar y mostrar comentarios"
+    }
   },
 
 

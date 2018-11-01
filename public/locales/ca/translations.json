@@ -4,7 +4,7 @@
     "bio": {
       "year": "{{count}} Any",
       "year_plural": "{{count}} Anys",
-      "text1": "Estudiant de Engenieria del Software en la Universidad de Málaga",
+      "text1": "Enginer de Software en la Universidad de Málaga",
       "text2": "Programador..."
     },
     "darkMode": [
@@ -131,7 +131,12 @@
     "title": "Blog",
     "share": "Compartir entrada",
     "created_at": "Creat el",
-    "modified_at": "Modificat el"
+    "modified_at": "Modificat el",
+    "disqus": {
+      "policy": "Hola navegant. Aquesta web usa <1>Disqus</1> com a sistema de comentaris. Hem deshabilitat el seu funcionamient a raó de privacidad. Si desitjes emplear aquest sistema, pots fer-ho apretant el botó d'abaix, entenguent que suposam que acceptes les politiques de privacidtat de Disqus. Si no desitjes fer-ho, no fagis res.",
+      "terms": "Duu-me als terminis i condicions, a més de les politiques de privacitat, de Disqus",
+      "accept": "Acceptar i mostrar comentaris"
+    }
   },
 
 

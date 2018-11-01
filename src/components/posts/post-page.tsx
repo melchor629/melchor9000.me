@@ -8,9 +8,9 @@ import { PostPageDispatchToProps, PostPageStateToProps } from 'src/containers/po
 import LoadSpinner from 'src/components/load-spinner/load-spinner';
 import Zoom from 'src/lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
+import DisqusWrapper from 'src/components/posts/disqus-wrapper';
 
 const $ = require('jquery');
-const { DiscussionEmbed } = require('disqus-react');
 
 const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, children: string }) => (
     <div className="share-link" onClick={ onClick }>
@@ -212,7 +212,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
             if(this.state.entry) {
                 disqusConfig = {
                     url: window.location.toString(),
-                    identifier: this.state.entry!._id,
+                    identifier: this.state.entry!._id!,
                     title: this.state.entry!.title,
                 };
             }
@@ -241,9 +241,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
                 </div>
 
                 <PostHeaderT entry={ this.state.entry }>{ domContent }</PostHeaderT>
-
-                { disqusConfig && <DiscussionEmbed shortname={'personal-website-11'} config={disqusConfig} /> }
-
+                <DisqusWrapper shortName={'personal-website-11'} config={disqusConfig} />
                 <ShareModalT post={ this.state.entry } />
             </div>
         );

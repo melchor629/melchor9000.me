@@ -4,7 +4,7 @@
     "bio": {
       "year": "{{count}} Year",
       "year_plural": "{{count}} Years",
-      "text1": "Software Engineering Studing at Universidad de Málaga",
+      "text1": "Software Engineer at Universidad de Málaga",
       "text2": "Programmer..."
     },
     "darkMode": [
@@ -131,7 +131,12 @@
     "title": "Blog",
     "share": "Share post",
     "created_at": "Created at",
-    "modified_at": "Created at"
+    "modified_at": "Created at",
+    "disqus": {
+      "policy": "This website uses <1>Disqus</1> as a comments system. We've disabled its functionality due to privaty reasons. If you want to use the system, you can by pressing the accept button, and doing this you accept the privacy policies of Disqus. If you don't want to, simply don't do anything.",
+      "terms": "Take me to the terms and conditions, in addition to the privacy policies, of Disqus",
+      "accept": "Accept and show comments"
+    }
   },
 
 
