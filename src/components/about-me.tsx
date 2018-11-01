@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { translate, Trans, InjectedTranslateProps } from 'react-i18next';
+import { Trans, WithNamespaces, withNamespaces } from 'react-i18next';
 
-const AboutMe = ({ t }: InjectedTranslateProps) => (
+const AboutMe = ({ t }: WithNamespaces) => (
     <div>
         <h2 id="¿que-música-escuchas">{ t('about-me.whatMusicDoIListen.question') }</h2>
         <p>
@@ -115,4 +115,4 @@ const AboutMe = ({ t }: InjectedTranslateProps) => (
     </div>
 );
 
-export default translate('translations')(AboutMe);
+export default withNamespaces('translations')(AboutMe);

@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
-import { translate, InjectedTranslateProps } from 'react-i18next';
+import { withNamespaces, WithNamespaces } from 'react-i18next';
 import * as toast from 'src/lib/toast';
 
 const Cropper = require('react-cropper').default;
@@ -59,7 +59,7 @@ interface EuglState {
     videoCaptureText: string;
 }
 
-class EuglPage extends React.Component<InjectedTranslateProps, EuglState> {
+class EuglPage extends React.Component<WithNamespaces, EuglState> {
     private width: number;
     private height: number;
     private scene: THREE.Scene;
@@ -357,31 +357,31 @@ class EuglPage extends React.Component<InjectedTranslateProps, EuglState> {
         } else if(key === 'Digit9') {
             this.material.uniforms.texture.value = this.textures.get('custom');
         } else if(key === 'KeyF') {
-            const fe = document.fullscreenElement ||  document.webkitFullscreenElement;
+            const fe = document['fullscreenElement'] || document['webkitFullscreenElement'];
             if(fe !== null) {
-                if(document.exitFullscreen ) {
-                    document.exitFullscreen ();
-                } else if(document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                } else if(document.webkitCancelFullScreen) {
-                    document.webkitCancelFullScreen();
+                if(document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if(document['webkitExitFullscreen']) {
+                    document['webkitExitFullscreen']();
+                } else if(document['webkitCancelFullScreen']) {
+                    document['webkitCancelFullScreen']();
                 }
             } else {
                 const c = this.containerRef.current!;
                 if(c.requestFullscreen) {
                     c.requestFullscreen();
-                } else if(c.webkitRequestFullScreen) {
-                    c.webkitRequestFullScreen();
-                } else if(c.webkitRequestFullscreen) {
-                    c.webkitRequestFullscreen();
+                } else if(c['webkitRequestFullScreen']) {
+                    c['webkitRequestFullScreen']();
+                } else if(c['webkitRequestFullscreen']) {
+                    c['webkitRequestFullscreen']();
                 }
                 this.renderer.domElement.style.zIndex = '0';
                 this.setState({ someDataZIndex: 1 });
-                document.onwebkitfullscreenchange = document.onfullscreenchange = () => {
-                    if(document.fullscreenElement || document.webkitFullscreenElement) {
+                document['onwebkitfullscreenchange'] = document.onfullscreenchange = () => {
+                    if(document['fullscreenElement'] || document['webkitFullscreenElement']) {
                         return;
                     }
-                    document.onwebkitfullscreenchange = document.onfullscreenchange = null;
+                    document['onwebkitfullscreenchange'] = document.onfullscreenchange = null;
                     this.renderer.domElement.style.zIndex = '-1';
                     this.setState({ someDataZIndex: 0 });
                 };
@@ -395,7 +395,7 @@ class EuglPage extends React.Component<InjectedTranslateProps, EuglState> {
         if(event.target.files && event.target.files[0]) {
             const reader = new FileReader();
             reader.onload = () => {
-                this.setState({ imageToCrop: reader.result });
+                this.setState({ imageToCrop: reader.result as string });
             };
             reader.readAsDataURL(event.target.files[0]);
         }
@@ -463,4 +463,4 @@ class EuglPage extends React.Component<InjectedTranslateProps, EuglState> {
     }
 }
 
-export default translate('translations')(EuglPage);
+export default withNamespaces('translations')(EuglPage);

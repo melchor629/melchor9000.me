@@ -46,8 +46,8 @@ const doRequest = (request: any, cbk: (data: any) => void) => {
     };
     let script = document.createElement('script');
     script.src = buildUrl(apiUrl, request);
-    document.head.appendChild(script);
-    document.head.removeChild(script);
+    document.head!.appendChild(script);
+    document.head!.removeChild(script);
 };
 
 const protoFunc = <Params extends object, DataType>(method: string) =>

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { translate, InjectedTranslateProps } from 'react-i18next';
+import { withNamespaces, WithNamespaces } from 'react-i18next';
 
-class Header extends React.Component<{ photo: string | null } & InjectedTranslateProps> {
+class Header extends React.Component<{ photo: string | null } & WithNamespaces> {
     render() {
         const { t, photo } = this.props;
         return (
@@ -16,4 +16,4 @@ class Header extends React.Component<{ photo: string | null } & InjectedTranslat
     }
 }
 
-export default translate()(Header);
+export default withNamespaces()(Header);

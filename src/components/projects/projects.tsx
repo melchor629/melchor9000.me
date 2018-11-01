@@ -1,12 +1,12 @@
 import React from 'react';
-import { InjectedTranslateProps, InjectedI18nProps } from 'react-i18next';
+import { WithNamespaces } from 'react-i18next';
 import * as toast from 'src/lib/toast';
 import LoadSpinner from 'src/components/load-spinner/index';
 import Project from 'src/components/projects/project';
 import { ProjectDispatchToProps, ProjectStateToProps } from 'src/containers/projects';
 import './projects.css';
 
-type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & InjectedTranslateProps & InjectedI18nProps;
+type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & WithNamespaces;
 
 export default class Projects extends React.Component<ProjectsPageProps> {
     componentDidMount() {

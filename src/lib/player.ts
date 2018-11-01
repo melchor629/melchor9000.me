@@ -51,7 +51,7 @@ class Player {
             fr.onload = () => {
                 let filebuffer = fr.result;
                 // noinspection JSIgnoredPromiseFromCall
-                this.audioContext.decodeAudioData(filebuffer, (buffer) => {
+                this.audioContext.decodeAudioData(filebuffer as ArrayBuffer, (buffer) => {
                     this.soundBuffers.set(name, { url: 'bl0b', buffer });
                     accept();
                 },                                (error) => reject(new Error('No se pudo ' +

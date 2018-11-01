@@ -1,5 +1,5 @@
 import React from 'react';
-import { InjectedTranslateProps, Trans } from 'react-i18next';
+import { WithNamespaces, Trans } from 'react-i18next';
 import * as toast from 'src/lib/toast';
 import Visualizer from 'src/components/visualizer';
 import Player from 'src/lib/player';
@@ -7,7 +7,7 @@ import { VizDispatchToProps, VizStateToProps } from 'src/containers/viz';
 
 const { Spring } = require('react-spring');
 
-type VizProps = VizStateToProps & VizDispatchToProps & InjectedTranslateProps;
+type VizProps = VizStateToProps & VizDispatchToProps & WithNamespaces;
 //TODO terminar
 
 interface VizState {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Swipeable from 'react-swipeable';
-import { InjectedTranslateProps } from 'react-i18next';
+import { WithNamespaces } from 'react-i18next';
 import ZoomImageOverlay from './zoom-image-overlay';
 import { buildLargePhotoUrl } from 'src/lib/flickr';
 import { OverlayDispatchToProps, OverlayStateToProps } from 'src/containers/gallery/overlay';
@@ -11,7 +11,7 @@ type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {
     userId: string;
     photosetId: string;
     perPage: number;
-} & InjectedTranslateProps;
+} & WithNamespaces;
 
 export default class Overlay extends React.Component<OverlayProps> {
     private _lastTapTime: number | null = null;
@@ -182,9 +182,9 @@ export default class Overlay extends React.Component<OverlayProps> {
             <div className={`photo-overlay ${show ? 'show' : ''}`}>
                 <div className="photo-overlay-container" role="document" style={{height: '100%'}}>
 
-                    <Transition native={ true } from={{ t: 0 }} enter={{ t: 1 }} leave={{ t: 0 }}>
-                    { isZoomed && ((s: any) => (
-                        <animated.div style={{ opacity: s.t.interpolate((x: number) => `${x}`) }}
+                    <Transition native={ true } from={{ t: 0 }} enter={{ t: 1 }} leave={{ t: 0 }} items={ isZoomed }>
+                    { (_isZoomed: boolean) => _isZoomed && ((s: any) => (
+                        <animated.div style={{ opacity: s.t }}
                                       className="zoom-container">
                             <ZoomImageOverlay photo={ currentPhoto }
                                               onTouchStart={ this.onTouchStart }

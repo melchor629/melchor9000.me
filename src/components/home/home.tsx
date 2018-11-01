@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedTranslateProps } from 'react-i18next';
+import { WithNamespaces } from 'react-i18next';
 import * as toast from 'src/lib/toast';
 import { Cheat } from 'src/lib/cheat';
 import Player from 'src/lib/player';
@@ -61,7 +61,7 @@ specialDatesImages
         }
     });
 
-const playSoundError = function(this: string, props: InjectedTranslateProps, error: Error) {
+const playSoundError = function(this: string, props: WithNamespaces, error: Error) {
     toast.error(() => (
         <div>
             { props.t('cheatCannotPlay') } <i>${this}</i> <br/>
@@ -179,7 +179,7 @@ const cheats = new Map([
     } ]
 ]);
 
-type IndexProps = IndexStateToProps & IndexDispatchToProps & InjectedTranslateProps;
+type IndexProps = IndexStateToProps & IndexDispatchToProps & WithNamespaces;
 
 interface StateProps {
     image: number;

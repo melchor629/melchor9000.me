@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router';
 import { Link, Route, RouteComponentProps } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { translate, InjectedI18nProps, InjectedTranslateProps } from 'react-i18next';
+import { withNamespaces, WithNamespaces } from 'react-i18next';
 import { routes } from './routes';
 import { State } from './redux/reducers';
 import PrivateRoute from './containers/private-route';
@@ -23,7 +23,7 @@ interface AppStateToProps {
 }
 
 type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & { changeTitle: (title: string | null) => void } &
-    InjectedI18nProps & InjectedTranslateProps;
+    WithNamespaces;
 
 interface AppState {
     offcanvas: boolean;
@@ -143,4 +143,4 @@ const mapDispatchToProps = (dispatch: any): { changeTitle: (title: string) => vo
     changeTitle: (title: string) => dispatch(changeTitle(title)),
 });
 
-export default withRouter(translate('translations')(connect(mapStateToProps, mapDispatchToProps)(App)));
+export default withRouter(withNamespaces('translations')(connect(mapStateToProps, mapDispatchToProps)(App)));

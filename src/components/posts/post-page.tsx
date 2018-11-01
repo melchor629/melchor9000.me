@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { default as Ink } from 'react-ink';
-import { translate, InjectedTranslateProps } from 'react-i18next';
+import { withNamespaces, WithNamespaces } from 'react-i18next';
 import moment from 'moment';
 import { Post } from 'src/redux/posts/reducers';
 import { PostPageDispatchToProps, PostPageStateToProps } from 'src/containers/posts/post-page';
@@ -22,13 +22,13 @@ const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, childr
     </div>
 );
 
-class ShareModal extends React.Component<{ post: Post | null } & InjectedTranslateProps> {
+class ShareModal extends React.Component<{ post: Post | null } & WithNamespaces> {
 
     private static query(object: any): string {
         return (Object['entries'](object) as [string, string][]).map(pair => `${pair[0]}=${pair[1]}`).join('&');
     }
 
-    constructor(props: { post: Post | null } & InjectedTranslateProps) {
+    constructor(props: { post: Post | null } & WithNamespaces) {
         super(props);
         this.telegramButtonPressed = this.telegramButtonPressed.bind(this);
         this.whatsappButtonPressed = this.whatsappButtonPressed.bind(this);
@@ -118,7 +118,7 @@ class ShareModal extends React.Component<{ post: Post | null } & InjectedTransla
 
 }
 
-class PostHeader extends React.Component<{ entry: Post | null } & InjectedTranslateProps> {
+class PostHeader extends React.Component<{ entry: Post | null } & WithNamespaces> {
     render() {
         if(this.props.entry === null) {
             return this.props.children;
@@ -150,18 +150,18 @@ class PostHeader extends React.Component<{ entry: Post | null } & InjectedTransl
     }
 }
 
-const ShareModalT = translate()(ShareModal);
-const PostHeaderT = translate()(PostHeader);
+const ShareModalT = withNamespaces()(ShareModal);
+const PostHeaderT = withNamespaces()(PostHeader);
 
 interface RouteParams {
-    year: number;
-    month: number;
-    day: number;
+    year: string;
+    month: string;
+    day: string;
     title: string;
 }
 
 type PostPageProps = PostPageStateToProps & PostPageDispatchToProps & RouteComponentProps<RouteParams> &
-    InjectedTranslateProps;
+    WithNamespaces;
 
 interface PostPageState {
     entry: Post | null;
