@@ -12,7 +12,6 @@ const PhotoItem = ({ photo, onClick }: PhotoItemProps) => (
             <div onClick={onClick} style={{backgroundImage: `url(${photo.url})`}} className="photo-image">
                 <div className="square"/>
             </div>
-            <div className="photo-title"> {photo.title} </div>
         </div>
     </div>
 );
