@@ -20,68 +20,65 @@
 /**
  *  Gallery grid
  **/
-.gallery > div > div {
-  box-shadow: rgba(0, 0, 0, 0.35) 0 0 5px;
-  border-radius: 4px;
-  margin-bottom: 30px;
-  transition: box-shadow cubic-bezier(0.33, 0, 0.66, 1) .3s;
-  background-position: center;
-  background-size: cover;
-  text-align: center;
-  cursor: pointer;
+.gallery .photo-item {
+  flex: 1 1 200px;
+  min-height: 200px;
+  margin: 5px;
+}
 
-  &::selection {
-    background-color: rgba(0, 0, 0, 0);
-  }
+.gallery .photo-item-container {
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 8px 7px 19px rgba(39,44,49,.24),
+              1px 2px 4px rgba(39,44,49,.12);
+  transform: scale(1);
+  transition: box-shadow .2s ease-in-out,
+              transform .2s ease-in-out;
 
   &:hover {
-    box-shadow: rgba(0, 0, 0, 0.35) 0 0 10px 1px;
+    box-shadow: 8px 14px 30px rgba(39,44,49,.28),
+                1px 3px 10px rgba(39,44,49,.16);
+    transform: scale(1.02);
   }
 
-  & > .square {
-    position: relative;
-    width: 100%;
-
-    opacity: 0;
+  .photo-image {
     border-radius: 4px;
-    text-align: center;
-    background: rgba(0,0,0,.40);
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
-    transition: opacity cubic-bezier(0.33, 0, 0.66, 1) .3s;
+    transition: box-shadow cubic-bezier(0.33, 0, 0.66, 1) .3s;
+    background-position: center;
+    background-size: cover;
 
-    &:after {
-      content: "";
-      display: block;
-      padding-bottom: 100%;
+    &::selection {
+      background-color: rgba(0, 0, 0, 0);
     }
 
-    &:hover {
-      opacity: 1;
-    }
-
-    .square-content {
-      position: absolute;
+    & > .square {
+      position: relative;
       width: 100%;
-      height: 100%;
-    }
 
-    .photo-title {
-      padding-top: 85%;
-      padding-left: 5px;
-      padding-right: 5px;
-      color: white;
-      font-size: 22px;
-      font-weight: bold;
-      text-shadow: rgba(255,255,255,.3) 0 0 5px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      opacity: 0;
+      border-radius: 4px;
+      text-align: center;
 
-      @media(max-width: 756px) {
-        font-size: 18px;
-        padding-top: 87.5%;
+      &:after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
       }
     }
+  }
+
+  .photo-title {
+    display: none;
+    padding: 0.75rem 5px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: rgba(255,255,255,.3) 0 0 5px;
+    //white-space: nowrap;
+    //overflow: hidden;
+    //text-overflow: ellipsis;
+    background-color: white;
+    border-radius: 0 0 4px 4px;
   }
 }
 

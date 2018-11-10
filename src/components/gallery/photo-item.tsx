@@ -7,11 +7,12 @@ interface PhotoItemProps {
 }
 
 const PhotoItem = ({ photo, onClick }: PhotoItemProps) => (
-    <div className="col-6 col-sm-4 col-md-3">
-        <div onClick={onClick} style={{backgroundImage: `url(${photo.url})`}}>
-            <div className="square">
-                <div className="square-content photo-title"> {photo.title} </div>
+    <div className="photo-item">
+        <div className="photo-item-container">
+            <div onClick={onClick} style={{backgroundImage: `url(${photo.url})`}} className="photo-image">
+                <div className="square"/>
             </div>
+            <div className="photo-title"> {photo.title} </div>
         </div>
     </div>
 );

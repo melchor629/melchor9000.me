@@ -40,7 +40,7 @@ export default class Gallery extends React.Component<GalleryProps> {
             <div style={{ paddingTop: 300 }}>
                 <Header photo={ primary } />
 
-                <div className="row gallery">
+                <div className="d-flex flex-wrap gallery">
                     { photos.map((photo: GalleryPhoto) => <PhotoItem photo={photo} key={photo.id} />) }
                 </div>
 
