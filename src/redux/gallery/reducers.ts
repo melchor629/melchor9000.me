@@ -2,10 +2,9 @@ import { AnyAction } from 'redux';
 import {
     MORE_PHOTOS_LOADED, FIRST_PHOTOS_LOADED, SHOW_DETAILED, HIDE_DETAILED, LOADING_PHOTO_DETAIL,
     LOADED_PHOTO_DETAIL, HIDDEN_DETAILED, TOGGLE_INFO_PANEL, LOADED_PHOTO_IMAGE, LOADING_PHOTO_IMAGE,
-    LOADING_MORE_PHOTOS, ENABLE_PHOTO_ZOOM, DISABLE_PHOTO_ZOOM, PHOTO_CHANGE_ANIMATION_START,
-    PHOTO_CHANGE_ANIMATION_STEP, PHOTO_CHANGE_ANIMATION_END
+    LOADING_MORE_PHOTOS, ENABLE_PHOTO_ZOOM, DISABLE_PHOTO_ZOOM, PHOTO_CHANGED,
 } from './actions';
-import { Photo, buildLargePhotoUrl, ExifData, PhotoInfo } from '../../lib/flickr';
+import { Photo, ExifData, PhotoInfo } from 'src/lib/flickr';
 
 export type GalleryPhoto = Photo & {
     photo: Photo;
@@ -28,7 +27,7 @@ const linkedPhotos = (photos: GalleryPhoto[]): LinkedPhoto[] => photos.map((phot
     prev: i > 0 ? photos[i - 1] : null
 }));
 
-const find = (photos: LinkedPhoto[], id: string) => photos.filter(p => p.photo.id === id)[0];
+const find = (photos: LinkedPhoto[], id: string) => photos.find(p => p.photo.id === id)!;
 
 const initialState: GalleryState = {
     primary: null,
@@ -37,6 +36,8 @@ const initialState: GalleryState = {
     page: 1,
 
     detailedPhoto: undefined,
+    prevDetailedPhoto: undefined,
+    directionOfChange: 'next',
     zoomEnabled: false,
     hasNext: false,
     hasPrev: false,
@@ -46,30 +47,7 @@ const initialState: GalleryState = {
     loadingPhotos: true,
     loading: false,
     loadingPhoto: false,
-
-    animation: {
-        animating: false,
-        direction: null,
-        style1: { backgroundImage: null, opacity: null, backgroundPosition: null },
-        style2: { backgroundImage: null, opacity: null, backgroundPosition: null, display: 'hidden' }
-    }
 };
-
-export interface AnimationGalleryState {
-    animating: boolean;
-    direction: 'next' | 'prev' | null | undefined;
-    style1: {
-        backgroundImage: string | null;
-        opacity: number | null;
-        backgroundPosition: string | null;
-    };
-    style2: {
-        backgroundImage: string | null;
-        opacity: number | null;
-        backgroundPosition: string | null;
-        display: 'hidden' | 'block';
-    };
-}
 
 export interface GalleryState {
     primary: string | null;
@@ -78,6 +56,8 @@ export interface GalleryState {
     page: number;
 
     detailedPhoto: string | undefined;
+    prevDetailedPhoto: string | undefined;
+    directionOfChange: 'next' | 'prev';
     zoomEnabled: boolean;
     hasNext: boolean;
     hasPrev: boolean;
@@ -87,8 +67,6 @@ export interface GalleryState {
     loadingPhotos: boolean;
     loading: boolean;
     loadingPhoto: boolean;
-
-    animation: AnimationGalleryState;
 }
 
 export const galleryList = (state: GalleryState = initialState, action: AnyAction): GalleryState => {
@@ -147,7 +125,7 @@ export const galleryList = (state: GalleryState = initialState, action: AnyActio
         case LOADED_PHOTO_IMAGE:
             return { ...state, loadingPhoto: false };
 
-        case PHOTO_CHANGE_ANIMATION_START: {
+        case PHOTO_CHANGED: {
             let photos = linkedPhotos(state.photos);
             const current = find(photos, state.detailedPhoto!);
             let next = current.next;
@@ -156,86 +134,22 @@ export const galleryList = (state: GalleryState = initialState, action: AnyActio
                 return {
                     ...state,
                     detailedPhoto: next!.id,
+                    prevDetailedPhoto: current!.photo.id,
                     hasNext: !!find(photos, next!.id).next,
                     hasPrev: true,
-                    animation: {
-                        animating: true,
-                        direction: 'next',
-                        style1: {
-                            backgroundImage: `url(${buildLargePhotoUrl(next!)})`,
-                            opacity: 0,
-                            backgroundPosition: '60% 50%'
-                        },
-                        style2: {
-                            backgroundImage: `url(${buildLargePhotoUrl(current.photo)})`,
-                            opacity: 1,
-                            backgroundPosition: '50% 50%',
-                            display: 'block'
-                        }
-                    }
+                    directionOfChange: action.direction,
                 };
             } else {
                 return {
                     ...state,
                     detailedPhoto: prev!.id,
+                    prevDetailedPhoto: current!.photo.id,
                     hasNext: true,
                     hasPrev: !!find(photos, prev!.id).prev,
-                    animation: {
-                        animating: true,
-                        direction: 'prev',
-                        style1: {
-                            backgroundImage: `url(${buildLargePhotoUrl(current.photo)})`,
-                            opacity: 1,
-                            backgroundPosition: '50% 50%'
-                        },
-                        style2: {
-                            backgroundImage: `url(${buildLargePhotoUrl(prev!)})`,
-                            opacity: 0,
-                            backgroundPosition: '40% 50%',
-                            display: 'block'
-                        }
-                    }
+                    directionOfChange: action.direction,
                 };
             }
         }
-
-        case PHOTO_CHANGE_ANIMATION_STEP: {
-            const p = -(Math.cos(Math.PI * action.t) - 1) / 2;
-            if(state.animation.direction === 'next') {
-                const pos1 = 60 - 10 * action.t;
-                const pos2 = 50 - 10 * action.t;
-                return {
-                    ...state,
-                    animation: {
-                        ...state.animation,
-                        style1: { ...state.animation.style1, opacity: p, backgroundPosition: `${pos1}% 50%` },
-                        style2: { ...state.animation.style2, opacity: 1 - p, backgroundPosition: `${pos2}% 50%` }
-                    }
-                };
-            } else {
-                const pos1 = 40 + 10 * action.t;
-                const pos2 = 50 + 10 * action.t;
-                return {
-                    ...state,
-                    animation: {
-                        ...state.animation,
-                        style1: { ...state.animation.style1, opacity: 1 - p, backgroundPosition: `${pos2}% 50%` },
-                        style2: { ...state.animation.style2, opacity: p, backgroundPosition: `${pos1}% 50%` }
-                    }
-                };
-            }
-        }
-
-        case PHOTO_CHANGE_ANIMATION_END:
-            return {
-                ...state,
-                animation: {
-                    animating: false,
-                    direction: undefined,
-                    style1: { backgroundImage: null, opacity: null, backgroundPosition: null },
-                    style2: { backgroundImage: null, opacity: null, backgroundPosition: null, display: 'hidden' }
-                }
-            };
 
         case TOGGLE_INFO_PANEL:
             return { ...state, showInfoPanel: !state.showInfoPanel };

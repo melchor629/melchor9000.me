@@ -1,11 +1,13 @@
 import * as React from 'react';
 import * as Swipeable from 'react-swipeable';
 import { WithNamespaces } from 'react-i18next';
+import { animated, Transition } from 'react-spring';
 import ZoomImageOverlay from './zoom-image-overlay';
 import { buildLargePhotoUrl } from 'src/lib/flickr';
 import { OverlayDispatchToProps, OverlayStateToProps } from 'src/containers/gallery/overlay';
+import OverlayImageInfo from 'src/components/gallery/overlay-image-info';
+
 const $ = require('jquery');
-const { Transition, animated } = require('react-spring');
 
 type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {
     userId: string;
@@ -13,16 +15,29 @@ type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {
     perPage: number;
 } & WithNamespaces;
 
-export default class Overlay extends React.Component<OverlayProps> {
+interface OverlayState {
+    imageSwitcher: boolean;
+    holdImageSwitcher: boolean;
+}
+
+export default class Overlay extends React.Component<OverlayProps, OverlayState> {
     private _lastTapTime: number | null = null;
     private _startTouchInfo: React.Touch | null = null;
     private _startTouchTime: number | null = null;
 
     constructor(props: OverlayProps) {
         super(props);
+        this.nextPhotoLoadingNextPage = this.nextPhotoLoadingNextPage.bind(this);
+        this.previousPhoto = this.previousPhoto.bind(this);
         this.onTouchStart = this.onTouchStart.bind(this);
         this.onTouchEnd = this.onTouchEnd.bind(this);
+        this.nextPhoto = this.nextPhoto.bind(this);
         this.onTap = this.onTap.bind(this);
+
+        this.state = {
+            imageSwitcher: false,
+            holdImageSwitcher: false,
+        };
     }
 
     componentDidMount() {
@@ -37,9 +52,24 @@ export default class Overlay extends React.Component<OverlayProps> {
         $('body').css('overflow', 'inherit');
     }
 
-    componentWillReceiveProps(nextProps: OverlayProps) {
-        if(nextProps.currentPhoto.id !== this.props.currentPhoto.id) {
-            this.props.loadFullInfoForPhoto(nextProps.currentPhoto);
+    componentDidUpdate(prevProps: Readonly<OverlayProps>) {
+        if(this.props.previousPhoto) {
+            if(prevProps.currentPhoto.id !== this.props.currentPhoto.id) {
+                //Instead of change the images, wait for the new image to be loaded
+                this.setState({
+                    holdImageSwitcher: true,
+                });
+            } else if(prevProps.imageIsLoading && !this.props.imageIsLoading) {
+                //Now the image has been loaded, so we can change the image to the next one
+                this.setState({
+                    imageSwitcher: !this.state.imageSwitcher,
+                    holdImageSwitcher: false,
+                });
+            }
+        }
+
+        if(prevProps.currentPhoto.id !== this.props.currentPhoto.id) {
+            this.props.loadFullInfoForPhoto(this.props.currentPhoto);
             this.props.photoIsLoading();
         }
     }
@@ -53,10 +83,14 @@ export default class Overlay extends React.Component<OverlayProps> {
             } else {
                 this.props.close();
             }
-        } else if(key === 39 && this.props.hasNext) { //Right
-            this.props.next();
+        } else if(key === 39) { //Right
+            if(this.props.hasNext) {
+                this.nextPhoto();
+            } else if(this.props.hasNextPage) {
+                this.nextPhotoLoadingNextPage();
+            }
         } else if(key === 37 && this.props.hasPrev) { //Left
-            this.props.prev();
+            this.previousPhoto();
         }
     }
 
@@ -91,92 +125,31 @@ export default class Overlay extends React.Component<OverlayProps> {
 
     render() {
         const {
-            currentPhoto, isZoomed, next, prev, close, zoom, hasNext,
-            hasPrev, show, showInfoPanel, toggleInfoPanel, photoIsLoaded,
-            hasNextPage, userId, photosetId, perPage, page, loadMorePhotosAndNext,
-            changeAnimation, t
+            currentPhoto: photo, isZoomed, close, zoom, hasNext, hasPrev, show, showInfoPanel, toggleInfoPanel,
+            photoIsLoaded, hasNextPage, previousPhoto, directionOfChange
         } = this.props;
-        const photo = currentPhoto;
-        const info = photo.info ? photo.info : null;
-        const exif = photo.exif ? photo.exif : null;
-        let descripcion = null;
-        let fecha = null;
-        let camara = null;
-        let exposicion = null;
-        let apertura = null;
-        let iso = null;
-        let distanciaFocal = null;
-        let flash = null;
-        let enlace = null;
+        const { imageSwitcher, holdImageSwitcher } = this.state;
 
-        const infoHtml = (value: string, id: string) => (
-            <p className="lead" id={ id }>
-                <strong>{ t(`gallery.overlay.${id}`) }:</strong> <span>{ value }</span>
-            </p>
-        );
-
-        if(info) {
-            if(info.description) {
-                descripcion = <span id="descripcion">{ info.description._content }</span>;
-            }
-            if(info.dates) {
-                let sd = info.dates.taken.split(/[-: ]/);
-                let date = new Date(
-                    Number(sd[0]),
-                    Number(sd[1]),
-                    Number(sd[2]),
-                    Number(sd[3]),
-                    Number(sd[4]),
-                    Number(sd[5]),
-                    0
-                );
-                fecha = infoHtml(date.toLocaleDateString(), 'fecha');
-            }
-            if(info.urls.url) {
-                enlace = (
-                    <p id="enlace">
-                        <a href={ info.urls.url[0]._content } target="_blank">{ t('gallery.overlay.seeFlickr') }</a>
-                    </p>
-                );
-            }
-        }
-
-        if(exif) {
-            let _exposicion = null;
-            let _apertura = null;
-            let _iso = null;
-            let _distFocal = null;
-            let _flash = null;
-
-            for(let tag of exif.exif) {
-                if(tag.tagspace === 'ExifIFD') {
-                    if(tag.tag === 'ExposureTime') { _exposicion = tag.raw._content; }
-                    if(tag.tag === 'FNumber') { _apertura = tag.raw._content; }
-                    if(tag.tag === 'ISO') { _iso = tag.raw._content; }
-                    if(tag.tag === 'FocalLength') { _distFocal = tag.raw._content; }
-                    if(tag.tag === 'Flash') { _flash = tag.raw._content; }
-                }
-            }
-
-            if(exif.camera) { camara = infoHtml(exif.camera, 'camara'); }
-            if(_exposicion) { exposicion = infoHtml(_exposicion, 'exposicion'); }
-            if(_apertura) { apertura = infoHtml(_apertura, 'apertura'); }
-            if(_iso) { iso = infoHtml(_iso, 'iso'); }
-            if(_distFocal) { distanciaFocal = infoHtml(_distFocal, 'dist-focal'); }
-            if(_flash) {
-                flash = infoHtml(t(`gallery.overlay.flash-${_flash.indexOf('Off') === -1}`), 'flash');
-            }
-        }
-
-        const imageInfoClasses = [ 'image-info', 'col-sm-4', 'd-none', 'd-sm-block' ];
-        if(!showInfoPanel) { imageInfoClasses.push('min-size'); }
         const imageViewClasses = [ 'image-view', 'col-sm-8', 'col-12' ];
-        if(!showInfoPanel) { imageViewClasses.push('max-size'); }
-        const leftButtonLeft = !showInfoPanel ? $(window).width() - 70 : null;
-
-        const nnextt = loadMorePhotosAndNext.bind(null, userId, photosetId, perPage, page);
+        if(!showInfoPanel) {
+            imageViewClasses.push('max-size');
+        }
 
         const nopeWithVibration = () => window.navigator.vibrate(150);
+
+        let imageUrl1: string;
+        let imageUrl2: string;
+        if(holdImageSwitcher) {
+            //If the image is loading, don't change anything yet
+            imageUrl1 = imageSwitcher ? buildLargePhotoUrl(photo) : buildLargePhotoUrl(previousPhoto!);
+            imageUrl2 = imageSwitcher ? (previousPhoto ? buildLargePhotoUrl(previousPhoto) : '') :
+                buildLargePhotoUrl(photo);
+        } else {
+            //When the image has loaded, do the change
+            imageUrl1 = imageSwitcher ? buildLargePhotoUrl(previousPhoto!) : buildLargePhotoUrl(photo);
+            imageUrl2 = imageSwitcher ? buildLargePhotoUrl(photo) :
+                (previousPhoto ? buildLargePhotoUrl(previousPhoto) : '');
+        }
 
         return (
             <div className={`photo-overlay ${show ? 'show' : ''}`}>
@@ -184,32 +157,50 @@ export default class Overlay extends React.Component<OverlayProps> {
 
                     <Transition native={ true } from={{ t: 0 }} enter={{ t: 1 }} leave={{ t: 0 }} items={ isZoomed }>
                     { (_isZoomed: boolean) => _isZoomed && ((s: any) => (
-                        <animated.div style={{ opacity: s.t }}
-                                      className="zoom-container">
-                            <ZoomImageOverlay photo={ currentPhoto }
+                        <animated.div style={{ opacity: s.t }} className="zoom-container">
+                            <ZoomImageOverlay photo={ photo }
                                               onTouchStart={ this.onTouchStart }
                                               onTouchEnd={ this.onTouchEnd } />
                         </animated.div>
                     ))}
                     </Transition>
 
-                    <Swipeable onSwipedLeft={ hasNext ? next : (hasNextPage ? nnextt : nopeWithVibration ) }
-                               onSwipedRight={ hasPrev ? prev : nopeWithVibration }
+                    <Swipeable onSwipedLeft={ hasNext ? this.nextPhoto :
+                        (hasNextPage ? this.nextPhotoLoadingNextPage : nopeWithVibration ) }
+                               onSwipedRight={ hasPrev ? this.previousPhoto : nopeWithVibration }
                                onTap={ this.onTap }
                                className={imageViewClasses.join(' ')}>
                         <img src={ buildLargePhotoUrl(photo) } onLoad={ () => photoIsLoaded() }
                              style={{ display: 'none' }} alt={ photo.title as string } />
-                        { !changeAnimation.animating ?
-                            <div className="img" id="img"
-                                 style={{ backgroundImage: `url(${buildLargePhotoUrl(photo)})` }}/>
-                            :
-                            <div className="img" id="img" style={ changeAnimation.style1 as any } />
-                        }
-                        { !changeAnimation.animating ?
-                            <div className="img" id="img2"/>
-                            :
-                            <div className="img" id="img2" style={ changeAnimation.style2 as any } />
-                        }
+
+                        <Transition native={ true }
+                                    from={{ t: 0, u: 1 }}
+                                    enter={{ t: 1, u: 0 }}
+                                    leave={{ t: 0, u: -1 }}
+                                    items={ imageSwitcher }>
+                            { (switcher: boolean) => (({ t, u }: any) => (
+                                !switcher ?
+                                <animated.div className="img" id="img"
+                                              style={{
+                                                  backgroundImage: `url(${imageUrl1})`,
+                                                  opacity: t,
+                                                  transform: directionOfChange === 'next' ?
+                                                      u.interpolate((x: number) => `translateX(${25 * x}px)`)
+                                                      :
+                                                      u.interpolate((x: number) => `translateX(${-25 * x}px`),
+                                              }} />
+                                :
+                                <animated.div className="img" id="img2"
+                                              style={{
+                                                  backgroundImage: `url(${imageUrl2})`,
+                                                  opacity: t,
+                                                  transform: directionOfChange === 'next' ?
+                                                        u.interpolate((x: number) => `translateX(${25 * x}px)`)
+                                                        :
+                                                        u.interpolate((x: number) => `translateX(${-25 * x}px`),
+                                              }} />
+                            )) }
+                        </Transition>
 
                         <div className="buttons-container">
                             <div className="buttons">
@@ -235,39 +226,45 @@ export default class Overlay extends React.Component<OverlayProps> {
                                 </button>
                             </div>
 
-                            { hasPrev ? <div className="change-photo prev d-none d-sm-block" onClick={ prev }>
+                            { hasPrev && <div className="change-photo prev d-none d-sm-block"
+                                              onClick={ this.previousPhoto }>
                                 <i className="fa fa-chevron-left fa-3x"/>
-                            </div> : null }
-                            { hasNext ?
-                                <div className="change-photo next d-none d-sm-block" onClick={ next }
-                                     style={{ left: `${leftButtonLeft}px` }}>
+                            </div> }
+                            { hasNext &&
+                                <div className="change-photo next d-none d-sm-block" onClick={ this.nextPhoto }>
                                     <i className="fa fa-chevron-right fa-3x"/>
-                                </div> : null }
+                                </div> }
                             { !hasNext && hasNextPage ?
                                 <div className="change-photo next next-page d-none d-sm-block"
-                                     onClick={ nnextt } style={{ left: `${leftButtonLeft}px` }}>
+                                     onClick={ this.nextPhotoLoadingNextPage }>
                                     <i className="fa fa-chevron-right fa-3x"/>
                                 </div> : null }
                         </div>
                     </Swipeable>
 
-                    <div className={imageInfoClasses.join(' ')}>
-                        <div className="page-header">
-                            <h2>{ photo.title }</h2>
-                            {descripcion}
-                        </div>
-
-                        {fecha}
-                        {camara}
-                        {exposicion}
-                        {apertura}
-                        {iso}
-                        {distanciaFocal}
-                        {flash}
-                        {enlace}
-                    </div>
+                    <OverlayImageInfo photo={ photo } show={ showInfoPanel } />
                 </div>
             </div>
         );
     }
+
+    private nextPhoto() {
+        if(!this.props.imageIsLoading) {
+            this.props.next();
+        }
+    }
+
+    private previousPhoto() {
+        if(!this.props.imageIsLoading) {
+            this.props.prev();
+        }
+    }
+
+    private nextPhotoLoadingNextPage() {
+        const { imageIsLoading, loadMorePhotosAndNext, userId, photosetId, perPage, page } = this.props;
+        if(!imageIsLoading) {
+            loadMorePhotosAndNext(userId, photosetId, perPage, page);
+        }
+    }
+
 }

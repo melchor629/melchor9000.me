@@ -117,11 +117,12 @@
       "flash": "Flash",
       "flash-true": "Encès, es va disparar",
       "flash-false": "Apagat, no es va disparar",
+      "geoposicion": "Localització",
       "seeFlickr": "Veure en Flickr"
     },
     "zoomOverlay": {
       "closepc": "En PC: ESC para tancar",
-      "closesm": "En mòbil: Manté apretat la pantalla per tancar"
+      "closesm": "En mòbil: Mantingues apretat la pantalla per tancar"
     }
   },
 

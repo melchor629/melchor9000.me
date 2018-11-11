@@ -1,5 +1,4 @@
 import { buildPhotoUrl, photos, photosets } from '../../lib/flickr';
-import { AnimationTimer } from '../../lib/timer';
 
 export const FIRST_PHOTOS_LOADED = 'FIRST_PHOTOS_LOADED';
 export const LOADING_MORE_PHOTOS = 'LOADING_MORE_PHOTOS';
@@ -14,9 +13,7 @@ export const LOADED_PHOTO_IMAGE = 'LOADED_PHOTO_IMAGE';
 export const TOGGLE_INFO_PANEL = 'TOGGLE_INFO_PANEL';
 export const ENABLE_PHOTO_ZOOM = 'ENABLE_PHOTO_ZOOM';
 export const DISABLE_PHOTO_ZOOM = 'DISABLE_PHOTO_ZOOM';
-export const PHOTO_CHANGE_ANIMATION_START = 'PHOTO_CHANGE_ANIMATION_START';
-export const PHOTO_CHANGE_ANIMATION_STEP = 'PHOTO_CHANGE_ANIMATION_STEP';
-export const PHOTO_CHANGE_ANIMATION_END = 'PHOTO_CHANGE_ANIMATION_END';
+export const PHOTO_CHANGED = 'PHOTO_CHANGE';
 
 class CuriousPromise {
     constructor(numOfDoneCalls, cbk) {
@@ -61,15 +58,11 @@ export const showDetailed = photo => ({
 });
 
 export const nextDetailed = () => dispatch => {
-    dispatch({ type: PHOTO_CHANGE_ANIMATION_START, direction: 'next' });
-    new AnimationTimer(250, t => dispatch({ type: PHOTO_CHANGE_ANIMATION_STEP, direction: 'next', t }), true)
-        .onEnd(() => dispatch({ type: PHOTO_CHANGE_ANIMATION_END, direction: 'next' }));
+    dispatch({ type: PHOTO_CHANGED, direction: 'next' });
 };
 
 export const prevDetailed = () => dispatch => {
-    dispatch({ type: PHOTO_CHANGE_ANIMATION_START, direction: 'prev' });
-    new AnimationTimer(250, t => dispatch({ type: PHOTO_CHANGE_ANIMATION_STEP, direction: 'prev', t }), true)
-        .onEnd(() => dispatch({ type: PHOTO_CHANGE_ANIMATION_END, direction: 'prev' }));
+    dispatch({ type: PHOTO_CHANGED, direction: 'prev' });
 };
 
 export const hideDetailed = () => dispatch => {

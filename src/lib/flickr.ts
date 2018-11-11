@@ -65,6 +65,12 @@ export interface Photo {
     isfamily: number;
 }
 
+interface PhotoInfoLocationPlace {
+    _content: string;
+    place_id: string;
+    woeid: string;
+}
+
 export interface PhotoInfo extends Photo {
     description: { _content: string };
     urls: { url: { _content: string }[] };
@@ -74,6 +80,18 @@ export interface PhotoInfo extends Photo {
         takengranularity: number;
         takenunknown: number;
         lastupdate: string;
+    };
+    location?: {
+        latitude: string;
+        longitude: string;
+        accuracy: string,
+        context: string;
+        locality: PhotoInfoLocationPlace;
+        county: PhotoInfoLocationPlace;
+        region: PhotoInfoLocationPlace;
+        country: PhotoInfoLocationPlace;
+        place_id: string;
+        woeid: string;
     };
 }
 

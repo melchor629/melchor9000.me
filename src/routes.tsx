@@ -43,7 +43,7 @@ export const routes: Route<any, any>[] = [
     route('/about-me', 'About me', withDefaultContainer(AboutMe)),
     route('/eugl', 'Espacio Euclídeo', withDefaultContainer(EuglPage)),
     route('/gallery', 'Photo Gallery', withDefaultContainer(() => (
-        <Gallery userId="142458589@N03" photosetId="72157667134867210" perPage={12} />
+        <Gallery userId="142458589@N03" photosetId="72157667134867210" perPage={ 15 } />
     ))),
     route('/blog', 'Posts', withDefaultContainer(Posts)),
     route('/projects', 'Projects', withDefaultContainer(Projects)),

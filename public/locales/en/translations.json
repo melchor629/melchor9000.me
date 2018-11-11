@@ -117,6 +117,7 @@
       "flash": "Flash",
       "flash-true": "On, was shot",
       "flash-false": "Off, wasn't shot",
+      "geoposicion": "Geolocation",
       "seeFlickr": "See at Flickr"
     },
     "zoomOverlay": {

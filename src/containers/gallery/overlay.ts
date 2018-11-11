@@ -6,18 +6,20 @@ import {
     loadMorePhotos, enablePhotoZoom, disablePhotoZoom
 } from 'src/redux/gallery/actions';
 import { State } from 'src/redux/reducers';
-import { AnimationGalleryState, GalleryPhoto } from 'src/redux/gallery/reducers';
+import { GalleryPhoto } from 'src/redux/gallery/reducers';
 
 export interface OverlayStateToProps {
     currentPhoto: GalleryPhoto;
+    previousPhoto?: GalleryPhoto;
     isZoomed: boolean;
     hasNext: boolean;
     hasPrev: boolean;
     show: boolean;
     showInfoPanel: boolean;
     page: number;
-    changeAnimation: AnimationGalleryState;
     hasNextPage: boolean;
+    imageIsLoading: boolean;
+    directionOfChange: 'next' | 'prev';
 }
 
 export interface OverlayDispatchToProps {
@@ -35,7 +37,8 @@ export interface OverlayDispatchToProps {
 }
 
 const mapStateToProps = ({ galleryList }: State): OverlayStateToProps => ({
-    currentPhoto: galleryList.photos.filter(photo => photo.id === galleryList.detailedPhoto)[0],
+    currentPhoto: galleryList.photos.find(photo => photo.id === galleryList.detailedPhoto)!,
+    previousPhoto: galleryList.photos.find(photo => photo.id === galleryList.prevDetailedPhoto),
     isZoomed: galleryList.zoomEnabled,
     hasNext: galleryList.hasNext,
     hasPrev: galleryList.hasPrev,
@@ -43,7 +46,8 @@ const mapStateToProps = ({ galleryList }: State): OverlayStateToProps => ({
     showInfoPanel: galleryList.showInfoPanel || galleryList.showInfoPanel === undefined,
     hasNextPage: galleryList.page < galleryList.totalPages,
     page: galleryList.page,
-    changeAnimation: galleryList.animation
+    imageIsLoading: galleryList.loadingPhoto,
+    directionOfChange: galleryList.directionOfChange,
 });
 
 const mapDispatchToProps = (dispatch: any): OverlayDispatchToProps => {
