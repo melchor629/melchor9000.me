@@ -156,7 +156,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 <div className="photo-overlay-container" role="document" style={{height: '100%'}}>
 
                     <Transition native={ true } from={{ t: 0 }} enter={{ t: 1 }} leave={{ t: 0 }} items={ isZoomed }>
-                    { (_isZoomed: boolean) => _isZoomed && ((s: any) => (
+                    { (_isZoomed: boolean) => ((s: any) => (_isZoomed &&
                         <animated.div style={{ opacity: s.t }} className="zoom-container">
                             <ZoomImageOverlay photo={ photo }
                                               onTouchStart={ this.onTouchStart }
