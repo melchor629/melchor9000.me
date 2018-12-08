@@ -1,9 +1,9 @@
 import { User } from '@firebase/auth-types';
 import { connect } from 'react-redux';
-import { State } from 'src/redux/reducers';
-import { changeTitle } from 'src/redux/title/actions';
-import { logIn } from 'src/redux/auth/actions';
-import LoginComponent from 'src/components/login';
+import { State } from '../redux/reducers';
+import { changeTitle } from '../redux/title/actions';
+import { logIn } from '../redux/auth/actions';
+import LoginComponent from '../components/login';
 
 export interface LoginStateToProps {
     user: User | null;
@@ -27,5 +27,5 @@ const mapDispatchToProps = (dispatch: any): LoginDispatchToProps => ({
     changeTitle: (title: string) => dispatch(changeTitle(title)),
 });
 
-export const Login = connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
+export const Login = connect(mapStateToProps, mapDispatchToProps)(LoginComponent as any); //TODO ?
 export const Component = Login;

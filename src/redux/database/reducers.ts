@@ -17,7 +17,7 @@ export interface DatabaseState {
     doing: any;
 }
 
-export const database = (state: DatabaseState, action: any): DatabaseState => {
+export const database = (state: DatabaseState | undefined, action: any): DatabaseState => {
     if(!state) {
         state = {
             subscriptions: {},

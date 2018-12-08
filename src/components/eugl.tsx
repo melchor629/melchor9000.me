@@ -1,7 +1,7 @@
 import React from 'react';
 import * as THREE from 'three';
 import { withNamespaces, WithNamespaces } from 'react-i18next';
-import * as toast from 'src/lib/toast';
+import * as toast from '../lib/toast';
 
 const Cropper = require('react-cropper').default;
 import 'cropperjs/dist/cropper.css';
@@ -60,8 +60,8 @@ interface EuglState {
 }
 
 class EuglPage extends React.Component<WithNamespaces, EuglState> {
-    private width: number;
-    private height: number;
+    private width: number = NaN;
+    private height: number = NaN;
     private scene: THREE.Scene;
     private camera: THREE.PerspectiveCamera;
     private renderer: THREE.WebGLRenderer;
@@ -108,9 +108,7 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
         this.blurred = this.blurred.bind(this);
         this.keyUp = this.keyUp.bind(this);
         this.loop = this.loop.bind(this);
-    }
 
-    componentDidMount() {
         this.width = window.innerWidth;
         this.height = window.innerHeight;
         this.scene = new THREE.Scene();
@@ -126,7 +124,6 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
-        this.containerRef.current!.appendChild(this.renderer.domElement);
         this.renderer.domElement.style.position = 'absolute';
         this.renderer.domElement.style.top = '0';
         this.renderer.domElement.style.left = '0';
@@ -134,11 +131,14 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
         this.renderer.domElement.style.height = '100%';
         this.renderer.domElement.style.zIndex = '-1';
 
-        this.textureLoader = new THREE.TextureLoader();
-        this.prepareGeometry();
-        this.prepareShaders();
-        this.prepareTextures();
+        this.geometry = this.prepareGeometry();
+        this.material = this.prepareShaders(this.geometry);
+        this.textureLoader = this.prepareTextures();
         this.startLoop();
+    }
+
+    componentDidMount() {
+        this.containerRef.current!.appendChild(this.renderer.domElement);
 
         window.addEventListener('focus', this.focused);
         window.addEventListener('blur', this.blurred);
@@ -207,9 +207,9 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
         this.renderer.setSize(this.width, this.height);
     }
 
-    private prepareGeometry() {
-        this.geometry = new THREE.InstancedBufferGeometry();
-        const nEucl = this.geometry.maxInstancedCount = this.max * 5;
+    private prepareGeometry(): THREE.InstancedBufferGeometry {
+        const geometry = new THREE.InstancedBufferGeometry();
+        const nEucl = geometry.maxInstancedCount = this.max * 5;
 
         //Plano compuesto por dos caras triangulares
         const vertices = new THREE.BufferAttribute(new Float32Array([
@@ -220,7 +220,7 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
             1, -1, 0,
             1,  1, 0
         ]),                                        3);
-        this.geometry.addAttribute('position', vertices);
+        geometry.addAttribute('position', vertices);
 
         //Las coordenadas UV para texturas
         const uv = new THREE.BufferAttribute(new Float32Array([
@@ -231,7 +231,7 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
             1, 0,
             1, 1
         ]),                                  2);
-        this.geometry.addAttribute('uv', uv);
+        geometry.addAttribute('uv', uv);
 
         //Creamos nEucl posiciones aleatorias
         const positions = new THREE.InstancedBufferAttribute(new Float32Array(nEucl * 3), 3, 1);
@@ -252,12 +252,14 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
         for(let i = 0; i < nEucl; i++) {
             positions.setXYZ(i, espacio[i].x, espacio[i].y, espacio[i].z);
         }
-        this.geometry.addAttribute('offset', positions);
+        geometry.addAttribute('offset', positions);
+
+        return geometry;
     }
 
-    private prepareShaders() {
+    private prepareShaders(geometry: THREE.InstancedBufferGeometry): THREE.RawShaderMaterial {
         //Cargamos el shader
-        this.material = new THREE.RawShaderMaterial({
+        const material = new THREE.RawShaderMaterial({
             uniforms: {
                 opacity: { value: 1.0 },
                 texture: { value: null }
@@ -266,24 +268,27 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
             vertexShader: DEFAULT_VERTEX_SHADER,
             fragmentShader: DEFAULT_FRAGMENT_SHADER
         });
-        const plane = new THREE.Mesh(this.geometry, this.material);
+        const plane = new THREE.Mesh(geometry, material);
         plane.frustumCulled = false; //Asi no desaparece el tema
         this.scene.add(plane); //_Todo listo
+        return material;
     }
 
-    private prepareTextures() {
+    private prepareTextures(): THREE.TextureLoader {
+        const textureLoader = new THREE.TextureLoader();
         //Cargamos las texturas
-        this.textureLoader.load('/img/eu/euklid.png', (texture: THREE.Texture) => {
+        textureLoader.load('/img/eu/euklid.png', (texture: THREE.Texture) => {
             this.textures.set('euklid', texture);
             this.material.uniforms.texture.value = texture;
             this.material.needsUpdate = true;
         });
-        this.textureLoader.load('/img/eu/doge.png', (texture) => this.textures.set('doge', texture));
-        this.textureLoader.load('/img/eu/melchor.png', (texture) => this.textures.set('melchor', texture));
-        this.textureLoader.load('/img/eu/pato.png', (texture) => this.textures.set('pato', texture));
-        this.textureLoader.load('/img/eu/fallout-pipboy.png',
+        textureLoader.load('/img/eu/doge.png', (texture) => this.textures.set('doge', texture));
+        textureLoader.load('/img/eu/melchor.png', (texture) => this.textures.set('melchor', texture));
+        textureLoader.load('/img/eu/pato.png', (texture) => this.textures.set('pato', texture));
+        textureLoader.load('/img/eu/fallout-pipboy.png',
                                 (texture) => this.textures.set('fallout_pipboy', texture));
-        this.textureLoader.load('/img/eu/thincc.png', (texture) => this.textures.set('thincc', texture));
+        textureLoader.load('/img/eu/thincc.png', (texture) => this.textures.set('thincc', texture));
+        return textureLoader;
     }
 
     private startLoop() {

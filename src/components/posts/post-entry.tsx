@@ -1,7 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Post } from 'src/redux/posts/reducers';
+import { Post } from '../../redux/posts/reducers';
 
 interface PostEntryProps {
     entry: Post;

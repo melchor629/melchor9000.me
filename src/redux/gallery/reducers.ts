@@ -4,7 +4,7 @@ import {
     LOADED_PHOTO_DETAIL, HIDDEN_DETAILED, TOGGLE_INFO_PANEL, LOADED_PHOTO_IMAGE, LOADING_PHOTO_IMAGE,
     LOADING_MORE_PHOTOS, ENABLE_PHOTO_ZOOM, DISABLE_PHOTO_ZOOM, PHOTO_CHANGED,
 } from './actions';
-import { Photo, ExifData, PhotoInfo } from 'src/lib/flickr';
+import { Photo, ExifData, PhotoInfo } from '../../lib/flickr';
 
 export type GalleryPhoto = Photo & {
     photo: Photo;

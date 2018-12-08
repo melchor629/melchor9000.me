@@ -14,8 +14,8 @@ interface TouchPosition {
 }
 
 class Tapable extends React.Component<TapableProps> {
-    private startTouch: TouchPosition | null;
-    private endTouch: TouchPosition | null;
+    private startTouch: TouchPosition | null = null;
+    private endTouch: TouchPosition | null = null;
 
     render() {
         return (

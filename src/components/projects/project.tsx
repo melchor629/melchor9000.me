@@ -1,7 +1,7 @@
 import React from 'react';
 import { i18n as I18n } from 'i18next';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
-import { ProjectInfo } from 'src/containers/projects';
+import { ProjectInfo } from '../../containers/projects';
 
 type ProjectProps = { project: ProjectInfo, darkMode: boolean } & WithNamespaces;
 

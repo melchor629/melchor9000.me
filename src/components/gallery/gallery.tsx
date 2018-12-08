@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Header from './header';
-import PhotoItem from 'src/containers/gallery/photo-item';
-import Overlay from 'src/containers/gallery/overlay';
-import { GalleryPhoto } from 'src/redux/gallery/reducers';
-import { GalleryDispatchToProps, GalleryStateToProps } from 'src/containers/gallery/gallery';
+import PhotoItem from '../../containers/gallery/photo-item';
+import Overlay from '../../containers/gallery/overlay';
+import { GalleryPhoto } from '../../redux/gallery/reducers';
+import { GalleryDispatchToProps, GalleryStateToProps } from '../../containers/gallery/gallery';
 const $ = require('jquery');
 import './gallery.css';
 

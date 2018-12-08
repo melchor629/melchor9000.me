@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, WithNamespaces, withNamespaces } from 'react-i18next';
 
 const ProgressBar = ({ n, children }: { n: number, children?: any }) => (

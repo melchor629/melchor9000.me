@@ -2,24 +2,22 @@ import React from 'react';
 import moment from 'moment';
 import firebase from 'firebase/app';
 import { RouteComponentProps } from 'react-router-dom';
-import * as toast from 'src/lib/toast';
-import render from 'src/lib/render-post-content';
-import { PostEditorDispatchToProps, PostEditorStateToProps } from 'src/containers/admin/posts/editor';
-import LoadSpinner from 'src/components/load-spinner';
-import { Post } from 'src/redux/posts/reducers';
-import { AdminInput } from 'src/components/admin/admin-input';
-import { dateValidator, valueValidator } from 'src/lib/validators';
+import { Transition, Keyframes, Spring, animated } from 'react-spring';
+import * as toast from '../../../lib/toast';
+import render from '../../../lib/render-post-content';
+import { PostEditorDispatchToProps, PostEditorStateToProps } from '../../../containers/admin/posts/editor';
+import LoadSpinner from '../../load-spinner';
+import { Post } from '../../../redux/posts/reducers';
+import { AdminInput } from '../admin-input';
+import { dateValidator, valueValidator } from '../../../lib/validators';
 
 const speakingurl = require('speakingurl');
-const { Transition, Keyframes, Spring, animated } = require('react-spring');
-const { TimingAnimation, Easing } = require('react-spring/dist/addons.cjs');
 
 const LittleSpinner = (props: React.HTMLProps<HTMLDivElement>) => (
     <Keyframes
         native={ true }
-        impl={ TimingAnimation }
-        config={{ duration: 1000, easing: Easing.linear }}
-        script={ async (next: any) => {
+        config={{ duration: 1000, easing: (t: number) => t }}
+        wiggle={ async (next: any) => {
             while(true) {
                 await next(Spring, {
                     from: { r: 0 },
@@ -220,8 +218,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                     </div>
                 </form>
 
-                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}>
-                    { preview && ((vals: any) => (
+                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={ preview }>
+                    { toggle => ((vals: { val: number }) => !toggle ? null : (
                         <animated.div role="main" className="ml-sm-auto px-4" style={{
                             position: 'absolute',
                             overflowY: 'scroll',
@@ -231,10 +229,10 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                             height: 'calc(100vh - 30px)',
                             backgroundColor: 'white',
                             zIndex: 1,
-                            transform: vals.val.interpolate((x: number) => `translateX(${(1 - x) * 100}vw)`)
+                            transform: (vals.val as any).interpolate((x: number) => `translateX(${(1 - x) * 100}vw)`)
                         }}>
                             <div className="text-center">
-                                <img src={ img } className="img-fluid" />
+                                <img src={ img } className="img-fluid" alt={ title } />
                             </div>
 
                             <div className="d-flex justify-content-end" style={{ position: 'sticky', top: 40 }}>
@@ -251,8 +249,9 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                     )) }
                 </Transition>
 
-                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}>
-                    { (this.props.saving || this.state.saving) && ((vals: any) => (
+                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}
+                            items={ this.props.saving || this.state.saving }>
+                    { toggle => ((vals: any) => !toggle ? null : (
                         <animated.div role="main" className="ml-sm-auto px-4" style={{
                             position: 'absolute',
                             overflowY: 'scroll',

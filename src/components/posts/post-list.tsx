@@ -1,9 +1,8 @@
-import * as React from 'react';
-import { PostListDispatchToProps, PostListStateToPros } from 'src/containers/posts/post-list';
-import LoadSpinner from 'src/components/load-spinner';
+import React from 'react';
+import $ from 'jquery';
+import { PostListDispatchToProps, PostListStateToPros } from '../../containers/posts/post-list';
+import LoadSpinner from '../load-spinner';
 import Entry from './post-entry';
-
-const $ = require('jquery');
 
 type PostListProps = PostListStateToPros & PostListDispatchToProps;
 
@@ -58,8 +57,8 @@ export default class PostList extends React.Component<PostListProps> {
     private windowScrolled() {
         if(this.props.posts) {
             if(this.props.posts.length < this.props.postsCount) {
-                let abajoPos = window.scrollY + $(window).height();
-                if(abajoPos > $('.mainPage').height() - 70) {
+                let abajoPos = window.scrollY + $(window).height()!;
+                if(abajoPos > $('.mainPage').height()! - 70) {
                     this.props.showMore(6);
                     if(this.props.posts!.length + 3 >= this.props.postsCount) {
                         window.removeEventListener('scroll', this.windowScrolled);

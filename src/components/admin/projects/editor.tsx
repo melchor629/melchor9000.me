@@ -1,19 +1,18 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import * as firebase from 'firebase';
-import * as toast from 'src/lib/toast';
-import LoadSpinner from 'src/components/load-spinner';
-import Project from 'src/components/projects/project';
-import { ProjectEditorStateToProps, ProjectEditorDispatchToProps } from 'src/containers/admin/projects/editor';
-import { ProjectInfo } from 'src/containers/admin/projects';
+import { Transition, animated } from 'react-spring';
+import * as toast from '../../../lib/toast';
+import LoadSpinner from '../../load-spinner';
+import Project from '../../projects/project';
+import { ProjectEditorStateToProps, ProjectEditorDispatchToProps } from '../../../containers/admin/projects/editor';
+import { ProjectInfo } from '../../../containers/admin/projects';
 import {
     urlOrLocalValidator,
     urlValidator,
     valueValidator,
-} from 'src/lib/validators';
-import { AdminInput, AdminBigInput } from 'src/components/admin/admin-input';
-
-const { Transition, animated } = require('react-spring');
+} from '../../../lib/validators';
+import { AdminInput, AdminBigInput } from '../admin-input';
 
 type ProjectEditorProps = ProjectEditorStateToProps & ProjectEditorDispatchToProps &
     RouteComponentProps<{ id?: string }>;
@@ -217,8 +216,8 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                     </div>
                 </form>
 
-                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}>
-                    { preview && ((vals: any) => (
+                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={ preview }>
+                    { toggle => ((vals: any) => toggle && (
                         <animated.div className="ml-sm-auto px-4" style={{
                             position: 'fixed',
                             top: 'calc(40px + 10px)',
@@ -234,8 +233,9 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                     )) }
                 </Transition>
 
-                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}>
-                    { (this.props.saving) && ((vals: any) => (
+                <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}
+                            items={ this.props.saving }>
+                    { toggle => ((vals: any) =>  toggle && (
                         <animated.div role="main" className="ml-sm-auto px-4" style={{
                             position: 'absolute',
                             overflowY: 'scroll',

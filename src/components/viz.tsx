@@ -1,11 +1,10 @@
 import React from 'react';
 import { WithNamespaces, Trans } from 'react-i18next';
-import * as toast from 'src/lib/toast';
-import Visualizer from 'src/components/visualizer';
-import Player from 'src/lib/player';
-import { VizDispatchToProps, VizStateToProps } from 'src/containers/viz';
-
-const { Spring } = require('react-spring');
+import { Spring } from 'react-spring';
+import * as toast from '../lib/toast';
+import Visualizer from './visualizer';
+import Player from '../lib/player';
+import { VizDispatchToProps, VizStateToProps } from '../containers/viz';
 
 type VizProps = VizStateToProps & VizDispatchToProps & WithNamespaces;
 //TODO terminar

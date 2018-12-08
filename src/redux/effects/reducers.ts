@@ -7,12 +7,16 @@ export interface EffectsState {
     visualizationMode: null | 'bars' | 'wave' | 'random';
 }
 
-export const effects = (state: EffectsState = {
-    barrelRoll: false,
-    flipIt: null,
-    darkMode: JSON.parse(window.localStorage.getItem('darkMode') || 'false'),
-    visualizationMode: null
-},                      action: { type: string, value?: any }) => {
+export const effects = (state: EffectsState | undefined, action: { type: string, value?: any }): EffectsState => {
+    if(state === undefined) {
+        state = {
+            barrelRoll: false,
+            flipIt: null,
+            darkMode: JSON.parse(window.localStorage.getItem('darkMode') || 'false'),
+            visualizationMode: null
+        };
+    }
+
     switch(action.type) {
         case DO_A_BARREL_ROLL: return { ...state, barrelRoll: action.value };
         case FLIP_IT: return { ...state, flipIt: action.value };

@@ -22,7 +22,7 @@ interface AppStateToProps {
     darkMode?: boolean | null;
 }
 
-type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & { changeTitle: (title: string | null) => void } &
+type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & { changeTitle: (title: string) => void } &
     WithNamespaces;
 
 interface AppState {

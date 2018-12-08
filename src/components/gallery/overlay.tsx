@@ -1,13 +1,12 @@
-import * as React from 'react';
-import * as Swipeable from 'react-swipeable';
+import React from 'react';
+import Swipeable from 'react-swipeable';
 import { WithNamespaces } from 'react-i18next';
 import { animated, Transition } from 'react-spring';
+import $ from 'jquery';
 import ZoomImageOverlay from './zoom-image-overlay';
-import { buildLargePhotoUrl } from 'src/lib/flickr';
-import { OverlayDispatchToProps, OverlayStateToProps } from 'src/containers/gallery/overlay';
-import OverlayImageInfo from 'src/components/gallery/overlay-image-info';
-
-const $ = require('jquery');
+import { buildLargePhotoUrl } from '../../lib/flickr';
+import { OverlayDispatchToProps, OverlayStateToProps } from '../../containers/gallery/overlay';
+import OverlayImageInfo from './overlay-image-info';
 
 type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {
     userId: string;
@@ -43,7 +42,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     componentDidMount() {
         this.props.loadFullInfoForPhoto(this.props.currentPhoto);
         requestAnimationFrame(this.props.toggleShow);
-        $(window).keyup(this.onKeyUp.bind(this));
+        $(window).on('keyup', this.onKeyUp.bind(this));
         $('body').css('overflow', 'hidden');
     }
 
@@ -74,7 +73,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
     }
 
-    onKeyUp(event: React.KeyboardEvent<HTMLDivElement>) {
+    onKeyUp(event: any) {
         event.preventDefault();
         const key = event.keyCode;
         if(key === 27) { //ESC

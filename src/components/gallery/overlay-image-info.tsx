@@ -1,6 +1,6 @@
 import React from 'react';
 import { withNamespaces, WithNamespaces } from 'react-i18next';
-import { GalleryPhoto } from 'src/redux/gallery/reducers';
+import { GalleryPhoto } from '../../redux/gallery/reducers';
 
 interface OverlayImageInfoProps {
     show: boolean;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Redirect, Route } from 'react-router';
 import { connect } from 'react-redux';
-import { State } from 'src/redux/reducers';
+import { State } from '../redux/reducers';
 
 type PrivateRouteProps = {
     component: React.ComponentType<any>;

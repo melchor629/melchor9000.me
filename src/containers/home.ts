@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { State } from 'src/redux/reducers';
-import { changeVisualization, doABarrelRoll, flipIt, toggleDarkMode } from 'src/redux/effects/actions';
-import { changeTitle } from 'src/redux/title/actions';
-import HomeComponent from 'src/components/home/home';
-import { translate } from 'react-i18next';
+import { State } from '../redux/reducers';
+import { changeVisualization, doABarrelRoll, flipIt, toggleDarkMode } from '../redux/effects/actions';
+import { changeTitle } from '../redux/title/actions';
+import HomeComponent from '../components/home/home';
+import { withNamespaces } from 'react-i18next';
 
 export interface IndexStateToProps {
     flipItValue: boolean | null;
@@ -33,5 +33,5 @@ const mapDispatchToProps = (dispatch: any): IndexDispatchToProps => ({
     changeTitle: (title: String) => dispatch(changeTitle(title)),
 });
 
-export const Home = translate('translations')(connect(mapStateToProps, mapDispatchToProps)(HomeComponent));
+export const Home = withNamespaces('translations')(connect(mapStateToProps, mapDispatchToProps)(HomeComponent));
 export const Component = Home;

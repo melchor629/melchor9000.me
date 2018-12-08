@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Trans, withNamespaces, WithNamespaces } from 'react-i18next';
 const { DiscussionEmbed } = require('disqus-react');
 

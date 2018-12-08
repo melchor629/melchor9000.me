@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import PostComponent from 'src/components/posts/posts';
-import { State } from 'src/redux/reducers';
-import { subscribe, unsubscribe } from 'src/redux/database/actions';
+import PostComponent from '../../components/posts/posts';
+import { State } from '../../redux/reducers';
+import { subscribe, unsubscribe } from '../../redux/database/actions';
 import { PostsDispatchToProps, PostsStateToProps } from './posts.interfaces';
 
 const mapStateToProps = (state: State): PostsStateToProps => ({

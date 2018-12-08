@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { Post } from 'src/redux/posts/reducers';
-import { State } from 'src/redux/reducers';
-import { getPost } from 'src/redux/posts/actions';
-import { changeTitle } from 'src/redux/title/actions';
-import PostPageComponent from 'src/components/posts/post-page';
+import { Post } from '../../redux/posts/reducers';
+import { State } from '../../redux/reducers';
+import { getPost } from '../../redux/posts/actions';
+import { changeTitle } from '../../redux/title/actions';
+import PostPageComponent from '../../components/posts/post-page';
 
 export interface PostPageStateToProps {
     content: string | null;

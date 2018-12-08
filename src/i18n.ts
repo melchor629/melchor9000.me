@@ -14,7 +14,7 @@ i18n
         fallbackLng: 'en',
         ns: ['translations'],
         defaultNS: 'translations',
-        debug: process.env.NODE_ENV !== 'PRODUCTION',
+        debug: process.env.NODE_ENV !== 'production',
         interpolation: {
             escapeValue: false,
         },

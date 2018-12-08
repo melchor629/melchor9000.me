@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { showDetailed } from 'src/redux/gallery/actions';
-import PhotoItem from 'src/components/gallery/photo-item';
+import { showDetailed } from '../../redux/gallery/actions';
+import PhotoItem from '../../components/gallery/photo-item';
 
 interface PhotoItemDispatchToProps {
     onClick: (event: React.MouseEvent<HTMLElement>) => void;

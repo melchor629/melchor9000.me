@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import Util from 'bootstrap/js/src/util';
+//import Util from 'bootstrap/js/src/util';
 import './zoom.css';
 
 /**
@@ -32,7 +32,7 @@ export default class ZoomService {
     _zoom(e) {
         var target = e.target
         
-        if (!target || target.tagName != 'IMG') return
+        if (!target || target.tagName !== 'IMG') return
         
         if (this._$body.hasClass('zoom-overlay-open')) return
         
@@ -93,12 +93,12 @@ export default class ZoomService {
     }
     
     _keyHandler(e) {
-        if (e.keyCode == 27) this._activeZoomClose()
+        if (e.keyCode === 27) this._activeZoomClose()
     }
     
     _clickHandler(e) {
         if (e.preventDefault) e.preventDefault()
-        else event.returnValue = false
+        else e.returnValue = false
         
         if ('bubbles' in e) {
             if (e.bubbles) e.stopPropagation()
@@ -173,12 +173,12 @@ class Zoom {
     }
     
     _calculateZoom() {
-        this._targetImage.offsetWidth // repaint before animating
+        //this._targetImage.offsetWidth // repaint before animating
         
         var originalFullImageWidth  = this._fullWidth
         var originalFullImageHeight = this._fullHeight
         
-        var scrollTop = $(window).scrollTop()
+        //var scrollTop = $(window).scrollTop()
         
         var maxScaleFactor = originalFullImageWidth / this._targetImage.width
         
@@ -200,7 +200,7 @@ class Zoom {
     }
     
     _triggerAnimation() {
-        this._targetImage.offsetWidth // repaint before animating
+        //this._targetImage.offsetWidth // repaint before animating
         
         var imageOffset = $(this._targetImage).offset()
         var scrollTop   = $(window).scrollTop()

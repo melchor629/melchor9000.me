@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 interface VisualizerProp {
     audioContext: AudioContext;
@@ -19,7 +19,7 @@ class Visualizer extends React.Component<VisualizerProp, VisualizerState> {
     private redrawRequest: number | null;
     private readonly pixelRatio: number;
     private canvasRef: React.RefObject<HTMLCanvasElement> = React['createRef']();
-    private canvasContext: CanvasRenderingContext2D;
+    private canvasContext: CanvasRenderingContext2D = null as any;
 
     private static _pixelRatio() {
         const ctx = document.createElement('canvas').getContext('2d')!;
@@ -118,8 +118,8 @@ class Visualizer extends React.Component<VisualizerProp, VisualizerState> {
                     }
                     break;
                 default:
-                    this.canvasContext.fillStyle = this.props.theme === 'light' ? 'white' : '#282828';
-                    this.canvasContext.fillRect(0,
+                    this.canvasContext!.fillStyle = this.props.theme === 'light' ? 'white' : '#282828';
+                    this.canvasContext!.fillRect(0,
                                                 0,
                                                 this.state.width * this.pixelRatio,
                                                 this.state.height * this.pixelRatio);

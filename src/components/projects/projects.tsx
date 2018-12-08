@@ -1,9 +1,9 @@
 import React from 'react';
 import { WithNamespaces } from 'react-i18next';
-import * as toast from 'src/lib/toast';
-import LoadSpinner from 'src/components/load-spinner/index';
-import Project from 'src/components/projects/project';
-import { ProjectDispatchToProps, ProjectStateToProps } from 'src/containers/projects';
+import * as toast from '../../lib/toast';
+import LoadSpinner from '../load-spinner';
+import Project from './project';
+import { ProjectDispatchToProps, ProjectStateToProps } from '../../containers/projects';
 import './projects.css';
 
 type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & WithNamespaces;

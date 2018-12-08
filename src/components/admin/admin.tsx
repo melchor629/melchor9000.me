@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, NavLink } from 'react-router-dom';
-import { AdminDispatchToProps, AdminStateToProps } from 'src/containers/admin/admin';
-import { Posts } from 'src/containers/admin/posts';
-import { Projects } from 'src/containers/admin/projects';
-import { Logout } from 'src/containers/admin/logout';
+import { Trail, animated } from 'react-spring';
+import { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/admin';
+import { Posts } from '../../containers/admin/posts';
+import { Projects } from '../../containers/admin/projects';
+import { Logout } from '../../containers/admin/logout';
 import './admin.css';
-
-const { Trail, animated } = require('react-spring');
 
 const containerStyle: React.CSSProperties = {
     width: '100%',
@@ -24,8 +23,8 @@ const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties })
         <div className="col-auto">
             <h1 className="display-4">Hola { user.displayName }</h1>
         </div>
-        <Trail native={ true } from={{ scale: 0 }} to={{ scale: 1 }} keys={ pages }>
-            { pages.map(page => ({ scale }: any) => (
+        <Trail native={ true } from={{ scale: 0 }} to={{ scale: 1 }} keys={ pages } items={ pages }>
+            { page => ({ scale }: any) => (
                 <animated.div
                     className="col-4 col-md-3 col-lg-2"
                     style={{ transform: scale.interpolate((x: number) => `scale(${x})`) }}>
@@ -33,7 +32,7 @@ const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties })
                         <p className="lead">{ page }</p>
                     </Link>
                 </animated.div>
-            )) }
+            ) }
         </Trail>
     </div>
 );
@@ -55,7 +54,8 @@ export default class AdminPage extends React.Component<AdminPageProps, AdminPage
                 <div className="row">
                     <nav className="col-md-2 d-none d-md-block bg-light sidebar">
                         <div className="text-center mt-4 sidebar-heading">
-                            <img src={ process.env.PUBLIC_URL + '/ico/favicon.png' } style={{ maxWidth: 180 }} />
+                            <img src={ `${process.env.PUBLIC_URL}/ico/favicon.png` } style={{ maxWidth: 180 }}
+                                 alt="Web icon" />
                             <p className="mt-2">Panel de administración</p>
                         </div>
                         <div className="sidebar-sticky">

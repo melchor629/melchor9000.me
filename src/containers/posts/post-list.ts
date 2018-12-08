@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import PostListComponent from 'src/components/posts/post-list';
-import { Post } from 'src/redux/posts/reducers';
-import { State } from 'src/redux/reducers';
-import { changeTitle } from 'src/redux/title/actions';
-import { saveScroll, showMore } from 'src/redux/posts/actions';
+import PostListComponent from '../../components/posts/post-list';
+import { Post } from '../../redux/posts/reducers';
+import { State } from '../../redux/reducers';
+import { changeTitle } from '../../redux/title/actions';
+import { saveScroll, showMore } from '../../redux/posts/actions';
 
 export interface PostListStateToPros {
     scroll: number;

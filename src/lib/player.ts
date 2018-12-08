@@ -4,7 +4,7 @@ class Player {
     private soundBuffers: Map<String, { url: string, buffer: AudioBuffer | null }> = new Map();
     private context: AudioContext = new _AudioContext();
     private readonly canPlay: { m4a: boolean, mp3: boolean, ogg: boolean, wav: boolean };
-    private readonly defaultType: string;
+    private readonly defaultType: string = 'audio/mp3';
 
     constructor() {
         const a = new Audio();

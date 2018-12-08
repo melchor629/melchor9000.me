@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
-import Overlay from 'src/components/gallery/overlay';
+import { withNamespaces } from 'react-i18next';
+import Overlay from '../../components/gallery/overlay';
 import {
     loadDetailedPhoto, nextDetailed, prevDetailed, hideDetailed, toggleInfoPanel, loadingPhotoImage, loadedPhotoImage,
     loadMorePhotos, enablePhotoZoom, disablePhotoZoom
-} from 'src/redux/gallery/actions';
-import { State } from 'src/redux/reducers';
-import { GalleryPhoto } from 'src/redux/gallery/reducers';
+} from '../../redux/gallery/actions';
+import { State } from '../../redux/reducers';
+import { GalleryPhoto } from '../../redux/gallery/reducers';
 
 export interface OverlayStateToProps {
     currentPhoto: GalleryPhoto;
@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch: any): OverlayDispatchToProps => {
     };
 };
 
-export default translate()(connect(
+export default withNamespaces()(connect(
     mapStateToProps,
     mapDispatchToProps
 )(Overlay));

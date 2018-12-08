@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import { changeTitle } from 'src/redux/title/actions';
-import { subscribe, unsubscribe } from 'src/redux/database/actions';
-import ProjectsComponent from 'src/components/admin/projects';
-import { ProjectInfo as JajaProjectInfo } from 'src/containers/projects';
+import { changeTitle } from '../../redux/title/actions';
+import { subscribe, unsubscribe } from '../../redux/database/actions';
+import ProjectsComponent from '../../components/admin/projects';
+import { ProjectInfo as JajaProjectInfo } from '../../containers/projects';
 
 export type ProjectInfo = JajaProjectInfo & { _id?: string };
 

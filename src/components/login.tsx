@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
-import * as toast from 'src/lib/toast';
-import { LoginDispatchToProps, LoginStateToProps } from 'src/containers/login';
-import LoadSpinner from 'src/components/load-spinner';
-
-const { Spring, animated } = require('react-spring');
+import { Spring, animated } from 'react-spring';
+import * as toast from '../lib/toast';
+import { LoginDispatchToProps, LoginStateToProps } from '../containers/login';
+import LoadSpinner from './load-spinner';
 
 const formStyle: React.CSSProperties = {
     width: '100%',
@@ -33,7 +32,7 @@ interface LoginPageState {
     canRedirect: boolean;
 }
 
-type LoginPageProps = LoginStateToProps & LoginDispatchToProps & RouteComponentProps<null>;
+type LoginPageProps = LoginStateToProps & LoginDispatchToProps & RouteComponentProps<{}>;
 
 export default class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
 

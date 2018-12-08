@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
-import { GalleryPhoto } from 'src/redux/gallery/reducers';
+import { GalleryPhoto } from '../../redux/gallery/reducers';
 
 interface ZoomImageOverlayProps extends WithNamespaces {
     photo: GalleryPhoto;
@@ -23,15 +23,17 @@ const ZoomImageOverlay = ({ photo, onTouchStart, onTouchEnd, t }: ZoomImageOverl
 
     const orientationExif = photo.exif!.exif.find(entry => entry.tag === 'Orientation');
     if(orientationExif) {
-        const a = orientationExif.raw._content.match(orientationTagRegex)!;
-        const direction = a[2] === 'CCW' ? -1 : 1;
-        const angle = Number(a[1]);
-        styles.transform = `rotateZ(${angle * direction}deg)`;
-        if(a[1] !== '180') {
-            //I don't know why, but if the image is rotated, it is moved from the right position by (846, 846) px
-            styles.transform += ' translateX(-864px) translateY(-864px)';
-            styles2.width = photo.zoomSize!.h;
-            styles2.height = photo.zoomSize!.w;
+        const a = orientationExif.raw._content.match(orientationTagRegex);
+        if(a) {
+            const direction = a[2] === 'CCW' ? -1 : 1;
+            const angle = Number(a[1]);
+            styles.transform = `rotateZ(${angle * direction}deg)`;
+            if(a[1] !== '180') {
+                //I don't know why, but if the image is rotated, it is moved from the right position by (846, 846) px
+                styles.transform += ' translateX(-864px) translateY(-864px)';
+                styles2.width = photo.zoomSize!.h;
+                styles2.height = photo.zoomSize!.w;
+            }
         }
     }
 

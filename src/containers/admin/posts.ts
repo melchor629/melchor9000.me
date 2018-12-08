@@ -1,10 +1,10 @@
 import { User } from '@firebase/auth-types';
 import { connect } from 'react-redux';
-import { State } from 'src/redux/reducers';
-import { changeTitle } from 'src/redux/title/actions';
-import { subscribe, unsubscribe } from 'src/redux/database/actions';
-import PostsComponent from 'src/components/admin/posts';
-import { Post } from 'src/redux/posts/reducers';
+import { State } from '../../redux/reducers';
+import { changeTitle } from '../../redux/title/actions';
+import { subscribe, unsubscribe } from '../../redux/database/actions';
+import PostsComponent from '../../components/admin/posts';
+import { Post } from '../../redux/posts/reducers';
 
 export interface PostsStateToProps {
     user: User;

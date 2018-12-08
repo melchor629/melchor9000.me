@@ -1,16 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { default as Ink } from 'react-ink';
 import { withNamespaces, WithNamespaces } from 'react-i18next';
 import moment from 'moment';
-import { Post } from 'src/redux/posts/reducers';
-import { PostPageDispatchToProps, PostPageStateToProps } from 'src/containers/posts/post-page';
-import LoadSpinner from 'src/components/load-spinner/load-spinner';
-import Zoom from 'src/lib/zoom.js/zoom';
+import $ from 'jquery';
+import { Post } from '../../redux/posts/reducers';
+import { PostPageDispatchToProps, PostPageStateToProps } from '../../containers/posts/post-page';
+import LoadSpinner from '../load-spinner/load-spinner';
+import Zoom from '../../lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
-import DisqusWrapper from 'src/components/posts/disqus-wrapper';
-
-const $ = require('jquery');
+import DisqusWrapper from '../posts/disqus-wrapper';
 
 const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, children: string }) => (
     <div className="share-link" onClick={ onClick }>
@@ -170,7 +169,7 @@ interface PostPageState {
 
 export default class PostPage extends React.Component<PostPageProps, PostPageState> {
 
-    private zoomjs: Zoom;
+    private zoomjs: Zoom = new Zoom();
 
     constructor(props: PostPageProps) {
         super(props);
@@ -183,7 +182,6 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
     componentDidMount() {
         setTimeout(() => {
             window.scrollTo(window.scrollX, 0);
-            this.zoomjs = new Zoom();
             this.zoomjs.listen('img');
         });
 
@@ -236,7 +234,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
             <div>
                 <div className="circle-button share"
                      style={{ ...styles }}
-                     onClick={ () => $('#share-modal').modal('show') }>
+                     onClick={ () => ($('#share-modal') as any).modal('show') }>
                     <i className="fa fa-share"/>
                 </div>
 

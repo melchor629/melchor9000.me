@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import { translate } from 'react-i18next';
-import { removeError, subscribe, unsubscribe } from 'src/redux/database/actions';
-import { changeTitle } from 'src/redux/title/actions';
-import { State } from 'src/redux/reducers';
-import ProjectsComponent from 'src/components/projects/projects';
+import { withNamespaces } from 'react-i18next';
+import { removeError, subscribe, unsubscribe } from '../redux/database/actions';
+import { changeTitle } from '../redux/title/actions';
+import { State } from '../redux/reducers';
+import ProjectsComponent from '../components/projects/projects';
 
 export interface ProjectInfo {
     title: string;
@@ -43,5 +43,5 @@ const mapDispatchToProps = (dispatch: any): ProjectDispatchToProps => ({
     changeTitle: (title: String) => dispatch(changeTitle(title)),
 });
 
-export const Projects = translate()(connect(mapStateToProps, mapDispatchToProps)(ProjectsComponent));
+export const Projects = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(ProjectsComponent));
 export const Component = Projects;

@@ -77,7 +77,7 @@ const keys = {
 export class Sequence {
     readonly seq: string[];
     readonly keys: string[];
-    doneCbk: () => void;
+    doneCbk?: () => void;
     private str: string;
 
     constructor(str: string) {
@@ -113,9 +113,9 @@ export class Sequence {
 }
 
 export class Cheat {
-    public onnext: (key: string, sequence: string) => void;
-    public ondone: (sequence: Sequence) => void;
-    public onfail: () => void;
+    public onnext?: (key: string, sequence: string) => void;
+    public ondone?: (sequence: Sequence) => void;
+    public onfail?: () => void;
     private readonly seqs: Sequence[];
     private matchingSeqs: Sequence[];
     private keysPressed: string[];

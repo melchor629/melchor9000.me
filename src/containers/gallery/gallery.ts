@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import GalleryComponent from 'src/components/gallery/gallery';
-import { State } from 'src/redux/reducers';
-import { GalleryPhoto } from 'src/redux/gallery/reducers';
-import { loadFirstPhotos, loadMorePhotos } from 'src/redux/gallery/actions.js';
-import { changeTitle } from 'src/redux/title/actions.js';
+import GalleryComponent from '../../components/gallery/gallery';
+import { State } from '../../redux/reducers';
+import { GalleryPhoto } from '../../redux/gallery/reducers';
+import { loadFirstPhotos, loadMorePhotos } from '../../redux/gallery/actions';
+import { changeTitle } from '../../redux/title/actions';
 
 export interface GalleryStateToProps {
     primary: string | null;

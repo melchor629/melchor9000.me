@@ -1,5 +1,5 @@
 import React from 'react';
-import { isValid, Validator } from 'src/lib/validators';
+import { isValid, Validator } from '../../lib/validators';
 
 interface AdminInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     type: string;
