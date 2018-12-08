@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { WithNamespaces } from 'react-i18next';
 import * as toast from '../../lib/toast';
 import { Cheat } from '../../lib/cheat';
@@ -8,7 +8,7 @@ import Tapable from '../tapable';
 import { IndexDispatchToProps, IndexStateToProps } from '../../containers/home';
 const Parallax = require('parallax-js');
 
-import './home.css';
+import './home.scss';
 
 const images = [
     'img/Pixel Art.png',

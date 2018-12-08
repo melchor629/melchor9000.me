@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { Route } from 'react-router';
 import { RouteComponentProps } from 'react-router';
 import { PostsDispatchToProps, PostsStateToProps } from '../../containers/posts/posts.interfaces';
 import { PostList } from '../../containers/posts/post-list';
 import { PostPage } from '../../containers/posts/post-page';
-import './posts.css';
+import './posts.scss';
 
 type PostsProps = PostsStateToProps & PostsDispatchToProps & RouteComponentProps<{}>;
 

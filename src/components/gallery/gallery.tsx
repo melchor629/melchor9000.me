@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import Header from './header';
 import PhotoItem from '../../containers/gallery/photo-item';
 import Overlay from '../../containers/gallery/overlay';
 import { GalleryPhoto } from '../../redux/gallery/reducers';
 import { GalleryDispatchToProps, GalleryStateToProps } from '../../containers/gallery/gallery';
 const $ = require('jquery');
-import './gallery.css';
+import './gallery.scss';
 
 type GalleryProps = GalleryStateToProps & GalleryDispatchToProps & {
     userId: string;

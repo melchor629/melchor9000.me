@@ -4,7 +4,7 @@ import * as toast from '../../lib/toast';
 import LoadSpinner from '../load-spinner';
 import Project from './project';
 import { ProjectDispatchToProps, ProjectStateToProps } from '../../containers/projects';
-import './projects.css';
+import './projects.scss';
 
 type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & WithNamespaces;
 

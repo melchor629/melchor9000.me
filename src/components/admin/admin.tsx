@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, NavLink } from 'react-router-dom';
 import { Trail, animated } from 'react-spring';
@@ -6,7 +6,7 @@ import { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/
 import { Posts } from '../../containers/admin/posts';
 import { Projects } from '../../containers/admin/projects';
 import { Logout } from '../../containers/admin/logout';
-import './admin.css';
+import './admin.scss';
 
 const containerStyle: React.CSSProperties = {
     width: '100%',

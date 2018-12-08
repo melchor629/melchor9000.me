@@ -1,5 +1,5 @@
 import React from 'react';
-import './load-spinner.css';
+import './load-spinner.scss';
 
 interface LoadSpinnerProps {
     show?: boolean;

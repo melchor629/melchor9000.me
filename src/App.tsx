@@ -11,7 +11,7 @@ import { changeTitle } from './redux/title/actions';
 import { withDefaultContainer } from './components/default-container';
 import asyncComponent from './components/async-component';
 
-import './app.css';
+import './app.scss';
 
 const PageNotFound = asyncComponent(() => import('./components/404/404'));
 const Login = asyncComponent(() => import('./containers/login'));

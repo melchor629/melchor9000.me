@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './footer.css';
+import './footer.scss';
 
 const links = [
     { url: 'https://github.com/melchor629/melchor9000.me', className: 'code' },
