@@ -30,7 +30,7 @@ firebase.initializeApp({
     try {
         const fs = firebase.firestore();
         fs.settings({ timestampsInSnapshots: true });
-        await fs.enablePersistence();
+        await fs.enablePersistence({ experimentalTabSynchronization: true });
         await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
     } catch(error) {
         console.error(error);

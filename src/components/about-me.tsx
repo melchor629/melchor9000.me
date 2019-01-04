@@ -111,7 +111,7 @@ const AboutMe = ({ t }: WithNamespaces) => (
         <h2 id="¿tienes-un-pepino-de-interné">{ t('about-me.isYourNetworkConnectionSpeedy.question') }</h2>
         <p>{ t('about-me.isYourNetworkConnectionSpeedy.answer') }</p>
         <p>
-            <img src="https://www.speedtest.net/result/7330550496.png" style={{ maxWidth: '100%' }} alt="Speed Test" />
+            <img src="https://www.speedtest.net/result/7930548398.png" style={{ maxWidth: '100%' }} alt="Speed Test" />
         </p>
 
         <h2 id="quiero-saber-más...">{ t('about-me.IWannaKnowMore') }</h2>
