@@ -21,6 +21,7 @@ const images = [
     'https://pbs.twimg.com/media/Ci-4rIQWgAABok3.jpg:large',
     'https://pbs.twimg.com/media/Cx9ZotYXUAAhih5.jpg:large',
     'https://pbs.twimg.com/media/CyiKCaAXgAAfp84.jpg:large',
+    'https://pbs.twimg.com/profile_images/1074988668769710080/R0klIFsf_400x400.jpg',
 ];
 
 const specialDatesImages: { day: number, month: number, image: string | string[] }[] = [
