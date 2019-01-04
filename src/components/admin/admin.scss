@@ -13,11 +13,19 @@
   .nav-link {
     font-weight: 500;
     color: #333;
+
+    .darkmode & {
+      color: #ccc;
+    }
   }
 
   .nav-link .feather {
     margin-right: 4px;
     color: #999;
+
+    .darkmode & {
+      color: #bbb;
+    }
   }
 
   .nav-link.active {

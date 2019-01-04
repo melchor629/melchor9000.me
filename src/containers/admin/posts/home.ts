@@ -9,6 +9,7 @@ export interface PostsHomeStateToProps {
     posts: Post[] | null | undefined;
     deleting: boolean;
     errorSaving: any | null;
+    darkMode: boolean;
 }
 
 export interface PostsHomeDispatchToProps {
@@ -21,6 +22,7 @@ const mapStateToProps = (state: State): PostsHomeStateToProps => ({
     posts: state.database.snapshots.posts,
     deleting: state.database.doing.posts,
     errorSaving: state.database.errors.posts,
+    darkMode: state.effects.darkMode,
 });
 
 const mapDispatchToProps = (dispatch: any): PostsHomeDispatchToProps => ({

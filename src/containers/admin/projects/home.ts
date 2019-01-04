@@ -9,6 +9,7 @@ export interface ProjectsHomeStateToProps {
     projects: ProjectInfo[];
     deleting: boolean;
     errorDeleting: any | null;
+    darkMode: boolean;
 }
 
 export interface ProjectsHomeDispatchToProps {
@@ -22,6 +23,7 @@ const mapStateToProps = (state: State): ProjectsHomeStateToProps => ({
         .sort((a, b) => a.title.localeCompare(b.title)),
     deleting: state.database.doing.posts,
     errorDeleting: state.database.errors.posts,
+    darkMode: state.effects.darkMode,
 });
 
 const mapDispatchToProps = (dispatch: any): ProjectsHomeDispatchToProps => ({

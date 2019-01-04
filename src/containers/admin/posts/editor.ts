@@ -8,6 +8,7 @@ import { Post } from '../../../redux/posts/reducers';
 export interface PostEditorStateToProps {
     saving: boolean;
     errorSaving: any | null;
+    darkMode: boolean;
 }
 
 export interface PostEditorDispatchToProps {
@@ -20,6 +21,7 @@ export interface PostEditorDispatchToProps {
 const mapStateToProps = (state: State): PostEditorStateToProps => ({
     saving: state.database.doing.posts,
     errorSaving: state.database.errors.posts,
+    darkMode: state.effects.darkMode,
 });
 
 const mapDispatchToProps = (dispatch: any): PostEditorDispatchToProps => ({

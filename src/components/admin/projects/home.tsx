@@ -35,6 +35,7 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
     }
 
     render() {
+        const { darkMode } = this.props;
         return (
             <div>
                 <div className="row align-items-center">
@@ -45,8 +46,8 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
                         </Link>
                     </div>
                 </div>
-                <table className="table table-light table-hover">
-                    <thead className="thead-light">
+                <table className={ `table ${darkMode ? 'table-dark' : 'table-light'} table-hover` }>
+                    <thead className={ darkMode ? 'thead-dark' : 'thead-light'}>
                     <tr>
                         <th>Título</th>
                         <th>Technologías</th>

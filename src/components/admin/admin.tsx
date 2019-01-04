@@ -49,10 +49,11 @@ export default class AdminPage extends React.Component<AdminPageProps, AdminPage
     }
 
     render() {
+        const { darkMode } = this.props;
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+                    <nav className={ `col-md-2 d-none d-md-block ${darkMode ? 'bg-dark' : 'bg-light'} sidebar` }>
                         <div className="text-center mt-4 sidebar-heading">
                             <img src={ `${process.env.PUBLIC_URL}/ico/favicon.png` } style={{ maxWidth: 180 }}
                                  alt="Web icon" />

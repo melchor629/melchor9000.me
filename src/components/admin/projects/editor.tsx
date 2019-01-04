@@ -98,6 +98,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
         const {
             title, description, repo, demo, web, image, technologies, preview, exists, intlDescription
         } = this.state;
+        const { darkMode } = this.props;
 
         return (
             <div>
@@ -228,7 +229,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                             overflowY: 'scroll',
                             transform: vals.val.interpolate((x: number) => `translateX(${(1 - x) * 300}px)`)
                         }}>
-                            <Project project={ this.getProject() as ProjectInfo } darkMode={ false } />
+                            <Project project={ this.getProject() as ProjectInfo } darkMode={ darkMode } />
                         </animated.div>
                     )) }
                 </Transition>
@@ -243,7 +244,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                             left: 0,
                             width: '100%',
                             height: 'calc(100vh - 30px)',
-                            backgroundColor: 'rgba(255, 255, 255, 0.55)',
+                            backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.55)',
                             zIndex: 1,
                             opacity: vals.val.interpolate((x: number) => `${x}`)
                         }}>

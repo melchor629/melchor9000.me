@@ -13,9 +13,9 @@ import i18n from './i18n';
 
 import 'font-awesome/css/font-awesome.css';
 
-require('firebase/firestore');
-require('firebase/auth');
-require('firebase/storage');
+import 'firebase/firestore';
+import 'firebase/auth';
+import 'firebase/storage';
 
 firebase.initializeApp({
     apiKey: 'AIzaSyCCu7x7WKTpZkWAtc4Z0HZTm8iJE5gl1cU',

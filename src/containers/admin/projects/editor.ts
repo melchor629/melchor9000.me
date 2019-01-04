@@ -8,6 +8,7 @@ import { ProjectInfo } from '../projects';
 export interface ProjectEditorStateToProps {
     saving: boolean;
     errorSaving: any | null;
+    darkMode: boolean;
 }
 
 export interface ProjectEditorDispatchToProps {
@@ -20,6 +21,7 @@ export interface ProjectEditorDispatchToProps {
 const mapStateToProps = (state: State): ProjectEditorStateToProps => ({
     saving: state.database.doing.projects,
     errorSaving: state.database.errors.projects,
+    darkMode: state.effects.darkMode,
 });
 
 const mapDispatchToProps = (dispatch: (...args: any) => void): ProjectEditorDispatchToProps => ({

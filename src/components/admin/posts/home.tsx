@@ -36,6 +36,7 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
     }
 
     render() {
+        const { darkMode } = this.props;
         const postUrl = (post: Post) => {
             const date = post.date.toDate();
             return `/blog/${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}/${post.url}`;
@@ -51,8 +52,8 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                         </Link>
                     </div>
                 </div>
-                <table className="table table-light table-hover">
-                    <thead className="thead-light">
+                <table className={ `table ${darkMode ? 'table-dark' : 'table-light'} table-hover` }>
+                    <thead className={ darkMode ? 'thead-dark' : 'thead-light'}>
                     <tr>
                         <th>Título</th>
                         <th>Fecha de publicación</th>

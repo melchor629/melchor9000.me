@@ -152,6 +152,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
     render() {
         const { title, img, url, publishDate, publishDateString, validImg, content, contentRendered,
                 preview } = this.state;
+        const { darkMode } = this.props;
 
         return (
             <div>
@@ -227,7 +228,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                             left: 0,
                             width: '100%',
                             height: 'calc(100vh - 30px)',
-                            backgroundColor: 'white',
+                            backgroundColor: darkMode ? '#222' : 'white',
                             zIndex: 1,
                             transform: (vals.val as any).interpolate((x: number) => `translateX(${(1 - x) * 100}vw)`)
                         }}>
@@ -259,7 +260,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                             left: 0,
                             width: '100%',
                             height: 'calc(100vh - 30px)',
-                            backgroundColor: 'rgba(255, 255, 255, 0.55)',
+                            backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.55)',
                             zIndex: 1,
                             opacity: vals.val.interpolate((x: number) => `${x}`)
                         }}>

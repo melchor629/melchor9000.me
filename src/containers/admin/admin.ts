@@ -7,6 +7,7 @@ import AdminComponent from '../../components/admin/admin';
 
 export interface AdminStateToProps {
     user: User;
+    darkMode: boolean;
 }
 
 export interface AdminDispatchToProps {
@@ -16,6 +17,7 @@ export interface AdminDispatchToProps {
 
 const mapStateToProps = (state: State): AdminStateToProps => ({
     user: state.auth.user!,
+    darkMode: state.effects.darkMode,
 });
 
 const mapDispatchToProps = (dispatch: any): AdminDispatchToProps => ({

@@ -282,8 +282,14 @@ body.darkmode { background-color: rgb(40, 40, 40) }
     border: none;
     border-bottom: 1px solid $md-grey-600;
     border-radius: 0;
-    background: $md-grey-100;
+    background-color: $md-grey-100;
     transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
+
+    .darkmode & {
+      background-color: $md-grey-800;
+      border-bottom: 1px solid $md-grey-400;
+      color: $md-grey-100;
+    }
 
     &:focus {
       box-shadow: none;
@@ -302,6 +308,10 @@ body.darkmode { background-color: rgb(40, 40, 40) }
     &.is-valid {
       border-bottom-color: #28a745;
     }
+  }
+
+  .darkmode & label {
+    color: $md-grey-400;
   }
 }
 
