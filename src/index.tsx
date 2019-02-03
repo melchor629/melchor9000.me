@@ -8,10 +8,8 @@ import firebase from 'firebase/app';
 import { I18nextProvider } from 'react-i18next';
 import App from './App';
 import Footer from './Footer';
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 import i18n from './i18n';
-
-import 'font-awesome/css/font-awesome.css';
 
 import 'firebase/firestore';
 import 'firebase/auth';
@@ -64,5 +62,5 @@ firebase.initializeApp({
         document.getElementById('footer')
     );
 
-    registerServiceWorker();
+    serviceWorker.register();
 })();

@@ -282,11 +282,9 @@ export default class Home extends React.Component<IndexProps, StateProps> {
         if(prevProps.darkMode !== this.props.darkMode) {
             if(this.props.darkMode) {
                 const mensajes = this.props.t('.darkMode', { returnObjects: true });
-                console.log(mensajes);
                 toast.info(mensajes[Math.trunc(Math.random() * mensajes.length)]);
             } else {
                 const mensajes = this.props.t('.lightMode', { returnObjects: true });
-                console.log(mensajes);
                 toast.info(mensajes[Math.trunc(Math.random() * mensajes.length)]);
             }
         }
@@ -297,7 +295,6 @@ export default class Home extends React.Component<IndexProps, StateProps> {
     }
 
     onWindowKeyDown(event: KeyboardEvent) {
-        event.preventDefault();
         this.cheat.keydown(event.code);
     }
 
