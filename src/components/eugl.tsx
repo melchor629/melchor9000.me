@@ -185,7 +185,8 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
                     { imageToCrop && <Cropper src={ imageToCrop } aspectRatio={ 1 }
                                               style={{ width: '400px', height: '225px' }} ref={ this.cropperRef } /> }
                     <input type="button" className="btn btn-sm btn-success mt-2" onClick={ this.croppedImage }
-                           style={{ display: imageToCrop ? 'block' : 'none' }} value={ t('eugl.showMyImage') } />
+                           style={{ display: imageToCrop ? 'block' : 'none' }}
+                           value={ t<string>('eugl.showMyImage') } />
                 </div>
             </div>
         );

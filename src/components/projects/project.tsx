@@ -1,11 +1,11 @@
 import React from 'react';
-import { i18n as I18n } from 'i18next';
+import i18next from 'i18next';
 import { WithNamespaces, withNamespaces } from 'react-i18next';
 import { ProjectInfo } from '../../containers/projects';
 
 type ProjectProps = { project: ProjectInfo, darkMode: boolean } & WithNamespaces;
 
-const getDescription = (project: ProjectInfo, i18n: I18n): string => {
+const getDescription = (project: ProjectInfo, i18n: i18next.i18n): string => {
     if(project.intlDescription) {
         let avail = project.intlDescription[i18n.language];
         if(avail) {

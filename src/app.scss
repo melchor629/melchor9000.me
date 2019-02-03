@@ -33,11 +33,19 @@ a {
 
 a:link, a:visited, a:focus, ~a.btn {
   color: $primary-color-normal;
+
+  .darkmode & {
+    color: $primary-color-lighter;
+  }
 }
 
 a:hover {
   color: $primary-color-light;
   text-decoration: none;
+
+  .darkmode & {
+    color: $primary-color-light;
+  }
 }
 
 /**
@@ -108,7 +116,7 @@ a:hover {
   }
 
   .navbar-brand {
-    color: $accent-color;
+    color: $accent-color !important;
     font-weight: 400;
   }
 
@@ -180,13 +188,13 @@ body.darkmode { background-color: rgb(40, 40, 40) }
     color: white;
   }
 
-  a {
+  /*a {
     color: #9fa8da;
 
     &:hover {
       color: #3f51b5;
     }
-  }
+  }*/
 
   .zoom-overlay {
     background: rgb(40, 40, 40);

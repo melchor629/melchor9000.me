@@ -110,9 +110,9 @@ export default class Viz extends React.Component<VizProps, VizState> {
 
                 <div className="d-flex justify-content-center btn-group mt-2" role="group"
                      aria-label="Botones de reproducir y pausa">
-                    <input type="button" className="btn btn-secondary" value={ t('viz.play') } id="play"
+                    <input type="button" className="btn btn-secondary" value={ t<string>('viz.play') } id="play"
                            onClick={ this.playPressed } disabled={ !fileName || !!audioSource || seeking } />
-                    <input type="button" className="btn btn-secondary" value={ t('viz.pause') } id="stop"
+                    <input type="button" className="btn btn-secondary" value={ t<string>('viz.pause') } id="stop"
                            onClick={ this.stopPressed } disabled={ !audioSource } />
                 </div>
 

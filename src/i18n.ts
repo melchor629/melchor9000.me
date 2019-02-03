@@ -21,6 +21,6 @@ i18n
         react: {
             wait: true
         }
-    }).on('initialized', () => moment.locale(i18n.language));
+    }).then(() => moment.locale(i18n.language));
 
 export default i18n;

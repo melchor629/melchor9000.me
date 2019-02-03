@@ -27,7 +27,7 @@ firebase.initializeApp({
 (async () => {
     try {
         const fs = firebase.firestore();
-        fs.settings({ timestampsInSnapshots: true });
+        fs.settings({ cacheSizeBytes: 4000 * 1000 });
         await fs.enablePersistence({ experimentalTabSynchronization: true });
         await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
     } catch(error) {
