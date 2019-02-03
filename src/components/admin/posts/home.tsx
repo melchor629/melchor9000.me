@@ -5,6 +5,7 @@ import * as toast from '../../../lib/toast';
 import { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home';
 import { Post } from '../../../redux/posts/reducers';
 import DeleteModal from '../delete-modal';
+import Helmet from 'react-helmet';
 
 type PostsPageProps = PostsHomeStateToProps & PostsHomeDispatchToProps;
 
@@ -15,10 +16,6 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
         this.state = {
             postToDelete: null,
         };
-    }
-
-    componentDidMount() {
-        this.props.changeTitle('Posts - Admin');
     }
 
     componentDidUpdate(prevProps: PostsPageProps) {
@@ -44,6 +41,11 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
 
         return (
             <div>
+
+                <Helmet>
+                    <title>Posts - Admin</title>
+                </Helmet>
+
                 <div className="row align-items-center">
                     <div className="col"><h1>Posts</h1></div>
                     <div className="col-auto">

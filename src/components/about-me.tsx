@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trans, WithNamespaces, withNamespaces } from 'react-i18next';
+import Helmet from 'react-helmet';
 
 const ProgressBar = ({ n, children }: { n: number, children?: any }) => (
     <div className="progress">
@@ -9,6 +10,13 @@ const ProgressBar = ({ n, children }: { n: number, children?: any }) => (
 
 const AboutMe = ({ t }: WithNamespaces) => (
     <div>
+
+        <Helmet>
+            <title>About me</title>
+            <meta name="Description"
+                  content="A page with some questions and answers about me - melchor9000/melchor629" />
+        </Helmet>
+
         <h2 id="¿que-música-escuchas">{ t('about-me.whatMusicDoIListen.question') }</h2>
         <p>
             <Trans i18nKey="about-me.whatMusicDoIListen.answer">

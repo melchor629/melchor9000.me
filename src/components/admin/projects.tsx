@@ -9,7 +9,6 @@ type ProjectsPageProps = ProjectsStateToProps & ProjectsDispatchToProps;
 export default class Posts extends React.Component<ProjectsPageProps> {
 
     componentDidMount() {
-        this.props.changeTitle('Projects - Admin');
         this.props.subscribe();
     }
 

@@ -4,9 +4,10 @@ import { Spring } from 'react-spring';
 import * as toast from '../lib/toast';
 import Visualizer from './visualizer';
 import Player from '../lib/player';
-import { VizDispatchToProps, VizStateToProps } from '../containers/viz';
+import { VizStateToProps } from '../containers/viz';
+import Helmet from 'react-helmet';
 
-type VizProps = VizStateToProps & VizDispatchToProps & WithNamespaces;
+type VizProps = VizStateToProps & WithNamespaces;
 //TODO terminar
 
 interface VizState {
@@ -56,10 +57,6 @@ export default class Viz extends React.Component<VizProps, VizState> {
         this.dropped = this.dropped.bind(this);
     }
 
-    componentDidMount() {
-        this.props.changeTitle('Viz');
-    }
-
     componentWillUnmount() {
         if(this.positionTimer) {
             cancelAnimationFrame(this.positionTimer);
@@ -74,6 +71,13 @@ export default class Viz extends React.Component<VizProps, VizState> {
 
         return (
             <div onDragOver={ this.enterDrag } onDragLeave={ this.exitDrag } onDrop={ this.dropped }>
+
+                <Helmet>
+                    <title>Viz</title>
+                    <meta name="Description"
+                          content="Experiment: Audio vizualizer in the browser" />
+                </Helmet>
+
                 <div className="row">
                     <p className="lead">
                         <Trans i18nKey="viz.description">

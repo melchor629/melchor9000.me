@@ -10,6 +10,7 @@ import LoadSpinner from '../../load-spinner';
 import { Post } from '../../../redux/posts/reducers';
 import { AdminInput } from '../admin-input';
 import { dateValidator, valueValidator } from '../../../lib/validators';
+import Helmet from 'react-helmet';
 
 const speakingurl = require('speakingurl');
 
@@ -107,7 +108,6 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                 original: { ...post, _id },
                 saving: false,
             });
-            this.props.changeTitle('Editing: ' + post.title);
             firebase.storage()
                 .ref(post.file)
                 .getDownloadURL()
@@ -127,8 +127,6 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
             firebase.firestore().collection('posts').doc(this.props.match.params.id).get().then(obj => {
                 setStateFromPost(obj.data(), this.props.match.params.id!);
             });
-        } else {
-            this.props.changeTitle('Creating new post');
         }
     }
 
@@ -156,6 +154,11 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
 
         return (
             <div>
+
+                <Helmet>
+                    <title>{this.state.original !== null ? `Editing: ${title}` : `Creating new post: ${title}`}</title>
+                </Helmet>
+
                 <h1>Crear nueva entrada</h1>
 
                 <form>

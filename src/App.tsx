@@ -4,10 +4,10 @@ import { Switch, withRouter } from 'react-router';
 import { Link, Route, RouteComponentProps } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { withNamespaces, WithNamespaces } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import { routes } from './routes';
 import { State } from './redux/reducers';
 import PrivateRoute from './containers/private-route';
-import { changeTitle } from './redux/title/actions';
 import { withDefaultContainer } from './components/default-container';
 import asyncComponent from './components/async-component';
 
@@ -22,8 +22,7 @@ interface AppStateToProps {
     darkMode?: boolean | null;
 }
 
-type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & { changeTitle: (title: string) => void } &
-    WithNamespaces;
+type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & WithNamespaces;
 
 interface AppState {
     offcanvas: boolean;
@@ -79,6 +78,14 @@ class App extends React.Component<AppPropTypes, AppState> {
         return (
             <div className="wrap">
 
+                <Helmet titleTemplate="%s - The abode of melchor9000"
+                        defaultTitle="The abode of melchor9000">
+                    <base href={ process.env.PUBLIC_URL } />
+                    <meta name="Description"
+                          content="The abode of melchor9000 - Personal webpage for Melchor Alejo Garau Madrigal
+                           (aka melchor9000, aka melchor629)" />
+                </Helmet>
+
                 <nav className="navbar navbar-default navbar-dark navbar-expand-md fixed-top">
                     <Link className="navbar-brand" to="/">The Abode of melchor9000</Link>
                     <button className="navbar-toggler" type="button" onClick={ this.toggleNavigation }
@@ -128,7 +135,6 @@ class App extends React.Component<AppPropTypes, AppState> {
     }
 
     private navLinkPressed(route: any) {
-        this.props.changeTitle(this.props.t(`${route.route.substr(1)}.title`, { defaultValue: route.title }));
         this.setState({ offcanvas: false });
     }
 }
@@ -139,8 +145,4 @@ const mapStateToProps = (state: State): AppStateToProps => ({
     darkMode: state.effects.darkMode
 });
 
-const mapDispatchToProps = (dispatch: any): { changeTitle: (title: string) => void } => ({
-    changeTitle: (title: string) => dispatch(changeTitle(title)),
-});
-
-export default withRouter(withNamespaces('translations')(connect(mapStateToProps, mapDispatchToProps)(App)));
+export default withRouter(withNamespaces('translations')(connect(mapStateToProps)(App)));

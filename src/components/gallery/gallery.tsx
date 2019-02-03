@@ -6,6 +6,7 @@ import { GalleryPhoto } from '../../redux/gallery/reducers';
 import { GalleryDispatchToProps, GalleryStateToProps } from '../../containers/gallery/gallery';
 const $ = require('jquery');
 import './gallery.scss';
+import Helmet from 'react-helmet';
 
 type GalleryProps = GalleryStateToProps & GalleryDispatchToProps & {
     userId: string;
@@ -16,7 +17,6 @@ type GalleryProps = GalleryStateToProps & GalleryDispatchToProps & {
 export default class Gallery extends React.Component<GalleryProps> {
 
     componentDidMount() {
-        this.props.changeTitle('Gallery');
         this.props.loadFirstPhotos();
         //No se me ocurre mejor idea para esto :(
         this.onScroll = this.onScroll.bind(this);
@@ -38,6 +38,13 @@ export default class Gallery extends React.Component<GalleryProps> {
         //Loading spinner from http://codepen.io/jczimm/pen/vEBpoL
         return (
             <div style={{ paddingTop: 300 }}>
+
+                <Helmet>
+                    <title>Gallery</title>
+                    <meta name="Description"
+                          content="Gallery of photos taken by melchor9000" />
+                </Helmet>
+
                 <Header photo={ primary } />
 
                 <div className="d-flex flex-wrap gallery">

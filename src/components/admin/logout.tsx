@@ -6,7 +6,6 @@ export default class LogoutPage extends React.Component<LogoutStateToProps & Log
 
     componentDidMount() {
         this.props.logOut();
-        this.props.changeTitle('Logging out…');
     }
 
     render() {

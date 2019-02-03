@@ -10,6 +10,7 @@ import LoadSpinner from '../load-spinner/load-spinner';
 import Zoom from '../../lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
 import DisqusWrapper from '../posts/disqus-wrapper';
+import Helmet from 'react-helmet';
 
 const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, children: string }) => (
     <div className="share-link" onClick={ onClick }>
@@ -232,6 +233,12 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
 
         return (
             <div>
+
+                <Helmet>
+                    <title>{this.state.notFound ? 'Post not found' : (this.state.entry === null ? `Loading... - Posts` :
+                        `${this.state.entry.title} - Posts`)}</title>
+                </Helmet>
+
                 <div className="circle-button share"
                      style={{ ...styles }}
                      onClick={ () => ($('#share-modal') as any).modal('show') }>
@@ -254,11 +261,9 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
             .filter(post => post.url === title);
         if(postsMatching.length === 1) {
             setTimeout(() => this.setState({ entry: postsMatching[0] }));
-            this.props.changeTitle(postsMatching[0].title);
             this.props.loadPost(postsMatching[0]);
         } else if(postsMatching.length === 0) {
             setTimeout(() => this.setState({ notFound: true }));
-            this.props.changeTitle('Post no encontrado');
         } else {
             console.error(postsMatching);
             throw new Error('More than one post matches this url');

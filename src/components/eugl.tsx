@@ -5,6 +5,7 @@ import * as toast from '../lib/toast';
 
 const Cropper = require('react-cropper').default;
 import 'cropperjs/dist/cropper.css';
+import Helmet from 'react-helmet';
 
 async function sleep(time: number) {
     return new Promise(accept => setTimeout(() => accept(), time * 1000));
@@ -161,6 +162,13 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
         const { t } = this.props;
         return (
             <div style={{ width: '100%', height: '100%' }} ref={ this.containerRef }>
+
+                <Helmet>
+                    <title>Espacio Euclideo</title>
+                    <meta name="Description"
+                          content="An experiment with OpenGL, Euclides and star field (the screensaver)" />
+                </Helmet>
+
                 <div className="someData backdrop"
                      style={{...this.someDataStyle, zIndex: someDataZIndex, top: 40 - 40 * someDataZIndex }}>
                     { EuglPage.debugInfo && <div>

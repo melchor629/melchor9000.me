@@ -9,6 +9,7 @@ import { IndexDispatchToProps, IndexStateToProps } from '../../containers/home';
 const Parallax = require('parallax-js');
 
 import './home.scss';
+import Helmet from 'react-helmet';
 
 const images = [
     'img/Pixel Art.png',
@@ -265,7 +266,6 @@ export default class Home extends React.Component<IndexProps, StateProps> {
         window.addEventListener('keydown', this.onWindowKeyDown);
         window.addEventListener('blur', this.onWindowBlur);
         this.parallax = new Parallax(document.querySelector('.profile_img'), { pointerEvents: true });
-        this.props.changeTitle('Home');
     }
 
     componentWillUnmount() {
@@ -315,6 +315,11 @@ export default class Home extends React.Component<IndexProps, StateProps> {
 
         return (
             <div>
+
+                <Helmet>
+                    <title>Home</title>
+                </Helmet>
+
                 <div className="d-flex justify-content-center align-items-center">
                     <div className="profile">
                         <div className="profile_name">

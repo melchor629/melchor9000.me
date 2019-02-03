@@ -3,6 +3,7 @@ import $ from 'jquery';
 import { PostListDispatchToProps, PostListStateToPros } from '../../containers/posts/post-list';
 import LoadSpinner from '../load-spinner';
 import Entry from './post-entry';
+import Helmet from 'react-helmet';
 
 type PostListProps = PostListStateToPros & PostListDispatchToProps;
 
@@ -18,7 +19,6 @@ export default class PostList extends React.Component<PostListProps> {
         setTimeout(() => {
             window.scrollTo(window.scrollX, this.props.scroll);
         });
-        this.props.changeTitle('Posts');
 
         window.addEventListener('scroll', this.windowScrolled, { passive: true });
         window.addEventListener('resize', this.windowResized, { passive: true });
@@ -42,12 +42,24 @@ export default class PostList extends React.Component<PostListProps> {
             let entries = this.props.posts.map((entry, i) => <Entry entry={entry} key={i}/>);
             return (
                 <div className="mainPage d-flex flex-wrap">
+
+                    <Helmet>
+                        <title>Posts</title>
+                        <meta name="Description"
+                              content="Blog of melchor9000" />
+                    </Helmet>
+
                     { entries }
                 </div>
             );
         } else {
             return (
                 <div className="mainPage row justify-content-center">
+
+                    <Helmet>
+                        <title>Loading... - Posts</title>
+                    </Helmet>
+
                     <LoadSpinner />
                 </div>
             );

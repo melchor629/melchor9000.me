@@ -10,8 +10,6 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read http://bit.ly/CRA-PWA
 
-import { warning } from './lib/toast';
-
 const isLocalhost = Boolean(
     window.location.hostname === 'localhost' ||
     // [::1] is the IPv6 localhost address.
@@ -25,6 +23,7 @@ const isLocalhost = Boolean(
 type Config = {
     onSuccess?: (registration: ServiceWorkerRegistration) => void;
     onUpdate?: (registration: ServiceWorkerRegistration) => void;
+    onFail?: () => void;
 };
 
 export function register(config?: Config) {
@@ -41,7 +40,7 @@ export function register(config?: Config) {
             return;
         }
 
-        window.addEventListener('load', () => {
+        const onLoad = () => {
             const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
             if (isLocalhost) {
@@ -60,7 +59,13 @@ export function register(config?: Config) {
                 // Is not localhost. Just register service worker
                 registerValidSW(swUrl, config);
             }
-        });
+        };
+
+        if(document.readyState !== 'complete') {
+            window.addEventListener('load', onLoad);
+        } else {
+            onLoad();
+        }
     }
 }
 
@@ -83,7 +88,6 @@ function registerValidSW(swUrl: string, config?: Config) {
                                 'New content is available and will be used when all ' +
                                 'tabs for this page are closed. See http://bit.ly/CRA-PWA.'
                             );
-                            warning('Ey, actualiza la web para obtener los últimos cambios', { autoClose: false });
 
                             // Execute callback
                             if (config && config.onUpdate) {
@@ -134,8 +138,9 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
             console.log(
                 'No internet connection found. App is running in offline mode.'
             );
-            warning('Hemos detectado que no estás conectado a internet. ' +
-                'Habrán cosas que no funcionarán correctamente :(', { autoClose: false });
+            if(config && config.onFail) {
+                config.onFail();
+            }
         });
 }
 

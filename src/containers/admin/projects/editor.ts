@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { State } from '../../../redux/reducers';
-import { changeTitle } from '../../../redux/title/actions';
 import { insert, removeError, update } from '../../../redux/database/actions';
 import ProjectEditorComponent from '../../../components/admin/projects/editor';
 import { ProjectInfo } from '../projects';
@@ -14,7 +13,6 @@ export interface ProjectEditorStateToProps {
 export interface ProjectEditorDispatchToProps {
     save: (project: Partial<ProjectInfo>) => void;
     update: (projectInfo: Partial<ProjectInfo>) => void;
-    changeTitle: (title: string) => void;
     clearError: () => void;
 }
 
@@ -27,7 +25,6 @@ const mapStateToProps = (state: State): ProjectEditorStateToProps => ({
 const mapDispatchToProps = (dispatch: (...args: any) => void): ProjectEditorDispatchToProps => ({
     save: (project: Partial<ProjectInfo>) => dispatch(insert('projects', project)),
     update: (project: Partial<ProjectInfo>) => dispatch(update('projects', project, true)),
-    changeTitle: (title: string) => dispatch(changeTitle(title)),
     clearError: () => dispatch(removeError('projects')),
 });
 

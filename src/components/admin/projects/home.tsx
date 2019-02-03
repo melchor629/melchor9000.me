@@ -4,6 +4,7 @@ import * as toast from '../../../lib/toast';
 import { ProjectsHomeDispatchToProps, ProjectsHomeStateToProps } from '../../../containers/admin/projects/home';
 import { ProjectInfo } from '../../../containers/admin/projects';
 import DeleteModal from '../delete-modal';
+import Helmet from 'react-helmet';
 
 type ProjectsPageProps = ProjectsHomeStateToProps & ProjectsHomeDispatchToProps;
 
@@ -14,10 +15,6 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
         this.state = {
             projectToDelete: null,
         };
-    }
-
-    componentDidMount() {
-        this.props.changeTitle('Projects - Admin');
     }
 
     componentDidUpdate(prevProps: ProjectsPageProps) {
@@ -38,6 +35,11 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
         const { darkMode } = this.props;
         return (
             <div>
+
+                <Helmet>
+                    <title>Projects - Admin</title>
+                </Helmet>
+
                 <div className="row align-items-center">
                     <div className="col"><h1>Projects</h1></div>
                     <div className="col-auto">

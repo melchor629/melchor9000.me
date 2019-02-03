@@ -7,6 +7,7 @@ import { Posts } from '../../containers/admin/posts';
 import { Projects } from '../../containers/admin/projects';
 import { Logout } from '../../containers/admin/logout';
 import './admin.scss';
+import Helmet from 'react-helmet';
 
 const containerStyle: React.CSSProperties = {
     width: '100%',
@@ -44,14 +45,17 @@ export default class AdminPage extends React.Component<AdminPageProps, AdminPage
         this.state = {};
     }
 
-    componentDidMount() {
-        this.props.changeTitle('Admin page');
-    }
-
     render() {
         const { darkMode } = this.props;
         return (
             <div className="container-fluid">
+
+                <Helmet>
+                    <title>Admin page</title>
+                    <meta name="Description"
+                          content="Administration page" />
+                </Helmet>
+
                 <div className="row">
                     <nav className={ `col-md-2 d-none d-md-block ${darkMode ? 'bg-dark' : 'bg-light'} sidebar` }>
                         <div className="text-center mt-4 sidebar-heading">

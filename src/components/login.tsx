@@ -4,6 +4,7 @@ import { Spring, animated } from 'react-spring';
 import * as toast from '../lib/toast';
 import { LoginDispatchToProps, LoginStateToProps } from '../containers/login';
 import LoadSpinner from './load-spinner';
+import Helmet from 'react-helmet';
 
 const formStyle: React.CSSProperties = {
     width: '100%',
@@ -46,10 +47,6 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
         this.usernameChanged = this.usernameChanged.bind(this);
         this.passwordChanged = this.passwordChanged.bind(this);
         this.buttonPressed = this.buttonPressed.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.changeTitle('LogIn');
     }
 
     componentDidUpdate(prevProps: Readonly<LoginStateToProps & LoginDispatchToProps>): void {
@@ -108,8 +105,14 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
 
         return (
             <div className="d-flex align-items-center justify-content-center text-center" style={ containerStyle }>
+
+                <Helmet>
+                    <title>Log out</title>
+                </Helmet>
+
                 <form style={ formStyle }>
-                    <img className="mb-4" src={ process.env.PUBLIC_URL + '/ico/favicon.png' } style={{ width: 64 }} />
+                    <img className="mb-4" src={ process.env.PUBLIC_URL + '/ico/favicon.png' } style={{ width: 64 }}
+                         alt="favicon" />
                     <Spring native={ true } from={{ alpha: 1 }}
                             to={{ alpha: this.props.loggingIn || this.props.user ? 0 : 1 }}>
                         { !this.props.user ? form : () => (<animated.div />) }

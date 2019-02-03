@@ -5,13 +5,13 @@ import LoadSpinner from '../load-spinner';
 import Project from './project';
 import { ProjectDispatchToProps, ProjectStateToProps } from '../../containers/projects';
 import './projects.scss';
+import Helmet from 'react-helmet';
 
 type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & WithNamespaces;
 
 export default class Projects extends React.Component<ProjectsPageProps> {
     componentDidMount() {
         this.props.subscribe();
-        this.props.changeTitle('Projects');
     }
 
     componentWillUnmount() {
@@ -39,6 +39,13 @@ export default class Projects extends React.Component<ProjectsPageProps> {
         }
         return (
             <div>
+
+                <Helmet>
+                    <title>Projects</title>
+                    <meta name="Description"
+                          content="Page of my code projects" />
+                </Helmet>
+
                 <div className="page-header">
                     <h1>{ t('projects.title') } <small>{ t('projects.subtitle') }</small></h1>
                     <p className="lead">

@@ -14,6 +14,7 @@ import i18n from './i18n';
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
+import { warning } from './lib/toast';
 
 firebase.initializeApp({
     apiKey: 'AIzaSyCCu7x7WKTpZkWAtc4Z0HZTm8iJE5gl1cU',
@@ -40,7 +41,7 @@ firebase.initializeApp({
     const _compose = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
     const store = createStore(
         require('./redux/reducers').reducers,
-        { title: { base: 'The Abode of melchor9000' } },
+        {},
         _compose(applyMiddleware(thunk))
     );
 
@@ -62,5 +63,11 @@ firebase.initializeApp({
         document.getElementById('footer')
     );
 
-    serviceWorker.register();
+    serviceWorker.register({
+        onUpdate: () =>
+            warning('Ey, actualiza la web para obtener los últimos cambios', { autoClose: false }),
+        onFail: () =>
+            warning('Hemos detectado que no estás conectado a internet. ' +
+                    'Habrán cosas que no funcionarán correctamente :(', { autoClose: false }),
+    });
 })();

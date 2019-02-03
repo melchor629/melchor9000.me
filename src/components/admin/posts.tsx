@@ -9,7 +9,6 @@ type PostsPageProps = PostsStateToProps & PostsDispatchToProps;
 export default class Posts extends React.Component<PostsPageProps> {
 
     componentDidMount() {
-        this.props.changeTitle('Posts - Admin');
         this.props.subscribe();
     }
 

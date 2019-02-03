@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { State } from '../../../redux/reducers';
-import { changeTitle } from '../../../redux/title/actions';
 import { remove, removeError } from '../../../redux/database/actions';
 import ProjectsHomeComponent from '../../../components/admin/projects/home';
 import { ProjectInfo } from '../projects';
@@ -13,7 +12,6 @@ export interface ProjectsHomeStateToProps {
 }
 
 export interface ProjectsHomeDispatchToProps {
-    changeTitle: (title: string) => void;
     delete: (post: ProjectInfo) => void;
     clearError: () => void;
 }
@@ -27,7 +25,6 @@ const mapStateToProps = (state: State): ProjectsHomeStateToProps => ({
 });
 
 const mapDispatchToProps = (dispatch: any): ProjectsHomeDispatchToProps => ({
-    changeTitle: (title: string) => dispatch(changeTitle(title)),
     delete: (post: ProjectInfo) => dispatch(remove('projects', post)),
     clearError: () => dispatch(removeError('projects'))
 });

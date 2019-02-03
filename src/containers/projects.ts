@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { withNamespaces } from 'react-i18next';
 import { removeError, subscribe, unsubscribe } from '../redux/database/actions';
-import { changeTitle } from '../redux/title/actions';
 import { State } from '../redux/reducers';
 import ProjectsComponent from '../components/projects/projects';
 
@@ -26,7 +25,6 @@ export interface ProjectDispatchToProps {
     subscribe: () => void;
     unsubscribe: () => void;
     removeError: () => void;
-    changeTitle: (title: string) => void;
 }
 
 const mapStateToProps = ({ database, effects }: State): ProjectStateToProps => ({
@@ -40,7 +38,6 @@ const mapDispatchToProps = (dispatch: any): ProjectDispatchToProps => ({
     subscribe: () => dispatch(subscribe('projects')),
     unsubscribe: () => dispatch(unsubscribe('projects')),
     removeError: () => dispatch(removeError('projects')),
-    changeTitle: (title: String) => dispatch(changeTitle(title)),
 });
 
 export const Projects = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(ProjectsComponent));

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withNamespaces, WithNamespaces } from 'react-i18next';
 import { GalleryPhoto } from '../../redux/gallery/reducers';
+import Helmet from 'react-helmet';
 
 interface OverlayImageInfoProps {
     show: boolean;
@@ -95,6 +96,12 @@ const OverlayImageInfo = ({ show, photo, t }: OverlayImageInfoProps & WithNamesp
 
     return (
         <div className={ imageInfoClasses.join(' ') }>
+
+            <Helmet>
+                <title>{ photo.title } - Gallery</title>
+                <meta name="Description" content={ `Photo: ${descripcion}` } />
+            </Helmet>
+
             <div className="page-header">
                 <h2>{ photo.title }</h2>
                 { descripcion }
