@@ -2,12 +2,12 @@ import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, NavLink } from 'react-router-dom';
 import { Trail, animated } from 'react-spring';
+import { Helmet } from 'react-helmet';
 import { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/admin';
 import { Posts } from '../../containers/admin/posts';
 import { Projects } from '../../containers/admin/projects';
 import { Logout } from '../../containers/admin/logout';
 import './admin.scss';
-import Helmet from 'react-helmet';
 
 const containerStyle: React.CSSProperties = {
     width: '100%',

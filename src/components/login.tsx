@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
 import { Spring, animated } from 'react-spring';
+import { Helmet } from 'react-helmet';
 import * as toast from '../lib/toast';
 import { LoginDispatchToProps, LoginStateToProps } from '../containers/login';
 import LoadSpinner from './load-spinner';
-import Helmet from 'react-helmet';
 
 const formStyle: React.CSSProperties = {
     width: '100%',

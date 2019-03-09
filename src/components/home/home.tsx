@@ -1,5 +1,6 @@
 import React from 'react';
 import { WithNamespaces } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import * as toast from '../../lib/toast';
 import { Cheat } from '../../lib/cheat';
 import Player from '../../lib/player';
@@ -9,7 +10,6 @@ import { IndexDispatchToProps, IndexStateToProps } from '../../containers/home';
 const Parallax = require('parallax-js');
 
 import './home.scss';
-import Helmet from 'react-helmet';
 
 const images = [
     'img/Pixel Art.png',

@@ -1,11 +1,11 @@
 import React from 'react';
 import { WithNamespaces, Trans } from 'react-i18next';
 import { Spring } from 'react-spring';
+import { Helmet } from 'react-helmet';
 import * as toast from '../lib/toast';
 import Visualizer from './visualizer';
 import Player from '../lib/player';
 import { VizStateToProps } from '../containers/viz';
-import Helmet from 'react-helmet';
 
 type VizProps = VizStateToProps & WithNamespaces;
 //TODO terminar

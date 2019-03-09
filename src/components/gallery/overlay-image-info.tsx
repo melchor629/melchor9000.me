@@ -1,7 +1,7 @@
 import React from 'react';
 import { withNamespaces, WithNamespaces } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 import { GalleryPhoto } from '../../redux/gallery/reducers';
-import Helmet from 'react-helmet';
 
 interface OverlayImageInfoProps {
     show: boolean;

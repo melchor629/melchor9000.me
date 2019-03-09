@@ -1,9 +1,9 @@
 import React from 'react';
 import $ from 'jquery';
+import { Helmet } from 'react-helmet';
 import { PostListDispatchToProps, PostListStateToPros } from '../../containers/posts/post-list';
 import LoadSpinner from '../load-spinner';
 import Entry from './post-entry';
-import Helmet from 'react-helmet';
 
 type PostListProps = PostListStateToPros & PostListDispatchToProps;
 

@@ -3,6 +3,7 @@ import moment from 'moment';
 import firebase from 'firebase/app';
 import { RouteComponentProps } from 'react-router-dom';
 import { Transition, Keyframes, Spring, animated } from 'react-spring';
+import { Helmet } from 'react-helmet';
 import * as toast from '../../../lib/toast';
 import render from '../../../lib/render-post-content';
 import { PostEditorDispatchToProps, PostEditorStateToProps } from '../../../containers/admin/posts/editor';
@@ -10,7 +11,6 @@ import LoadSpinner from '../../load-spinner';
 import { Post } from '../../../redux/posts/reducers';
 import { AdminInput } from '../admin-input';
 import { dateValidator, valueValidator } from '../../../lib/validators';
-import Helmet from 'react-helmet';
 
 const speakingurl = require('speakingurl');
 
