@@ -1,5 +1,5 @@
 import React from 'react';
-import { WithNamespaces } from 'react-i18next';
+import { WithTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import * as toast from '../../lib/toast';
 import LoadSpinner from '../load-spinner';
@@ -7,7 +7,7 @@ import Project from './project';
 import { ProjectDispatchToProps, ProjectStateToProps } from '../../containers/projects';
 import './projects.scss';
 
-type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & WithNamespaces;
+type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & WithTranslation;
 
 export default class Projects extends React.Component<ProjectsPageProps> {
     componentDidMount() {

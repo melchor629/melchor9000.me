@@ -29,7 +29,7 @@ firebase.initializeApp({
     try {
         const fs = firebase.firestore();
         fs.settings({ cacheSizeBytes: 4000 * 1000 });
-        await fs.enablePersistence({ experimentalTabSynchronization: true });
+        await fs.enablePersistence({ synchronizeTabs: true });
         await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
     } catch(error) {
         console.error(error);
@@ -47,14 +47,15 @@ firebase.initializeApp({
 
     await new Promise((accept) => setTimeout(accept, 10));
 
-    ReactDOM.render(
+    ReactDOM.render((
         <Provider store={store}>
             <BrowserRouter>
                 <I18nextProvider i18n={ i18n }>
                     <App/>
                 </I18nextProvider>
             </BrowserRouter>
-        </Provider>,
+        </Provider>
+        ),
         document.getElementById('root')
     );
 

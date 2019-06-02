@@ -1,5 +1,5 @@
 import React from 'react';
-import { WithNamespaces, Trans } from 'react-i18next';
+import { WithTranslation, Trans } from 'react-i18next';
 import { Spring } from 'react-spring';
 import { Helmet } from 'react-helmet';
 import * as toast from '../lib/toast';
@@ -7,7 +7,7 @@ import Visualizer from './visualizer';
 import Player from '../lib/player';
 import { VizStateToProps } from '../containers/viz';
 
-type VizProps = VizStateToProps & WithNamespaces;
+type VizProps = VizStateToProps & WithTranslation;
 //TODO terminar
 
 interface VizState {

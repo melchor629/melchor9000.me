@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import Overlay from '../../components/gallery/overlay';
 import {
     loadDetailedPhoto, nextDetailed, prevDetailed, hideDetailed, toggleInfoPanel, loadingPhotoImage, loadedPhotoImage,
@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch: any): OverlayDispatchToProps => {
     };
 };
 
-export default withNamespaces()(connect(
+export default withTranslation()(connect(
     mapStateToProps,
     mapDispatchToProps
 )(Overlay));

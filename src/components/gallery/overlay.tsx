@@ -1,6 +1,6 @@
 import React from 'react';
 import Swipeable from 'react-swipeable';
-import { WithNamespaces } from 'react-i18next';
+import { WithTranslation } from 'react-i18next';
 import { animated, Transition } from 'react-spring';
 import $ from 'jquery';
 import ZoomImageOverlay from './zoom-image-overlay';
@@ -12,7 +12,7 @@ type OverlayProps = OverlayStateToProps & OverlayDispatchToProps & {
     userId: string;
     photosetId: string;
     perPage: number;
-} & WithNamespaces;
+} & WithTranslation;
 
 interface OverlayState {
     imageSwitcher: boolean;

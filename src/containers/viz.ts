@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { State } from '../redux/reducers';
 import VizComponent from '../components/viz';
 
@@ -11,5 +11,5 @@ const mapStateToProps = (state: State): VizStateToProps => ({
     darkMode: state.effects.darkMode
 });
 
-export const Viz = withNamespaces()(connect(mapStateToProps)(VizComponent));
+export const Viz = withTranslation()(connect(mapStateToProps)(VizComponent));
 export const Component = Viz;

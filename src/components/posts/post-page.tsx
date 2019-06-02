@@ -1,7 +1,8 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { default as Ink } from 'react-ink';
-import { withNamespaces, WithNamespaces } from 'react-i18next';
+import { Helmet } from 'react-helmet';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import moment from 'moment';
 import $ from 'jquery';
 import { Post } from '../../redux/posts/reducers';
@@ -10,7 +11,6 @@ import LoadSpinner from '../load-spinner/load-spinner';
 import Zoom from '../../lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
 import DisqusWrapper from '../posts/disqus-wrapper';
-import Helmet from 'react-helmet';
 
 const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, children: string }) => (
     <div className="share-link" onClick={ onClick }>
@@ -22,13 +22,13 @@ const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, childr
     </div>
 );
 
-class ShareModal extends React.Component<{ post: Post | null } & WithNamespaces> {
+class ShareModal extends React.Component<{ post: Post | null } & WithTranslation> {
 
     private static query(object: any): string {
         return (Object['entries'](object) as [string, string][]).map(pair => `${pair[0]}=${pair[1]}`).join('&');
     }
 
-    constructor(props: { post: Post | null } & WithNamespaces) {
+    constructor(props: { post: Post | null } & WithTranslation) {
         super(props);
         this.telegramButtonPressed = this.telegramButtonPressed.bind(this);
         this.whatsappButtonPressed = this.whatsappButtonPressed.bind(this);
@@ -118,7 +118,7 @@ class ShareModal extends React.Component<{ post: Post | null } & WithNamespaces>
 
 }
 
-class PostHeader extends React.Component<{ entry: Post | null } & WithNamespaces> {
+class PostHeader extends React.Component<{ entry: Post | null } & WithTranslation> {
     render() {
         if(this.props.entry === null) {
             return this.props.children;
@@ -150,8 +150,8 @@ class PostHeader extends React.Component<{ entry: Post | null } & WithNamespaces
     }
 }
 
-const ShareModalT = withNamespaces()(ShareModal);
-const PostHeaderT = withNamespaces()(PostHeader);
+const ShareModalT = withTranslation()(ShareModal);
+const PostHeaderT = withTranslation()(PostHeader);
 
 interface RouteParams {
     year: string;
@@ -161,7 +161,7 @@ interface RouteParams {
 }
 
 type PostPageProps = PostPageStateToProps & PostPageDispatchToProps & RouteComponentProps<RouteParams> &
-    WithNamespaces;
+    WithTranslation;
 
 interface PostPageState {
     entry: Post | null;

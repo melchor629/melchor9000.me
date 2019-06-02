@@ -1,9 +1,9 @@
 import React from 'react';
 import i18next from 'i18next';
-import { WithNamespaces, withNamespaces } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { ProjectInfo } from '../../containers/projects';
 
-type ProjectProps = { project: ProjectInfo, darkMode: boolean } & WithNamespaces;
+type ProjectProps = { project: ProjectInfo, darkMode: boolean } & WithTranslation;
 
 const getDescription = (project: ProjectInfo, i18n: i18next.i18n): string => {
     if(project.intlDescription) {
@@ -37,4 +37,4 @@ const Project = ({ project, darkMode, t, i18n }: ProjectProps) => (
     </div>
 );
 
-export default withNamespaces()(Project);
+export default withTranslation()(Project);

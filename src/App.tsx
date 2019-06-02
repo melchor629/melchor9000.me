@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router';
 import { Link, Route, RouteComponentProps } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { withNamespaces, WithNamespaces } from 'react-i18next';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import { routes } from './routes';
 import { State } from './redux/reducers';
@@ -22,7 +22,7 @@ interface AppStateToProps {
     darkMode?: boolean | null;
 }
 
-type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & WithNamespaces;
+type AppPropTypes = AppStateToProps & RouteComponentProps<{}> & WithTranslation;
 
 interface AppState {
     offcanvas: boolean;
@@ -145,4 +145,4 @@ const mapStateToProps = (state: State): AppStateToProps => ({
     darkMode: state.effects.darkMode
 });
 
-export default withRouter(withNamespaces('translations')(connect(mapStateToProps)(App)));
+export default withRouter(withTranslation('translations')(connect(mapStateToProps)(App)));

@@ -1,11 +1,11 @@
 import React from 'react';
 import * as THREE from 'three';
-import { withNamespaces, WithNamespaces } from 'react-i18next';
+import { Helmet } from 'react-helmet';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import * as toast from '../lib/toast';
 
 const Cropper = require('react-cropper').default;
 import 'cropperjs/dist/cropper.css';
-import Helmet from 'react-helmet';
 
 async function sleep(time: number) {
     return new Promise(accept => setTimeout(() => accept(), time * 1000));
@@ -60,7 +60,7 @@ interface EuglState {
     videoCaptureText: string;
 }
 
-class EuglPage extends React.Component<WithNamespaces, EuglState> {
+class EuglPage extends React.Component<WithTranslation, EuglState> {
     private width: number = NaN;
     private height: number = NaN;
     private scene: THREE.Scene;
@@ -243,7 +243,7 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
         geometry.addAttribute('uv', uv);
 
         //Creamos nEucl posiciones aleatorias
-        const positions = new THREE.InstancedBufferAttribute(new Float32Array(nEucl * 3), 3, 1);
+        const positions = new THREE.InstancedBufferAttribute(new Float32Array(nEucl * 3), 3, true, 1);
         let espacio = [];
         for(let i = 0; i < nEucl; i++) {
             espacio.push(new THREE.Vector3(
@@ -477,4 +477,4 @@ class EuglPage extends React.Component<WithNamespaces, EuglState> {
     }
 }
 
-export default withNamespaces('translations')(EuglPage);
+export default withTranslation('translations')(EuglPage);

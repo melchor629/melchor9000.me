@@ -1,5 +1,5 @@
 import React from 'react';
-import { withNamespaces, WithNamespaces } from 'react-i18next';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import { GalleryPhoto } from '../../redux/gallery/reducers';
 
@@ -8,7 +8,7 @@ interface OverlayImageInfoProps {
     photo: GalleryPhoto;
 }
 
-const OverlayImageInfo = ({ show, photo, t }: OverlayImageInfoProps & WithNamespaces) => {
+const OverlayImageInfo = ({ show, photo, t }: OverlayImageInfoProps & WithTranslation) => {
     const info = photo.info ? photo.info : null;
     const exif = photo.exif ? photo.exif : null;
     let descripcion = null;
@@ -125,4 +125,4 @@ const OverlayImageInfo = ({ show, photo, t }: OverlayImageInfoProps & WithNamesp
     );
 };
 
-export default withNamespaces()(OverlayImageInfo);
+export default withTranslation()(OverlayImageInfo);

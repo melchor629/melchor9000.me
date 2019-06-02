@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { withNamespaces } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { removeError, subscribe, unsubscribe } from '../redux/database/actions';
 import { State } from '../redux/reducers';
 import ProjectsComponent from '../components/projects/projects';
@@ -40,5 +40,5 @@ const mapDispatchToProps = (dispatch: any): ProjectDispatchToProps => ({
     removeError: () => dispatch(removeError('projects')),
 });
 
-export const Projects = withNamespaces()(connect(mapStateToProps, mapDispatchToProps)(ProjectsComponent));
+export const Projects = withTranslation()(connect(mapStateToProps, mapDispatchToProps)(ProjectsComponent));
 export const Component = Projects;

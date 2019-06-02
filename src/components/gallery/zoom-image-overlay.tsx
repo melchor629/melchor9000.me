@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { WithNamespaces, withNamespaces } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { GalleryPhoto } from '../../redux/gallery/reducers';
 
-interface ZoomImageOverlayProps extends WithNamespaces {
+interface ZoomImageOverlayProps extends WithTranslation {
     photo: GalleryPhoto;
     onTouchStart: (event: React.TouchEvent<HTMLElement>) => void;
     onTouchEnd: (event: React.TouchEvent<HTMLElement>) => void;
@@ -50,4 +50,4 @@ const ZoomImageOverlay = ({ photo, onTouchStart, onTouchEnd, t }: ZoomImageOverl
     );
 };
 
-export default withNamespaces()(ZoomImageOverlay);
+export default withTranslation()(ZoomImageOverlay);

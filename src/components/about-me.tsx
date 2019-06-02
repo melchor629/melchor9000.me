@@ -1,6 +1,6 @@
 import React from 'react';
-import { Trans, WithNamespaces, withNamespaces } from 'react-i18next';
-import Helmet from 'react-helmet';
+import { Trans, WithTranslation, withTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 
 const ProgressBar = ({ n, children }: { n: number, children?: any }) => (
     <div className="progress">
@@ -8,7 +8,7 @@ const ProgressBar = ({ n, children }: { n: number, children?: any }) => (
     </div>
 );
 
-const AboutMe = ({ t }: WithNamespaces) => (
+const AboutMe = ({ t }: WithTranslation) => (
     <div>
 
         <Helmet>
@@ -77,7 +77,7 @@ const AboutMe = ({ t }: WithNamespaces) => (
             </li>
             <li className="mb-2">
                 C#
-                <ProgressBar n={0.05} />
+                <ProgressBar n={0.1} />
             </li>
             <li className="mb-2">
                 { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail3') }: ARM y MIPS
@@ -136,4 +136,4 @@ const AboutMe = ({ t }: WithNamespaces) => (
     </div>
 );
 
-export default withNamespaces('translations')(AboutMe);
+export default withTranslation('translations')(AboutMe);

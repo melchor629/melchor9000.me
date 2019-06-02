@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trans, withNamespaces, WithNamespaces } from 'react-i18next';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 const { DiscussionEmbed } = require('disqus-react');
 
 interface DisqusWrapperProps {
@@ -15,9 +15,9 @@ interface State {
     hasAccepted: boolean;
 }
 
-class DisqusWrapper extends React.PureComponent<DisqusWrapperProps & WithNamespaces, State> {
+class DisqusWrapper extends React.PureComponent<DisqusWrapperProps & WithTranslation, State> {
 
-    constructor(props: DisqusWrapperProps & WithNamespaces) {
+    constructor(props: DisqusWrapperProps & WithTranslation) {
         super(props);
 
         this.state = {
@@ -64,4 +64,4 @@ class DisqusWrapper extends React.PureComponent<DisqusWrapperProps & WithNamespa
 
 }
 
-export default withNamespaces()(DisqusWrapper);
+export default withTranslation()(DisqusWrapper);
