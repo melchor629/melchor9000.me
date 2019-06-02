@@ -1,5 +1,5 @@
-const apiKey = '***REMOVED***';
-const apiUrl = 'https://api.flickr.com/services/rest/';
+const apiKey = process.env.REACT_APP_FLICKR_API_KEY!;
+const apiUrl = process.env.REACT_APP_FLICKR_API_URL || 'https://api.flickr.com/services/rest/';
 
 const randomString = () => {
     const rand = () => Math.round(Math.random() * 1000000);
