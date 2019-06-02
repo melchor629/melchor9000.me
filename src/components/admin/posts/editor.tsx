@@ -34,7 +34,7 @@ const LittleSpinner = (props: React.HTMLProps<HTMLDivElement>) => (
                 top: 5,
                 right: 10
             }} {...props}>
-                <i className="fa fa-spinner" />
+                <i className="fas fa-spinner" />
             </animated.div>
         ) }
     </Keyframes>

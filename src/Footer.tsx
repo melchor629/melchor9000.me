@@ -3,13 +3,13 @@ import React from 'react';
 import './footer.scss';
 
 const links = [
-    { url: 'https://github.com/melchor629/melchor9000.me', className: 'code' },
-    { url: 'https://github.com/melchor629', className: 'github' },
-    { url: 'https://twitter.com/melchor629', className: 'twitter' },
-    { url: 'https://www.reddit.com/user/melchor9000/', className: 'reddit' },
-    { url: 'https://www.instagram.com/melchor9000/', className: 'instagram' },
-    { url: 'https://www.last.fm/user/melchor629', className: 'lastfm' },
-    { url: 'https://www.linkedin.com/in/melchor9000/', className: 'linkedin' },
+    { url: 'https://github.com/melchor629/melchor9000.me', key: 'code', fas: 'code' },
+    { url: 'https://github.com/melchor629', key: 'github', fab: 'github' },
+    { url: 'https://twitter.com/melchor629', key: 'twitter', fab: 'twitter' },
+    { url: 'https://www.reddit.com/user/melchor9000/', key: 'reddit', fab: 'reddit' },
+    { url: 'https://www.instagram.com/melchor9000/', key: 'instagram', fab: 'instagram' },
+    { url: 'https://www.last.fm/user/melchor629', key: 'lastfm', fab: 'lastfm' },
+    { url: 'https://www.linkedin.com/in/melchor9000/', key: 'linkedin', fab: 'linkedin' },
 ];
 
 export default () => (
@@ -25,9 +25,9 @@ export default () => (
 
             <div className="col col-sm-auto d-flex align-items-center justify-content-center justify-content-sm-start
              links">
-                { links.map(link => (
-                    <a href={ link.url } key={ link.className } target="_blank" rel="noreferrer">
-                        <i className={ `fa fa-${ link.className }` } />
+                { links.map(({ url, key, fas, fab }) => (
+                    <a href={ url } key={ key } target="_blank" rel="noreferrer">
+                        <i className={ [fas && `fas`, fab && `fab`, `fa-${fab || fas}`].filter(f => !!f).join(' ') } />
                     </a>
                 ))}
             </div>

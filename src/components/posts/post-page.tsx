@@ -12,10 +12,12 @@ import Zoom from '../../lib/zoom.js/zoom';
 import 'highlight.js/styles/vs2015.css';
 import DisqusWrapper from '../posts/disqus-wrapper';
 
-const ShareItem = ({ onClick, fa, children }: { onClick: any, fa: string, children: string }) => (
+const ShareItem = ({ onClick, fab, fas, children }: { onClick: any, fab?: string, fas?: string, children: string }) => (
     <div className="share-link" onClick={ onClick }>
         <div className="row">
-            <div className="col-2"><i className={`fa fa-${fa}`}/></div>
+            <div className="col-2">
+                <i className={[fab && `fab fa-${fab}`, fas && `fas fa-${fas}`].filter(f => !!f).join(' ')}/>
+            </div>
             <div className="col-10">{ children }</div>
         </div>
         <Ink />
@@ -48,17 +50,17 @@ class ShareModal extends React.Component<{ post: Post | null } & WithTranslation
                             <h2 className="modal-title">{this.props.t('blog.share')}</h2>
                         </div>
                         <div className="modal-body">
-                            <ShareItem onClick={ this.twitterButtonPressed } fa="twitter">Twitter</ShareItem>
-                            <ShareItem onClick={ this.redditButtonPressed } fa="reddit">Reddit</ShareItem>
-                            <ShareItem onClick={ this.telegramButtonPressed } fa="telegram">Telegram</ShareItem>
+                            <ShareItem onClick={ this.twitterButtonPressed } fab="twitter">Twitter</ShareItem>
+                            <ShareItem onClick={ this.redditButtonPressed } fab="reddit">Reddit</ShareItem>
+                            <ShareItem onClick={ this.telegramButtonPressed } fab="telegram">Telegram</ShareItem>
 
                             { /ipad|iphone|ipod|android/.test(navigator.userAgent.toLowerCase()) &&
-                                <ShareItem onClick={ this.whatsappButtonPressed } fa="whatsapp">WhatsApp</ShareItem>
+                                <ShareItem onClick={ this.whatsappButtonPressed } fab="whatsapp">WhatsApp</ShareItem>
                             }
 
-                            <ShareItem onClick={ this.linkedinButtonPressed } fa="linkedin">LinkedIn</ShareItem>
-                            <ShareItem onClick={ this.facebookButtonPressed } fa="facebook">Facebook</ShareItem>
-                            <ShareItem onClick={ this.emailButtonPressed } fa="envelope">Email</ShareItem>
+                            <ShareItem onClick={ this.linkedinButtonPressed } fab="linkedin">LinkedIn</ShareItem>
+                            <ShareItem onClick={ this.facebookButtonPressed } fab="facebook">Facebook</ShareItem>
+                            <ShareItem onClick={ this.emailButtonPressed } fas="envelope">Email</ShareItem>
                         </div>
                     </div>
                 </div>
@@ -242,7 +244,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
                 <div className="circle-button share"
                      style={{ ...styles }}
                      onClick={ () => ($('#share-modal') as any).modal('show') }>
-                    <i className="fa fa-share"/>
+                    <i className="fas fa-share"/>
                 </div>
 
                 <PostHeaderT entry={ this.state.entry }>{ domContent }</PostHeaderT>

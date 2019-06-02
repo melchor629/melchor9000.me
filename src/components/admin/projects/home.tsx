@@ -44,7 +44,7 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
                     <div className="col"><h1>Projects</h1></div>
                     <div className="col-auto">
                         <Link to="/admin/projects/create" className="btn btn-sm btn-outline-success mb-2">
-                            <i className="fa fa-plus" />
+                            <i className="fas fa-plus" />
                         </Link>
                     </div>
                 </div>
@@ -64,17 +64,17 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
                             <td className="admin-list-row-actions">
                                 { project.repo && <a href={ project.repo } target="_blank" rel="noreferrer"
                                                      className="btn btn-outline-primary btn-sm">
-                                    <i className="fa fa-github" />
+                                    <i className="fab fa-github" />
                                 </a> }
                                 &nbsp;
                                 <Link to={ `/admin/projects/edit/${project._id}` }
                                       className="btn btn-sm btn-outline-warning">
-                                    <i className="fa fa-pencil" />
+                                    <i className="fas fa-pencil-alt" />
                                 </Link>
                                 &nbsp;
                                 <button className="btn btn-sm btn-outline-danger"
                                         onClick={ (e) => this.selectForDeleting(e, project) }>
-                                    <i className="fa fa-trash" />
+                                    <i className="fas fa-trash" />
                                 </button>
                             </td>
                         </tr>

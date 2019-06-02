@@ -50,7 +50,7 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                     <div className="col"><h1>Posts</h1></div>
                     <div className="col-auto">
                         <Link to="/admin/posts/create" className="btn btn-sm btn-outline-success mb-2">
-                            <i className="fa fa-plus" />
+                            <i className="fas fa-plus" />
                         </Link>
                     </div>
                 </div>
@@ -69,12 +69,12 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                             <td>{ post.date.toDate().toLocaleString() }</td>
                             <td className="admin-list-row-actions">
                                 <Link to={ `/admin/posts/edit/${post._id}` } className="btn btn-sm btn-outline-warning">
-                                    <i className="fa fa-pencil" />
+                                    <i className="fas fa-pencil-alt" />
                                 </Link>
                                 &nbsp;
                                 <button className="btn btn-sm btn-outline-danger"
                                         onClick={ (e) => this.selectForDeleting(e, post) }>
-                                    <i className="fa fa-trash" />
+                                    <i className="fas fa-trash" />
                                 </button>
                             </td>
                         </tr>
