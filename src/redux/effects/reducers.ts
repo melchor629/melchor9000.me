@@ -1,19 +1,27 @@
-import { CHANGE_VISUALIZATION, DO_A_BARREL_ROLL, FLIP_IT, TOGGLE_DARK_MODE } from './actions';
+import {
+    CHANGE_VISUALIZATION,
+    DO_A_BARREL_ROLL,
+    FLIP_IT,
+    TOGGLE_DARK_MODE,
+    CHANGE_NAVBAR_HIDE_MODE,
+} from './actions';
 
 export interface EffectsState {
     barrelRoll: boolean;
     flipIt: boolean | null;
     darkMode: boolean;
     visualizationMode: null | 'bars' | 'wave' | 'random';
+    navbarHideMode: 'top-only' | 'always' | null;
 }
 
-export const effects = (state: EffectsState | undefined, action: { type: string, value?: any }): EffectsState => {
+export const effects = (state: EffectsState | undefined, action: any): EffectsState => {
     if(state === undefined) {
         state = {
             barrelRoll: false,
             flipIt: null,
             darkMode: JSON.parse(window.localStorage.getItem('darkMode') || 'false'),
-            visualizationMode: null
+            visualizationMode: null,
+            navbarHideMode: null,
         };
     }
 
@@ -32,6 +40,9 @@ export const effects = (state: EffectsState | undefined, action: { type: string,
                 case 'random': return { ...state, visualizationMode: null };
                 default: return state;
             }
+        }
+        case CHANGE_NAVBAR_HIDE_MODE: {
+            return { ...state, navbarHideMode: action.mode };
         }
         default: return state;
     }

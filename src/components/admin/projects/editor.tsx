@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import * as firebase from 'firebase/app';
-import { Transition, animated } from 'react-spring';
+import firebase from 'firebase/app';
+import { Transition, animated } from 'react-spring/renderprops';
 import * as toast from '../../../lib/toast';
 import LoadSpinner from '../../load-spinner';
 import Project from '../../projects/project';

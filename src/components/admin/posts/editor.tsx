@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import firebase from 'firebase/app';
 import { RouteComponentProps } from 'react-router-dom';
-import { Transition, Keyframes, Spring, animated } from 'react-spring';
+import { Transition, Keyframes, Spring, animated } from 'react-spring/renderprops';
 import { Helmet } from 'react-helmet';
 import * as toast from '../../../lib/toast';
 import render from '../../../lib/render-post-content';
@@ -14,7 +14,7 @@ import { dateValidator, valueValidator } from '../../../lib/validators';
 
 const speakingurl = require('speakingurl');
 
-const LittleSpinner = (props: React.HTMLProps<HTMLDivElement>) => (
+const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefined }) => (
     <Keyframes
         native={ true }
         config={{ duration: 1000, easing: (t: number) => t }}

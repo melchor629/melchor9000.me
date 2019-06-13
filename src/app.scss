@@ -82,29 +82,44 @@ a:hover {
 .navbar-default {
   background-color: $primary-color-normal;
   box-shadow: rgba(0, 0, 0, 0.4) 0 2px 5px;
-  @media (min-width: 768px) { padding: 0 1rem; }
+  transition: top .25s ease-in-out,
+    opacity .25s ease-in-out;
+  @include media-breakpoint-up(lg) { padding: 0 1rem; }
+
+  &.hide-top {
+    top: -60px;
+  }
+
+  &.hide {
+    opacity: 0;
+  }
 
   .navbar-nav {
-    @media (max-width: 767px) {
+    @include media-breakpoint-down(md) {
       margin-left: -15px;
       margin-right: -15px !important;
     }
 
-    .nav-item .nav-link {
-      color: white;
-      transition: background-color .2s linear, color .1s linear;
-      border-radius: 0;
+    .nav-item {
+      overflow: hidden;
 
-      @media (max-width: 767px) {
-        width: 100%;
-        padding-left: 15px;
-        padding-right: 15px;
+      .nav-link {
+        color: white;
+        transition: background-color .2s linear, color .1s linear;
+        border-radius: 0;
+
+        @include media-breakpoint-down(md) {
+          width: 100%;
+          padding-left: 15px;
+          padding-right: 15px;
+        }
+
+        &:hover,
+        &:focus {
+          color: white;
+          background-color: $primary-color-dark;
+        }
       }
-    }
-
-    .nav-item .nav-link:hover, .nav-item .nav-link:focus {
-      color: white;
-      background-color: $primary-color-dark;
     }
 
     & > li.active > a {
@@ -133,7 +148,7 @@ a:hover {
     box-shadow: none;
   }
 
-  @media (max-width: 991.98px) {
+  @include media-breakpoint-down(md) {
     .offcanvas-collapse {
       display: block;
       position: fixed;
@@ -147,13 +162,14 @@ a:hover {
       overflow-y: auto;
       visibility: hidden;
       background-color: #343a40;
+      transform: translateX(0);
       transition-timing-function: ease-in-out;
       transition-duration: .3s;
-      transition-property: left, visibility;
+      transition-property: transform, visibility;
     }
 
     .offcanvas-collapse.open {
-      left: 0;
+      transform: translateX(290px);
       visibility: visible;
     }
   }

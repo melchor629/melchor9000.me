@@ -1,0 +1,48 @@
+.zoom-modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  top: 0;
+  left: 0;
+  cursor: zoom-out;
+
+  $margin: 100px;
+
+  .zoom-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transform-origin: $margin $margin;
+
+    img {
+      position: absolute;
+      margin: $margin;
+      width: 100%;
+      height: 100%;
+      user-select: none;
+      -webkit-touch-callout: none;
+
+      &.img-small {
+        z-index: 2;
+      }
+
+      &.img-big {
+        z-index: 3;
+      }
+    }
+  }
+
+  .zoom-image-info {
+    cursor: default;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.9);
+  }
+}

@@ -33,25 +33,26 @@ const buildUrl = (url: string, parameters: any) => {
     return url + '?' + queryString;
 };
 
-const doRequest = (request: any, cbk: (data: any) => void) => {
+const doRequest = <T>(request: any): Promise<T> => new Promise((resolve) => {
     const rndCbk = 'flickr_' + randomString();
-    request = { ...request,
+    const script = document.createElement('script');
+    request = {
+        ...request,
         api_key: apiKey,
         format: 'json',
         jsoncallback: rndCbk
     };
     window[rndCbk] = (json: any) => {
-        cbk(json);
+        resolve(json);
         delete window[rndCbk];
+        document.head!.removeChild(script);
     };
-    let script = document.createElement('script');
     script.src = buildUrl(apiUrl, request);
     document.head!.appendChild(script);
-    document.head!.removeChild(script);
-};
+});
 
 const protoFunc = <Params extends object, DataType>(method: string) =>
-    (params: Params, callback: (data: DataType) => void) => doRequest({ ...(params as object), method }, callback);
+    (params: Params) => doRequest<DataType>({ ...(params as object), method });
 
 export interface Photo {
     id: string;
@@ -86,20 +87,23 @@ export interface PhotoInfo extends Photo {
         longitude: string;
         accuracy: string,
         context: string;
-        locality: PhotoInfoLocationPlace;
-        county: PhotoInfoLocationPlace;
-        region: PhotoInfoLocationPlace;
-        country: PhotoInfoLocationPlace;
+        neighbourhood?: PhotoInfoLocationPlace;
+        locality?: PhotoInfoLocationPlace;
+        county?: PhotoInfoLocationPlace;
+        region?: PhotoInfoLocationPlace;
+        country?: PhotoInfoLocationPlace;
         place_id: string;
         woeid: string;
     };
 }
 
-interface Photoset {
+export interface Photoset {
     id: string;
     primary: string;
     owner: string;
     photo: Photo[];
+    pages: number;
+    total: number;
 }
 
 interface PhotosetsGetPhotosParams {
@@ -129,10 +133,20 @@ export interface ExifData {
     }[];
 }
 
+interface PhotoSize {
+    label: 'Square' | 'Large Square' | 'Thumbnail' | 'Small' | 'Small 320' | 'Medium' | 'Medium 640' | 'Medium 800' |
+        'Large' | 'Large 1600' | 'Large 2048' | 'Original';
+    width: string;
+    height: string;
+    source: string;
+    url: string;
+    media: 'photo';
+}
+
 export const photos = {
     getInfo: protoFunc<PhotoGetInfoParams, { photo: PhotoInfo }>('flickr.photos.getInfo'),
     getExif: protoFunc<PhotoGetInfoParams, { photo: ExifData }>('flickr.photos.getExif'),
-    getSizes: protoFunc<PhotoGetInfoParams, {}>('flickr.photos.getSizes')
+    getSizes: protoFunc<PhotoGetInfoParams, { sizes: { size: PhotoSize[] } }>('flickr.photos.getSizes')
 };
 
 export const photosets = {

@@ -1,0 +1,155 @@
+.image-view {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  background-color: rgba(50, 50, 50, 1);
+  overflow: hidden;
+
+  .darkmode & {
+    background-color: #222;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  .img {
+    width: 100%;
+    height: 100%;
+    background: no-repeat center;
+    background-size: contain;
+    cursor: zoom-in;
+  }
+
+  #img2 {
+    position: absolute;
+    top: 0;
+  }
+
+  &.disable-zoom {
+    .img {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .nav-button.zoom {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  .nav-button {
+    position: absolute;
+    font-size: 2.5rem;
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+
+    > a > i,
+    > i {
+      transition: color .25s ease-in-out;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    &:hover {
+      > a > i,
+      > i {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    &.hide {
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    &.disabled {
+      pointer-events: none;
+    }
+
+    &.next-button {
+      top: calc(50vh - 1.25rem);
+      right: 1rem;
+      transition: opacity .25s .3s ease-in-out,
+        transform .25s ease-in-out;
+
+      &:hover {
+        transform: translateX(5px);
+      }
+    }
+
+    &.prev-button {
+      top: calc(50vh - 1.25rem);
+      left: 1rem;
+      transition: opacity .25s .3s ease-in-out,
+        transform .25s ease-in-out;
+
+      &:hover {
+        transform: translateX(-5px);
+      }
+    }
+
+    &.secondary {
+      font-size: 1.5rem;
+      color: rgba(255, 255, 255, 0.35);
+
+      i:last-of-type {
+        opacity: 0;
+        transition: opacity .3s ease-in-out,
+          transform .3s ease-in-out;
+      }
+
+      &:hover {
+        i:last-of-type {
+          opacity: 1;
+          transform: translateX(0) translateY(0);
+        }
+      }
+    }
+
+    &.back-to-gallery {
+      top: 1rem;
+      left: 1rem;
+
+      i:last-of-type {
+        transform: translateX(-15px);
+      }
+    }
+
+    &.info {
+      position: fixed;
+      width: 24px;
+      bottom: 1rem;
+      right: 1rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column-reverse;
+      cursor: pointer;
+      z-index: 10;
+
+      i:first-of-type {
+        transition: color .3s ease-in-out,
+          transform .3s ease-in-out;
+
+        &.bottom {
+          transform: rotate(180deg);
+
+          body:not(.darkmode) & {
+            color: rgba(55, 55, 55, 0.5)
+          }
+        }
+      }
+
+      i:last-of-type {
+        transform: translateY(15px);
+      }
+    }
+
+    &.zoom {
+      top: 1rem;
+      right: 1rem;
+      cursor: pointer;
+    }
+  }
+}

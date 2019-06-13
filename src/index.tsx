@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
@@ -6,15 +6,17 @@ import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 import firebase from 'firebase/app';
 import { I18nextProvider } from 'react-i18next';
+
 import App from './App';
 import Footer from './Footer';
 import * as serviceWorker from './serviceWorker';
 import i18n from './i18n';
+import { warning } from './lib/toast';
+import LoadingSpinner from './components/load-spinner';
 
 import 'firebase/firestore';
 import 'firebase/auth';
 import 'firebase/storage';
-import { warning } from './lib/toast';
 
 firebase.initializeApp({
     apiKey: 'AIzaSyCCu7x7WKTpZkWAtc4Z0HZTm8iJE5gl1cU',
@@ -50,9 +52,11 @@ firebase.initializeApp({
     ReactDOM.render((
         <Provider store={store}>
             <BrowserRouter>
-                <I18nextProvider i18n={ i18n }>
-                    <App/>
-                </I18nextProvider>
+                <Suspense fallback={ LoadingSpinner }>
+                    <I18nextProvider i18n={ i18n }>
+                        <App/>
+                    </I18nextProvider>
+                </Suspense>
             </BrowserRouter>
         </Provider>
         ),

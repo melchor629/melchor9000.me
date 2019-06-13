@@ -1,6 +1,6 @@
 import React from 'react';
 import { WithTranslation, Trans } from 'react-i18next';
-import { Spring } from 'react-spring';
+import { Spring } from 'react-spring/renderprops';
 import { Helmet } from 'react-helmet';
 import * as toast from '../lib/toast';
 import Visualizer from './visualizer';

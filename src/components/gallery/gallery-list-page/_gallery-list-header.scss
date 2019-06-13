@@ -1,0 +1,36 @@
+.gallery-header {
+  width: 100%;
+  left: 0;
+  top: 40px;
+  height: 300px;
+  margin-bottom: 30px;
+  user-select: none;
+
+  .image-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    z-index: -1;
+  }
+
+  h1 {
+    color: white;
+    filter: drop-shadow(0 0 4px rgba(25, 25, 25, 0.4));
+  }
+
+  p {
+    color: white;
+    filter: drop-shadow(0 0 3px rgba(25, 25, 25, 0.4));
+  }
+
+  & > div {
+    height: 100%;
+    padding: 50px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.3);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+}

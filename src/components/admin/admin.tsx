@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, NavLink } from 'react-router-dom';
-import { Trail, animated } from 'react-spring';
+import { Trail, animated } from 'react-spring/renderprops';
 import { Helmet } from 'react-helmet';
 import { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/admin';
 import { Posts } from '../../containers/admin/posts';

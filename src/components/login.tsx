@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router';
-import { Spring, animated } from 'react-spring';
+import { Spring, animated } from 'react-spring/renderprops';
 import { Helmet } from 'react-helmet';
 import * as toast from '../lib/toast';
 import { LoginDispatchToProps, LoginStateToProps } from '../containers/login';

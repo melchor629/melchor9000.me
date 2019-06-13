@@ -1,0 +1,24 @@
+.image-info {
+  min-height: calc(100vh - 40px);
+  display: flex;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  align-items: center;
+  background-color: rgba(200, 200, 200, .2);
+
+  .page-header {
+    border-bottom-color: #777;
+  }
+
+  .darkmode & {
+    h2, span, strong {
+      color: #eee;
+    }
+  }
+
+  .info-item {
+    small {
+      user-select: none;
+    }
+  }
+}

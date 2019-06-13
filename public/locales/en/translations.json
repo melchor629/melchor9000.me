@@ -107,18 +107,25 @@
       "title": "Photo gallery",
       "description": "When photographic inspiration comes to me, this pages captures them to show them to you"
     },
-    "overlay": {
-      "fecha": "Shot date",
-      "camara": "Show with",
-      "exposicion": "Exposition",
-      "apertura": "Aperture",
+    "photoPage": {
+      "captureDate": "Shot date",
+      "camera": "Show with",
+      "exposure": "Exposition",
+      "aperture": "Aperture",
       "iso": "ISO",
-      "dist-focal": "Focal Dist.",
+      "focalDistance": "Focal Distance",
       "flash": "Flash",
       "flash-true": "On, was shot",
       "flash-false": "Off, wasn't shot",
-      "geoposicion": "Geolocation",
-      "seeFlickr": "See at Flickr"
+      "geoposition": "Geolocation",
+      "seeFlickr": "See at Flickr",
+      "width": "Width",
+      "height": "Height",
+      "rotation": "Rotation",
+      "exposureMode": "Exposure mode",
+      "colorSpace": "Color space",
+      "lens": "Lens",
+      "software": "Software"
     },
     "zoomOverlay": {
       "closepc": "On PC: ESC to close",

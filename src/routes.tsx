@@ -32,7 +32,7 @@ function privateRoute<Props = any, State = any>(_route: string,
 const AboutMe = asyncComponent(() => import('./components/about-me'));
 const Projects = asyncComponent(() => import('./containers/projects'));
 const Home = asyncComponent(() => import('./containers/home'));
-const Gallery = asyncComponent(() => import('./containers/gallery'));
+const Gallery = asyncComponent(() => import('./components/gallery'));
 const Posts = asyncComponent(() => import('./containers/posts'));
 const Viz = asyncComponent(() => import('./containers/viz'));
 const EuglPage = asyncComponent(() => import('./components/eugl'));
@@ -42,9 +42,7 @@ export const routes: Route<any, any>[] = [
     route('/', 'Home', withDefaultContainer(Home), { exact: true }),
     route('/about-me', 'About me', withDefaultContainer(AboutMe)),
     route('/eugl', 'Espacio Euclídeo', withDefaultContainer(EuglPage)),
-    route('/gallery', 'Photo Gallery', withDefaultContainer(() => (
-        <Gallery userId="142458589@N03" photosetId="72157667134867210" perPage={ 15 } />
-    ))),
+    route('/gallery', 'Photo Gallery', Gallery),
     route('/blog', 'Posts', withDefaultContainer(Posts)),
     route('/projects', 'Projects', withDefaultContainer(Projects)),
     route('/viz', 'Viz', withDefaultContainer(Viz)),

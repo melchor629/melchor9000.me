@@ -107,18 +107,25 @@
       "title": "Gal·leria de fotos",
       "description": "Aquests moments en els que m'arriba la inspiració fotogràfica, estan capturats en aquesta pàgina"
     },
-    "overlay": {
-      "fecha": "Data de captura",
-      "camara": "Capturat con",
-      "exposicion": "Exposició",
-      "apertura": "Apertura",
+    "photoPage": {
+      "captureDate": "Data de captura",
+      "camera": "Capturat amb",
+      "exposure": "Exposició",
+      "aperture": "Apertura",
       "iso": "ISO",
-      "dist-focal": "Dist. Focal",
+      "focalDistance": "Distància focal",
       "flash": "Flash",
       "flash-true": "Encès, es va disparar",
       "flash-false": "Apagat, no es va disparar",
-      "geoposicion": "Localització",
-      "seeFlickr": "Veure en Flickr"
+      "geoposition": "Localització",
+      "seeFlickr": "Veure a Flickr",
+      "width": "Amplada",
+      "height": "Altura",
+      "rotation": "Rotació",
+      "exposureMode": "Mode de exposició",
+      "colorSpace": "Espai de color",
+      "lens": "Lent",
+      "software": "Software"
     },
     "zoomOverlay": {
       "closepc": "En PC: ESC para tancar",

@@ -107,18 +107,25 @@
       "title": "Galería de fotos",
       "description": "Esos momentos en las que me llega la inspiración fotográfica, están capturados en esta página"
     },
-    "overlay": {
-      "fecha": "Fecha de captura",
-      "camara": "Capturado con",
-      "exposicion": "Exposición",
-      "apertura": "Apertura",
+    "photoPage": {
+      "captureDate": "Fecha de captura",
+      "camera": "Capturado con",
+      "exposure": "Exposición",
+      "aperture": "Apertura",
       "iso": "ISO",
-      "dist-focal": "Dist. Focal",
+      "focalDistance": "Distancia Focal",
       "flash": "Flash",
       "flash-true": "Encendido, se disparó",
       "flash-false": "Apagado, no se disparó",
-      "geoposicion": "Localización",
-      "seeFlickr": "Ver en Flickr"
+      "geoposition": "Localización",
+      "seeFlickr": "Ver en Flickr",
+      "width": "Ancho",
+      "height": "Alto",
+      "rotation": "Rotación",
+      "exposureMode": "Modo de exposición",
+      "colorSpace": "Espacio de color",
+      "lens": "Lente",
+      "software": "Software"
     },
     "zoomOverlay": {
       "closepc": "En PC: ESC para cerrar",
