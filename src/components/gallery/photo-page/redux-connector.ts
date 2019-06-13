@@ -4,9 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../../redux/reducers';
 import {
     loadDetailedPhoto, nextDetailed, prevDetailed, hideDetailed, loadedPhotoImage,
-    loadMorePhotos, enablePhotoZoom, disablePhotoZoom
+    loadMorePhotos
 } from '../../../redux/gallery/actions';
-import { GalleryPhoto } from '../../../redux/gallery/reducers';
 import { changeNavbarHideMode } from '../../../redux/effects/actions';
 
 const photoStateSelector = ({ galleryList }: State) => ({
@@ -38,8 +37,6 @@ export const usePhotoActions = (userId: string, photosetId: string) => {
         next: () => dispatch(nextDetailed()),
         prev: () => dispatch(prevDetailed()),
         close: () => dispatch(hideDetailed()),
-        zoom: (photo: GalleryPhoto) => dispatch(enablePhotoZoom(photo)),
-        zoomOff: () => dispatch(disablePhotoZoom()),
         enableHideNavbarOnTopMode: () => dispatch(changeNavbarHideMode('top-only')),
         disableHideNavbarOnTopMode: () => dispatch(changeNavbarHideMode(null)),
     }), [ userId, photosetId, state ]);
