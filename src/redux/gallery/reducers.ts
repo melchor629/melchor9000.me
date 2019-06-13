@@ -6,8 +6,6 @@ import {
     HIDDEN_DETAILED,
     LOADED_PHOTO_IMAGE,
     LOADING_MORE_PHOTOS,
-    ENABLE_PHOTO_ZOOM,
-    DISABLE_PHOTO_ZOOM,
     DETAILED_PHOTO_IS_GOING_TO_CHANGE,
     GalleryActions,
 } from './actions';
@@ -155,7 +153,6 @@ export const galleryList = (state: GalleryState = initialState, action: GalleryA
                     null;
                 return {
                     ...state,
-                    //prevDetailedPhoto: state.detailedPhoto,
                     directionOfChange: action.direction,
                     prevPhoto,
                     nextPhoto,
@@ -165,24 +162,12 @@ export const galleryList = (state: GalleryState = initialState, action: GalleryA
                 const nextPhoto = state.photos[currentPhotoPosition];
                 return {
                     ...state,
-                    //prevDetailedPhoto: state.detailedPhoto,
                     directionOfChange: action.direction,
                     prevPhoto,
                     nextPhoto,
                 };
             }
         }
-
-        case ENABLE_PHOTO_ZOOM:
-            return {
-                ...state,
-                zoomEnabled: true,
-                photos: state.photos.map(photo => photo.id === action.photo.id ?
-                    { ...photo, zoomUrl: action.zoomUrl, zoomSize: action.zoomSize } : photo)
-            };
-
-        case DISABLE_PHOTO_ZOOM:
-            return { ...state, zoomEnabled: false };
 
         default: return state;
     }

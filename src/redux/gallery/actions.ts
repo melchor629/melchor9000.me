@@ -11,8 +11,6 @@ export const HIDDEN_DETAILED = 'HIDDEN_DETAILED';
 export const LOADING_PHOTO_DETAIL = 'LOADING_PHOTO_DETAIL';
 export const LOADED_PHOTO_DETAIL = 'LOADED_PHOTO_DETAIL';
 export const LOADED_PHOTO_IMAGE = 'LOADED_PHOTO_IMAGE';
-export const ENABLE_PHOTO_ZOOM = 'ENABLE_PHOTO_ZOOM';
-export const DISABLE_PHOTO_ZOOM = 'DISABLE_PHOTO_ZOOM';
 export const DETAILED_PHOTO_IS_GOING_TO_CHANGE = 'DETAILED_PHOTO_IS_GOING_TO_CHANGE';
 
 const howMuchToLoad = 500;
@@ -113,7 +111,12 @@ export const loadFirstPhotos = (userId: string, photosetId: string) => async (di
 };
 
 type NeededGalleryState = Pick<GalleryState, 'photos' | 'totalPhotos'>;
-export const loadMorePhotos = (userId: string, photosetId: string, state: NeededGalleryState, next = false) => async (dispatch: Dispatch) => {
+export const loadMorePhotos = (
+    userId: string,
+    photosetId: string,
+    state: NeededGalleryState,
+    next = false
+) => async (dispatch: Dispatch) => {
     if(state.totalPhotos === state.photos.length) {
         return;
     }
@@ -135,7 +138,12 @@ export const loadMorePhotos = (userId: string, photosetId: string, state: Needed
     }
 };
 
-const loadDetailedPhotoImpl = debounce(async (dispatch: Dispatch, photoId: string, state: NeededGalleryState, userId: string, photosetId: string) => {
+const loadDetailedPhotoImpl = debounce(async (dispatch: Dispatch,
+                                              photoId: string,
+                                              state: NeededGalleryState,
+                                              userId: string,
+                                              photosetId: string
+) => {
     dispatch(loadingPhotoDetail(photoId));
     const isFirstLoad = state.photos.length === 0;
     const photosList: typeof state.photos = [];
@@ -216,46 +224,6 @@ const loadDetailedPhotoImpl = debounce(async (dispatch: Dispatch, photoId: strin
 export const loadDetailedPhoto = (photoId: string, state: NeededGalleryState, userId: string, photosetId: string) =>
     (dispatch: Dispatch) => loadDetailedPhotoImpl(dispatch, photoId, state, userId, photosetId);
 
-interface EnablePhotoZoom extends Action<typeof ENABLE_PHOTO_ZOOM> {
-    photo: Photo;
-    zoomUrl: string;
-    zoomSize: { w: number; h: number; };
-}
-
-export const enablePhotoZoom = (photo: Photo & { zoomUrl?: string; zoomSize?: any }) => (dispatch: Dispatch) => {
-    if(photo.zoomUrl === undefined) {
-        photos.getSizes({ photo_id: photo.id }).then(json => {
-            let size = null;
-            for(let s of json.sizes.size) {
-                if(s.label === 'Large') {
-                    size = s;
-                } else if(s.label === 'Original') {
-                    size = s;
-                    break;
-                }
-            }
-
-            dispatch({
-                type: ENABLE_PHOTO_ZOOM,
-                photo,
-                zoomUrl: size!.source,
-                zoomSize: { w: Number(size!.width), h: Number(size!.height) }
-            });
-        });
-    } else {
-        dispatch({
-            type: ENABLE_PHOTO_ZOOM,
-            photo,
-            zoomUrl: photo.zoomUrl,
-            zoomSize: photo.zoomSize
-        });
-    }
-};
-
-export const disablePhotoZoom = () => ({
-    type: DISABLE_PHOTO_ZOOM
-});
-
 export type GalleryActions = FirstPhotosLoadedAction |
     MorePhotosLoadedAction |
     DetailedPhotoIsGoingToChange |
@@ -263,6 +231,4 @@ export type GalleryActions = FirstPhotosLoadedAction |
     LoadingPhotoDetail |
     LoadedPhotoDetail |
     LoadedPhotoImage |
-    Action<typeof LOADING_MORE_PHOTOS> |
-    EnablePhotoZoom |
-    Action<typeof DISABLE_PHOTO_ZOOM>;
+    Action<typeof LOADING_MORE_PHOTOS>;
