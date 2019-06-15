@@ -33,10 +33,19 @@ const findImageSuitableForScreen = (sizes: GalleryPhotoSizes): string => {
     return sortedSizes[sortedSizes.length - 1][1].url; //Return the bigger one, there's no suitable
 };
 
+interface SwipingState {
+    dir: 'l' | 'r';
+    xi: number;
+    yi: number;
+    x: number;
+    y: number;
+}
+
 const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
     const photoId = match.params.id;
     const [ topOrBottom, setTopOrBottom ] = useState<'top' | 'bottom'>('top');
     const [ zoomOpenStatus, setZoomOpenStatus ] = useState<[ number, number ] | false>(false);
+    const [ swipingState, setSwipingState ] = useState<SwipingState | null>(null);
     const imagePageContainerRef = useRef<HTMLDivElement | null>(null);
     const imageViewRef = useRef<HTMLDivElement | null>(null);
     const imageInfoRef = useRef<HTMLDivElement | null>(null);
@@ -147,6 +156,40 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
         setZoomOpenStatus(initialPosition);
     }, [ setZoomOpenStatus ]);
 
+    const onSwiping = useCallback((dir: 'l' | 'r') => (e: React.TouchEvent<HTMLDivElement>) => {
+        if(!swipingState) {
+            setSwipingState({
+                dir,
+                xi: e.touches[0].clientX,
+                yi: e.touches[0].clientY,
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY,
+            });
+        } else {
+            setSwipingState({
+                ...swipingState,
+                dir,
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY,
+            });
+        }
+    }, [ swipingState, setSwipingState ]);
+
+    const swipeZoom = (dir: 'l' | 'r') => {
+        if(swipingState && swipingState.dir === dir) {
+            const length = Math.sqrt(
+                Math.pow(swipingState.x - swipingState.xi, 2) +
+                Math.pow(swipingState.y - swipingState.yi, 2)
+            );
+            const scale = Math.max(0, Math.min(length / 10 + 1, 2));
+            return {
+                transform: `scale(${scale})`,
+            };
+        } else {
+            return undefined;
+        }
+    };
+
     if(!photo) {
         return (
             <div className="photo-overlay">
@@ -177,7 +220,10 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
                     onClick={ e => (e.target as HTMLElement).classList.contains('img') && openZoomModal(e as any) }
                     onTap={ e => (e.target as HTMLElement).classList.contains('img') && e.preventDefault() }
                     onSwipedLeft={ onSwipedHorizontal(nextPhoto, next) }
-                    onSwipedRight={ onSwipedHorizontal(prevPhoto, prev) }>
+                    onSwipedRight={ onSwipedHorizontal(prevPhoto, prev) }
+                    onSwipingLeft={ onSwiping('l') }
+                    onSwipingRight={ onSwiping('r') }
+                    onSwiped={ () => setSwipingState(null) }>
                     <img src={ photo.sizes ? findImageSuitableForScreen(photo.sizes) : photo.url! }
                         onLoad={ photoIsLoaded }
                         style={{ display: 'none' }} alt={ photo.title as string } />
@@ -191,12 +237,14 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
                         imageUrl2={ imageUrl2 }
                         changeDirection={ directionOfChange } />
 
-                    <div className={ `nav-button next-button ${nextPhoto || 'hide'}` }>
+                    <div className={ `nav-button next-button ${nextPhoto || 'hide'}` }
+                        style={ swipeZoom('l') }>
                         <Link to={ `/gallery/${nextPhoto && nextPhoto.id}`} onClick={ next }>
                             <i className="fas fa-chevron-right" />
                         </Link>
                     </div>
-                    <div className={ `nav-button prev-button ${prevPhoto || 'hide'}` }>
+                    <div className={ `nav-button prev-button ${prevPhoto || 'hide'}` }
+                        style={ swipeZoom('r') }>
                         <Link to={ `/gallery/${prevPhoto && prevPhoto.id}` } onClick={ prev }>
                             <i className="fas fa-chevron-left" />
                         </Link>
