@@ -1,11 +1,13 @@
 import React from 'react';
-import * as THREE from 'three';
 import { Helmet } from 'react-helmet';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import * as toast from '../lib/toast';
+import * as THREE from 'three';
 
-const Cropper = require('react-cropper').default;
+import * as toast from '../lib/toast';
+import { getAssetUrl } from '../lib/url';
+
 import 'cropperjs/dist/cropper.css';
+const Cropper = require('react-cropper').default;
 
 async function sleep(time: number) {
     return new Promise(accept => setTimeout(() => accept(), time * 1000));
@@ -286,17 +288,17 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     private prepareTextures(): THREE.TextureLoader {
         const textureLoader = new THREE.TextureLoader();
         //Cargamos las texturas
-        textureLoader.load('/img/eu/euklid.png', (texture: THREE.Texture) => {
+        textureLoader.load(getAssetUrl('img/eu/euklid.png'), (texture: THREE.Texture) => {
             this.textures.set('euklid', texture);
             this.material.uniforms.texture.value = texture;
             this.material.needsUpdate = true;
         });
-        textureLoader.load('/img/eu/doge.png', (texture) => this.textures.set('doge', texture));
-        textureLoader.load('/img/eu/melchor.png', (texture) => this.textures.set('melchor', texture));
-        textureLoader.load('/img/eu/pato.png', (texture) => this.textures.set('pato', texture));
-        textureLoader.load('/img/eu/fallout-pipboy.png',
+        textureLoader.load(getAssetUrl('img/eu/doge.png'), (texture) => this.textures.set('doge', texture));
+        textureLoader.load(getAssetUrl('img/eu/melchor.png'), (texture) => this.textures.set('melchor', texture));
+        textureLoader.load(getAssetUrl('img/eu/pato.png'), (texture) => this.textures.set('pato', texture));
+        textureLoader.load(getAssetUrl('img/eu/fallout-pipboy.png'),
                                 (texture) => this.textures.set('fallout_pipboy', texture));
-        textureLoader.load('/img/eu/thincc.png', (texture) => this.textures.set('thincc', texture));
+        textureLoader.load(getAssetUrl('img/eu/thincc.png'), (texture) => this.textures.set('thincc', texture));
         return textureLoader;
     }
 
@@ -460,7 +462,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
 
         const videocanvas = document.createElement('canvas');
         const settings = this.state.videoFromCamera!.getVideoTracks()[0].getSettings();
-        if(screen.width < screen.height) {
+        if(window.screen.width < window.screen.height) {
             videocanvas.width = settings.height!;
             videocanvas.height = settings.width!;
         } else {

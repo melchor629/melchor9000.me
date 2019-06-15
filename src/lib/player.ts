@@ -1,3 +1,5 @@
+import { getAssetUrl } from './url';
+
 const _AudioContext = (window['AudioContext'] || window['mozAudioContext'] || window['webkitAudioContext']);
 
 class Player {
@@ -27,14 +29,14 @@ class Player {
     loadSound(name: string, format1: string, format2: string) {
         let file;
         if(this.canPlay[format1]) {
-            file = `/snd/${name}.${format1}`;
+            file = `snd/${name}.${format1}`;
         } else if(this.canPlay[format2]) {
-            file = `/snd/${name}.${format2}`;
+            file = `snd/${name}.${format2}`;
         } else {
             throw `Cannot play song in either ${format1} nor ${format2}`;
         }
 
-        this.soundBuffers.set(name, { url: file, buffer: null });
+        this.soundBuffers.set(name, { url: getAssetUrl(file), buffer: null });
     }
 
     loadFile(name: string, file: File): Promise<void> {

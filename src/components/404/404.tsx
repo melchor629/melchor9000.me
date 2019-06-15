@@ -1,7 +1,8 @@
 import * as React from 'react';
-const Parallax = require('parallax-js');
 
 import './404.scss';
+
+const Parallax = require('parallax-js');
 
 export default class PageNotFound extends React.Component {
     private parallax: any;

@@ -1,43 +1,35 @@
 import React from 'react';
 import { WithTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
+
 import * as toast from '../../lib/toast';
 import { Cheat } from '../../lib/cheat';
 import Player from '../../lib/player';
 import Visualizer from '../visualizer';
 import Tapable from '../tapable';
 import { IndexDispatchToProps, IndexStateToProps } from '../../containers/home';
-const Parallax = require('parallax-js');
+import { getAssetUrl } from '../../lib/url';
 
 import './home.scss';
 
+const Parallax = require('parallax-js');
+
 const images = [
-    'img/Pixel Art.png',
-    'https://pbs.twimg.com/media/CERI-yNW0AIwIA6.jpg:large',
-    'https://pbs.twimg.com/media/CDGwAolWIAA-xkF.jpg:large',
-    'https://pbs.twimg.com/media/CEe1sRkWYAE0Wiy.jpg:large',
-    'https://pbs.twimg.com/media/CGGc8fnWMAA0GnY.jpg:large',
-    'https://pbs.twimg.com/media/CeBLo6ZWIAQE_Qn.jpg:large',
-    'https://pbs.twimg.com/media/Cgf7-IEUEAAgWk5.jpg:large',
-    'https://pbs.twimg.com/media/Ci-4rIQWgAABok3.jpg:large',
-    'https://pbs.twimg.com/media/Cx9ZotYXUAAhih5.jpg:large',
-    'https://pbs.twimg.com/media/CyiKCaAXgAAfp84.jpg:large',
+    getAssetUrl('img/Pixel Art.png'),
+    getAssetUrl('img/home/CERI-yNW0AIwIA6.jpg'),
+    getAssetUrl('img/home/CDGwAolWIAA-xkF.jpg'),
+    getAssetUrl('img/home/CEe1sRkWYAE0Wiy.jpg'),
+    getAssetUrl('img/home/CGGc8fnWMAA0GnY.jpg'),
+    getAssetUrl('img/home/CeBLo6ZWIAQE_Qn.jpg'),
+    getAssetUrl('img/home/Cgf7-IEUEAAgWk5.jpg'),
+    getAssetUrl('img/home/Ci-4rIQWgAABok3.jpg'),
+    getAssetUrl('img/home/Cx9ZotYXUAAhih5.jpg'),
+    getAssetUrl('img/home/CyiKCaAXgAAfp84.jpg'),
     'https://pbs.twimg.com/profile_images/1074988668769710080/R0klIFsf_400x400.jpg',
 ];
 
 const specialDatesImages: { day: number, month: number, image: string | string[] }[] = [
-    { day: 14, month: 4, image: 'data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" standalone="no"?>' +
-        '<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" ' +
-        'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" ' +
-        'xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="0 0 3 3" version="1.1" ' +
-        'id="svg4562"><metadata id="metadata4568"><rdf:RDF><cc:Work rdf:about=""><dc:format>image/svg+xml' +
-        '</dc:format><dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/><dc:title></dc:title>' +
-        '</cc:Work></rdf:RDF></metadata><defs id="defs4566"/><path d="m -1.6819011,1.4986118 3.179204,' +
-        '-3.179204 3.1819804,3.1819805 -3.1792039,3.1792039 z" id="path4556" style="fill:#630b57;' +
-        'stroke-width:1.16138792"/><path d="M -1.6819011,1.4986118 1.4973029,-1.6805922 3.6186231,' +
-        '0.44072813 0.43941923,3.619932 Z" id="path4558" style="fill:#fcdd09;stroke-width:1.16138792"/>' +
-        '<path d="m -1.6819011,1.4986118 3.179204,-3.179204 1.06066,1.06066016 -3.17920384,3.17920384 z" ' +
-        'id="path4560" style="fill:#da121a;stroke-width:1.16138792"/></svg>' },
+    { day: 14, month: 4, image: getAssetUrl('img/home/re.svg') },
     { day: 1, month: 5, image: [
         'https://upload.wikimedia.org/wikipedia/commons/d/d4/Manifestacio_barcelona_primer_de_maig_alternatiu_2009.JPG',
         'https://images-na.ssl-images-amazon.com/images/I/61km35u8M1L._SL1500_.jpg',

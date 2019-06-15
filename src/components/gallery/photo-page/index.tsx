@@ -206,6 +206,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
     const currentPhotoUrl = photo.sizes ?
         (imageIsLoading ? photo.url! : findImageSuitableForScreen(photo.sizes)) :
         photo.url!;
+    const currentPhotoBigUrl = photo.sizes ? findImageSuitableForScreen(photo.sizes) : photo.url!;
     const imageUrl1 = imageSwitcher ? previousPhotoUrl : currentPhotoUrl;
     const imageUrl2 = imageSwitcher ? currentPhotoUrl : previousPhotoUrl;
 
@@ -224,9 +225,10 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
                     onSwipingLeft={ onSwiping('l') }
                     onSwipingRight={ onSwiping('r') }
                     onSwiped={ () => setSwipingState(null) }>
-                    <img src={ photo.sizes ? findImageSuitableForScreen(photo.sizes) : photo.url! }
+                    <img src={ currentPhotoBigUrl }
                         onLoad={ photoIsLoaded }
-                        style={{ display: 'none' }} alt={ photo.title as string } />
+                        style={{ display: 'none' }}
+                        alt={ 'string' === typeof photo.title ? photo.title : photo.title._content } />
                     { nextPhoto && nextPhoto.url &&
                         <img src={ nextPhoto.url } className="d-none" alt="preload next" /> }
                     { prevPhoto && prevPhoto.url &&

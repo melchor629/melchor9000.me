@@ -2,6 +2,7 @@ import React from 'react';
 import i18next from 'i18next';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { ProjectInfo } from '../../containers/projects';
+import { getAssetUrl } from '../../lib/url';
 
 type ProjectProps = { project: ProjectInfo, darkMode: boolean } & WithTranslation;
 
@@ -22,7 +23,7 @@ const getDescription = (project: ProjectInfo, i18n: i18next.i18n): string => {
 
 const Project = ({ project, darkMode, t, i18n }: ProjectProps) => (
     <div className={ `card ${darkMode ? 'bg-dark' : 'bg-light'}` }>
-        { project.image ? <img className="card-img-top" src={ project.image } alt={ project.title } /> : null }
+        { project.image && <img className="card-img-top" src={ getAssetUrl(project.image) } alt={ project.title } /> }
         <div className="card-body">
             <h5 className="card-title">{ project.title }</h5>
             <h6 className="card-subtitle mb-2 text-muted">{ project.technologies.join(', ') }</h6>
