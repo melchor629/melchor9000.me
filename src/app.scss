@@ -135,7 +135,7 @@ a:hover {
   }
 
   .navbar-brand {
-    color: $accent-color !important;
+    color: $accent-color-fallback !important;
     font-weight: 400;
   }
 
