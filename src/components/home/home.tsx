@@ -167,13 +167,14 @@ const cheats = new Map([
         }).catch(playSoundError.bind(name, this.props));
     } ],
     [ 'a n d r e s', function(this: Home) {
-        if(document.querySelector('iframe') === null) {
+        if(document.querySelector('iframe.andres') === null) {
             let iframe = document.createElement('iframe');
             iframe.setAttribute('width', String(window.innerWidth));
             iframe.setAttribute('height', String(window.innerHeight));
             iframe.setAttribute('src', 'https://www.youtube.com/embed/8arKaFFTFGo?autoplay=1' +
                 '&controls=0&disablekb=1&fs=0&rel=0&showinfo=0&color=white&iv_load_policy=3');
             iframe.setAttribute('id', 'background');
+            iframe.classList.add('andres');
             iframe.setAttribute('frameborder', '0');
             iframe.setAttribute('allowfullscreen', 'true');
             document.body.appendChild(iframe);
