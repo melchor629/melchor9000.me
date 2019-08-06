@@ -26,7 +26,7 @@ export default () => (
             <div className="col col-sm-auto d-flex align-items-center justify-content-center justify-content-sm-start
              links">
                 { links.map(({ url, key, fas, fab }) => (
-                    <a href={ url } key={ key } target="_blank" rel="noreferrer">
+                    <a href={ url } key={ key } target="_blank" rel="noopener noreferrer">
                         <i className={ [fas && `fas`, fab && `fab`, `fa-${fab || fas}`].filter(f => !!f).join(' ') } />
                     </a>
                 ))}

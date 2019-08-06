@@ -49,7 +49,7 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
                 <InfoItem id="geoposition">
                     <a href={ url }
                         target="_blank"
-                        rel="noreferrer">
+                        rel="noopener noreferrer">
                         { locationString }
                     </a>
                 </InfoItem>
@@ -109,7 +109,7 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
                 <div className="mt-2">
                     { info && info.urls.url.length > 0 && (
                         <p id="enlace">
-                            <a href={ info.urls.url[0]._content } target="_blank">
+                            <a href={ info.urls.url[0]._content } target="_blank" rel="noopener noreferrer">
                                 { t('gallery.photoPage.seeFlickr') }
                             </a>
                         </p>

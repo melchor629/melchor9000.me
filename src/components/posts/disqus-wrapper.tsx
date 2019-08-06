@@ -36,9 +36,9 @@ class DisqusWrapper extends React.PureComponent<DisqusWrapperProps & WithTransla
                 <div className="text-center mb-4 mt-4 d-flex justify-content-center">
                     <div style={{ width: '30vw', minWidth: '300px' }}>
                         <p><Trans i18nKey="blog.disqus.policy">
-                            . <a href="https://disqus.com/" target="_blank" rel="nofollow">Disqus</a> .
+                            . <a href="https://disqus.com/" target="_blank" rel="noopener noreferrer">Disqus</a> .
                         </Trans></p>
-                        <p><small><a href="https://help.disqus.com/terms-and-policies" target="_blank" rel="nofollow">
+                        <p><small><a href="https://help.disqus.com/terms-and-policies" target="_blank" rel="noopener noreferrer">
                             { this.props.t('blog.disqus.terms') }
                         </a></small></p>
                         <p>

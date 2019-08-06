@@ -29,11 +29,11 @@ const Project = ({ project, darkMode, t, i18n }: ProjectProps) => (
             <h6 className="card-subtitle mb-2 text-muted">{ project.technologies.join(', ') }</h6>
             <p className="card-text" dangerouslySetInnerHTML={{ __html: getDescription(project, i18n) }} />
             { project.repo &&
-            <a href={ project.repo } className="card-link" target="_blank" rel="nofollow">{t('projects.repo')}</a> }
+            <a href={ project.repo } className="card-link" target="_blank" rel="noopener noreferrer">{t('projects.repo')}</a> }
             { project.demo &&
-            <a href={ project.demo } className="card-link" target="_blank" rel="nofollow">{t('projects.demo')}</a> }
+            <a href={ project.demo } className="card-link" target="_blank" rel="noopener noreferrer">{t('projects.demo')}</a> }
             { project.web &&
-            <a href={ project.web } className="card-link" target="_blank" rel="nofollow">{t('projects.web')}</a>  }
+            <a href={ project.web } className="card-link" target="_blank" rel="noopener noreferrer">{t('projects.web')}</a>  }
         </div>
     </div>
 );

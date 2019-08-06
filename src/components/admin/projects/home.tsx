@@ -62,7 +62,7 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
                             <td>{ project.title }</td>
                             <td>{ project.technologies.join(', ') }</td>
                             <td className="admin-list-row-actions">
-                                { project.repo && <a href={ project.repo } target="_blank" rel="noreferrer"
+                                { project.repo && <a href={ project.repo } target="_blank" rel="noopener noreferrer"
                                                      className="btn btn-outline-primary btn-sm">
                                     <i className="fab fa-github" />
                                 </a> }
