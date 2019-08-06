@@ -3,6 +3,7 @@ import { debounce } from 'debounce';
 
 import { buildPhotoUrl, photos, photosets, Photoset, Photo, ExifData, PhotoInfo } from '../../lib/flickr';
 import { GalleryState, GalleryPhotoSizes } from './reducers';
+import { State } from '../reducers';
 
 export const FIRST_PHOTOS_LOADED = 'FIRST_PHOTOS_LOADED';
 export const LOADING_MORE_PHOTOS = 'LOADING_MORE_PHOTOS';
@@ -96,7 +97,9 @@ export const loadedPhotoImage = (): LoadedPhotoImage => ({
     type: LOADED_PHOTO_IMAGE
 });
 
-export const loadFirstPhotos = (userId: string, photosetId: string) => async (dispatch: Dispatch) => {
+export const loadFirstPhotos = (userId: string, photosetId: string) => async (dispatch: Dispatch, getState: () => State) => {
+    if(getState().galleryList.photos.length > 0) return;
+
     const { photoset } = await photosets.getPhotos({
         user_id: userId,
         photoset_id: photosetId,
@@ -110,14 +113,13 @@ export const loadFirstPhotos = (userId: string, photosetId: string) => async (di
     }));
 };
 
-type NeededGalleryState = Pick<GalleryState, 'photos' | 'totalPhotos'>;
 export const loadMorePhotos = (
     userId: string,
     photosetId: string,
-    state: NeededGalleryState,
     next = false
-) => async (dispatch: Dispatch) => {
-    if(state.totalPhotos === state.photos.length) {
+) => async (dispatch: Dispatch, getState: () => State) => {
+    const { galleryList: { totalPhotos, photos } } = getState();
+    if(totalPhotos === photos.length) {
         return;
     }
 
@@ -130,7 +132,7 @@ export const loadMorePhotos = (
         user_id: userId,
         photoset_id: photosetId,
         per_page: howMuchToLoad,
-        page: Math.floor(state.photos.length / howMuchToLoad) + 1,
+        page: Math.floor(photos.length / howMuchToLoad) + 1,
     });
     dispatch(morePhotosLoaded(photoset));
     if(next) {
@@ -140,7 +142,7 @@ export const loadMorePhotos = (
 
 const loadDetailedPhotoImpl = debounce(async (dispatch: Dispatch,
                                               photoId: string,
-                                              state: NeededGalleryState,
+                                              state: GalleryState,
                                               userId: string,
                                               photosetId: string
 ) => {
@@ -150,7 +152,7 @@ const loadDetailedPhotoImpl = debounce(async (dispatch: Dispatch,
     let totalPhotos = isFirstLoad ? -1 : state.totalPhotos;
     let primary: string = '';
     let countPhotos = () => photosList.length + state.photos.length;
-    while(countPhotos() < totalPhotos || countPhotos() === 0 && isFirstLoad) {
+    while((countPhotos() < totalPhotos) || (countPhotos() === 0 && isFirstLoad)) {
         const { photoset } = await photosets.getPhotos({
             user_id: userId,
             photoset_id: photosetId,
@@ -221,8 +223,9 @@ const loadDetailedPhotoImpl = debounce(async (dispatch: Dispatch,
     dispatch(loadedPhotoDetail({ photoId: photo.id, exif, info, sizes }));
 }, 250);
 
-export const loadDetailedPhoto = (photoId: string, state: NeededGalleryState, userId: string, photosetId: string) =>
-    (dispatch: Dispatch) => loadDetailedPhotoImpl(dispatch, photoId, state, userId, photosetId);
+export const loadDetailedPhoto = (photoId: string, userId: string, photosetId: string) =>
+    (dispatch: Dispatch, getState: () => State) =>
+        loadDetailedPhotoImpl(dispatch, photoId, getState().galleryList, userId, photosetId);
 
 export type GalleryActions = FirstPhotosLoadedAction |
     MorePhotosLoadedAction |

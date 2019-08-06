@@ -25,19 +25,14 @@ export const usePhotoState = () => useSelector(photoStateSelector);
 
 export const usePhotoActions = (userId: string, photosetId: string) => {
     const dispatch = useDispatch();
-    const state = useSelector(({ galleryList }: State) => ({
-        photos: galleryList.photos,
-        totalPhotos: galleryList.totalPhotos,
-    }));
-
     return useMemo(() => ({
-        loadFullInfoForPhoto: (photoId: string) => dispatch(loadDetailedPhoto(photoId, state, userId, photosetId)),
+        loadFullInfoForPhoto: (photoId: string) => dispatch(loadDetailedPhoto(photoId, userId, photosetId)),
         photoIsLoaded: () => dispatch(loadedPhotoImage()),
-        loadMorePhotosAndNext: () => dispatch(loadMorePhotos(userId, photosetId, state, true)),
+        loadMorePhotosAndNext: () => dispatch(loadMorePhotos(userId, photosetId, true)),
         next: () => dispatch(nextDetailed()),
         prev: () => dispatch(prevDetailed()),
         close: () => dispatch(hideDetailed()),
         enableHideNavbarOnTopMode: () => dispatch(changeNavbarHideMode('top-only')),
         disableHideNavbarOnTopMode: () => dispatch(changeNavbarHideMode(null)),
-    }), [ userId, photosetId, state ]);
+    }), [ userId, photosetId, dispatch ]);
 };
