@@ -17,7 +17,7 @@ export interface ProjectsHomeDispatchToProps {
 }
 
 const mapStateToProps = (state: State): ProjectsHomeStateToProps => ({
-    projects: (<ProjectInfo[]> (state.database.snapshots.projects || []))
+    projects: ((state.database.snapshots.projects || []) as ProjectInfo[])
         .sort((a, b) => a.title.localeCompare(b.title)),
     deleting: state.database.doing.posts,
     errorDeleting: state.database.errors.posts,

@@ -65,8 +65,7 @@ const ZoomImageViewImpl = ({
 }: ZoomImageOverlayProps) => {
     const bestQualityImage = Object.entries(photo.sizes!)
         .filter(([ label ]) => label !== 'Original') //Original give us tons of problems with rotation
-        .sort((a, b) => Math.max(b[1].width, b[1].height) - Math.max(a[1].width, a[1].height))
-        [0][1];
+        .sort((a, b) => Math.max(b[1].width, b[1].height) - Math.max(a[1].width, a[1].height))[0][1];
     const currentPositionRef = useRef<Coords>(
         initialMousePosition ?
             calculateTranslation(bestQualityImage, normalizeMouseCoordinates(initialMousePosition)) :

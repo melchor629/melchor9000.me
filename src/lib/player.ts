@@ -33,7 +33,7 @@ class Player {
         } else if(this.canPlay[format2]) {
             file = `snd/${name}.${format2}`;
         } else {
-            throw `Cannot play song in either ${format1} nor ${format2}`;
+            throw new Error(`Cannot play song in either ${format1} nor ${format2}`);
         }
 
         this.soundBuffers.set(name, { url: getAssetUrl(file), buffer: null });
@@ -119,19 +119,16 @@ class Player {
         this.context.close().catch();
     }
 
-    private asyncLoad(name: string) {
-        return fetch(this.soundBuffers.get(name)!.url)
-            .then(response => response.arrayBuffer())
-            .then(buffer => new Promise((accept, reject) => {
-                    // noinspection JSIgnoredPromiseFromCall
-                    this.context.decodeAudioData(buffer,
-                                                 buffer2 => accept(buffer2),
-                                                 error => reject(error));
-                })
-            ).then(buffer => {
-                this.soundBuffers.set(name, { ...this.soundBuffers.get(name)!, buffer: <AudioBuffer> buffer });
-                return Promise.resolve(buffer);
-            });
+    private async asyncLoad(name: string) {
+        const response = await fetch(this.soundBuffers.get(name)!.url);
+        const buffer = await response.arrayBuffer();
+        const buffer2 = await new Promise<AudioBuffer>((accept, reject) => {
+            this.context.decodeAudioData(buffer,
+                                         buffer2 => accept(buffer2),
+                                         error => reject(error));
+        });
+        this.soundBuffers.set(name, { ...this.soundBuffers.get(name)!, buffer: buffer2 });
+        return buffer;
     }
 
 }
