@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet';
 import { GalleryPhoto } from '../../../redux/gallery/reducers';
@@ -27,12 +27,12 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
     const exifMap = exifToMap(photo);
     let geolocation = null;
 
-    const InfoItem = ({ id, children }: { id: string, children: any }) => !!children && (
+    const InfoItem = useMemo(() => ({ id, children }: { id: string, children: any }) => !!children ? (
         <div className="lead col-12 col-md-6 mb-2 info-item">
             <small>{ t(`gallery.photoPage.${id}`) }</small><br/>
             <span>{ children }</span>
         </div>
-    ) || null;
+    ) : null, [t]);
 
     if(info) {
         if(info.location) {
@@ -89,11 +89,11 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
                     }</InfoItem>
                     <InfoItem id="width">{
                         exifMap.get('IFD0:ImageWidth') ||
-                        photo.sizes && photo.sizes.Original && photo.sizes.Original.width
+                        (photo.sizes && photo.sizes.Original && photo.sizes.Original.width)
                     }</InfoItem>
                     <InfoItem id="height">{
                         exifMap.get('IFD0:ImageHeight') ||
-                        photo.sizes && photo.sizes.Original && photo.sizes.Original.height
+                        (photo.sizes && photo.sizes.Original && photo.sizes.Original.height)
                     }</InfoItem>
                     <InfoItem id="rotation">{
                         exifMap.get('IFD0:Orientation') &&

@@ -30,7 +30,7 @@ class DisqusWrapper extends React.PureComponent<DisqusWrapperProps & WithTransla
     public render() {
         const { config, shortName } = this.props;
         if(this.state.hasAccepted) {
-            return config && <DiscussionEmbed shortname={shortName} config={config} /> || null;
+            return config ? <DiscussionEmbed shortname={shortName} config={config} /> : null;
         } else {
             return (
                 <div className="text-center mb-4 mt-4 d-flex justify-content-center">
