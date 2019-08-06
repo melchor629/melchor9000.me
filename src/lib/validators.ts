@@ -13,10 +13,10 @@ export const regexValidator = (regex: RegExp) => (value: string) => !!value.matc
 export const emailValidator = regexValidator(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
 
 //https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
-export const urlValidator = regexValidator(/[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/);
+export const urlValidator = regexValidator(/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/);
 
 export const urlOrLocalValidator = orValidator(
-    regexValidator(/\/([-a-zA-Z0-9@:%_\+.~#?&//=]*)/),
+    regexValidator(/\/([-a-zA-Z0-9@:%_+.~#?&//=]*)/),
     urlValidator,
 );
 
