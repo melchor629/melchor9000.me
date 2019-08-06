@@ -77,7 +77,7 @@ const AboutMe = ({ t }: WithTranslation) => (
             </li>
             <li className="mb-2">
                 C#
-                <ProgressBar n={0.1} />
+                <ProgressBar n={0.15} />
             </li>
             <li className="mb-2">
                 { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail3') }: ARM y MIPS
@@ -107,7 +107,7 @@ const AboutMe = ({ t }: WithTranslation) => (
 
         <h2 id="tienes">{ t('about-me.haveYouGot<>.question') }</h2>
         <p>
-            { t('about-me.haveYouGot<>.answer1') } 🤔
+            { t('about-me.haveYouGot<>.answer1') } <span role="img" aria-label="thinking emoji">🤔</span>
             <br />
             { t('about-me.haveYouGot<>.answer2') }
         </p>
@@ -125,13 +125,13 @@ const AboutMe = ({ t }: WithTranslation) => (
         </p>
 
         <h2 id="quiero-saber-más...">{ t('about-me.IWannaKnowMore') }</h2>
-        <p><strong>{ t('no') }.</strong> 😠</p>
+        <p><strong>{ t('no') }.</strong> <span role="img" aria-label="angry face">😠</span></p>
 
         <h2 id="¿por-qué">{ t('about-me.why') }</h2>
-        <p><strong>{ t('about-me.becausedont') }</strong> 😡</p>
+        <p><strong>{ t('about-me.becausedont') }</strong> <span role="img" aria-label="really angry face">😡</span></p>
 
-        <h2 id="mmm">🤔</h2>
-        <p><span style={{ transform: 'scale(-1, 1)', display: 'inline-block', marginLeft: '4px' }}>🤔</span></p>
+        <h2 id="mmm"><span role="img" aria-label="thinking emoji">🤔</span></h2>
+        <p><span style={{ transform: 'scale(-1, 1)', display: 'inline-block', marginLeft: '4px' }}><span role="img" aria-label="thinking emoji">🤔</span></span></p>
 
     </div>
 );
