@@ -20,7 +20,7 @@ export const GalleryListPage = ({ userId, photosetId }: GalleryListProps) => {
 
     useEffect(() => {
         loadFirstPhotos();
-    }, []);
+    }, []); //eslint-disable-line
 
     const perPage = window.document.body.clientWidth > 992 ? 16 : 15; //TODO
     const photosLoaded = photos.length;
@@ -46,7 +46,7 @@ export const GalleryListPage = ({ userId, photosetId }: GalleryListProps) => {
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
-    }, [ loadingPhotosList, photosLoaded, totalPhotos, page ]);
+    }, [ loadingPhotosList, photosLoaded, totalPhotos, page, perPage ]); //eslint-disable-line
 
     const spinnerClasses = !morePhotosToLoad ?
         [ 'd-none' ] :

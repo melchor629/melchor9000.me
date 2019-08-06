@@ -75,11 +75,11 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
             disableHideNavbarOnTopMode();
             close();
         };
-    }, []);
+    }, []); //eslint-disable-line
 
     useEffect(() => {
         loadFullInfoForPhoto(photoId);
-    }, [ photoId ]);
+    }, [ photoId ]); //eslint-disable-line
 
     useEffect(() => {
         if(zoomOpenStatus === false) {
@@ -98,7 +98,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
         }
 
         return () => undefined;
-    }, [ prevPhoto, nextPhoto, zoomOpenStatus ]);
+    }, [ prevPhoto, nextPhoto, zoomOpenStatus ]); //eslint-disable-line
 
     useEffect(() => {
         const onScroll = () => {
@@ -128,7 +128,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
         } else {
             imageViewRef.current = null;
         }
-    }, [ imagePageContainerRef.current ]);
+    }, [ imagePageContainerRef.current ]); //eslint-disable-line
 
     const onSwipedHorizontal = useCallback((newPhoto: GalleryPhoto | null, n: () => void) => () => {
         if(newPhoto) {
