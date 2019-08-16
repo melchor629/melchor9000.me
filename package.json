@@ -8,7 +8,7 @@
     "bootstrap": "4",
     "commonmark": "^0.29.0",
     "debounce": "^1.2.0",
-    "disqus-react": "^1.0.5",
+    "disqus-react": "^1.0.6",
     "firebase": "^6.2.0",
     "highlight.js": "^9.15.8",
     "i18next": "^17.0.11",

@@ -135,12 +135,12 @@ a:hover {
   }
 
   .navbar-brand {
-    color: $accent-color-fallback !important;
+    color: $md-grey-200 !important;
     font-weight: 400;
   }
 
   .navbar-brand:hover {
-    color: $accent-color;
+    color: $md-grey-400 !important;
   }
 
   .navbar-collapse {
