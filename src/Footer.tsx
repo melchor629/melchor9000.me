@@ -17,7 +17,7 @@ export default () => (
         <div className="row">
             <div className="col col-sm-auto text-center text-sm-right">
                 <p>
-                    melchor629/melchor9000 (2018)
+                    melchor629/melchor9000 ({new Date().getFullYear()})
                 </p>
             </div>
 
