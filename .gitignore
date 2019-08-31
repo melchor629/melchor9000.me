@@ -32,4 +32,4 @@ package-lock.json
 .idea
 .vscode
 cors.json
-firebase.json
+.firebase/
