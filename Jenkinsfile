@@ -5,6 +5,7 @@ pipeline {
     docker {
       label 'docker'
       image 'node:10-alpine'
+      args '-e HOME=$WORKSPACE'
     }
   }
 
