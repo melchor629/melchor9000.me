@@ -27,7 +27,7 @@
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.1",
+    "react-scripts": "3.1.2",
     "react-spring": "^8.0.25",
     "react-swipeable": "^4.3.2",
     "react-toastify": "^5.2.1",
@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@firebase/app-types": "^0.4.0",
+    "@firebase/firestore-types": "^1.5.0",
     "@types/jquery": "^3.3.29",
     "@types/node": "^10.12.30",
     "@types/react": "^16.8.20",
