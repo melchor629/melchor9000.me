@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Switch, withRouter } from 'react-router'
 import { Link, Route, RouteComponentProps } from 'react-router-dom'
@@ -17,7 +17,7 @@ import './app.scss'
 const PageNotFound = asyncComponent(() => import('./components/404/404'))
 const Login = asyncComponent(() => import('./containers/login'))
 
-const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
+const App: FC<RouteComponentProps & WithTranslation> = ({ history, t }) => {
     const [ offcanvas, setOffcanvas ] = useState(false)
     const [ navbarExtraClases, setNavbarExtraClasses ] = useState<string[]>([])
     const { barrelRoll, flipIt, darkMode, navbarHideMode } = useSelector((state: State) => ({
@@ -143,4 +143,4 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
     )
 }
 
-export default withRouter(withTranslation('translations')(App))
+export default withTranslation('translations')(withRouter(App))

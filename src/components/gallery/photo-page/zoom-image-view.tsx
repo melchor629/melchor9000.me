@@ -88,7 +88,7 @@ const ZoomImageViewImpl = ({
 
     useEffect(() => {
         window.document.body.style.overflow = 'hidden'
-        return () => void (window.document.body.style.overflow = null)
+        return () => void (window.document.body.style.overflow = '')
     }, [])
 
     const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
