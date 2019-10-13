@@ -72,99 +72,105 @@ const keys = {
     f10: 'F10',
     f11: 'F11',
     f12: 'F12',
-};
+}
 
 export class Sequence {
-    readonly seq: string[];
-    readonly keys: string[];
-    doneCbk?: () => void;
-    private str: string;
+    readonly seq: string[]
+    readonly keys: string[]
+    doneCbk?: () => void
+    private readonly str: string
 
     constructor(str: string) {
-        this.str = str;
-        this.seq = this.str.split(' ');
-        this.keys = [];
-        for(let i of this.seq) {
-            this.keys.push(keys[i]);
+        this.str = str
+        this.seq = this.str.split(' ')
+        this.keys = []
+        for(const i of this.seq) {
+            this.keys.push(keys[i])
         }
     }
 
     then(doneCbk: () => void) {
-        this.doneCbk = doneCbk;
+        this.doneCbk = doneCbk
     }
 
     match(otherKeys: string[]) {
         for(let i = 0; i < this.keys.length; i++) {
             if(otherKeys[i] !== this.keys[i]) {
-                return false;
+                return false
             }
         }
-        return true;
+        return true
     }
 
     startsWith(otherKeys: string[]) {
-        for (let i = 0; i < otherKeys.length; i++) {
-            if (otherKeys[i] !== this.keys[i]) {
-                return false;
+        for(let i = 0; i < otherKeys.length; i++) {
+            if(otherKeys[i] !== this.keys[i]) {
+                return false
             }
         }
-        return true;
+        return true
     }
 }
 
 export class Cheat {
-    public onnext?: (key: string, sequence: string) => void;
-    public ondone?: (sequence: Sequence) => void;
-    public onfail?: () => void;
-    private readonly seqs: Sequence[];
-    private matchingSeqs: Sequence[];
-    private keysPressed: string[];
+    public onnext?: (key: string, sequence: string) => void
+    public ondone?: (sequence: Sequence) => void
+    public onfail?: () => void
+    private readonly seqs: Sequence[]
+    private matchingSeqs: Sequence[]
+    private keysPressed: string[]
 
     constructor() {
-        this.seqs = [];
-        this.matchingSeqs = [];
-        this.keysPressed = [];
+        this.seqs = []
+        this.matchingSeqs = []
+        this.keysPressed = []
     }
 
     add(seqStr: string) {
-        let s = new Sequence(seqStr);
-        this.seqs.push(s);
-        return s;
+        const s = new Sequence(seqStr)
+        this.seqs.push(s)
+        return s
     }
 
     keydown(key: string) {
-        this.keysPressed.push(key);
+        this.keysPressed.push(key)
 
-        this.matchingSeqs = [];
-        for(let seq of this.seqs) {
+        this.matchingSeqs = []
+        for(const seq of this.seqs) {
             if(seq.startsWith(this.keysPressed)) {
-                this.matchingSeqs.push(seq);
+                this.matchingSeqs.push(seq)
             }
         }
 
         if(this.matchingSeqs.length > 0 && this.onnext) {
-            this.onnext(key, this.matchingSeqs[0].seq[this.keysPressed.length - 1]);
+            this.onnext(key, this.matchingSeqs[0].seq[this.keysPressed.length - 1])
         }
 
         if(this.matchingSeqs.length === 0) {
-            this.reset();
-        } else if (this.matchingSeqs.length === 1) {
+            this.reset()
+        } else if(this.matchingSeqs.length === 1) {
             if(this.matchingSeqs[0].match(this.keysPressed)) {
-                this.done(this.matchingSeqs[0]);
+                this.done(this.matchingSeqs[0])
             }
         }
     }
 
     done(seq: Sequence) {
-        this.matchingSeqs = [];
-        this.keysPressed = [];
-        if(this.ondone) { this.ondone(seq); }
-        if(seq.doneCbk) { seq.doneCbk(); }
+        this.matchingSeqs = []
+        this.keysPressed = []
+        if(this.ondone) {
+            this.ondone(seq)
+        }
+        if(seq.doneCbk) {
+            seq.doneCbk()
+        }
     }
 
     reset() {
-        this.matchingSeqs = [];
-        this.keysPressed = [];
-        if(this.onfail) { this.onfail(); }
+        this.matchingSeqs = []
+        this.keysPressed = []
+        if(this.onfail) {
+            this.onfail()
+        }
     }
 }

@@ -1,63 +1,64 @@
-import $ from 'jquery';
-import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import $ from 'jquery'
+import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 
-import Header from './header';
-import { PhotoItem } from './photo-item';
-import { useGalleryListActions, useGalleryListState } from './redux-connector';
-import LoadSpinner from '../../load-spinner';
+import Header from './header'
+import { PhotoItem } from './photo-item'
+import { useGalleryListActions, useGalleryListState } from './redux-connector'
+import LoadSpinner from '../../load-spinner'
 
 interface GalleryListProps {
-    userId: string;
-    photosetId: string;
-    perPage: number;
+    userId: string
+    photosetId: string
+    perPage: number
 }
 
 export const GalleryListPage = ({ userId, photosetId }: GalleryListProps) => {
-    const [ page, setPage ] = useState(0);
-    const { primary, photos, totalPhotos, loadingPhotosList } = useGalleryListState();
-    const { loadFirstPhotos, loadMorePhotos } = useGalleryListActions(userId, photosetId);
+    const [ page, setPage ] = useState(0)
+    const { primary, photos, totalPhotos, loadingPhotosList } = useGalleryListState()
+    const { loadFirstPhotos, loadMorePhotos } = useGalleryListActions(userId, photosetId)
 
     useEffect(() => {
-        loadFirstPhotos();
+        loadFirstPhotos()
     }, []); //eslint-disable-line
 
-    const perPage = window.document.body.clientWidth > 992 ? 16 : 15; //TODO
-    const photosLoaded = photos.length;
-    const morePhotosToLoad = page < Math.floor(totalPhotos / perPage) + 1;
+    //TODO calculate this in a better way
+    const perPage = window.document.body.clientWidth > 992 ? 16 : 15
+    const photosLoaded = photos.length
+    const morePhotosToLoad = page < Math.floor(totalPhotos / perPage) + 1
     useEffect(() => {
         if(!morePhotosToLoad) {
-            return;
+            return
         }
 
         const onScroll = () => {
-            const bottom = $(document).scrollTop()! + $(window).height()!;
-            const sizeOfPage = document.body.scrollHeight;
+            const bottom = $(document).scrollTop()! + $(window).height()!
+            const sizeOfPage = document.body.scrollHeight
             if(sizeOfPage - bottom < 125 && !loadingPhotosList) {
                 if(page * perPage >= photosLoaded) {
-                    loadMorePhotos();
+                    loadMorePhotos()
                 } else {
-                    setPage(page + 1);
+                    setPage(page + 1)
                 }
-                window.removeEventListener('scroll', onScroll);
+                window.removeEventListener('scroll', onScroll)
             }
-        };
+        }
 
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
+        onScroll()
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
     }, [ loadingPhotosList, photosLoaded, totalPhotos, page, perPage ]); //eslint-disable-line
 
     const spinnerClasses = !morePhotosToLoad ?
         [ 'd-none' ] :
-        [ 'd-flex', 'justify-content-center' ];
+        [ 'd-flex', 'justify-content-center' ]
 
     return (
         <div style={{ paddingTop: 300 }} className="mb-4">
             <Helmet>
                 <title>Gallery</title>
                 <meta name="Description"
-                      content="Gallery of photos taken by melchor9000" />
+                    content="Gallery of photos taken by melchor9000" />
             </Helmet>
 
             <Header photo={ primary } />
@@ -70,5 +71,5 @@ export const GalleryListPage = ({ userId, photosetId }: GalleryListProps) => {
                 <LoadSpinner />
             </div>
         </div>
-    );
-};
+    )
+}

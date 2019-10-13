@@ -1,21 +1,18 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-import firebase from 'firebase/app';
-import { Helmet } from 'react-helmet';
-import * as toast from '../../../lib/toast';
-import { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home';
-import { Post } from '../../../redux/posts/reducers';
-import DeleteModal from '../delete-modal';
+import * as React from 'react'
+import { Link } from 'react-router-dom'
+import firebase from 'firebase/app'
+import { Helmet } from 'react-helmet'
+import * as toast from '../../../lib/toast'
+import { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home'
+import { Post } from '../../../redux/posts/reducers'
+import DeleteModal from '../delete-modal'
 
-type PostsPageProps = PostsHomeStateToProps & PostsHomeDispatchToProps;
+type PostsPageProps = PostsHomeStateToProps & PostsHomeDispatchToProps
 
 export default class PostsHome extends React.Component<PostsPageProps, { postToDelete: Post | null }> {
-
     constructor(props: PostsPageProps) {
-        super(props);
-        this.state = {
-            postToDelete: null,
-        };
+        super(props)
+        this.state = { postToDelete: null }
     }
 
     componentDidUpdate(prevProps: PostsPageProps) {
@@ -26,18 +23,18 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                         No se pudo borrar los metadatos del post...<br />
                         <span className="text-muted">{ this.props.errorSaving.toString() }</span>
                     </div>
-                );
-                this.props.clearError();
+                )
+                this.props.clearError()
             }
         }
     }
 
     render() {
-        const { darkMode } = this.props;
+        const { darkMode } = this.props
         const postUrl = (post: Post) => {
-            const date = post.date.toDate();
-            return `/blog/${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}/${post.url}`;
-        };
+            const date = post.date.toDate()
+            return `/blog/${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}/${post.url}`
+        }
 
         return (
             <div>
@@ -56,52 +53,55 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                 </div>
                 <table className={ `table ${darkMode ? 'table-dark' : 'table-light'} table-hover` }>
                     <thead className={ darkMode ? 'thead-dark' : 'thead-light'}>
-                    <tr>
-                        <th>Título</th>
-                        <th>Fecha de publicación</th>
-                        <th />
-                    </tr>
+                        <tr>
+                            <th>Título</th>
+                            <th>Fecha de publicación</th>
+                            <th />
+                        </tr>
                     </thead>
                     <tbody>
-                    { this.props.posts && this.props.posts.map(post => (
-                        <tr key={ post._id } className="admin-list-row">
-                            <td><Link to={ postUrl(post) }>{ post.title }</Link></td>
-                            <td>{ post.date.toDate().toLocaleString() }</td>
-                            <td className="admin-list-row-actions">
-                                <Link to={ `/admin/posts/edit/${post._id}` } className="btn btn-sm btn-outline-warning">
-                                    <i className="fas fa-pencil-alt" />
-                                </Link>
+                        { this.props.posts && this.props.posts.map(post => (
+                            <tr key={ post._id } className="admin-list-row">
+                                <td><Link to={ postUrl(post) }>{ post.title }</Link></td>
+                                <td>{ post.date.toDate().toLocaleString() }</td>
+                                <td className="admin-list-row-actions">
+                                    <Link
+                                        to={`/admin/posts/edit/${post._id}`}
+                                        className="btn btn-sm btn-outline-warning"
+                                    >
+                                        <i className="fas fa-pencil-alt" />
+                                    </Link>
                                 &nbsp;
-                                <button className="btn btn-sm btn-outline-danger"
-                                        onClick={ (e) => this.selectForDeleting(e, post) }>
-                                    <i className="fas fa-trash" />
-                                </button>
-                            </td>
-                        </tr>
-                    )) }
+                                    <button className="btn btn-sm btn-outline-danger"
+                                        onClick={ e => this.selectForDeleting(e, post) }>
+                                        <i className="fas fa-trash" />
+                                    </button>
+                                </td>
+                            </tr>
+                        )) }
                     </tbody>
                 </table>
 
                 <DeleteModal item={ this.state.postToDelete }
-                             onClose={ () => this.setState({ postToDelete: null }) }
-                             onDelete={ () => this.deletePost() } />
+                    onClose={ () => this.setState({ postToDelete: null }) }
+                    onDelete={ () => this.deletePost() } />
             </div>
-        );
+        )
     }
 
     private selectForDeleting(e: React.MouseEvent<HTMLButtonElement>, post: Post) {
-        e.preventDefault();
-        this.setState({ postToDelete: post });
+        e.preventDefault()
+        this.setState({ postToDelete: post })
     }
 
     private deletePost() {
-        const post = this.state.postToDelete!;
+        const post = this.state.postToDelete!
 
         firebase.storage()
             .ref(post.file)
             .delete()
             .then(() => {
-                this.props.delete(post);
+                this.props.delete(post)
             })
             .catch(error => {
                 toast.error(
@@ -109,8 +109,7 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                         No se pudo borrar el contenido del post<br />
                         <span className="text-muted">{ error.toString() }</span>
                     </div>
-                );
-            });
+                )
+            })
     }
-
 }

@@ -1,19 +1,18 @@
-import * as React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { ProjectsDispatchToProps, ProjectsStateToProps } from '../../containers/admin/projects';
-import { ProjectsHome } from '../../containers/admin/projects/home';
-import { ProjectEditor } from '../../containers/admin/projects/editor';
+import * as React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import { ProjectsDispatchToProps, ProjectsStateToProps } from '../../containers/admin/projects'
+import { ProjectsHome } from '../../containers/admin/projects/home'
+import { ProjectEditor } from '../../containers/admin/projects/editor'
 
-type ProjectsPageProps = ProjectsStateToProps & ProjectsDispatchToProps;
+type ProjectsPageProps = ProjectsStateToProps & ProjectsDispatchToProps
 
 export default class Posts extends React.Component<ProjectsPageProps> {
-
     componentDidMount() {
-        this.props.subscribe();
+        this.props.subscribe()
     }
 
     componentWillUnmount() {
-        this.props.unsubscribe();
+        this.props.unsubscribe()
     }
 
     render() {
@@ -23,7 +22,6 @@ export default class Posts extends React.Component<ProjectsPageProps> {
                 <Route path="/admin/projects/create" component={ ProjectEditor } />
                 <Route path="/admin/projects/edit/:id" component={ ProjectEditor } />
             </Switch>
-        );
+        )
     }
-
 }

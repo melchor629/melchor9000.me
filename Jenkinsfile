@@ -21,6 +21,12 @@ pipeline {
       }
     }
 
+    stage('Checks') {
+        steps {
+            sh 'npm run lint'
+        }
+    }
+
     stage('Build') {
       environment {
         REACT_APP_FLICKR_API_KEY = credentials('melchor9000-flickr-api-key')
@@ -41,7 +47,7 @@ pipeline {
       }
 
       steps {
-        sh 'node_modules/.bin/firebase deploy --project melchor9000-me'
+        sh 'npm run deploy'
       }
 
       post {

@@ -1,12 +1,12 @@
-import { useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { State } from '../../../redux/reducers';
+import { State } from '../../../redux/reducers'
 import {
-    loadDetailedPhoto, nextDetailed, prevDetailed, hideDetailed, loadedPhotoImage,
-    loadMorePhotos
-} from '../../../redux/gallery/actions';
-import { changeNavbarHideMode } from '../../../redux/effects/actions';
+    hideDetailed, loadDetailedPhoto, loadedPhotoImage, loadMorePhotos, nextDetailed,
+    prevDetailed,
+} from '../../../redux/gallery/actions'
+import { changeNavbarHideMode } from '../../../redux/effects/actions'
 
 const photoStateSelector = ({ galleryList }: State) => ({
     currentPhoto: galleryList.photos.find(photo => photo.id === galleryList.detailedPhoto)!,
@@ -19,12 +19,12 @@ const photoStateSelector = ({ galleryList }: State) => ({
     directionOfChange: galleryList.directionOfChange,
     imageInfoIsLoading: galleryList.loadingPhotoDetailInfo || galleryList.loadingPhotos,
     imageSwitcher: galleryList.imageSwitcher,
-});
+})
 
-export const usePhotoState = () => useSelector(photoStateSelector);
+export const usePhotoState = () => useSelector(photoStateSelector)
 
 export const usePhotoActions = (userId: string, photosetId: string) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     return useMemo(() => ({
         loadFullInfoForPhoto: (photoId: string) => dispatch(loadDetailedPhoto(photoId, userId, photosetId)),
         photoIsLoaded: () => dispatch(loadedPhotoImage()),
@@ -34,5 +34,5 @@ export const usePhotoActions = (userId: string, photosetId: string) => {
         close: () => dispatch(hideDetailed()),
         enableHideNavbarOnTopMode: () => dispatch(changeNavbarHideMode('top-only')),
         disableHideNavbarOnTopMode: () => dispatch(changeNavbarHideMode(null)),
-    }), [ userId, photosetId, dispatch ]);
-};
+    }), [ userId, photosetId, dispatch ])
+}

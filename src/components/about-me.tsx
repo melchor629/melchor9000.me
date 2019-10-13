@@ -1,12 +1,12 @@
-import React from 'react';
-import { Trans, WithTranslation, withTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet';
+import React from 'react'
+import { Trans, WithTranslation, withTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
 
 const ProgressBar = ({ n, children }: { n: number, children?: any }) => (
     <div className="progress">
         <div className="progress-bar" style={{ width: `${n * 100}%` }}>{ children }</div>
     </div>
-);
+)
 
 const AboutMe = ({ t }: WithTranslation) => (
     <div>
@@ -14,7 +14,7 @@ const AboutMe = ({ t }: WithTranslation) => (
         <Helmet>
             <title>About me</title>
             <meta name="Description"
-                  content="A page with some questions and answers about me - melchor9000/melchor629" />
+                content="A page with some questions and answers about me - melchor9000/melchor629" />
         </Helmet>
 
         <h2 id="¿que-música-escuchas">{ t('about-me.whatMusicDoIListen.question') }</h2>
@@ -131,9 +131,13 @@ const AboutMe = ({ t }: WithTranslation) => (
         <p><strong>{ t('about-me.becausedont') }</strong> <span role="img" aria-label="really angry face">😡</span></p>
 
         <h2 id="mmm"><span role="img" aria-label="thinking emoji">🤔</span></h2>
-        <p><span style={{ transform: 'scale(-1, 1)', display: 'inline-block', marginLeft: '4px' }}><span role="img" aria-label="thinking emoji">🤔</span></span></p>
+        <p>
+            <span style={{ transform: 'scale(-1, 1)', display: 'inline-block', marginLeft: '4px' }}>
+                <span role="img" aria-label="thinking emoji">🤔</span>
+            </span>
+        </p>
 
     </div>
-);
+)
 
-export default withTranslation('translations')(AboutMe);
+export default withTranslation('translations')(AboutMe)

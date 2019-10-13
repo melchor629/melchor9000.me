@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { Redirect, Route } from 'react-router';
-import { connect } from 'react-redux';
-import { State } from '../redux/reducers';
+import * as React from 'react'
+import { Redirect, Route } from 'react-router'
+import { connect } from 'react-redux'
+import { State } from '../redux/reducers'
 
 type PrivateRouteProps = {
-    component: React.ComponentType<any>;
-    loggedIn: boolean;
-    [extraProps: string]: any;
-};
+    component: React.ComponentType<any>
+    loggedIn: boolean
+    [extraProps: string]: any
+}
 
 const PrivateRoute = ({ component: Component, loggedIn, ...rest }: PrivateRouteProps) => (
     <Route
@@ -17,10 +17,8 @@ const PrivateRoute = ({ component: Component, loggedIn, ...rest }: PrivateRouteP
                 <Component {...props} /> :
                 <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         } />
-);
+)
 
-const mapStateToProps = (state: State) => ({
-    loggedIn: !!state.auth.user,
-});
+const mapStateToProps = (state: State) => ({ loggedIn: !!state.auth.user })
 
-export default (connect(mapStateToProps)(PrivateRoute));
+export default (connect(mapStateToProps)(PrivateRoute))

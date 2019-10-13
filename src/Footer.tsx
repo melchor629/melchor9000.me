@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import './footer.scss';
+import './footer.scss'
 
 const links = [
     { url: 'https://github.com/melchor629/melchor9000.me', key: 'code', fas: 'code' },
@@ -10,7 +10,7 @@ const links = [
     { url: 'https://www.instagram.com/melchor9000/', key: 'instagram', fab: 'instagram' },
     { url: 'https://www.last.fm/user/melchor629', key: 'lastfm', fab: 'lastfm' },
     { url: 'https://www.linkedin.com/in/melchor9000/', key: 'linkedin', fab: 'linkedin' },
-];
+]
 
 export default () => (
     <div className="container">
@@ -26,11 +26,11 @@ export default () => (
             <div className="col col-sm-auto d-flex align-items-center justify-content-center justify-content-sm-start
              links">
                 { links.map(({ url, key, fas, fab }) => (
-                    <a href={ url } key={ key } target="_blank" rel="noopener noreferrer">
-                        <i className={ [fas && `fas`, fab && `fab`, `fa-${fab || fas}`].filter(f => !!f).join(' ') } />
+                    <a href={url} key={key} target="_blank" rel="noopener noreferrer">
+                        <i className={[ fas && 'fas', fab && 'fab', `fa-${fab || fas}` ].filter(f => !!f).join(' ')} />
                     </a>
                 ))}
             </div>
         </div>
     </div>
-);
+)

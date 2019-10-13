@@ -1,20 +1,17 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import * as toast from '../../../lib/toast';
-import { ProjectsHomeDispatchToProps, ProjectsHomeStateToProps } from '../../../containers/admin/projects/home';
-import { ProjectInfo } from '../../../containers/admin/projects';
-import DeleteModal from '../delete-modal';
+import * as React from 'react'
+import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
+import * as toast from '../../../lib/toast'
+import { ProjectsHomeDispatchToProps, ProjectsHomeStateToProps } from '../../../containers/admin/projects/home'
+import { ProjectInfo } from '../../../containers/admin/projects'
+import DeleteModal from '../delete-modal'
 
-type ProjectsPageProps = ProjectsHomeStateToProps & ProjectsHomeDispatchToProps;
+type ProjectsPageProps = ProjectsHomeStateToProps & ProjectsHomeDispatchToProps
 
 export default class PostsHome extends React.Component<ProjectsPageProps, { projectToDelete: ProjectInfo | null }> {
-
     constructor(props: ProjectsPageProps) {
-        super(props);
-        this.state = {
-            projectToDelete: null,
-        };
+        super(props)
+        this.state = { projectToDelete: null }
     }
 
     componentDidUpdate(prevProps: ProjectsPageProps) {
@@ -25,14 +22,14 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
                         No se pudo borrar los metadatos del post...<br />
                         <span className="text-muted">{ this.props.errorDeleting.toString() }</span>
                     </div>
-                );
-                this.props.clearError();
+                )
+                this.props.clearError()
             }
         }
     }
 
     render() {
-        const { darkMode } = this.props;
+        const { darkMode } = this.props
         return (
             <div>
 
@@ -50,52 +47,51 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
                 </div>
                 <table className={ `table ${darkMode ? 'table-dark' : 'table-light'} table-hover` }>
                     <thead className={ darkMode ? 'thead-dark' : 'thead-light'}>
-                    <tr>
-                        <th>Título</th>
-                        <th>Technologías</th>
-                        <th />
-                    </tr>
+                        <tr>
+                            <th>Título</th>
+                            <th>Technologías</th>
+                            <th />
+                        </tr>
                     </thead>
                     <tbody>
-                    { this.props.projects.map(project => (
-                        <tr key={ project._id } className="admin-list-row">
-                            <td>{ project.title }</td>
-                            <td>{ project.technologies.join(', ') }</td>
-                            <td className="admin-list-row-actions">
-                                { project.repo && <a href={ project.repo } target="_blank" rel="noopener noreferrer"
-                                                     className="btn btn-outline-primary btn-sm">
-                                    <i className="fab fa-github" />
-                                </a> }
+                        { this.props.projects.map(project => (
+                            <tr key={ project._id } className="admin-list-row">
+                                <td>{ project.title }</td>
+                                <td>{ project.technologies.join(', ') }</td>
+                                <td className="admin-list-row-actions">
+                                    { project.repo && <a href={ project.repo } target="_blank" rel="noopener noreferrer"
+                                        className="btn btn-outline-primary btn-sm">
+                                        <i className="fab fa-github" />
+                                    </a> }
                                 &nbsp;
-                                <Link to={ `/admin/projects/edit/${project._id}` }
-                                      className="btn btn-sm btn-outline-warning">
-                                    <i className="fas fa-pencil-alt" />
-                                </Link>
+                                    <Link to={ `/admin/projects/edit/${project._id}` }
+                                        className="btn btn-sm btn-outline-warning">
+                                        <i className="fas fa-pencil-alt" />
+                                    </Link>
                                 &nbsp;
-                                <button className="btn btn-sm btn-outline-danger"
-                                        onClick={ (e) => this.selectForDeleting(e, project) }>
-                                    <i className="fas fa-trash" />
-                                </button>
-                            </td>
-                        </tr>
-                    )) }
+                                    <button className="btn btn-sm btn-outline-danger"
+                                        onClick={ e => this.selectForDeleting(e, project) }>
+                                        <i className="fas fa-trash" />
+                                    </button>
+                                </td>
+                            </tr>
+                        )) }
                     </tbody>
                 </table>
 
                 <DeleteModal item={ this.state.projectToDelete }
-                             onClose={ () => this.setState({ projectToDelete: null }) }
-                             onDelete={ () => this.deleteProject() } />
+                    onClose={ () => this.setState({ projectToDelete: null }) }
+                    onDelete={ () => this.deleteProject() } />
             </div>
-        );
+        )
     }
 
     private selectForDeleting(e: React.MouseEvent<HTMLButtonElement>, project: ProjectInfo) {
-        e.preventDefault();
-        this.setState({ projectToDelete: project });
+        e.preventDefault()
+        this.setState({ projectToDelete: project })
     }
 
     private deleteProject() {
-        this.props.delete(this.state.projectToDelete!);
+        this.props.delete(this.state.projectToDelete!)
     }
-
 }

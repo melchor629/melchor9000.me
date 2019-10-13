@@ -1,32 +1,32 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import './404.scss';
+import './404.scss'
 
-const Parallax = require('parallax-js');
+const Parallax = require('parallax-js')
 
 export default class PageNotFound extends React.Component {
-    private parallax: any;
+    private parallax: any
 
     constructor(props: any) {
-        super(props);
-        this.onResize = this.onResize.bind(this);
+        super(props)
+        this.onResize = this.onResize.bind(this)
     }
 
     componentDidMount() {
-        this.parallax = new Parallax(document.querySelector('#scene'));
-        document.body.style.backgroundColor = '#005d8f';
-        window.addEventListener('resize', this.onResize, { passive: true });
+        this.parallax = new Parallax(document.querySelector('#scene'))
+        document.body.style.backgroundColor = '#005d8f'
+        window.addEventListener('resize', this.onResize, { passive: true })
     }
 
     componentWillUnmount() {
-        this.parallax.destroy();
-        document.body.style.backgroundColor = null;
-        window.removeEventListener('resize', this.onResize);
+        this.parallax.destroy()
+        document.body.style.backgroundColor = null
+        window.removeEventListener('resize', this.onResize)
     }
 
     render() {
-        const width = document.body.clientWidth;
-        const height = document.body.clientHeight - 130;
+        const width = document.body.clientWidth
+        const height = document.body.clientHeight - 130
         return (
             <div id="scene" className="d-flex align-items-center" style={{ height }}>
                 <div className="layer" data-depth="0.3">
@@ -36,18 +36,18 @@ export default class PageNotFound extends React.Component {
                 </div>
                 <div className="layer" data-depth="0.5">
                     <img width="100%"
-                         alt="me_irl not founding the page :("
-                         style={{ position: 'absolute', top: height / 2 - width * 0.8 / 4 }}
-                         src={`${process.env.PUBLIC_URL}/img/404.png`} />
+                        alt="me_irl not founding the page :("
+                        style={{ position: 'absolute', top: height / 2 - width * 0.8 / 4 }}
+                        src={`${process.env.PUBLIC_URL}/img/404.png`} />
                 </div>
                 <div className="layer" data-depth="0.8">
                     <h1 className="title" style={{ top: height / 2 }}>Uooo, esta página no existe</h1>
                 </div>
             </div>
-        );
+        )
     }
 
     private onResize() {
-        this.forceUpdate();
+        this.forceUpdate()
     }
 }

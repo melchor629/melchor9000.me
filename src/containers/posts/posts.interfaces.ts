@@ -3,6 +3,6 @@ export interface PostsStateToProps {
 }
 
 export interface PostsDispatchToProps {
-    subscribePosts: () => void;
-    unsuscribePosts: () => void;
+    subscribePosts: () => void
+    unsuscribePosts: () => void
 }

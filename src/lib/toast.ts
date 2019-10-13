@@ -1,54 +1,52 @@
-import { toast, ToastOptions, ToastContent, ToastId } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContent, ToastId, ToastOptions } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 class Toast {
-    public readonly onClose: Promise<void>;
+    public readonly onClose: Promise<void>
 
     constructor(private readonly id: ToastId) {
-        this.onClose = new Promise<void>((resolve) => {
-            toast.update(this.id, {
-                onClose: () => resolve()
-            });
-        });
+        this.onClose = new Promise<void>(resolve => {
+            toast.update(this.id, { onClose: () => resolve() })
+        })
     }
 
     public update(options: ToastOptions) {
-        toast.update(this.id, options);
+        toast.update(this.id, options)
     }
 
     public dismiss() {
-        toast.dismiss(this.id);
+        toast.dismiss(this.id)
     }
 }
 
-type ToastFunction = (content: ToastContent, options?: ToastOptions) => Toast;
+type ToastFunction = (content: ToastContent, options?: ToastOptions) => Toast
 
 export const normal: ToastFunction = (content, options) => new Toast(toast(content, {
     ...options,
     className: 'toast',
-    bodyClassName: 'default'
-}));
+    bodyClassName: 'default',
+}))
 
 export const success: ToastFunction = (content, options) => new Toast(toast.success(content, {
     ...options,
     className: 'toast',
-    bodyClassName: 'success'
-}));
+    bodyClassName: 'success',
+}))
 
 export const info: ToastFunction = (content, options) => new Toast(toast.info(content, {
     ...options,
     className: 'toast',
-    bodyClassName: 'info'
-}));
+    bodyClassName: 'info',
+}))
 
 export const warning: ToastFunction = (content, options) => new Toast(toast.warn(content, {
     ...options,
     className: 'toast',
-    bodyClassName: 'warn'
-}));
+    bodyClassName: 'warn',
+}))
 
 export const error: ToastFunction = (content, options) => new Toast(toast.error(content, {
     ...options,
     className: 'toast',
-    bodyClassName: 'error'
-}));
+    bodyClassName: 'error',
+}))
