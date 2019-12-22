@@ -1,50 +1,50 @@
-import moment from 'moment';
-import React, { memo, useMemo } from 'react';
-import { withTranslation, WithTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet';
-import { GalleryPhoto } from '../../../redux/gallery/reducers';
-import { DefaultContainer } from '../../default-container';
-import LoadSpinner from '../../load-spinner';
+import moment from 'moment'
+import React, { memo, useMemo } from 'react'
+import { withTranslation, WithTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
+import { GalleryPhoto } from '../../../redux/gallery/reducers'
+import { DefaultContainer } from '../../default-container'
+import LoadSpinner from '../../load-spinner'
 
 interface OverlayImageInfoProps {
-    photo: GalleryPhoto;
-    loading: boolean;
-    rootRef?: React.RefObject<HTMLDivElement>;
+    photo: GalleryPhoto
+    loading: boolean
+    rootRef?: React.RefObject<HTMLDivElement>
 }
 
 const exifToMap = (photo: GalleryPhoto): Map<string, string> => {
     if(!photo.exif) {
-        return new Map();
+        return new Map()
     }
 
     return photo.exif.exif
-        .reduce((map, exif) => map.set(`${exif.tagspace}:${exif.tag}`, exif.raw._content), new Map());
-};
+        .reduce((map, exif) => map.set(`${exif.tagspace}:${exif.tag}`, exif.raw._content), new Map())
+}
 
 const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps & WithTranslation) => {
-    const info = photo.info ? photo.info : null;
-    const exif = photo.exif ? photo.exif : null;
-    const exifMap = exifToMap(photo);
-    let geolocation = null;
+    const info = photo.info ? photo.info : null
+    const exif = photo.exif ? photo.exif : null
+    const exifMap = exifToMap(photo)
+    let geolocation = null
 
-    const InfoItem = useMemo(() => ({ id, children }: { id: string, children: any }) => !!children ? (
+    const InfoItem = useMemo(() => ({ id, children }: { id: string, children: any }) => children ? (
         <div className="lead col-12 col-md-6 mb-2 info-item">
             <small>{ t(`gallery.photoPage.${id}`) }</small><br/>
             <span>{ children }</span>
         </div>
-    ) : null, [t]);
+    ) : null, [ t ])
 
     if(info) {
         if(info.location) {
-            const l = info.location;
+            const l = info.location
             const locationString = [
                 l.neighbourhood && `${l.neighbourhood._content},`,
                 l.locality && `${l.locality._content},`,
                 l.county && `${l.county._content} -`,
                 l.region && l.region._content,
                 l.country && `(${l.country._content})`,
-            ].filter(f => f).join(' ');
-            const url = `https://www.google.es/maps/@${l.latitude},${l.longitude},15z?q=${l.latitude},${l.longitude}`;
+            ].filter(f => f).join(' ')
+            const url = `https://www.google.es/maps/@${l.latitude},${l.longitude},15z?q=${l.latitude},${l.longitude}`
             geolocation = (
                 <InfoItem id="geoposition">
                     <a href={ url }
@@ -53,7 +53,7 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
                         { locationString }
                     </a>
                 </InfoItem>
-            );
+            )
         }
     }
 
@@ -85,7 +85,7 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
                     <InfoItem id="focalDistance">{ exifMap.get('ExifIFD:FocalLength') }</InfoItem>
                     <InfoItem id="flash">{
                         exifMap.get('ExifIFD:Flash') &&
-                            t(`gallery.photoPage.flash-${exifMap.get('ExifIFD:Flash')!.indexOf('Off') === -1}`)
+                            t(`gallery.photoPage.flash-${!exifMap.get('ExifIFD:Flash')!.includes('Off')}`)
                     }</InfoItem>
                     <InfoItem id="width">{
                         exifMap.get('IFD0:ImageWidth') ||
@@ -97,9 +97,9 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
                     }</InfoItem>
                     <InfoItem id="rotation">{
                         exifMap.get('IFD0:Orientation') &&
-                        exifMap.get('IFD0:Orientation')!.match(/(\d+)/) &&
-                        (exifMap.get('IFD0:Orientation')!.endsWith('CCW') ? '-' : '') +
-                            exifMap.get('IFD0:Orientation')!.match(/(\d+)/)![1] + 'º'
+                        /(\d+)/.exec(exifMap.get('IFD0:Orientation')!) &&
+                        `${(exifMap.get('IFD0:Orientation')!.endsWith('CCW') ? '-' : '') +
+                            /(\d+)/.exec(exifMap.get('IFD0:Orientation')!)![1]}º`
                     }</InfoItem>
                     <InfoItem id="exposureMode">{ exifMap.get('ExifIFD:ExposureMode') }</InfoItem>
                     <InfoItem id="colorSpace">{ exifMap.get('ExifIFD:ColorSpace') }</InfoItem>
@@ -117,10 +117,10 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
                 </div>
             </DefaultContainer>
         </div>
-    );
-};
+    )
+}
 
-export const ImageInfoView =  memo(
+export const ImageInfoView = memo(
     withTranslation()(ImageInfoViewImpl),
-    (a, b) => a.photo.id === b.photo.id && !a.photo.info && !b.photo.info
-);
+    (a, b) => a.photo.id === b.photo.id && !a.photo.info && !b.photo.info,
+)

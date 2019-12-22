@@ -1,23 +1,23 @@
-import moment from 'moment';
+import moment from 'moment'
 
-export type Validator = (value: string) => boolean;
+export type Validator = (value: string) => boolean
 
-export const isValid = (value: string, validators: Validator[]) => validators.reduce((a, val) => val(value) && a, true);
+export const isValid = (value: string, validators: Validator[]) => validators.reduce((a, val) => val(value) && a, true)
 
-export const valueValidator = (value: boolean) => () => value;
+export const valueValidator = (value: boolean) => () => value
 
-export const orValidator = (...vals: Validator[]) => (value: string) => vals.reduce((a, val) => val(value) || a, false);
+export const orValidator = (...vals: Validator[]) => (value: string) => vals.reduce((a, val) => val(value) || a, false)
 
-export const regexValidator = (regex: RegExp) => (value: string) => !!value.match(regex);
+export const regexValidator = (regex: RegExp) => (value: string) => !!regex.exec(value)
 
-export const emailValidator = regexValidator(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+export const emailValidator = regexValidator(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
 
 //https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
-export const urlValidator = regexValidator(/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/);
+export const urlValidator = regexValidator(/[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/)
 
 export const urlOrLocalValidator = orValidator(
     regexValidator(/\/([-a-zA-Z0-9@:%_+.~#?&//=]*)/),
     urlValidator,
-);
+)
 
-export const dateValidator = (format: string) => (value: string) => moment(value, format, true).isValid();
+export const dateValidator = (format: string) => (value: string) => moment(value, format, true).isValid()

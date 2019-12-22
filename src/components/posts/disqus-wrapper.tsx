@@ -1,36 +1,33 @@
-import React from 'react';
-import { Trans, withTranslation, WithTranslation } from 'react-i18next';
-const { DiscussionEmbed } = require('disqus-react');
+import React from 'react'
+import { Trans, withTranslation, WithTranslation } from 'react-i18next'
+const { DiscussionEmbed } = require('disqus-react')
 
 interface DisqusWrapperProps {
-    shortName: string;
+    shortName: string
     config: {
-        url: string;
-        identifier: string;
-        title: string;
-    } | null | undefined;
+        url: string
+        identifier: string
+        title: string
+    } | null | undefined
 }
 
 interface State {
-    hasAccepted: boolean;
+    hasAccepted: boolean
 }
 
 class DisqusWrapper extends React.PureComponent<DisqusWrapperProps & WithTranslation, State> {
-
     constructor(props: DisqusWrapperProps & WithTranslation) {
-        super(props);
+        super(props)
 
-        this.state = {
-            hasAccepted: (window.localStorage.getItem('posts.disqus.accepted') || 'false') === 'true',
-        };
+        this.state = { hasAccepted: (window.localStorage.getItem('posts.disqus.accepted') || 'false') === 'true' }
 
-        this.onAcceptClicked = this.onAcceptClicked.bind(this);
+        this.onAcceptClicked = this.onAcceptClicked.bind(this)
     }
 
     public render() {
-        const { config, shortName } = this.props;
+        const { config, shortName } = this.props
         if(this.state.hasAccepted) {
-            return config ? <DiscussionEmbed shortname={shortName} config={config} /> : null;
+            return config ? <DiscussionEmbed shortname={shortName} config={config} /> : null
         } else {
             return (
                 <div className="text-center mb-4 mt-4 d-flex justify-content-center">
@@ -43,25 +40,22 @@ class DisqusWrapper extends React.PureComponent<DisqusWrapperProps & WithTransla
                         </a></small></p>
                         <p>
                             <button type="button"
-                                    className="btn btn-lg btn-outline-primary"
-                                    onClick={ this.onAcceptClicked }>
+                                className="btn btn-lg btn-outline-primary"
+                                onClick={ this.onAcceptClicked }>
                                 { this.props.t('blog.disqus.accept') }
                             </button>
                         </p>
                     </div>
                 </div>
-            );
+            )
         }
     }
 
     private onAcceptClicked(e: React.MouseEvent<HTMLButtonElement>) {
-        e.preventDefault();
-        window.localStorage.setItem('posts.disqus.accepted', 'true');
-        this.setState({
-            hasAccepted: true,
-        });
+        e.preventDefault()
+        window.localStorage.setItem('posts.disqus.accepted', 'true')
+        this.setState({ hasAccepted: true })
     }
-
 }
 
-export default withTranslation()(DisqusWrapper);
+export default withTranslation()(DisqusWrapper)

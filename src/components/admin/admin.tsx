@@ -1,24 +1,22 @@
-import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router';
-import { Link, NavLink } from 'react-router-dom';
-import { Trail, animated } from 'react-spring/renderprops';
-import { Helmet } from 'react-helmet';
-import { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/admin';
-import { Posts } from '../../containers/admin/posts';
-import { Projects } from '../../containers/admin/projects';
-import { Logout } from '../../containers/admin/logout';
-import './admin.scss';
+import React from 'react'
+import { Route, RouteComponentProps, Switch } from 'react-router'
+import { Link, NavLink } from 'react-router-dom'
+import { animated, Trail } from 'react-spring/renderprops'
+import { Helmet } from 'react-helmet'
+import { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/admin'
+import { Posts } from '../../containers/admin/posts'
+import { Projects } from '../../containers/admin/projects'
+import { Logout } from '../../containers/admin/logout'
+import './admin.scss'
 
-const containerStyle: React.CSSProperties = {
-    width: '100%',
-};
+const containerStyle: React.CSSProperties = { width: '100%' }
 
 interface AdminPageState {
 }
 
-type AdminPageProps = AdminDispatchToProps & AdminStateToProps & RouteComponentProps<null>;
+type AdminPageProps = AdminDispatchToProps & AdminStateToProps & RouteComponentProps<null>
 
-const pages = [ '/admin/posts', '/admin/projects' ];
+const pages = [ '/admin/posts', '/admin/projects' ]
 const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties }) => (
     <div className="row align-items-center justify-content-center text-center" style={{ ...containerStyle, ...style }}>
         <div className="col-auto">
@@ -36,31 +34,30 @@ const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties })
             ) }
         </Trail>
     </div>
-);
+)
 
 export default class AdminPage extends React.Component<AdminPageProps, AdminPageState> {
-
     constructor(props: AdminPageProps) {
-        super(props);
-        this.state = {};
+        super(props)
+        this.state = {}
     }
 
     render() {
-        const { darkMode } = this.props;
+        const { darkMode } = this.props
         return (
             <div className="container-fluid">
 
                 <Helmet>
                     <title>Admin page</title>
                     <meta name="Description"
-                          content="Administration page" />
+                        content="Administration page" />
                 </Helmet>
 
                 <div className="row">
                     <nav className={ `col-md-2 d-none d-md-block ${darkMode ? 'bg-dark' : 'bg-light'} sidebar` }>
                         <div className="text-center mt-4 sidebar-heading">
                             <img src={ `${process.env.PUBLIC_URL}/ico/favicon.png` } style={{ maxWidth: 180 }}
-                                 alt="Web icon" />
+                                alt="Web icon" />
                             <p className="mt-2">Panel de administración</p>
                         </div>
                         <div className="sidebar-sticky">
@@ -92,8 +89,8 @@ export default class AdminPage extends React.Component<AdminPageProps, AdminPage
                     <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
                         <Switch>
                             <Route exact={true}
-                                   path="/admin"
-                                   component={ () => <Home {...this.props} /> } />
+                                path="/admin"
+                                component={ () => <Home {...this.props} /> } />
                             <Route path="/admin/posts" component={ Posts } />
                             <Route path="/admin/projects" component={ Projects } />
                             <Route path="/admin/logout" component={ Logout } />
@@ -101,6 +98,6 @@ export default class AdminPage extends React.Component<AdminPageProps, AdminPage
                     </main>
                 </div>
             </div>
-        );
+        )
     }
 }

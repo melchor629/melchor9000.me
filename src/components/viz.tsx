@@ -1,38 +1,38 @@
-import React from 'react';
-import { WithTranslation, Trans } from 'react-i18next';
-import { Spring } from 'react-spring/renderprops';
-import { Helmet } from 'react-helmet';
-import * as toast from '../lib/toast';
-import Visualizer from './visualizer';
-import Player from '../lib/player';
-import { VizStateToProps } from '../containers/viz';
+import React from 'react'
+import { Trans, WithTranslation } from 'react-i18next'
+import { Spring } from 'react-spring/renderprops'
+import { Helmet } from 'react-helmet'
+import * as toast from '../lib/toast'
+import Visualizer from './visualizer'
+import Player from '../lib/player'
+import { VizStateToProps } from '../containers/viz'
 
-type VizProps = VizStateToProps & WithTranslation;
+type VizProps = VizStateToProps & WithTranslation
 //TODO terminar
 
 interface VizState {
-    audioSource: AudioBufferSourceNode | null;
-    visualizationMode: 'bars' | 'wave';
-    errorMessage: string | null;
-    fileName: string | null;
-    timePosition: number | null;
-    timeDuration: number;
-    dragging: boolean;
-    seeking: boolean;
-    startPos: number;
+    audioSource: AudioBufferSourceNode | null
+    visualizationMode: 'bars' | 'wave'
+    errorMessage: string | null
+    fileName: string | null
+    timePosition: number | null
+    timeDuration: number
+    dragging: boolean
+    seeking: boolean
+    startPos: number
 }
 
 export default class Viz extends React.Component<VizProps, VizState> {
-    private player = new Player();
-    private startTime: number = 0;
-    private positionTimer: number | null = null;
+    private readonly player = new Player()
+    private startTime: number = 0
+    private positionTimer: number | null = null
 
     private static showError(errorMessage: string) {
-        toast.error(errorMessage);
+        toast.error(errorMessage)
     }
 
     constructor(props: VizProps) {
-        super(props);
+        super(props)
         this.state = {
             audioSource: null,
             visualizationMode: 'bars',
@@ -43,31 +43,33 @@ export default class Viz extends React.Component<VizProps, VizState> {
             dragging: false,
             seeking: false,
             startPos: 0,
-        };
+        }
 
-        this.visualizationModeChanged = this.visualizationModeChanged.bind(this);
-        this.seekBarChange = this.seekBarChange.bind(this);
-        this.seekBarStart = this.seekBarStart.bind(this);
-        this.playPressed = this.playPressed.bind(this);
-        this.stopPressed = this.stopPressed.bind(this);
-        this.fileChanged = this.fileChanged.bind(this);
-        this.seekBarEnd = this.seekBarEnd.bind(this);
-        this.enterDrag = this.enterDrag.bind(this);
-        this.exitDrag = this.exitDrag.bind(this);
-        this.dropped = this.dropped.bind(this);
+        this.visualizationModeChanged = this.visualizationModeChanged.bind(this)
+        this.seekBarChange = this.seekBarChange.bind(this)
+        this.seekBarStart = this.seekBarStart.bind(this)
+        this.playPressed = this.playPressed.bind(this)
+        this.stopPressed = this.stopPressed.bind(this)
+        this.fileChanged = this.fileChanged.bind(this)
+        this.seekBarEnd = this.seekBarEnd.bind(this)
+        this.enterDrag = this.enterDrag.bind(this)
+        this.exitDrag = this.exitDrag.bind(this)
+        this.dropped = this.dropped.bind(this)
     }
 
     componentWillUnmount() {
         if(this.positionTimer) {
-            cancelAnimationFrame(this.positionTimer);
+            cancelAnimationFrame(this.positionTimer)
         }
-        this.player.destroy();
+        this.player.destroy()
     }
 
     render() {
-        const { audioSource, visualizationMode, fileName, timePosition, timeDuration, dragging, seeking,
-        startPos } = this.state;
-        const { t } = this.props;
+        const {
+            audioSource, visualizationMode, fileName, timePosition, timeDuration, dragging, seeking,
+            startPos,
+        } = this.state
+        const { t } = this.props
 
         return (
             <div onDragOver={ this.enterDrag } onDragLeave={ this.exitDrag } onDrop={ this.dropped }>
@@ -75,7 +77,7 @@ export default class Viz extends React.Component<VizProps, VizState> {
                 <Helmet>
                     <title>Viz</title>
                     <meta name="Description"
-                          content="Experiment: Audio vizualizer in the browser" />
+                        content="Experiment: Audio vizualizer in the browser" />
                 </Helmet>
 
                 <div className="row">
@@ -94,18 +96,18 @@ export default class Viz extends React.Component<VizProps, VizState> {
                     <div className="col-sm-6 col-12">
                         <label className="custom-file">
                             <input type="file" id="cancion" name="cancion" accept="audio/*"
-                                   onChange={ this.fileChanged }
-                                   className="custom-file-input" />
-                                <span className="custom-file-label">
-                                    { fileName || t('viz.selectFile') }
-                                </span>
+                                onChange={ this.fileChanged }
+                                className="custom-file-input" />
+                            <span className="custom-file-label">
+                                { fileName || t('viz.selectFile') }
+                            </span>
                         </label>
                     </div>
                     <div className="col-sm-6 col-12">
                         <select id="visualizador"
-                                className="form-control"
-                                value={ visualizationMode }
-                                onChange={ this.visualizationModeChanged }>
+                            className="form-control"
+                            value={ visualizationMode }
+                            onChange={ this.visualizationModeChanged }>
                             <option value="bars">{ t('viz.bars') }</option>
                             <option value="wave">{ t('viz.wave') }</option>
                         </select>
@@ -113,29 +115,29 @@ export default class Viz extends React.Component<VizProps, VizState> {
                 </div>
 
                 <div className="d-flex justify-content-center btn-group mt-2" role="group"
-                     aria-label="Botones de reproducir y pausa">
+                    aria-label="Botones de reproducir y pausa">
                     <input type="button" className="btn btn-secondary" value={ t<string>('viz.play') } id="play"
-                           onClick={ this.playPressed } disabled={ !fileName || !!audioSource || seeking } />
+                        onClick={ this.playPressed } disabled={ !fileName || !!audioSource || seeking } />
                     <input type="button" className="btn btn-secondary" value={ t<string>('viz.pause') } id="stop"
-                           onClick={ this.stopPressed } disabled={ !audioSource } />
+                        onClick={ this.stopPressed } disabled={ !audioSource } />
                 </div>
 
                 <div className="row mt-2">
                     <input type="range" id="pos" min={0} max={ timeDuration + startPos }
-                           value={ startPos + (timePosition || 0) }
-                           step={0.1} style={{ width: '100%' }} disabled={ !timePosition && !seeking }
-                           onChange={ this.seekBarChange }
-                           onMouseDown={ this.seekBarStart }
-                           onMouseUp={ this.seekBarEnd } />
+                        value={ startPos + (timePosition || 0) }
+                        step={0.1} style={{ width: '100%' }} disabled={ !timePosition && !seeking }
+                        onChange={ this.seekBarChange }
+                        onMouseDown={ this.seekBarStart }
+                        onMouseUp={ this.seekBarEnd } />
                 </div>
 
                 <Visualizer audioContext={ this.player.audioContext }
-                            audioSource={ audioSource }
-                            visualizationMode={ visualizationMode }
-                            theme={ this.props.darkMode ? 'dark' : 'light' } />
+                    audioSource={ audioSource }
+                    visualizationMode={ visualizationMode }
+                    theme={ this.props.darkMode ? 'dark' : 'light' } />
 
                 <Spring from={{ opacity: 0, zIndex: -1 }}
-                        to={{ opacity: dragging ? 1 : 0, zIndex: dragging ? 1 : -1 }}>
+                    to={{ opacity: dragging ? 1 : 0, zIndex: dragging ? 1 : -1 }}>
                     { (style: React.CSSProperties) =>
                         <div
                             style={{
@@ -147,7 +149,7 @@ export default class Viz extends React.Component<VizProps, VizState> {
                                 left: 0,
                                 zIndex: -1,
                                 backgroundColor: 'rgb(200, 200, 200, 0.4)',
-                                ...style
+                                ...style,
                             }}
                             className="arrastrar d-flex justify-content-center align-items-center">
                             <div className="text-center">
@@ -157,84 +159,88 @@ export default class Viz extends React.Component<VizProps, VizState> {
                     }
                 </Spring>
             </div>
-        );
+        )
     }
 
     private fileChanged(event: React.ChangeEvent<HTMLInputElement>) {
-        event.preventDefault();
-        this.player.unloadSong('song');
+        event.preventDefault()
+        this.player.unloadSong('song')
         if(event.target.files && event.target.files.length > 0) {
             this.player.loadFile('song', event.target.files![0]).then(() => {
-                this.play();
-            }).catch(error => Viz.showError(error.toString()));
-            this.setState({ fileName: event.target.files![0].name });
+                this.play()
+            })
+                .catch(error => Viz.showError(error.toString()))
+            this.setState({ fileName: event.target.files![0].name })
         } else {
-            this.setState({ fileName: null });
+            this.setState({ fileName: null })
         }
     }
 
     private visualizationModeChanged(event: React.ChangeEvent<HTMLSelectElement>) {
-        this.setState({ visualizationMode: (event.target.value as 'bars' | 'wave') });
+        this.setState({ visualizationMode: (event.target.value as 'bars' | 'wave') })
     }
 
     private playPressed() {
         if(!this.state.audioSource) {
-            this.play();
+            this.play()
         }
     }
 
     private stopPressed() {
         if(this.state.audioSource) {
-            this.state.audioSource.stop();
+            this.state.audioSource.stop()
         }
     }
 
     private enterDrag(event: React.DragEvent<HTMLDivElement>) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.dataTransfer.dropEffect = 'copy';
-        this.setState({ dragging: true });
+        event.preventDefault()
+        event.stopPropagation()
+        event.dataTransfer.dropEffect = 'copy'
+        this.setState({ dragging: true })
     }
 
     private exitDrag(event: React.DragEvent<HTMLDivElement>) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.setState({ dragging: false });
+        event.preventDefault()
+        event.stopPropagation()
+        this.setState({ dragging: false })
     }
 
     private dropped(event: React.DragEvent<HTMLDivElement>) {
-        event.preventDefault();
-        event.stopPropagation();
+        event.preventDefault()
+        event.stopPropagation()
         this.player.loadFile('song', event.dataTransfer.files![0]).then(() => {
-            this.play();
-        }).catch(error => Viz.showError(error.toString()));
-        this.setState({ fileName: event.dataTransfer!.files[0].name, dragging: false });
+            this.play()
+        })
+            .catch(error => Viz.showError(error.toString()))
+        this.setState({ fileName: event.dataTransfer!.files[0].name, dragging: false })
     }
 
     private play(startPos?: number) {
         if(this.state.audioSource) {
-            this.state.audioSource.stop();
+            this.state.audioSource.stop()
         }
-        this.player.playSound('song', startPos).then((audioSource) => {
-            this.startTime = this.player.audioContext.currentTime;
+        this.player.playSound('song', startPos).then(audioSource => {
+            this.startTime = this.player.audioContext.currentTime
             this.setState({
-                audioSource, timePosition: 0,
+                audioSource,
+                timePosition: 0,
                 timeDuration: audioSource.buffer!.duration,
-                startPos: startPos || 0
-            });
+                startPos: startPos || 0,
+            })
             audioSource.onended = () => {
                 if(!this.state.seeking) {
-                    this.setState({ audioSource: null, timePosition: null });
+                    this.setState({ audioSource: null, timePosition: null })
                 }
-                cancelAnimationFrame(this.positionTimer!);
-                this.positionTimer = null;
-            };
+                cancelAnimationFrame(this.positionTimer!)
+                this.positionTimer = null
+            }
             const self = () => {
-                this.setState({ timePosition: this.player.audioContext.currentTime - this.startTime });
-                this.positionTimer = requestAnimationFrame(self);
-            };
-            this.positionTimer = requestAnimationFrame(self);
-        }).catch(error => Viz.showError(this.props.t('viz.cannotPlay') + error.toString()));
+                this.setState({ timePosition: this.player.audioContext.currentTime - this.startTime })
+                this.positionTimer = requestAnimationFrame(self)
+            }
+            this.positionTimer = requestAnimationFrame(self)
+        })
+            .catch(error => Viz.showError(this.props.t('viz.cannotPlay') + error.toString()))
     }
 
     private seekBarStart() {
@@ -244,19 +250,18 @@ export default class Viz extends React.Component<VizProps, VizState> {
                 audioSource: null,
                 startPos: 0,
                 timeDuration: this.state.startPos + this.state.timeDuration,
-                timePosition: this.state.timePosition! + this.state.startPos
-            });
-            this.state.audioSource.stop();
+                timePosition: this.state.timePosition! + this.state.startPos,
+            })
+            this.state.audioSource.stop()
         }
     }
 
     private seekBarChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({ timePosition: Number(event.target.value) });
+        this.setState({ timePosition: Number(event.target.value) })
     }
 
     private seekBarEnd() {
-        this.play(this.state.timePosition!);
-        this.setState({ seeking: false });
+        this.play(this.state.timePosition!)
+        this.setState({ seeking: false })
     }
-
 }

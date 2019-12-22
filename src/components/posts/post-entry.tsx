@@ -1,25 +1,25 @@
-import * as React from 'react';
-import moment from 'moment';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Post } from '../../redux/posts/reducers';
+import * as React from 'react'
+import moment from 'moment'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { Post } from '../../redux/posts/reducers'
 
 interface PostEntryProps {
-    entry: Post;
+    entry: Post
 }
 
 export default withRouter(({ entry, history }: PostEntryProps & RouteComponentProps<{}>) => {
-    const { date, img, title } = entry;
-    const _date = moment(date.toDate()).utc();
-    let fecha = moment(date.toDate()).format('LL');
-    let url = `/blog/${_date.get('year')}/${_date.get('month') + 1}/${_date.get('date')}/${entry.url}`;
+    const { date, img, title } = entry
+    const _date = moment(date.toDate()).utc()
+    const fecha = moment(date.toDate()).format('LL')
+    const url = `/blog/${_date.get('year')}/${_date.get('month') + 1}/${_date.get('date')}/${entry.url}`
     const changeUrl = (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        history.push(url);
-    };
+        e.preventDefault()
+        history.push(url)
+    }
 
     return (
         <div className="card" onClick={ changeUrl }>
-            <div className="card-img-top post_thumb" style={{backgroundImage: `url(${img})`}}>
+            <div className="card-img-top post_thumb" style={{ backgroundImage: `url(${img})` }}>
                 <div className="post_url">
                     <div className="cover" />
                 </div>
@@ -31,5 +31,5 @@ export default withRouter(({ entry, history }: PostEntryProps & RouteComponentPr
                 <p className="card-text"><small>{ fecha }</small></p>
             </div>
         </div>
-    );
-});
+    )
+})

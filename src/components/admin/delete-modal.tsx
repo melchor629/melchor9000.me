@@ -1,38 +1,38 @@
-import * as React from 'react';
+import * as React from 'react'
 
-const $ = require('jquery');
+const $ = require('jquery')
 
 interface DeleteModalProps {
-    item: { title: string } | null;
-    onClose: () => void;
-    onDelete: () => void;
+    item: { title: string } | null
+    onClose: () => void
+    onDelete: () => void
 }
 
 export default class DeleteModal extends React.Component<DeleteModalProps> {
-
     componentDidUpdate(prevProps: DeleteModalProps) {
         if(prevProps.item === null && this.props.item !== null) {
-            $('#deleteModal').on('hidden.bs.modal', () => this.props.onClose()).modal('show');
+            $('#deleteModal').on('hidden.bs.modal', () => this.props.onClose())
+                .modal('show')
         } else if(prevProps.item !== null && this.props.item === null) {
-            $('#deleteModal').off('hidden.bs.modal');
+            $('#deleteModal').off('hidden.bs.modal')
         }
     }
 
     render() {
         if(this.props.item === null) {
-            return false;
+            return false
         }
 
-        const { item, onDelete } = this.props;
+        const { item, onDelete } = this.props
 
         const deletePressed = (e: React.MouseEvent<HTMLButtonElement>) => {
-            e.preventDefault();
-            onDelete();
-        };
+            e.preventDefault()
+            onDelete()
+        }
 
         return (
             <div className="modal fade" id="deleteModal" tabIndex={ -1 } role="dialog"
-                 aria-labelledby="deleteModalTitle" aria-hidden="true">
+                aria-labelledby="deleteModalTitle" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -50,13 +50,13 @@ export default class DeleteModal extends React.Component<DeleteModalProps> {
                                 CANCELAR
                             </button>
                             <button type="button" className="btn btn-danger" data-dismiss="modal"
-                                    onClick={ deletePressed }>
+                                onClick={ deletePressed }>
                                 BORRAR
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-        );
+        )
     }
 }

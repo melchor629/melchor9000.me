@@ -1,19 +1,18 @@
-import * as React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { PostsDispatchToProps, PostsStateToProps } from '../../containers/admin/posts';
-import { PostsHome } from '../../containers/admin/posts/home';
-import { PostEditor } from '../../containers/admin/posts/editor';
+import * as React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import { PostsDispatchToProps, PostsStateToProps } from '../../containers/admin/posts'
+import { PostsHome } from '../../containers/admin/posts/home'
+import { PostEditor } from '../../containers/admin/posts/editor'
 
-type PostsPageProps = PostsStateToProps & PostsDispatchToProps;
+type PostsPageProps = PostsStateToProps & PostsDispatchToProps
 
 export default class Posts extends React.Component<PostsPageProps> {
-
     componentDidMount() {
-        this.props.subscribe();
+        this.props.subscribe()
     }
 
     componentWillUnmount() {
-        this.props.unsubscribe();
+        this.props.unsubscribe()
     }
 
     render() {
@@ -23,7 +22,6 @@ export default class Posts extends React.Component<PostsPageProps> {
                 <Route path="/admin/posts/create" component={ PostEditor } />
                 <Route path="/admin/posts/edit/:id" component={ PostEditor } />
             </Switch>
-        );
+        )
     }
-
 }

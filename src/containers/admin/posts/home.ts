@@ -1,19 +1,19 @@
-import { connect } from 'react-redux';
-import { State } from '../../../redux/reducers';
-import { remove, removeError } from '../../../redux/database/actions';
-import PostsHomeComponent from '../../../components/admin/posts/home';
-import { Post } from '../../../redux/posts/reducers';
+import { connect } from 'react-redux'
+import { State } from '../../../redux/reducers'
+import { remove, removeError } from '../../../redux/database/actions'
+import PostsHomeComponent from '../../../components/admin/posts/home'
+import { Post } from '../../../redux/posts/reducers'
 
 export interface PostsHomeStateToProps {
-    posts: Post[] | null | undefined;
-    deleting: boolean;
-    errorSaving: any | null;
-    darkMode: boolean;
+    posts: Post[] | null | undefined
+    deleting: boolean
+    errorSaving: any | null
+    darkMode: boolean
 }
 
 export interface PostsHomeDispatchToProps {
-    delete: (post: Post) => void;
-    clearError: () => void;
+    delete: (post: Post) => void
+    clearError: () => void
 }
 
 const mapStateToProps = (state: State): PostsHomeStateToProps => ({
@@ -21,11 +21,11 @@ const mapStateToProps = (state: State): PostsHomeStateToProps => ({
     deleting: state.database.doing.posts,
     errorSaving: state.database.errors.posts,
     darkMode: state.effects.darkMode,
-});
+})
 
 const mapDispatchToProps = (dispatch: any): PostsHomeDispatchToProps => ({
     delete: (post: Post) => dispatch(remove('posts', post)),
-    clearError: () => dispatch(removeError('posts'))
-});
+    clearError: () => dispatch(removeError('posts')),
+})
 
-export const PostsHome = connect(mapStateToProps, mapDispatchToProps)(PostsHomeComponent);
+export const PostsHome = connect(mapStateToProps, mapDispatchToProps)(PostsHomeComponent)

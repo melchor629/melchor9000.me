@@ -1,1 +1,1 @@
-export { default } from './load-spinner';
+export { default } from './load-spinner'

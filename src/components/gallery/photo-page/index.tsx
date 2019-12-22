@@ -1,54 +1,58 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import Swipeable from 'react-swipeable';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import { RouteComponentProps, Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { EventData, useSwipeable } from 'react-swipeable'
+import { WithTranslation, withTranslation } from 'react-i18next'
+import { Link, RouteComponentProps } from 'react-router-dom'
 
-import { ZoomImageView } from './zoom-image-view';
-import { ImageInfoView } from './image-info-view';
-import { ImageView } from './image-view';
-import { usePhotoState, usePhotoActions } from './redux-connector';
-import LoadSpinner from '../../../components/load-spinner';
-import { GalleryPhoto, GalleryPhotoSizes } from '../../../redux/gallery/reducers';
+import { ZoomImageView } from './zoom-image-view'
+import { ImageInfoView } from './image-info-view'
+import { ImageView } from './image-view'
+import { usePhotoActions, usePhotoState } from './redux-connector'
+import LoadSpinner from '../../../components/load-spinner'
+import { GalleryPhoto, GalleryPhotoSizes } from '../../../redux/gallery/reducers'
 
 type OverlayProps = RouteComponentProps<{ id: string }> & WithTranslation & {
-    userId: string;
-    photosetId: string;
-    perPage: number;
-};
+    userId: string
+    photosetId: string
+    perPage: number
+}
 
-const requestIdleCallback = (window as any).requestIdleCallback || setTimeout;
+const requestIdleCallback = (window as any).requestIdleCallback || setTimeout
 
 const findImageSuitableForScreen = (sizes: GalleryPhotoSizes): string => {
-    let dimensionValue = Math.max(window.document.body.clientWidth, window.document.body.clientHeight);
-    dimensionValue *= window.devicePixelRatio;
-    dimensionValue *= 3 / 4; //Allow smaller images, it won't get noticed by the users in general :)
+    let dimensionValue = Math.max(window.document.body.clientWidth, window.document.body.clientHeight)
+    dimensionValue *= window.devicePixelRatio
+    //Allow smaller images, it won't get noticed by the users in general :)
+    dimensionValue *= 3 / 4
     const sortedSizes = Object.entries(sizes)
-        .filter(a => a[0] !== 'Original') //Discard original size, never is a good idea
-        .sort((a, b) => Math.max(a[1].width, a[1].height) - Math.max(b[1].width, b[1].height));
-    const goodSizes = sortedSizes.filter(a => Math.max(a[1].width, a[1].height) >= dimensionValue);
+        //Discard original size, never is a good idea
+        .filter(a => a[0] !== 'Original')
+        .sort((a, b) => Math.max(a[1].width, a[1].height) - Math.max(b[1].width, b[1].height))
+    const goodSizes = sortedSizes.filter(a => Math.max(a[1].width, a[1].height) >= dimensionValue)
     if(goodSizes.length > 0) {
-        return goodSizes[0][1].url; //The first is the smaller and suitable one
+        //The first is the smaller and suitable one
+        return goodSizes[0][1].url
     }
 
-    return sortedSizes[sortedSizes.length - 1][1].url; //Return the bigger one, there's no suitable
-};
+    //Return the bigger one, there's no suitable
+    return sortedSizes[sortedSizes.length - 1][1].url
+}
 
 interface SwipingState {
-    dir: 'l' | 'r';
-    xi: number;
-    yi: number;
-    x: number;
-    y: number;
+    dir: 'l' | 'r'
+    xi: number
+    yi: number
+    x: number
+    y: number
 }
 
 const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
-    const photoId = match.params.id;
-    const [ topOrBottom, setTopOrBottom ] = useState<'top' | 'bottom'>('top');
-    const [ zoomOpenStatus, setZoomOpenStatus ] = useState<[ number, number ] | false>(false);
-    const [ swipingState, setSwipingState ] = useState<SwipingState | null>(null);
-    const imagePageContainerRef = useRef<HTMLDivElement | null>(null);
-    const imageViewRef = useRef<HTMLDivElement | null>(null);
-    const imageInfoRef = useRef<HTMLDivElement | null>(null);
+    const photoId = match.params.id
+    const [ topOrBottom, setTopOrBottom ] = useState<'top' | 'bottom'>('top')
+    const [ zoomOpenStatus, setZoomOpenStatus ] = useState<[ number, number ] | false>(false)
+    const [ swipingState, setSwipingState ] = useState<SwipingState | null>(null)
+    const imagePageContainerRef = useRef<HTMLDivElement | null>(null)
+    const imageViewRef = useRef<HTMLDivElement | null>(null)
+    const imageInfoRef = useRef<HTMLDivElement | null>(null)
     const {
         currentPhoto: photo,
         directionOfChange,
@@ -58,7 +62,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
         imageIsLoading,
         imageInfoIsLoading,
         imageSwitcher,
-    } = usePhotoState();
+    } = usePhotoState()
     const {
         close,
         loadFullInfoForPhoto,
@@ -67,128 +71,140 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
         prev,
         enableHideNavbarOnTopMode,
         disableHideNavbarOnTopMode,
-    } = usePhotoActions(userId, photosetId);
+    } = usePhotoActions(userId, photosetId)
 
     useEffect(() => {
-        enableHideNavbarOnTopMode();
+        enableHideNavbarOnTopMode()
         return () => {
-            disableHideNavbarOnTopMode();
-            close();
-        };
+            disableHideNavbarOnTopMode()
+            close()
+        }
     }, []); //eslint-disable-line
 
     useEffect(() => {
-        loadFullInfoForPhoto(photoId);
+        loadFullInfoForPhoto(photoId)
     }, [ photoId ]); //eslint-disable-line
 
     useEffect(() => {
         if(zoomOpenStatus === false) {
             const onKeyPress = (e: KeyboardEvent) => {
                 if(e.key === 'ArrowRight' && nextPhoto) {
-                    next();
-                    requestIdleCallback(() => history.push(`/gallery/${nextPhoto.id}`));
+                    next()
+                    requestIdleCallback(() => history.push(`/gallery/${nextPhoto.id}`))
                 } else if(e.key === 'ArrowLeft' && prevPhoto) {
-                    prev();
-                    requestIdleCallback(() => history.push(`/gallery/${prevPhoto.id}`));
+                    prev()
+                    requestIdleCallback(() => history.push(`/gallery/${prevPhoto.id}`))
                 }
-            };
+            }
 
-            window.addEventListener('keydown', onKeyPress);
-            return () => window.removeEventListener('keydown', onKeyPress);
+            window.addEventListener('keydown', onKeyPress)
+            return () => window.removeEventListener('keydown', onKeyPress)
         }
 
-        return () => undefined;
+        return () => undefined
     }, [ prevPhoto, nextPhoto, zoomOpenStatus ]); //eslint-disable-line
 
     useEffect(() => {
         const onScroll = () => {
-            const imageInfoElement = imageInfoRef.current;
+            const imageInfoElement = imageInfoRef.current
             if(imageInfoElement === null) {
-                return;
+                return
             }
 
-            const windowHeight = window.innerHeight;
-            const verticalScroll = window.scrollY;
-            const imageInfoVerticalPosition = imageInfoElement.getBoundingClientRect()!.top + verticalScroll;
-            const limit = imageInfoVerticalPosition - windowHeight * 0.5;
+            const windowHeight = window.innerHeight
+            const verticalScroll = window.scrollY
+            const imageInfoVerticalPosition = imageInfoElement.getBoundingClientRect()!.top + verticalScroll
+            const limit = imageInfoVerticalPosition - windowHeight * 0.5
             if(limit > verticalScroll && topOrBottom === 'bottom') {
-                setTopOrBottom('top');
+                setTopOrBottom('top')
             } else if(limit < verticalScroll && topOrBottom === 'top') {
-                setTopOrBottom('bottom');
+                setTopOrBottom('bottom')
             }
-        };
+        }
 
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
-    }, [ topOrBottom, imageInfoRef ]);
+        window.addEventListener('scroll', onScroll, { passive: true })
+        return () => window.removeEventListener('scroll', onScroll)
+    }, [ topOrBottom, imageInfoRef ])
 
     useEffect(() => {
         if(imagePageContainerRef.current) {
-            imageViewRef.current = imagePageContainerRef.current.querySelector('.image-view')! as HTMLDivElement;
+            imageViewRef.current = imagePageContainerRef.current.querySelector('.image-view')! as HTMLDivElement
         } else {
-            imageViewRef.current = null;
+            imageViewRef.current = null
         }
     }, [ imagePageContainerRef.current ]); //eslint-disable-line
 
-    const onSwipedHorizontal = useCallback((newPhoto: GalleryPhoto | null, n: () => void) => () => {
+    const onSwipedHorizontal = useCallback((newPhoto: GalleryPhoto | null, n: () => void) => () => {
+        setSwipingState(null)
         if(newPhoto) {
-            n();
-            requestIdleCallback(() => history.push(`/gallery/${newPhoto.id}`));
+            n()
+            // For some reason, requestIdleCallback here caused a big delay in the transition
+            setTimeout(() => history.push(`/gallery/${newPhoto.id}`))
         } else if(window.navigator.vibrate) {
-            window.navigator.vibrate(150);
+            window.navigator.vibrate(150)
         }
-    }, [ history ]);
+    }, [ history ])
 
     const scrollToInfo = useCallback(() => {
         if(topOrBottom === 'top') {
-            const imageInfoElement = imageInfoRef.current!;
+            const imageInfoElement = imageInfoRef.current!
             window.scrollTo({
                 behavior: 'smooth',
-                top: imageInfoElement.getBoundingClientRect()!.top + window.scrollY - 40, //navbar
-            });
+                //40 is for the navbar
+                top: imageInfoElement.getBoundingClientRect()!.top + window.scrollY - 40,
+            })
         } else {
-            window.scrollTo({ behavior: 'smooth', top: 0 });
+            window.scrollTo({ behavior: 'smooth', top: 0 })
         }
-    }, [ topOrBottom, imageInfoRef ]);
+    }, [ topOrBottom, imageInfoRef ])
 
     const openZoomModal = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        const initialPosition: [ number, number ] = [ e.pageX, e.pageY ];
-        setZoomOpenStatus(initialPosition);
-    }, [ setZoomOpenStatus ]);
+        const initialPosition: [ number, number ] = [ e.pageX, e.pageY ]
+        setZoomOpenStatus(initialPosition)
+    }, [ setZoomOpenStatus ])
 
-    const onSwiping = useCallback((dir: 'l' | 'r') => (e: React.TouchEvent<HTMLDivElement>) => {
+    const onSwiping = useCallback((e: EventData) => {
+        if(e.dir !== 'Left' && e.dir !== 'Right') {
+            return
+        }
+
+        const dir = e.dir === 'Left' ? 'l' : 'r'
         if(!swipingState) {
             setSwipingState({
                 dir,
-                xi: e.touches[0].clientX,
-                yi: e.touches[0].clientY,
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY,
-            });
+                xi: e.initial[0],
+                yi: e.initial[1],
+                x: e.absX,
+                y: e.absY,
+            })
         } else {
             setSwipingState({
                 ...swipingState,
                 dir,
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY,
-            });
+                x: e.absX,
+                y: e.absY,
+            })
         }
-    }, [ swipingState, setSwipingState ]);
+    }, [ swipingState, setSwipingState ])
 
     const swipeZoom = (dir: 'l' | 'r') => {
         if(swipingState && swipingState.dir === dir) {
             const length = Math.sqrt(
                 Math.pow(swipingState.x - swipingState.xi, 2) +
-                Math.pow(swipingState.y - swipingState.yi, 2)
-            );
-            const scale = Math.max(0, Math.min(length / 10 + 1, 2));
-            return {
-                transform: `scale(${scale})`,
-            };
+                Math.pow(swipingState.y - swipingState.yi, 2),
+            )
+            const scale = Math.max(0, Math.min(length / 10 + 1, 2))
+            return { transform: `scale(${scale})` }
         } else {
-            return undefined;
+            return undefined
         }
-    };
+    }
+
+    const handlers = useSwipeable({
+        onSwipedLeft: onSwipedHorizontal(nextPhoto, next),
+        onSwipedRight: onSwipedHorizontal(prevPhoto, prev),
+        onSwiping,
+    })
 
     if(!photo) {
         return (
@@ -197,18 +213,18 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
                     <LoadSpinner />
                 </div>
             </div>
-        );
+        )
     }
 
     const previousPhotoUrl = previousPhoto ?
         (previousPhoto.sizes ? findImageSuitableForScreen(previousPhoto.sizes) : previousPhoto.url!) :
-        '';
+        ''
     const currentPhotoUrl = photo.sizes ?
         (imageIsLoading ? photo.url! : findImageSuitableForScreen(photo.sizes)) :
-        photo.url!;
-    const currentPhotoBigUrl = photo.sizes ? findImageSuitableForScreen(photo.sizes) : photo.url!;
-    const imageUrl1 = imageSwitcher ? previousPhotoUrl : currentPhotoUrl;
-    const imageUrl2 = imageSwitcher ? currentPhotoUrl : previousPhotoUrl;
+        photo.url!
+    const currentPhotoBigUrl = photo.sizes ? findImageSuitableForScreen(photo.sizes) : photo.url!
+    const imageUrl1 = imageSwitcher ? previousPhotoUrl : currentPhotoUrl
+    const imageUrl2 = imageSwitcher ? currentPhotoUrl : previousPhotoUrl
 
     return (
         <div className="image-page">
@@ -217,14 +233,11 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
             </div>
 
             <div className="image-page-container" role="document" ref={ imagePageContainerRef }>
-                <Swipeable className={ 'image-view ' + (photo.sizes ? '' : 'disable-zoom') }
+                <div
+                    {...handlers}
+                    className={ `image-view ${photo.sizes ? '' : 'disable-zoom'}` }
                     onClick={ e => (e.target as HTMLElement).classList.contains('img') && openZoomModal(e as any) }
-                    onTap={ e => (e.target as HTMLElement).classList.contains('img') && e.preventDefault() }
-                    onSwipedLeft={ onSwipedHorizontal(nextPhoto, next) }
-                    onSwipedRight={ onSwipedHorizontal(prevPhoto, prev) }
-                    onSwipingLeft={ onSwiping('l') }
-                    onSwipingRight={ onSwiping('r') }
-                    onSwiped={ () => setSwipingState(null) }>
+                >
                     <img src={ currentPhotoBigUrl }
                         onLoad={ photoIsLoaded }
                         style={{ display: 'none' }}
@@ -265,7 +278,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
                         <i className="fas fa-expand" />
                         <i />
                     </div>
-                </Swipeable>
+                </div>
 
                 { photo.sizes && zoomOpenStatus &&
                     <ZoomImageView photo={ photo }
@@ -277,7 +290,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
                 <ImageInfoView photo={ photo } loading={ imageInfoIsLoading } rootRef={ imageInfoRef } />
             </div>
         </div>
-    );
-};
+    )
+}
 
-export const PhotoPage = withTranslation()(PhotoImpl);
+export const PhotoPage = withTranslation()(PhotoImpl)
