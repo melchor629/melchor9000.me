@@ -18,19 +18,29 @@ pipeline {
     stage('Install packages') {
       steps {
         sh 'npm install'
+        sh 'npm --prefix functions install'
       }
     }
 
     stage('Checks') {
-        steps {
-            sh 'npm run lint'
-            sh 'npm run audit'
-        }
+      steps {
+        sh 'npm run lint'
+        sh 'npm run audit'
+        sh 'npm --prefix functions run lint'
+        sh 'npm --prefix functions run audit'
+      }
     }
 
     stage('Build') {
       environment {
         REACT_APP_FLICKR_API_KEY = credentials('melchor9000-flickr-api-key')
+        REACT_APP_FIREBASE_API_KEY = credentials('melchor9000-firebase-api-key')
+        REACT_APP_FIREBASE_AUTH_DOMAIN = credentials('melchor9000-firebase-auth-domain')
+        REACT_APP_FIREBASE_DATABASE_URL = credentials('melchor9000-firebase-database-url')
+        REACT_APP_FIREBASE_PROJECT_ID = credentials('melchor9000-firebase-project-id')
+        REACT_APP_FIREBASE_STORAGE_BUCKET = credentials('melchor9000-firebase-storage-bucket')
+        REACT_APP_FIREBASE_MESSAGING_SENDER_ID = credentials('melchor9000-firebase-messaging-sender-id')
+        REACT_APP_FIREBASE_APP_ID = credentials('melchor9000-firebase-app-id')
       }
 
       steps {
@@ -44,7 +54,7 @@ pipeline {
       }
 
       environment {
-        FIREBASE_TOKEN = credentials('firebase-melchor9000')
+        FIREBASE_TOKEN = credentials('melchor9000-firebase-token')
       }
 
       steps {

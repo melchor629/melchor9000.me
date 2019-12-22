@@ -1,0 +1,14 @@
+extends:
+  - airbnb-typescript/base
+overrides:
+  - files: ['**/*.ts']
+    parserOptions:
+      project: 'tsconfig.json'
+  - files: ['**/index.ts']
+    rules:
+      'import/prefer-default-export':
+        - 0
+rules:
+  '@typescript-eslint/semi':
+    - error
+    - never

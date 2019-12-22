@@ -1,0 +1,41 @@
+{
+  "name": "functions",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "npm run build && firebase serve --only functions",
+    "deploy": "firebase deploy --only functions",
+    "watch": "tsc --pretty -w -p .",
+    "logs": "firebase functions:log",
+    "lint": "eslint --ext js,ts src",
+    "dist": "npm run lint && npm run build",
+    "audit": "audit-ci --moderate --pass-enoaudit"
+  },
+  "engines": {
+    "node": "10"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "commonmark": "^0.29.0",
+    "cors": "^2.8.5",
+    "etag": "^1.8.1",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.6.0",
+    "firebase-functions": "^3.3.0",
+    "highlight.js": "^9.15.8"
+  },
+  "devDependencies": {
+    "@types/commonmark": "^0.27.4",
+    "@types/cors": "^2.8.6",
+    "@types/etag": "^1.8.0",
+    "@types/highlight.js": "^9.12.3",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "audit-ci": "^2.4.2",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^6.3.1",
+    "eslint-plugin-import": "^2.18.2",
+    "firebase-functions-test": "^0.1.6",
+    "firebase-tools": "^7.0.0",
+    "typescript": "^3.2.2"
+  },
+  "private": true
+}
