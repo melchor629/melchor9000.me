@@ -6,7 +6,7 @@ import { animated, Keyframes, Spring, Transition } from 'react-spring/renderprop
 import { Helmet } from 'react-helmet'
 import speakingurl from 'speakingurl'
 import * as toast from '../../../lib/toast'
-import render from '../../../lib/render-post-content'
+import getFirebaseFunctionUrl from '../../../lib/firebase-function'
 import { PostEditorDispatchToProps, PostEditorStateToProps } from '../../../containers/admin/posts/editor'
 import LoadSpinner from '../../load-spinner'
 import { Post } from '../../../redux/posts/reducers'
@@ -37,6 +37,16 @@ const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefine
             </animated.div>
         )}
     </Keyframes>
+)
+
+const render = (content: string, format: 'html' | 'md') => (
+    fetch(getFirebaseFunctionUrl('posts', '/render'), {
+        method: 'POST',
+        body: JSON.stringify({ content, format }),
+        headers: { 'Content-Type': 'application/json' },
+    })
+        .then(res => res.json())
+        .then(res => res.renderedHtml)
 )
 
 interface PostEditorState {

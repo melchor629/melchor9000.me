@@ -6,7 +6,6 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
     "bootstrap": "4",
-    "commonmark": "^0.29.0",
     "debounce": "^1.2.0",
     "disqus-react": "^1.0.6",
     "firebase": "^7.6.1",
@@ -41,7 +40,7 @@
     "eject": "react-scripts eject",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "firebase deploy --project melchor9000-webpage --only hosting",
+    "deploy": "firebase deploy --project melchor9000-webpage",
     "firebase": "firebase",
     "lint": "eslint --ext ts,tsx,js,jsx src",
     "audit": "audit-ci --moderate --pass-enoaudit"

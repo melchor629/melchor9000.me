@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import { BrowserRouter } from 'react-router-dom'
 import firebase from 'firebase/app'
 import { I18nextProvider } from 'react-i18next'
+import 'bootstrap'
 
 import App from './App'
 import Footer from './Footer'
@@ -15,6 +16,7 @@ import { warning } from './lib/toast'
 import LoadingSpinner from './components/load-spinner'
 
 import 'firebase/firestore'
+import 'firebase/functions'
 import 'firebase/auth'
 import 'firebase/storage'
 
@@ -38,12 +40,10 @@ firebase.initializeApp({
         console.error(error)
     }
 
-    require('bootstrap')
-
     // @ts-ignore - Do after initializing firestore, if not, app will crash
     const _compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
     const store = createStore(
-        require('./redux/reducers').reducers,
+        (await import('./redux/reducers')).reducers,
         {},
         _compose(applyMiddleware(thunk)),
     )

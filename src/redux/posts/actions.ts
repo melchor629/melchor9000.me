@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux'
-import firebase from 'firebase/app'
-import render from '../../lib/render-post-content'
+import getFirebaseFunctionUrl from '../../lib/firebase-function'
 
 export const GETTING_POST = 'posts:GETTING_POST'
 export const GET_POST = 'posts:GET_POST'
@@ -14,15 +13,12 @@ const postGot = (content: string) => ({
     content,
 })
 
-const parseContent = (text: string, file: string) => render(text, file.endsWith('.md') ? 'md' : 'html')
-
 export const getPost = (post: any) => (dispatch: Dispatch) => {
     dispatch(gettingPost())
-    const storage = firebase.storage()
-    storage.ref(post.file).getDownloadURL()
-        .then(url => fetch(url))
-        .then(response => response.text())
-        .then(text => parseContent(text, post.file))
+    const url = getFirebaseFunctionUrl('posts', `/render/${post._id}`)
+    fetch(url)
+        .then(response => response.json())
+        .then(({ renderedHtml }) => renderedHtml)
         .then(text => dispatch(postGot(text)))
 }
 

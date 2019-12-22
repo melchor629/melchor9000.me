@@ -250,7 +250,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
             1,
             0,
         ]), 3)
-        geometry.addAttribute('position', vertices)
+        geometry.setAttribute('position', vertices)
 
         //Las coordenadas UV para texturas
         const uv = new THREE.BufferAttribute(new Float32Array([
@@ -267,7 +267,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
             1,
             1,
         ]), 2)
-        geometry.addAttribute('uv', uv)
+        geometry.setAttribute('uv', uv)
 
         //Creamos nEucl posiciones aleatorias
         const positions = new THREE.InstancedBufferAttribute(new Float32Array(nEucl * 3), 3, true, 1)
@@ -286,7 +286,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
         for(let i = 0; i < nEucl; i++) {
             positions.setXYZ(i, espacio[i].x, espacio[i].y, espacio[i].z)
         }
-        geometry.addAttribute('offset', positions)
+        geometry.setAttribute('offset', positions)
 
         return geometry
     }
