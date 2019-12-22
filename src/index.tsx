@@ -19,12 +19,13 @@ import 'firebase/auth'
 import 'firebase/storage'
 
 firebase.initializeApp({
-    apiKey: 'AIzaSyCCu7x7WKTpZkWAtc4Z0HZTm8iJE5gl1cU',
-    authDomain: 'melchor9000-me.firebaseapp.com',
-    databaseURL: 'https://melchor9000-me.firebaseio.com',
-    projectId: 'melchor9000-me',
-    storageBucket: 'melchor9000-me.appspot.com',
-    messagingSenderId: '528436151518',
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
 });
 
 (async () => {
@@ -49,18 +50,19 @@ firebase.initializeApp({
 
     await new Promise(accept => setTimeout(accept, 10))
 
-    ReactDOM.render((
-        <Provider store={store}>
-            <BrowserRouter>
-                <Suspense fallback={ LoadingSpinner }>
-                    <I18nextProvider i18n={ i18n }>
-                        <App/>
-                    </I18nextProvider>
-                </Suspense>
-            </BrowserRouter>
-        </Provider>
-    ),
-    document.getElementById('root'),
+    ReactDOM.render(
+        (
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Suspense fallback={ LoadingSpinner }>
+                        <I18nextProvider i18n={ i18n }>
+                            <App/>
+                        </I18nextProvider>
+                    </Suspense>
+                </BrowserRouter>
+            </Provider>
+        ),
+        document.getElementById('root'),
     )
 
     ReactDOM.render(
