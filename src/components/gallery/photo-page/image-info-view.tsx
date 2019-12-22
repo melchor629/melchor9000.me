@@ -122,5 +122,5 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
 
 export const ImageInfoView = memo(
     withTranslation()(ImageInfoViewImpl),
-    (a, b) => a.photo.id === b.photo.id && !a.photo.info && !b.photo.info
+    (a, b) => a.photo.id === b.photo.id && !a.photo.info && !b.photo.info,
 )

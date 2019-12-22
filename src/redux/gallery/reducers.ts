@@ -137,7 +137,7 @@ export const galleryList = (state: GalleryState = initialState, action: GalleryA
                         info: action.info,
                         sizes: action.sizes,
                     } :
-                    photo
+                    photo,
                 ),
                 //With the new size, a new image is going to be loaded
                 loadingPhoto: true,

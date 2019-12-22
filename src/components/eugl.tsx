@@ -276,7 +276,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
             espacio.push(new THREE.Vector3(
                 Math.random() * this.width / 20 - this.width / 40,
                 Math.random() * this.height / 20 - this.height / 40,
-                -Math.random() * this.max)
+                -Math.random() * this.max),
             )
         }
 
@@ -474,7 +474,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
                 this.videoRef.current!.srcObject = stream
                 this.videoRef.current!.play().catch()
             },
-            error => toast.error(this.props.t('eugl.cannotCapture') + error.message)
+            error => toast.error(this.props.t('eugl.cannotCapture') + error.message),
         )
     }
 

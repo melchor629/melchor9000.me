@@ -79,7 +79,7 @@ const ShareModalImpl: ShareModalComponentType = ({ post, t }) => {
             body: encodeURIComponent(
                 `${'Lee la entrada de la morada de melchor9000:\n' +
                 '\t'}${post.title}\n` +
-                `\t${window.location.toString()}`
+                `\t${window.location.toString()}`,
             ),
         })
         window.open(`mailto:?${q}`)

@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import * as firebase from 'firebase/app'
+import firebase from 'firebase/app'
 import render from '../../lib/render-post-content'
 
 export const GETTING_POST = 'posts:GETTING_POST'

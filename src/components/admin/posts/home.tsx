@@ -22,7 +22,7 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                     <div>
                         No se pudo borrar los metadatos del post...<br />
                         <span className="text-muted">{ this.props.errorSaving.toString() }</span>
-                    </div>
+                    </div>,
                 )
                 this.props.clearError()
             }
@@ -108,7 +108,7 @@ export default class PostsHome extends React.Component<PostsPageProps, { postToD
                     <div>
                         No se pudo borrar el contenido del post<br />
                         <span className="text-muted">{ error.toString() }</span>
-                    </div>
+                    </div>,
                 )
             })
     }

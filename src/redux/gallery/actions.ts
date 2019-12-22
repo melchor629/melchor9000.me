@@ -118,7 +118,7 @@ export const loadFirstPhotos = (userId: string, photosetId: string) => (
 export const loadMorePhotos = (
     userId: string,
     photosetId: string,
-    next = false
+    next = false,
 ) => async (dispatch: Dispatch, getState: () => State) => {
     const { galleryList: { totalPhotos, photos } } = getState()
     if(totalPhotos === photos.length) {
@@ -147,7 +147,7 @@ const loadDetailedPhotoImpl = debounce(async (dispatch: Dispatch,
     photoId: string,
     state: GalleryState,
     userId: string,
-    photosetId: string
+    photosetId: string,
 ) => {
     dispatch(loadingPhotoDetail(photoId))
     const isFirstLoad = state.photos.length === 0

@@ -20,7 +20,7 @@ export default class PageNotFound extends React.Component {
 
     componentWillUnmount() {
         this.parallax.destroy()
-        document.body.style.backgroundColor = null
+        document.body.style.backgroundColor = ''
         window.removeEventListener('resize', this.onResize)
     }
 

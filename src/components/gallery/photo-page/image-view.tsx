@@ -32,7 +32,7 @@ const ImageViewImpl = ({ imageSwitcher, imageUrl1, imageUrl2, changeDirection }:
                     ...props,
                     backgroundImage: `url(${imageUrl2})`,
                 }} />
-        )
+        ),
         )}</>
     )
 }

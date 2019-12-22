@@ -22,5 +22,5 @@ const PhotoItemImpl = ({ photo, history }: PhotoItemProps & RouteComponentProps)
 
 export const PhotoItem = memo(
     withRouter(PhotoItemImpl),
-    ({ photo: oldPhoto }, { photo }) => oldPhoto.id === photo.id && oldPhoto.url === photo.url
+    ({ photo: oldPhoto }, { photo }) => oldPhoto.id === photo.id && oldPhoto.url === photo.url,
 )

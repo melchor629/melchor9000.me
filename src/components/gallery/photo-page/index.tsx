@@ -184,7 +184,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
         if(swipingState && swipingState.dir === dir) {
             const length = Math.sqrt(
                 Math.pow(swipingState.x - swipingState.xi, 2) +
-                Math.pow(swipingState.y - swipingState.yi, 2)
+                Math.pow(swipingState.y - swipingState.yi, 2),
             )
             const scale = Math.max(0, Math.min(length / 10 + 1, 2))
             return { transform: `scale(${scale})` }

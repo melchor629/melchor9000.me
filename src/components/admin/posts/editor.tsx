@@ -65,7 +65,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
             <div>
                 { message }<br />
                 <span className="text-muted">{ error.toString() }</span>
-            </div>
+            </div>,
         )
     }
 

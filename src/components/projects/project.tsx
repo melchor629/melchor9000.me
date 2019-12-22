@@ -1,12 +1,12 @@
 import React from 'react'
-import i18next from 'i18next'
+import { i18n } from 'i18next'
 import { WithTranslation, withTranslation } from 'react-i18next'
 import { ProjectInfo } from '../../containers/projects'
 import { getAssetUrl } from '../../lib/url'
 
 type ProjectProps = { project: ProjectInfo, darkMode: boolean } & WithTranslation
 
-const getDescription = (project: ProjectInfo, i18n: i18next.i18n): string => {
+const getDescription = (project: ProjectInfo, i18n: i18n): string => {
     if(project.intlDescription) {
         let avail = project.intlDescription[i18n.language]
         if(avail) {

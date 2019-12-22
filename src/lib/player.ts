@@ -78,7 +78,7 @@ class Player {
                     const newBuffer = this.context.createBuffer(
                         buffer.numberOfChannels,
                         l,
-                        buffer.sampleRate
+                        buffer.sampleRate,
                     )
 
                     for(let i = 0; i < buffer.numberOfChannels; i++) {

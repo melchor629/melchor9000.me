@@ -70,7 +70,7 @@ const ZoomImageViewImpl = ({
     const currentPositionRef = useRef<Coords>(
         initialMousePosition ?
             calculateTranslation(bestQualityImage, normalizeMouseCoordinates(initialMousePosition)) :
-            [ 0, 0 ]
+            [ 0, 0 ],
     )
     const touchRef = useRef<Coords | null>(null)
     const [ isClosing, setIsClosing ] = useState(false)
@@ -226,6 +226,6 @@ const ZoomImageViewImpl = ({
 export const ZoomImageView = withTranslation()(
     memo(
         ZoomImageViewImpl,
-        (a, b) => a.photo.id === b.photo.id
-    )
+        (a, b) => a.photo.id === b.photo.id,
+    ),
 )

@@ -44,7 +44,7 @@ firebase.initializeApp({
     const store = createStore(
         require('./redux/reducers').reducers,
         {},
-        _compose(applyMiddleware(thunk))
+        _compose(applyMiddleware(thunk)),
     )
 
     await new Promise(accept => setTimeout(accept, 10))
@@ -60,12 +60,12 @@ firebase.initializeApp({
             </BrowserRouter>
         </Provider>
     ),
-    document.getElementById('root')
+    document.getElementById('root'),
     )
 
     ReactDOM.render(
         <Footer />,
-        document.getElementById('footer')
+        document.getElementById('footer'),
     )
 
     serviceWorker.register({

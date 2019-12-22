@@ -21,7 +21,7 @@ export default class PostsHome extends React.Component<ProjectsPageProps, { proj
                     <div>
                         No se pudo borrar los metadatos del post...<br />
                         <span className="text-muted">{ this.props.errorDeleting.toString() }</span>
-                    </div>
+                    </div>,
                 )
                 this.props.clearError()
             }
