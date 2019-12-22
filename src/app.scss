@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,300,100');
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,300,100&display=swap');
 
 @import "material_design_colors";
 @import "~bootstrap/scss/bootstrap.scss";
@@ -176,22 +176,6 @@ a:hover {
 }
 
 /**
- * Footer
- **/
-#footer {
-  background-color: $primary-color-normal;
-  box-shadow: rgba(0,0,0,0.4) 0 2px 5px inset;
-}
-
-#footer a, #footer a:hover {
-  color: $primary-color-light;
-}
-
-#footer p {
-  color: $md-grey-100;
-}
-
-/**
  * Code blocks
  **/
 pre {
@@ -205,7 +189,7 @@ pre {
 body.darkmode { background-color: rgb(40, 40, 40) }
 .darkmode {
   h1, h2, h3, h4, h5, h6, div, span:not([class^="hljs-"]), p, li {
-    color: white;
+    color: rgba(white, 0.9);
   }
 
   /*a {
@@ -235,6 +219,10 @@ body.darkmode { background-color: rgb(40, 40, 40) }
 
   .modal-content {
     background-color: #3f3f3f;
+  }
+
+  .text-muted {
+    color: darken(rgba(white, 0.9), 25%) !important
   }
 }
 
@@ -344,22 +332,28 @@ body.darkmode { background-color: rgb(40, 40, 40) }
   }
 }
 
-.toast {
+.toastify-toast {
   .default,
   .default div,
   .default p,
   .default span {
+    $color: rgba(black, 0.9);
+    color: $color;
 
+    .text-muted {
+      color: lighten($color, 20%) !important;
+    }
   }
 
   .success,
   .success div,
   .success p,
   .success span {
-    color: white;
+    $color: rgba(black, 0.9);
+    color: $color;
 
     .text-muted {
-      color: #DDD !important;
+      color: lighten($color, 20%) !important;
     }
   }
 
@@ -367,10 +361,11 @@ body.darkmode { background-color: rgb(40, 40, 40) }
   .info div,
   .info p,
   .info span {
-    color: white;
+    $color: rgba(white, 0.9);
+    color: $color;
 
     .text-muted {
-      color: #DDD !important;
+      color: darken($color, 20%) !important;
     }
   }
 
@@ -378,8 +373,11 @@ body.darkmode { background-color: rgb(40, 40, 40) }
   .warn div,
   .warn p,
   .warn span {
+    $color: rgba(black, 0.9);
+    color: $color;
+
     .text-muted {
-      color: #666 !important;
+      color: lighten($color, 20%) !important;
     }
   }
 
@@ -387,10 +385,11 @@ body.darkmode { background-color: rgb(40, 40, 40) }
   .error div,
   .error p,
   .error span {
-    color: white;
+    $color: rgba(white, 0.9);
+    color: $color;
 
     .text-muted {
-      color: #CCC !important;
+      color: darken($color, 20%) !important;
     }
   }
 }

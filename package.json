@@ -1,6 +1,6 @@
 {
   "name": "melchor9000.me",
-  "version": "0.1.0",
+  "version": "1.7.1",
   "private": true,
   "homepage": "https://melchor9000.me",
   "dependencies": {
@@ -55,7 +55,6 @@
     "@types/react-helmet": "^5.0.8",
     "@types/react-redux": "^7.1.4",
     "@types/react-router-dom": "^5.1.0",
-    "@types/react-swipeable": "^5.2.0",
     "@types/speakingurl": "^13.0.2",
     "audit-ci": "^2.4.0",
     "firebase-tools": "^7.0.0",

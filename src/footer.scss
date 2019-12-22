@@ -1,5 +1,16 @@
+@import "material_design_colors";
+
 #footer {
-  p {
+  background-color: $primary-color-normal;
+  box-shadow: rgba(0,0,0,0.4) 0 2px 5px inset;
+
+  a,
+  a:hover {
+    color: $primary-color-light;
+  }
+
+  > div {
+    color: $md-grey-100;
     line-height: 30px;
     margin-bottom: 0;
   }

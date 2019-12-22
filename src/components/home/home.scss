@@ -61,7 +61,7 @@
     width: 30px;
     height: 30px;
     font-size: 20px;
-    background-color: $accent-color;
+    background-color: darken($accent-color, 10%);
     text-align: center;
     margin-left: 10px;
     border-radius: 30px;
