@@ -45,6 +45,7 @@ pipeline {
 
       steps {
         sh 'npm run build'
+        sh 'npm --prefix functions run build'
       }
     }
 
