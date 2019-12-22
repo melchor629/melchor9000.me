@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import Swipeable from 'react-swipeable'
+import { EventData, useSwipeable } from 'react-swipeable'
 import { WithTranslation, withTranslation } from 'react-i18next'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
@@ -135,9 +135,11 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
     }, [ imagePageContainerRef.current ]); //eslint-disable-line
 
     const onSwipedHorizontal = useCallback((newPhoto: GalleryPhoto | null, n: () => void) => () => {
+        setSwipingState(null)
         if(newPhoto) {
             n()
-            requestIdleCallback(() => history.push(`/gallery/${newPhoto.id}`))
+            // For some reason, requestIdleCallback here caused a big delay in the transition
+            setTimeout(() => history.push(`/gallery/${newPhoto.id}`))
         } else if(window.navigator.vibrate) {
             window.navigator.vibrate(150)
         }
@@ -161,21 +163,26 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
         setZoomOpenStatus(initialPosition)
     }, [ setZoomOpenStatus ])
 
-    const onSwiping = useCallback((dir: 'l' | 'r') => (e: React.TouchEvent<HTMLDivElement>) => {
+    const onSwiping = useCallback((e: EventData) => {
+        if(e.dir !== 'Left' && e.dir !== 'Right') {
+            return
+        }
+
+        const dir = e.dir === 'Left' ? 'l' : 'r'
         if(!swipingState) {
             setSwipingState({
                 dir,
-                xi: e.touches[0].clientX,
-                yi: e.touches[0].clientY,
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY,
+                xi: e.initial[0],
+                yi: e.initial[1],
+                x: e.absX,
+                y: e.absY,
             })
         } else {
             setSwipingState({
                 ...swipingState,
                 dir,
-                x: e.touches[0].clientX,
-                y: e.touches[0].clientY,
+                x: e.absX,
+                y: e.absY,
             })
         }
     }, [ swipingState, setSwipingState ])
@@ -192,6 +199,12 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
             return undefined
         }
     }
+
+    const handlers = useSwipeable({
+        onSwipedLeft: onSwipedHorizontal(nextPhoto, next),
+        onSwipedRight: onSwipedHorizontal(prevPhoto, prev),
+        onSwiping,
+    })
 
     if(!photo) {
         return (
@@ -220,14 +233,11 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
             </div>
 
             <div className="image-page-container" role="document" ref={ imagePageContainerRef }>
-                <Swipeable className={ `image-view ${photo.sizes ? '' : 'disable-zoom'}` }
+                <div
+                    {...handlers}
+                    className={ `image-view ${photo.sizes ? '' : 'disable-zoom'}` }
                     onClick={ e => (e.target as HTMLElement).classList.contains('img') && openZoomModal(e as any) }
-                    onTap={ e => (e.target as HTMLElement).classList.contains('img') && e.preventDefault() }
-                    onSwipedLeft={ onSwipedHorizontal(nextPhoto, next) }
-                    onSwipedRight={ onSwipedHorizontal(prevPhoto, prev) }
-                    onSwipingLeft={ onSwiping('l') }
-                    onSwipingRight={ onSwiping('r') }
-                    onSwiped={ () => setSwipingState(null) }>
+                >
                     <img src={ currentPhotoBigUrl }
                         onLoad={ photoIsLoaded }
                         style={{ display: 'none' }}
@@ -268,7 +278,7 @@ const PhotoImpl = ({ userId, photosetId, match, history }: OverlayProps) => {
                         <i className="fas fa-expand" />
                         <i />
                     </div>
-                </Swipeable>
+                </div>
 
                 { photo.sizes && zoomOpenStatus &&
                     <ZoomImageView photo={ photo }
