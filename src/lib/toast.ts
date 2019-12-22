@@ -20,33 +20,34 @@ class Toast {
 }
 
 type ToastFunction = (content: ToastContent, options?: ToastOptions) => Toast
+const className = 'toastify-toast'
 
 export const normal: ToastFunction = (content, options) => new Toast(toast(content, {
     ...options,
-    className: 'toast',
+    className,
     bodyClassName: 'default',
 }))
 
 export const success: ToastFunction = (content, options) => new Toast(toast.success(content, {
     ...options,
-    className: 'toast',
+    className,
     bodyClassName: 'success',
 }))
 
 export const info: ToastFunction = (content, options) => new Toast(toast.info(content, {
     ...options,
-    className: 'toast',
+    className,
     bodyClassName: 'info',
 }))
 
 export const warning: ToastFunction = (content, options) => new Toast(toast.warn(content, {
     ...options,
-    className: 'toast',
+    className,
     bodyClassName: 'warn',
 }))
 
 export const error: ToastFunction = (content, options) => new Toast(toast.error(content, {
     ...options,
-    className: 'toast',
+    className,
     bodyClassName: 'error',
 }))
