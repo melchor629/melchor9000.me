@@ -33,7 +33,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "speakingurl": "^14.0.1",
-    "three": "0.112.0"
+    "three": "0.112.1"
   },
   "scripts": {
     "test": "react-scripts test --env=jsdom",
