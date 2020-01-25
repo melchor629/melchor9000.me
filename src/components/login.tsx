@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Redirect, RouteComponentProps } from 'react-router'
+import { Redirect, RouteComponentProps, StaticContext } from 'react-router'
 import { animated, Spring } from 'react-spring/renderprops'
 import { Helmet } from 'react-helmet'
 import * as toast from '../lib/toast'
@@ -31,7 +31,9 @@ interface LoginPageState {
     canRedirect: boolean
 }
 
-type LoginPageProps = LoginStateToProps & LoginDispatchToProps & RouteComponentProps<{}>
+type LoginPageProps = LoginStateToProps
+    & LoginDispatchToProps
+    & RouteComponentProps<{}, StaticContext, { from: { pathname: string } } | null | undefined>
 
 export default class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     constructor(props: LoginPageProps) {

@@ -12,6 +12,7 @@ import LoadSpinner from '../../load-spinner'
 import { Post } from '../../../redux/posts/reducers'
 import { AdminInput } from '../admin-input'
 import { dateValidator, valueValidator } from '../../../lib/validators'
+import { StaticContext } from 'react-router'
 
 const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefined }) => (
     <Keyframes
@@ -64,7 +65,9 @@ interface PostEditorState {
     original: Post | null
 }
 
-type PostEditorProps = PostEditorStateToProps & PostEditorDispatchToProps & RouteComponentProps<{ id?: string }>
+type PostEditorProps = PostEditorStateToProps &
+    PostEditorDispatchToProps &
+    RouteComponentProps<{ id?: string }, StaticContext, { post: Post } | null | undefined>
 
 export default class PostEditor extends React.Component<PostEditorProps, PostEditorState> {
     private contentRendererUnshifterTimer: NodeJS.Timer | null = null
@@ -128,7 +131,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
         }
 
         if(this.props.location.state && this.props.location.state.post) {
-            const post: Post = this.props.location.state
+            const { post } = this.props.location.state
             setStateFromPost(post, post._id!)
         } else if(this.props.match.params.id) {
             this.setState({ saving: true })
