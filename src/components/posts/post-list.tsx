@@ -38,7 +38,7 @@ export default class PostList extends React.Component<PostListProps> {
 
     render() {
         if(this.props.posts) {
-            const entries = this.props.posts.map((entry, i) => <Entry entry={entry} key={i}/>)
+            const entries = this.props.posts.filter(e => !e.hide).map((entry, i) => <Entry entry={entry} key={i}/>)
             return (
                 <div className="mainPage d-flex flex-wrap">
 

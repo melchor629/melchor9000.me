@@ -19,6 +19,7 @@ export interface Post {
     //That is the part that will be shown in the URL (human friendly)
     url: string
     modifiedDate?: Timestamp
+    hide?: boolean
 }
 
 export const posts = (state: PostsState = { scroll: 0, posts: null, showing: 6, content: null }, action: AnyAction) => {

@@ -8,8 +8,8 @@
     "bootstrap": "4",
     "debounce": "^1.2.0",
     "disqus-react": "^1.0.6",
-    "firebase": "^7.8.1",
-    "highlight.js": "^9.15.8",
+    "firebase": "^7.6.1",
+    "highlight.js": "^10.0.1",
     "i18next": "^19.0.2",
     "i18next-browser-languagedetector": "^4.0.0",
     "i18next-xhr-backend": "^3.1.2",
@@ -20,20 +20,20 @@
     "react": "^16.9.0",
     "react-cropper": "^1.2.0",
     "react-dom": "^16.9.0",
-    "react-helmet": "6.0.0-beta",
+    "react-helmet": "^6.0.0",
     "react-i18next": "^11.2.7",
     "react-ink": "^6.4.0",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.4.0",
+    "react-scripts": "3.4.1",
     "react-spring": "^8.0.25",
     "react-swipeable": "^5.5.0",
     "react-toastify": "^5.2.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "speakingurl": "^14.0.1",
-    "three": "0.113.2"
+    "three": "0.115.0"
   },
   "scripts": {
     "test": "react-scripts test --env=jsdom",
@@ -46,7 +46,7 @@
     "audit": "audit-ci --moderate --pass-enoaudit"
   },
   "devDependencies": {
-    "@firebase/app-types": "^0.5.0",
+    "@firebase/app-types": "^0.6.0",
     "@firebase/firestore-types": "^1.5.0",
     "@types/jquery": "^3.3.29",
     "@types/node": "^13.1.1",
