@@ -38,7 +38,7 @@
     },
     "whatAreYouDoingNow": {
       "question": "Què fas ara?",
-      "answer": "Estudiar..."
+      "answer": "Treballar de programador (i de vegades de devops?)..."
     },
     "whatOtherThingsDoYouLikeToDo": {
       "question": "Quines altees coses t'agrada fer?",
@@ -57,7 +57,8 @@
       "answerDetail4": "Per estils en la Web: ",
       "answerDetail5": "I sobre llenguatges de marcat (Markup Languages), tenc",
       "answerDetail6": "I per ùltim, sobre formats per l'intercanvi de dadess tinc",
-      "answerDetail7": "Espera, que també estic aprenent <1>Docker</1> :)"
+      "answerDetail7": "Espera, que també estic aprenent <1>Docker</1> :)",
+      "answerDetail8": "A més, sé un poc de <1>Kubernetes</1> d'aquest tan meravellós"
     },
     "haveYouGot<>": {
       "question": "Tens <INSERTI-NOM-DE-XARXA-SOCIAL>?",
@@ -75,10 +76,7 @@
     "isYourNetworkConnectionSpeedy": {
       "question": "Tens un internet rapidissim?",
       "answer": "Bueno, comença a esser decent ara mateix:"
-    },
-    "IWannaKnowMore": "Vull saber més…",
-    "why": "Per què?",
-    "becausedont": "Perquè no vull"
+    }
   },
 
 

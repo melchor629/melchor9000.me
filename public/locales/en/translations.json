@@ -38,7 +38,7 @@
     },
     "whatAreYouDoingNow": {
       "question": "What are you doing now?",
-      "answer": "Studying..."
+      "answer": "Working as programmer (and sometimes as devops?)..."
     },
     "whatOtherThingsDoYouLikeToDo": {
       "question": "What other kind of things you like to do?",
@@ -57,7 +57,8 @@
       "answerDetail4": "For styling the web: ",
       "answerDetail5": "About Markup Languages, these ones ",
       "answerDetail6": "Ending this list, about data interchange formats ",
-      "answerDetail7": "Wait, I'm also learning some <1>Docker</1> :)"
+      "answerDetail7": "Wait, I'm also learning some <1>Docker</1> :)",
+      "answerDetail8": "Ah, things about <1>Kubernetes</1> too"
     },
     "haveYouGot<>": {
       "question": "Have you got <INSERT-SOCIAL-NETWORK-NAME-HERE>?",
@@ -75,10 +76,7 @@
     "isYourNetworkConnectionSpeedy": {
       "question": "Is your network connection fast?",
       "answer": "Well, it starts to be rather fast:"
-    },
-    "IWannaKnowMore": "I wanna know more…",
-    "why": "Why?",
-    "becausedont": "Because I don't want to"
+    }
   },
 
 

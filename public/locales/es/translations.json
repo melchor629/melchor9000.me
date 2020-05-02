@@ -38,7 +38,7 @@
     },
     "whatAreYouDoingNow": {
       "question": "¿Qué haces ahora?",
-      "answer": "Estudiar..."
+      "answer": "Trabajar como programador (y a veces de devops?)..."
     },
     "whatOtherThingsDoYouLikeToDo": {
       "question": "¿Qué otras cosas te gusta hacer?",
@@ -57,7 +57,8 @@
       "answerDetail4": "Para estilos en la Web: ",
       "answerDetail5": "Y sobre lenguajes de marcado (Markup Languages), tenemos simplemente",
       "answerDetail6": "Y por último, sobre formatos para intercambio de datos tenemos",
-      "answerDetail7": "Espera, que también estoy aprendiendo <1>Docker</1> :)"
+      "answerDetail7": "Espera, que también estoy aprendiendo <1>Docker</1> :)",
+      "answerDetail8": "Ah, y de <1>Kubernetes</1> también sé cosillas"
     },
     "haveYouGot<>": {
       "question": "¿Tienes <INSERTE-NOMBRE-DE-RED-SOCIAL>?",
@@ -75,10 +76,7 @@
     "isYourNetworkConnectionSpeedy": {
       "question": "¿Tienes un pepino de interné?",
       "answer": "Bueno, empieza a estar decente ahora mismo:"
-    },
-    "IWannaKnowMore": "Quiero saber más…",
-    "why": "¿Por qué?",
-    "becausedont": "Because I don't want to"
+    }
   },
 
 

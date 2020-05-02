@@ -17,7 +17,7 @@ export default () => (
         <div className="row">
             <div className="col col-sm-auto text-center text-sm-right">
                 <div className="d-flex align-items-center">
-                    <span>melchor629/melchor9000 ({new Date().getFullYear()})&nbsp;</span>
+                    <span className="text-light">melchor629/melchor9000 ({new Date().getFullYear()})&nbsp;</span>
                     <span><small className="text-muted">{require('../package.json').version}</small></span>
                 </div>
             </div>

@@ -52,7 +52,7 @@ const AboutMe = ({ t }: WithTranslation) => (
             </li>
             <li className="mb-2">
                 C++
-                <ProgressBar n={0.25} />
+                <ProgressBar n={0.3} />
             </li>
             <li className="mb-2">
                 C
@@ -68,7 +68,7 @@ const AboutMe = ({ t }: WithTranslation) => (
             </li>
             <li className="mb-2">
                 <a href="https://www.python.org">Python</a>
-                <ProgressBar n={0.3} />
+                <ProgressBar n={0.4} />
             </li>
             <li className="mb-2">
                 <a href={'https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/' +
@@ -77,7 +77,7 @@ const AboutMe = ({ t }: WithTranslation) => (
             </li>
             <li className="mb-2">
                 C#
-                <ProgressBar n={0.15} />
+                <ProgressBar n={0.3} />
             </li>
             <li className="mb-2">
                 { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail3') }: ARM y MIPS
@@ -85,7 +85,7 @@ const AboutMe = ({ t }: WithTranslation) => (
             </li>
         </ul>
         <div>
-            <p>{ t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail4') } CSS { t('and') } SCSS.</p>
+            <span>{ t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail4') } CSS { t('and') } SCSS.</span>
             <ProgressBar n={0.333333333333333333} />
         </div>
         <p>
@@ -96,13 +96,21 @@ const AboutMe = ({ t }: WithTranslation) => (
             { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail6') } <em><a href="http://json.org">JSON</a></em>,
             &nbsp;<em>XML</em> { t('and') } <em><a href="http://www.yaml.org">YAML</a></em>.
         </p>
-        <div>
-            <p>
+        <div className="pb-3">
+            <span>
                 <Trans i18nKey="about-me.whatProgrammingLanguagesDoIKnow.answerDetail7">
                     .<a href="https://docker.com">.</a>.
                 </Trans>
-            </p>
-            <ProgressBar n={0.4} />
+            </span>
+            <ProgressBar n={0.5} />
+        </div>
+        <div className="pb-3">
+            <span>
+                <Trans i18nKey="about-me.whatProgrammingLanguagesDoIKnow.answerDetail8">
+                    .<a href="https://kubernetes.io">.</a>.
+                </Trans>
+            </span>
+            <ProgressBar n={0.3} />
         </div>
 
         <h2 id="tienes">{ t('about-me.haveYouGot<>.question') }</h2>
@@ -123,12 +131,6 @@ const AboutMe = ({ t }: WithTranslation) => (
         <p>
             <img src="https://www.speedtest.net/result/7930548398.png" style={{ maxWidth: '100%' }} alt="Speed Test" />
         </p>
-
-        <h2 id="quiero-saber-más...">{ t('about-me.IWannaKnowMore') }</h2>
-        <p><strong>{ t('no') }.</strong> <span role="img" aria-label="angry face">😠</span></p>
-
-        <h2 id="¿por-qué">{ t('about-me.why') }</h2>
-        <p><strong>{ t('about-me.becausedont') }</strong> <span role="img" aria-label="really angry face">😡</span></p>
 
         <h2 id="mmm"><span role="img" aria-label="thinking emoji">🤔</span></h2>
         <p>
