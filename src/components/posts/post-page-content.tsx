@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import React, { memo } from 'react'
 import { withTranslation, WithTranslation } from 'react-i18next'
 
@@ -10,21 +10,23 @@ const PostPageContentImpl: PostPageContentComponentType = ({ children, entry, t 
     if(entry === null) {
         return <>{ children }</>
     } else {
-        const createdDate = moment(entry.date.toDate())
-        const modifiedDate = entry.modifiedDate ? moment(entry.modifiedDate!.toDate()) : null
+        const createdDate = DateTime.fromJSDate(entry.date.toDate(), { locale: 'UTC' })
+        const modifiedDate = entry.modifiedDate ?
+            DateTime.fromJSDate(entry.modifiedDate!.toDate(), { locale: 'UTC' }) :
+            null
         return (
             <article className="postPage">
                 <header>
                     <h4 className="display-4">{ entry.title }</h4>
                     <section>
                         <span>{ t('blog.created_at') }&nbsp;</span>
-                        <time dateTime={ createdDate.format('YYYY-MM-DD') }>
-                            { createdDate.format('LLL') }
+                        <time dateTime={ createdDate.toFormat('yyyy-MM-dd') }>
+                            { createdDate.toLocaleString({ ...DateTime.DATETIME_HUGE, timeZoneName: 'short' }) }
                         </time>
                         { modifiedDate && <span> - { t('blog.modified_at') }&nbsp;</span> }
                         { modifiedDate &&
-                        <time dateTime={ modifiedDate.format('YYYY-MM-DD') }>
-                            { modifiedDate.format('LLL') }
+                        <time dateTime={ modifiedDate.toFormat('yyyy-MM-dd') }>
+                            { modifiedDate.toLocaleString({ ...DateTime.DATETIME_HUGE, timeZoneName: 'short' }) }
                         </time> }
                     </section>
                 </header>

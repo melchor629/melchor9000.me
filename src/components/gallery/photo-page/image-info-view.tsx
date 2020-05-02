@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import React, { memo, useMemo } from 'react'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
@@ -74,7 +74,9 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
 
                 <div className="mt-3 row">
                     <InfoItem id="captureDate">{
-                        info && moment(info.dates.taken, 'YYYY-MM-DD hh:mm:ss').format('LLLL')
+                        info && DateTime
+                            .fromFormat(info.dates.taken, 'yyyy-MM-dd HH:mm:ss', { zone: 'Europe/Madrid' })
+                            .toLocaleString({ ...DateTime.DATETIME_HUGE, timeZone: undefined, timeZoneName: undefined })
                     }</InfoItem>
                     { geolocation }
                     <InfoItem id="camera">{ exif && exif.camera }</InfoItem>

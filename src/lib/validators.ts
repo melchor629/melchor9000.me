@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 
 export type Validator = (value: string) => boolean
 
@@ -20,4 +20,4 @@ export const urlOrLocalValidator = orValidator(
     urlValidator,
 )
 
-export const dateValidator = (format: string) => (value: string) => moment(value, format, true).isValid()
+export const dateValidator = (format: string) => (value: string) => DateTime.fromFormat(value, format).isValid

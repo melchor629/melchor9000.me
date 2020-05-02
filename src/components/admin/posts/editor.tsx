@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import firebase from 'firebase/app'
 import { RouteComponentProps } from 'react-router-dom'
 import { animated, Keyframes, Spring, Transition } from 'react-spring/renderprops'
@@ -54,7 +54,7 @@ interface PostEditorState {
     title: string
     img: string
     url: string
-    publishDate: moment.Moment
+    publishDate: DateTime
     publishDateString: string
     content: string
     contentRendered: string | null
@@ -88,8 +88,10 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
             title: '',
             img: '',
             url: '',
-            publishDate: moment(new Date(Date.now() + 24 * 60 * 60 * 1000)),
-            publishDateString: moment(new Date(Date.now() + 24 * 60 * 60 * 1000)).format('YYYY-MM-DDTHH:mm:ss'),
+            publishDate: DateTime.fromJSDate(new Date(Date.now() + 24 * 60 * 60 * 1000)),
+            publishDateString: DateTime
+                .fromJSDate(new Date(Date.now() + 24 * 60 * 60 * 1000))
+                .toISO({ includeOffset: false }),
             content: '',
             contentRendered: '',
             validImg: true,
@@ -113,8 +115,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                 title: post.title,
                 img: post.img,
                 url: post.url,
-                publishDate: moment(post.date.toDate()),
-                publishDateString: moment(post.date.toDate()).format('YYYY-MM-DDTHH:mm:ss'),
+                publishDate: DateTime.fromJSDate(post.date.toDate()),
+                publishDateString: DateTime.fromJSDate(post.date.toDate()).toISO({ includeOffset: false }),
                 loading: { img: false, content: true },
                 original: { ...post, _id },
                 saving: false,
@@ -154,7 +156,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                 this.props.clearError()
                 const pd = this.state.publishDate
                 firebase.storage()
-                    .ref(`/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('date')}-${this.state.url}.md`)
+                    .ref(`/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${this.state.url}.md`)
                     .delete()
                     .catch()
             }
@@ -187,10 +189,10 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                     <AdminInput type="datetime-local"
                         id="publishDate"
                         placeholder="Fecha de publicación"
-                        min={ moment().format('YYYY-MM-DDTHH:mm:ss') }
+                        min={ DateTime.utc().toISO({ includeOffset: false }) }
                         value={ publishDateString }
                         required={ true }
-                        validators={ [ dateValidator('YYYY-MM-DDTHH:mm:ss') ] }
+                        validators={ [ dateValidator('yyyy-MM-ddTHH:mm:ss') ] }
                         onChange={ this.publishDateChanged } />
                     <AdminInput type="url"
                         id="url"
@@ -198,8 +200,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                         disabled={ true }
                         value={ publishDate ?
                             `${process.env.PUBLIC_URL}/posts/` +
-                            `${publishDate.utc().get('year')}/${publishDate.utc().get('month')}/` +
-                            `${publishDate.utc().get('date')}/${url}` :
+                            `${publishDate.toUTC().get('year')}/${publishDate.toUTC().get('month')}/` +
+                            `${publishDate.toUTC().get('day')}/${url}` :
                             '' }
                         required={ true }
                         onChange={ () => null } />
@@ -230,7 +232,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                             </button>
                             <button className="btn btn-outline-success"
                                 onClick={ this.save }
-                                disabled={ !(publishDate.isValid() &&
+                                disabled={ !(publishDate.isValid &&
                                                validImg &&
                                                !!contentRendered &&
                                                title.length > 0) }>
@@ -307,7 +309,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
 
     private publishDateChanged(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
-        const date = moment(e.target.value, 'YYYY-MM-DDTHH:mm:ss', true)
+        const date = DateTime.fromISO(e.target.value)
         this.setState({
             publishDateString: e.target.value,
             publishDate: date,
@@ -373,12 +375,12 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                 .putString(this.state.content, firebase.storage.StringFormat.RAW)
                 .then(() => {
                     this.props.update({
-                        date: firebase.firestore.Timestamp.fromDate(this.state.publishDate.toDate()),
+                        date: firebase.firestore.Timestamp.fromDate(this.state.publishDate.toJSDate()),
                         file: this.state.original!.file,
                         img: this.state.img,
                         title: this.state.title,
                         url: this.state.url,
-                        modifiedDate: firebase.firestore.Timestamp.fromDate(moment().toDate()),
+                        modifiedDate: firebase.firestore.Timestamp.fromDate(DateTime.utc().toJSDate()),
                         _id: this.state.original!._id,
                     })
                 })
@@ -388,12 +390,12 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                 })
         } else {
             firebase.storage()
-                .ref(`/posts/${pd.get('year')}-${pd.get('month') + 1}-${pd.get('date')}-${this.state.url}.md`)
+                .ref(`/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${this.state.url}.md`)
                 .putString(this.state.content, firebase.storage.StringFormat.RAW)
                 .then(() => {
                     this.props.save({
-                        date: firebase.firestore.Timestamp.fromDate(this.state.publishDate.toDate()),
-                        file: `/posts/${pd.get('year')}-${pd.get('month') + 1}-${pd.get('date')}-${this.state.url}.md`,
+                        date: firebase.firestore.Timestamp.fromDate(this.state.publishDate.toJSDate()),
+                        file: `/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${this.state.url}.md`,
                         img: this.state.img,
                         title: this.state.title,
                         url: this.state.url,

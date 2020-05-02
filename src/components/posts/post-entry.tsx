@@ -1,5 +1,5 @@
+import { DateTime } from 'luxon'
 import * as React from 'react'
-import moment from 'moment'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Post } from '../../redux/posts/reducers'
 
@@ -9,9 +9,9 @@ interface PostEntryProps {
 
 export default withRouter(({ entry, history }: PostEntryProps & RouteComponentProps<{}>) => {
     const { date, img, title } = entry
-    const _date = moment(date.toDate()).utc()
-    const fecha = moment(date.toDate()).format('LL')
-    const url = `/blog/${_date.get('year')}/${_date.get('month') + 1}/${_date.get('date')}/${entry.url}`
+    const _date = DateTime.fromJSDate(date.toDate(), { zone: 'UTC' })
+    const fecha = _date.toLocal().toLocaleString(DateTime.DATETIME_FULL)
+    const url = `/blog/${_date.get('year')}/${_date.get('month')}/${_date.get('day')}/${entry.url}`
     const changeUrl = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault()
         history.push(url)
