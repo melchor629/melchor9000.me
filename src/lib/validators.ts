@@ -20,4 +20,7 @@ export const urlOrLocalValidator = orValidator(
     urlValidator,
 )
 
-export const dateValidator = (format: string) => (value: string) => DateTime.fromFormat(value, format).isValid
+export const dateValidator = (format?: string) =>
+    typeof format === 'string' ?
+        ((value: string) => DateTime.fromFormat(value, format).isValid) :
+        ((value: string) => DateTime.fromISO(value).isValid)

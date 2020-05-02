@@ -177,7 +177,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                     <title>{this.state.original !== null ? `Editing: ${title}` : `Creating new post: ${title}`}</title>
                 </Helmet>
 
-                <h1>Crear nueva entrada</h1>
+                {this.state.original !== null ? <h1>Editando entrada</h1> : <h1>Crear nueva entrada</h1>}
 
                 <form>
                     <AdminInput type="text"
@@ -192,7 +192,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                         min={ DateTime.utc().toISO({ includeOffset: false }) }
                         value={ publishDateString }
                         required={ true }
-                        validators={ [ dateValidator('yyyy-MM-ddTHH:mm:ss') ] }
+                        validators={ [ dateValidator() ] }
                         onChange={ this.publishDateChanged } />
                     <AdminInput type="url"
                         id="url"

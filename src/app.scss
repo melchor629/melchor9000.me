@@ -295,6 +295,10 @@ body.darkmode { background-color: rgb(40, 40, 40) }
 }
 
 .form-group.material, .form-label-group.material {
+  .input {
+    height: 48px;
+  }
+
   input, textarea {
     border: none;
     border-bottom: 1px solid $md-grey-600;
