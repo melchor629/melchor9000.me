@@ -1,10 +1,11 @@
-import { toast, ToastContent, ToastId, ToastOptions } from 'react-toastify'
+import type { ReactText } from 'react'
+import { toast, ToastContent, ToastOptions } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 class Toast {
     public readonly onClose: Promise<void>
 
-    constructor(private readonly id: ToastId) {
+    constructor(private readonly id: ReactText) {
         this.onClose = new Promise<void>(resolve => {
             toast.update(this.id, { onClose: () => resolve() })
         })

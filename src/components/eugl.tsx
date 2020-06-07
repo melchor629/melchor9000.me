@@ -227,7 +227,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
 
     private prepareGeometry(): THREE.InstancedBufferGeometry {
         const geometry = new THREE.InstancedBufferGeometry()
-        const nEucl = geometry.maxInstancedCount = this.max * 5
+        const nEucl = geometry.instanceCount = this.max * 5
 
         //Plano compuesto por dos caras triangulares
         const vertices = new THREE.BufferAttribute(new Float32Array([
