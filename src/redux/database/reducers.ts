@@ -12,9 +12,9 @@ import {
 
 export interface DatabaseState {
     subscriptions: any
-    snapshots: any
-    errors: any
-    doing: any
+    snapshots: { [index: string]: any }
+    errors: { [index: string]: any }
+    doing: { [index: string]: boolean | undefined }
 }
 
 export const database = (state: DatabaseState | undefined, action: any): DatabaseState => {

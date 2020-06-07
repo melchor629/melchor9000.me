@@ -18,7 +18,7 @@ export interface PostsHomeDispatchToProps {
 
 const mapStateToProps = (state: State): PostsHomeStateToProps => ({
     posts: state.database.snapshots.posts,
-    deleting: state.database.doing.posts,
+    deleting: state.database.doing.posts || false,
     errorSaving: state.database.errors.posts,
     darkMode: state.effects.darkMode,
 })

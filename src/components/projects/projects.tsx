@@ -1,64 +1,81 @@
-import React from 'react'
-import { WithTranslation } from 'react-i18next'
+import React, { useEffect } from 'react'
+import { WithTranslation, withTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
+import { useDispatch, useSelector } from 'react-redux'
 import * as toast from '../../lib/toast'
+import { removeError, subscribe, unsubscribe } from '../../redux/database/actions'
 import LoadSpinner from '../load-spinner'
 import Project from './project'
-import { ProjectDispatchToProps, ProjectStateToProps } from '../../containers/projects'
 import './projects.scss'
 
-type ProjectsPageProps = ProjectStateToProps & ProjectDispatchToProps & WithTranslation
+export interface ProjectInfo {
+    _id: string
+    title: string
+    repo: string
+    demo: string
+    web: string
+    image?: string
+    technologies: string[]
+    description: string
+    intlDescription?: { [lang: string]: string }
+}
 
-export default class Projects extends React.Component<ProjectsPageProps> {
-    componentDidMount() {
-        this.props.subscribe()
-    }
+type ProjectsPageProps = WithTranslation
 
-    componentWillUnmount() {
-        this.props.unsubscribe()
-    }
+const Projects = ({ t }: ProjectsPageProps) => {
+    const dispatch = useDispatch()
+    const { darkMode, projects, subscriptionError } = useSelector(({ database, effects }) => ({
+        darkMode: effects.darkMode,
+        projects: database.snapshots.projects as ProjectInfo[] | undefined,
+        subscriptionError: database.snapshots.projectsError,
+    }))
 
-    componentDidUpdate(nextProps: ProjectStateToProps & ProjectDispatchToProps): void {
-        if(nextProps.subscriptionError) {
+    useEffect(() => {
+        dispatch(subscribe('projects', 'title'))
+
+        return () => void dispatch(unsubscribe('projects'))
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if(subscriptionError) {
             toast.error(() => (
                 <div>
-                    { this.props.t('projects.couldNotLoad') } <br/>
-                    <span className="text-muted">{ nextProps.subscriptionError.message }</span>
+                    {t('projects.couldNotLoad')}
+                    <br/>
+                    <span className="text-muted">{subscriptionError.message}</span>
                 </div>
             ))
-            this.props.removeError()
+            dispatch(removeError('projects'))
         }
-    }
+    }, [ subscriptionError ]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    render() {
-        const { projects, darkMode, t } = this.props
-        let projectsDiv: any[] | null = null
-        if(projects) {
-            projectsDiv = projects.map((project, i) =>
-                <Project project={ project } key={ i } darkMode={ darkMode } />)
-        }
-        return (
-            <div>
+    return (
+        <div>
 
-                <Helmet>
-                    <title>Projects</title>
-                    <meta name="Description"
-                        content="Page of my code projects" />
-                </Helmet>
+            <Helmet>
+                <title>Projects</title>
+                <meta name="Description"
+                    content="Page of my code projects" />
+            </Helmet>
 
-                <div className="page-header">
-                    <h1>{ t('projects.title') } <small>{ t('projects.subtitle') }</small></h1>
-                    <p className="lead">
-                        { t('projects.description') }
-                    </p>
-                </div>
-
-                { projects ? (
-                    <div className="card-columns">{ projectsDiv }</div>
-                ) :
-                    <LoadSpinner />
-                }
+            <div className="page-header">
+                <h1>{t('projects.title')} <small>{t('projects.subtitle')}</small></h1>
+                <p className="lead">
+                    {t('projects.description')}
+                </p>
             </div>
-        )
-    }
+
+            {projects ? (
+                <div className="card-columns">
+                    {projects.map(project => (
+                        <Project project={project} key={project._id} darkMode={darkMode} />
+                    ))}
+                </div>
+            ) :
+                <LoadSpinner />
+            }
+        </div>
+    )
 }
+
+export default withTranslation()(Projects)

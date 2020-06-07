@@ -20,3 +20,8 @@ export interface State {
     posts: PostsState
     auth: AuthState
 }
+
+// interface augmentation for default state usage in the app
+declare module 'react-redux' {
+    interface DefaultRootState extends State {}
+}

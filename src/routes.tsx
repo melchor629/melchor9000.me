@@ -26,7 +26,7 @@ function privateRoute<Props = any, State = any>(_route: string,
 }
 
 const AboutMe = asyncComponent(() => import('./components/about-me'))
-const Projects = asyncComponent(() => import('./containers/projects'))
+const Projects = asyncComponent(() => import('./components/projects'))
 const Home = asyncComponent(() => import('./containers/home'))
 const Gallery = asyncComponent(() => import('./components/gallery'))
 const Posts = asyncComponent(() => import('./containers/posts'))

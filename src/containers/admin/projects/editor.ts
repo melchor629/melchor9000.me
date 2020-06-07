@@ -17,7 +17,7 @@ export interface ProjectEditorDispatchToProps {
 }
 
 const mapStateToProps = (state: State): ProjectEditorStateToProps => ({
-    saving: state.database.doing.projects,
+    saving: state.database.doing.projects || false,
     errorSaving: state.database.errors.projects,
     darkMode: state.effects.darkMode,
 })

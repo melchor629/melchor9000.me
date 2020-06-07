@@ -17,7 +17,7 @@ export interface PostEditorDispatchToProps {
 }
 
 const mapStateToProps = (state: State): PostEditorStateToProps => ({
-    saving: state.database.doing.posts,
+    saving: state.database.doing.posts || false,
     errorSaving: state.database.errors.posts,
     darkMode: state.effects.darkMode,
 })
