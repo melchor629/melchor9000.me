@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { WithTranslation, withTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
 import * as toast from '../../lib/toast'
@@ -20,9 +20,8 @@ export interface ProjectInfo {
     intlDescription?: { [lang: string]: string }
 }
 
-type ProjectsPageProps = WithTranslation
-
-const Projects = ({ t }: ProjectsPageProps) => {
+const Projects = () => {
+    const [ t ] = useTranslation()
     const dispatch = useDispatch()
     const { darkMode, projects, subscriptionError } = useSelector(({ database, effects }) => ({
         darkMode: effects.darkMode,
@@ -78,4 +77,4 @@ const Projects = ({ t }: ProjectsPageProps) => {
     )
 }
 
-export default withTranslation()(Projects)
+export default Projects

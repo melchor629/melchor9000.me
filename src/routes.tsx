@@ -30,17 +30,15 @@ const Projects = asyncComponent(() => import('./components/projects'))
 const Home = asyncComponent(() => import('./containers/home'))
 const Gallery = asyncComponent(() => import('./components/gallery'))
 const Posts = asyncComponent(() => import('./containers/posts'))
-const Viz = asyncComponent(() => import('./containers/viz'))
-const EuglPage = asyncComponent(() => import('./components/eugl'))
+const Experiments = asyncComponent(() => import('./components/experiments'))
 const Admin = asyncComponent(() => import('./containers/admin/admin'))
 
 export const routes: Array<Route<any, any>> = [
     route('/', 'Home', withDefaultContainer(Home), { exact: true }),
     route('/about-me', 'About me', withDefaultContainer(AboutMe)),
-    route('/eugl', 'Espacio Euclídeo', withDefaultContainer(EuglPage)),
     route('/gallery', 'Photo Gallery', Gallery),
     route('/blog', 'Posts', withDefaultContainer(Posts)),
     route('/projects', 'Projects', withDefaultContainer(Projects)),
-    route('/viz', 'Viz', withDefaultContainer(Viz)),
+    route('/experiments', 'Experiments', withDefaultContainer(Experiments)),
     privateRoute('/admin', 'Admin page', Admin),
 ]

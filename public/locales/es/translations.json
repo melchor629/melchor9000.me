@@ -171,6 +171,24 @@
     "cannotPlay": "No se pudo reproducir la canción: "
   },
 
+
+
+  "experiments": {
+    "title": "Experimentos",
+    "description": "Curiosos experimentos con tecnologías web acumulados en un solo lugar. No puedo asegurar que sea seguro estar aquí...",
+    "goToExperiment": "Ir al experimento",
+    "eugl": {
+      "title": "Espacio Euclídeo",
+      "description": "Entre estudios algebráicos, la loca idea del 'Espacio Euclídeo' surgió como esta curiosa representación basado en el salvapantallas de 'Campo de Estrellas'. ¡Puedes ponerte a ti mismo!"
+    },
+    "viz": {
+      "title": "Viz",
+      "description": "Visualizador de ondas o barras de la canción que pongas. Experimento que al final se llevó a la página principal también."
+    }
+  },
+
+
+
   "and": "y",
   "yes": "si",
   "no": "no"
