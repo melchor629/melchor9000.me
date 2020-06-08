@@ -171,6 +171,24 @@
     "cannotPlay": "No es pot reproduïr la canció: "
   },
 
+
+
+  "experiments": {
+    "title": "Experiments",
+    "description": "Experiments ben curioso amb tecnologies web amuntegats en un únic lloc. No puc asegurar-vos que sigui segur estar per aqui...",
+    "goToExperiment": "Anar al experiment",
+    "eugl": {
+      "title": "Espai Euclidià",
+      "description": "Entre estudis algebraics, la boja idea del 'Espai Euclideà' aparegué com aquesta curiosa representació basada en el estalvi de pantalles 'Campo de Estrellas'. Pots posarte dins l'espai!"
+    },
+    "viz": {
+      "title": "Viz",
+      "description": "Visualiztador de ones o barres de la cançó que posis a la web. Experiment que, a més, es va dur a la pàgina principal."
+    }
+  },
+
+
+
   "and": "i",
   "yes": "si",
   "no": "no"

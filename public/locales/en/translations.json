@@ -171,6 +171,24 @@
     "cannotPlay": "Song cannot be played: "
   },
 
+
+
+  "experiments": {
+    "title": "Experiments",
+    "description": "Odd experiments with web technologies which has been piled up here. Safety cannot be ensured...",
+    "goToExperiment": "Go to the experiment",
+    "eugl": {
+      "title": "Euclidean Space",
+      "description": "Among algebraic studies, the crazy idea of the 'Euclidean Space' suddenly appeared as this funny representation of the 'Star Field' screensaver. You put yourself in it!"
+    },
+    "viz": {
+      "title": "Viz",
+      "description": "Wave or bar visualizer from the song you put in. This experiment can be also found in the home page."
+    }
+  },
+
+
+
   "and": "and",
   "yes": "yes",
   "no": "no"
