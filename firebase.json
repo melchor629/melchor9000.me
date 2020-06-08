@@ -1,5 +1,6 @@
 {
-  "hosting": {
+  "hosting": [{
+    "site": "melchor9000-webpage",
     "public": "build",
     "ignore": [
       "firebase.json",
@@ -60,6 +61,26 @@
       }
     ]
   },
+  {
+    "site": "melchor9000-static",
+    "public": ".priv/static",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**/*.*",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "max-age=604800"
+          }
+        ]
+      }
+    ]
+  }],
   "functions": {
     "predeploy": "npm --prefix \"$RESOURCE_DIR\" run dist"
   }

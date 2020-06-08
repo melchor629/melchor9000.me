@@ -40,7 +40,8 @@
     "eject": "react-scripts eject",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "firebase deploy --project melchor9000-webpage",
+    "deploy": "firebase deploy --project melchor9000-webpage --except hosting:melchor9000-static",
+    "deploy:static": "firebase deploy --project melchor9000-webpage --only hosting:melchor9000-static",
     "firebase": "firebase",
     "lint": "eslint --ext ts,tsx,js,jsx src",
     "audit": "audit-ci --moderate --pass-enoaudit"
@@ -65,7 +66,7 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
+      ">1%",
       "not dead",
       "not ie <= 11",
       "not op_mini all"
