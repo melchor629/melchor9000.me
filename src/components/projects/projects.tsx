@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,6 +29,8 @@ const Projects = () => {
         subscriptionError: database.snapshots.projectsError,
     }))
 
+    const [ selectedTechnologies, setSelectedTechnologies ] = useState<string[]>([])
+
     useEffect(() => {
         dispatch(subscribe('projects', 'title'))
 
@@ -48,6 +50,44 @@ const Projects = () => {
         }
     }, [ subscriptionError ]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    const techs = useMemo(
+        () => (
+            Array.from(new Set(
+                projects
+                    ?.map(p => p.technologies.map(t => t.toLowerCase()))
+                    .reduce((l, p) => [ ...l, ...p ]) ?? [],
+            )).sort()
+        ),
+        [ projects ],
+    )
+
+    const filteredProjects = useMemo(() => {
+        if(!projects) {
+            return projects
+        }
+
+        let filtered = projects
+
+        if(selectedTechnologies.length) {
+            filtered = filtered.filter(p => p.technologies.some(t => selectedTechnologies.includes(t.toLowerCase())))
+        }
+
+        return filtered
+    }, [ projects, selectedTechnologies ])
+
+    const onTechnologyClick: React.MouseEventHandler<HTMLButtonElement> = useCallback(e => {
+        e.preventDefault()
+
+        const value = (e.target as HTMLButtonElement).innerText
+        if(value === 'clear') {
+            setSelectedTechnologies([])
+        } else if(e.ctrlKey || e.metaKey) {
+            setSelectedTechnologies(st => st.includes(value) ? st.filter(f => f !== value) : [ ...st, value ])
+        } else {
+            setSelectedTechnologies(st => st.includes(value) ? [] : [ value ])
+        }
+    }, [])
+
     return (
         <div>
 
@@ -64,9 +104,31 @@ const Projects = () => {
                 </p>
             </div>
 
-            {projects ? (
+            <div style={{ overflowX: 'auto', position: 'relative', display: 'flex', paddingBottom: '0.75rem' }}>
+                <div className="px-1 col-auto" style={{ position: 'sticky', left: 2, zIndex: 2 }}>
+                    <button
+                        className="btn btn-sm btn-warning"
+                        onClick={onTechnologyClick}
+                        disabled={!selectedTechnologies.length}
+                    >
+                        clear
+                    </button>
+                </div>
+                {techs.map(t => (
+                    <div key={t} className="px-1 col-auto">
+                        <button
+                            className={`btn btn-sm btn-secondary ${selectedTechnologies.includes(t) && 'active'}`}
+                            onClick={onTechnologyClick}
+                        >
+                            {t}
+                        </button>
+                    </div>
+                ))}
+            </div>
+
+            {filteredProjects ? (
                 <div className="card-columns">
-                    {projects.map(project => (
+                    {filteredProjects.map(project => (
                         <Project project={project} key={project._id} darkMode={darkMode} />
                     ))}
                 </div>
