@@ -12,7 +12,6 @@ import App from './App'
 import Footer from './Footer'
 import * as serviceWorker from './serviceWorker'
 import i18n from './i18n'
-import { warning } from './lib/toast'
 import LoadingSpinner from './components/load-spinner'
 
 import 'firebase/firestore'
@@ -70,11 +69,12 @@ firebase.initializeApp({
         document.getElementById('footer'),
     )
 
-    serviceWorker.register({
+    /*serviceWorker.register({
         onUpdate: () =>
             warning('Ey, actualiza la web para obtener los últimos cambios', { autoClose: false }),
         onFail: () =>
             warning('Hemos detectado que no estás conectado a internet. ' +
                     'Habrán cosas que no funcionarán correctamente :(', { autoClose: false }),
-    })
+    })*/
+    serviceWorker.unregister()
 })()
