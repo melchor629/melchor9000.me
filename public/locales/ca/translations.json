@@ -4,8 +4,8 @@
     "bio": {
       "year": "{{count}} Any",
       "year_plural": "{{count}} Anys",
-      "text1": "Enginer de Software en la Universidad de Málaga",
-      "text2": "Programador..."
+      "text1": "Enginer de Software - Programador",
+      "text2": "De vegades fotògraf..."
     },
     "darkMode": [
       "I'm Batman!",
@@ -32,51 +32,31 @@
 
   "about-me": {
     "title": "Sobre mi",
-    "whatMusicDoIListen": {
-      "question": "Què mùsica escoltes?",
-      "answer": "Idò de tot… Si entrau en el meu perfil de <1>Last.fm</1> veureu la mùsica que sol escoltar, però no hi es tot."
+    "description": "A page that talks about me - melchor9000/melchor629",
+    "page-heading": "Sóc en <1>melchor629</1> (aka <3>melchor9000</3>)",
+    "page-subheading": "Programador (<1>frontend developer</1>). Amant de Linux i macOS. De vegades sóc sysadmin/devops en Linux. De altres sóc fotàgraf.",
+    "programmer": {
+      "heading": "Com em vaig fer programador?",
+      "p1": "Vaig començar en el mon de la programació amb simples webs amb PHP amb Adobe Dreamweaver i un blog en Blogspot (fa temps d'això...). Per ventura seria això amb uns 11-12 anys... Poc després, instalarem Ubuntu 10.10 a casa i es quan vaig començar a ficar-me amb Shell scripts, C i C++ (no va surtir be però). Amb el boom de Minecraft, descobrí Java. Parlam de quan tenia uns 14-15 anys. Li vaig dedicar un munter de temps a Java, massa projectes fets amb aquest llenguatge... Però es bon llenguatge per començar a programar. També li vaig dedicar un poc de temps a PHP, però res serio al final. Android va ser el següent en ser experimentat (tenc un parell de repositoris a Github, que daten del 2012, amb 16 anys).",
+      "p2": "Amb aquestes experiències assolides, donant cops al teclat, vaig decidir que era hora de probar JavaScript. Tant per el navegador com per a node.js. A més, amb un iMac a casa, vaig retomar C y C++, però també vaig començar a aprendre Objective-C (en efecte, has lletgit be). I amb tot això, em vaig anar a estudiar Enginyeria del Software (en altres universitats és una menció d'Informàtica) a la Universitat de Màlaga. Allà, al grau, vaig refermar coneixements de programació, com patrons de diseny, <1>bad smells</1>, arquitectura... Ademes vaig aprendre un poc de Haskell, C# o Python, i donar-me cops amb SQL Server i Oracle SQL. D'aquesta època em ve l'interès per l'administració de sistemes (sysadmin), pero parlarem d'això en un altre moment. També en aquests temps apareguè Swift i Go es va fer famós, i clarament vaig aprofitar i aprendre un poc d'ells.",
+      "p3": "Prop de terminar el Grau, tocava fer pràctiques en una empresa (2018). En aquesta vaig terminar d'aprendre Python, a més de aprendre un poc de tecnologies relacionades amb DevOps (y d'aquí em ve el tema de DevOps). El treball Fin de Grau va ser, en gran mesura, frontend amb React i containers amb Docker. Amb ambdues recents experiències, decidí que el que més m'agradava d'aquest mon era el frontend (React sobretot) i l'horrend mon de C/C++/Go. Després de presentar el TFG, vaig entrar en la empresa per la que treball actualmente, on vaig aprendre C# (de bon de veres), .NET Core i encara més SQL Server."
     },
-    "whatAreYouDoingNow": {
-      "question": "Què fas ara?",
-      "answer": "Treballar de programador (i de vegades de devops?)..."
+    "sysadmin": {
+      "heading": "D'on surt ser sysadmin?",
+      "p1": "Abans de dir res, deixaré clar que no sóc un gran sysadmin, però les experiències m'han donat una mica de conexiements sobre aquesta àrea. A si que ahí va.",
+      "p2": "Estudiant a Màlaga, vaig entrar com a becari d'\"informàtica\" a la residencia on vivia (2015), junt amb el companyero <1>Antonio</1>. Les tasques eren bàsicament mantenir una xarxa cablejada de qualitat i un WiFi (?) que gaire bé funcionaba. Després d'un temps donant per sac a tothom, varem conseguir que s'invertís doblers a la residència i renovar per complet l'instal·lació (2017-2018). Durant aquest procès, varem aprendre un munter de xarxes i Linux. Afegir també que l'assignatura de <3>Redes</3> del Grau també ens va vindre perfectamente per comprendre tots el mecanismes de les xarxes. Per terminar aquesta etapa, l'Universitat va conseguir que ens convidessim a una conferència europea que es feia aquell any a Trondheim (Noruega) per parlar un poc sobre aquest projecte.",
+      "p3": "Actualment, on vivim, tinc montat un sistema un poc mes avançat per la xarxa d'internet a casa. I bastante be que funciona: <1>la web de mi casita</1>."
     },
-    "whatOtherThingsDoYouLikeToDo": {
-      "question": "Quines altees coses t'agrada fer?",
-      "answer": "M'agrada fer videos, i montar-los. Blender (software per fer modelat tridimensional) i cosaes amb ell. Escoltr mùsica a totes horas. Mecagoncristobendito, que has fet? Fotografia, quan es pot. Anar en bicicleta, trajectes llargs, a poder ser."
+    "devops": {
+      "heading": "I de devops, d'on t'ho has tret?",
+      "p1": "Durant les pràctiques del Grau, a la empresa on vaig fer-les, tenien un sistema de <1>Continuous Integration</1> i <3>Continuous Delivery</3> amb <5>Jenkins</5> i <7>Docker</7> (la primera vegada que veia aquesta forma de treballar). A la vegada, vaig estar ajudant a n'<9>Andrés</9> amb el seu projecte on varem aprendre Docker (2018). Uns mesos més tard, varem obrir <11>MajorcaDevs</11>, un servidor on tenim seguit de projectes en marxa i el nostre propi CI/CD. La empresa en la que estic actualment he pogut aprendre <13>Kubernetes</13> (2020). Vull continuar aprenent aquesta àrea, perquè toto es interesant i màgic."
     },
-    "andWhatNot": {
-      "question": "I què no?",
-      "answer": "Sortir a córrer. Anar en moto. Discoteques."
+    "photography": {
+      "heading": "Has esmentat la fotografia...",
+      "p1": "Un hobby més (com el devops o sysadmin, encara que el de devops no pareix ser-ho ultimament). Fa temps que vaig començar a la fotografia (hauria de tenir uns 10-11 anys), on vaig assistir a un curs introductori a la fotografia per a joves. Després del curs, de el que la meva mare em va ensenyar. En aquest moment ens varen comprar una <1>Canon 400D</1>, i amb aquella càmera vaig començar a fer fotos de tant en tant. Actualment tinc una <3>Canon 1300D</3>.",
+      "p2": "Un munter d'anys he estat fent fotografies, pero les varem perdre temps abans de comprar la 1300D. Quan va passar això, vaig aturar de fer fotos per una temporada. Estudiant a Màlaga vaig retomar la fotografia, usant el movil que tenia al moment. Actualmente, podreu trobar un mix de la 1300D amb el movil actual. La col·lecció de fotos las podreu trobar a <1>la galeria d'aquesta web</1>."
     },
-    "whatProgrammingLanguagesDoIKnow": {
-      "question": "Que llenguatges de programació coneixes?",
-      "answer": "Per conèixer, conesc molts, però que jo sàpiga, no son un munter. Aquets son els que vos posaré:",
-      "answerDetail1": "Gràcies a la carrera",
-      "answerDetail2": "(crec que ha canviat un munter des de que el vaig usar)",
-      "answerDetail3": "Ensamblador",
-      "answerDetail4": "Per estils en la Web: ",
-      "answerDetail5": "I sobre llenguatges de marcat (Markup Languages), tenc",
-      "answerDetail6": "I per ùltim, sobre formats per l'intercanvi de dadess tinc",
-      "answerDetail7": "Espera, que també estic aprenent <1>Docker</1> :)",
-      "answerDetail8": "A més, sé un poc de <1>Kubernetes</1> d'aquest tan meravellós"
-    },
-    "haveYouGot<>": {
-      "question": "Tens <INSERTI-NOM-DE-XARXA-SOCIAL>?",
-      "answer1": "Pot ser...",
-      "answer2": "Mira en el peu de pàgina a la dreta, hi ha diverses xarxes socials. També hi es el códi font de la web."
-    },
-    "isYourComputerPowerful": {
-      "question": "Tens un PC tocho?",
-      "answer": "Ves que si, no me queix de res, manco de la RAM de la gràfica, que es molt poca."
-    },
-    "isYourPhonePowerful": {
-      "question": "Tens un mòbil tocho?",
-      "answer": "Sip… És un OnePlus 6."
-    },
-    "isYourNetworkConnectionSpeedy": {
-      "question": "Tens un internet rapidissim?",
-      "answer": "Bueno, comença a esser decent ara mateix:"
-    }
+    "page-footer": "Podeu trobar les meves xarxes socials al peu de pàgina"
   },
 
 

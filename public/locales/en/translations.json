@@ -4,8 +4,8 @@
     "bio": {
       "year": "{{count}} Year",
       "year_plural": "{{count}} Years",
-      "text1": "Software Engineer at Universidad de Málaga",
-      "text2": "Programmer..."
+      "text1": "Software Engineer - Programmer",
+      "text2": "Sometimes photographer..."
     },
     "darkMode": [
       "I'm Batman!",
@@ -32,51 +32,31 @@
 
   "about-me": {
     "title": "About",
-    "whatMusicDoIListen": {
-      "question": "What music do you usually listen?",
-      "answer": "A bit of everything… If you access into my <1>Last.fm</1> profile, you will see what I usuaaly listen, but it's not everything."
+    "description": "A page that talks about me - melchor9000/melchor629",
+    "page-heading": "It's-a-me <1>melchor629</1> (aka <3>melchor9000</3>)",
+    "page-subheading": "Developer (<1>frontend developer</1>). Linux and macOS lover. Sometimes I'm Linux sysadmin/devops. Some other times I'm photographer.",
+    "programmer": {
+      "heading": "How did I become a developer?",
+      "p1": "I have started in the developer world doing simple PHP webs with Adobe Dreamweaver and a blog in Blogspots (the good ol' days...). This happened when I was 11-12 years old... No much after, Ubuntu 10.10 arrived home and started experimenting with Shell scripts, C and C++ (did not go well). With the Minecraft's boom, I discovered Java. I'm talking when I was 14-15 years old. I spent hours and hours with Java, so much projects I've made with Java... Anyway, Java is a good language to start learning. At the same time, I've dedicated some time to PHP, but nothing serious at the end. Android was the next in the list (I've got some repos at Github, circa 2012, 16 years old).",
+      "p2": "With those expriences in the bag, gained with hard headaches, I've decided was about time for testing JavaScript, for both browser and node.js. Furthermore, having an iMac at home, I returned to C and C++, but also learned some Objective-C (you read correctly, yes). And with all of this, I went to Málaga to study Software Engineering Degree (kind-of Computer Science, specialized for software development and its processes) at Universidad de Málaga. Studying the Degree, I've improved my development skils with knowledge like design patterns, <1>bad smells</1>, arquitecture... In addition, we saw Haskell, C# or Python, as well as SQL Server and Oracle SQL. The sysadmin thing also came from this period of time, but we will talk in another section. Swift appeared during this time and Go gained attraction, so I also learned a bit of them.",
+      "p3": "There is a tradition here that when you are near to end your Degree (Grado Medio, Superior and University), students go as interns to real business (2018). For me, I went to a company that used Python, so I continued learning it there, as well as they were using some nice DevOps stuff (and from here comes my DevOps thing). The TFG (an academic work students do to finalize their Degrees) of mine was mainly frontend with React and Docker containers. Here is when I realized what I really like as a developer: frontend (React mainly) and the bizarre world of C/C++/Go. After defending the TFG (the final presentation in front of an academic jury for your work), I start working on what is right now my work. In that company, I learned C#, .NET Core and even more SQL Server."
     },
-    "whatAreYouDoingNow": {
-      "question": "What are you doing now?",
-      "answer": "Working as programmer (and sometimes as devops?)..."
+    "sysadmin": {
+      "heading": "Where did the sysadming thing came from?",
+      "p1": "Disclaimer: I do not consider a real sysadmin, despite I'm able to do some cool stuff. Experiences are valuable anyway. So here it goes.",
+      "p2": "While studying in Málaga, I've acceded as \"intern\" (not quite this concept, but similar) on \"IT\" at the residence where I lived (2015), with my old partner <1>Antonio</1>. Tasks were mainly mantain a good wired network and almost a WiFi network (it should not be considered as that). After asking politely several years that this must change, University finally decided to invest some monies upgrading the whole installation (2017-2018). In this giant task, we learnt a lot of networks and Linux sysadmin. Also I have to say the <3>Networks</3> subject in the Degree helped us a lot with the project. To end this cycle, the University helped us to assist to an european conference that was made at Trondheim (Norway) to talk about this project.",
+      "p3": "Currently, I have quite a complex network at home, which is really cool. And it works quite well: <1>the home web</1>."
     },
-    "whatOtherThingsDoYouLikeToDo": {
-      "question": "What other kind of things you like to do?",
-      "answer": "I like to make videos, and their editing. Blender (software to make three-dimensional modeling) and assemblies with it. Listen to music at all hours. Photography, when I can. Rides by bicycle, good and long journeys, when possible."
+    "devops": {
+      "heading": "And the devops thing?",
+      "p1": "During my time as intern (from the Degree subject), as I mentioned already, they had a nice <1>Continuous Integration</1> and <3>Continuous Delivery</3> with <5>Jenkins</5> and <7>Docker</7> (first time with this way to work - agile). At the same time, I was helping <9>Andrés</9> with his project, where we learned Docker (2018). Some months after, we created <11>MajorcaDevs</11>, a server that hosts several of our own projects and our own CI/CD. In the company that I work for now, I was able to learn <13>Kubernetes</13> (2020). I would like to keep learning in this area, because it is really interesting and magic."
     },
-    "andWhatNot": {
-      "question": "And, what not?",
-      "answer": "Go running. Riding a motorbike. Nightclubs."
+    "photography": {
+      "heading": "Photography was mentioned previously...",
+      "p1": "Another hobby, like devops or sysadmin (but devops seems to be more than a hobby lately). I've began taking photos some time ago (I should have 10-11 years old)... Assisted an introductory course for young people. Also learned from my mother, which already knew about this. For this time, a <1>Canon 400D</1> was bought and started to take photos for time to time. Currently I own a <3>Canon 1300D</3>.",
+      "p2": "Many years taking photos, which end up to nothing because our storage broke. This day I stopped taking photos, sadly. When I came to Málaga to study, I bring back this hobby, using my smartphone I had in that moment. Currenly, I take photos with my 1300D and the smartphone. You can checkout all my work on <1>the gallery in this website</1>."
     },
-    "whatProgrammingLanguagesDoIKnow": {
-      "question": "Whate programming languages do you know?",
-      "answer": "I recognized a lot of them, but I only know these ones:",
-      "answerDetail1": "Thanks to the university",
-      "answerDetail2": "(I think last time I used it was a bit different)",
-      "answerDetail3": "Assembly",
-      "answerDetail4": "For styling the web: ",
-      "answerDetail5": "About Markup Languages, these ones ",
-      "answerDetail6": "Ending this list, about data interchange formats ",
-      "answerDetail7": "Wait, I'm also learning some <1>Docker</1> :)",
-      "answerDetail8": "Ah, things about <1>Kubernetes</1> too"
-    },
-    "haveYouGot<>": {
-      "question": "Have you got <INSERT-SOCIAL-NETWORK-NAME-HERE>?",
-      "answer1": "Maybe...",
-      "answer2": "Look at the right in the footer, there are some social networks. Also, you can find the source code of the web."
-    },
-    "isYourComputerPowerful": {
-      "question": "Have you got a powerful PC?",
-      "answer": "Yes indeed. I don't complain at all, except of the graphic's RAM - has a little."
-    },
-    "isYourPhonePowerful": {
-      "question": "Is your smartphone powerful",
-      "answer": "Yep… It's an OnePlus 6."
-    },
-    "isYourNetworkConnectionSpeedy": {
-      "question": "Is your network connection fast?",
-      "answer": "Well, it starts to be rather fast:"
-    }
+    "page-footer": "You can find my socials on the page footer"
   },
 
 

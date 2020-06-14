@@ -1,145 +1,136 @@
 import React from 'react'
 import { Trans, WithTranslation, withTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
+import { Link as RouterLink } from 'react-router-dom'
 
-const ProgressBar = ({ n, children }: { n: number, children?: any }) => (
-    <div className="progress">
-        <div className="progress-bar" style={{ width: `${n * 100}%` }}>{ children }</div>
-    </div>
-)
+const Link = React.memo(({ children, href }: any) => (
+    <a href={href} rel="noreferrer noopener">{children}</a>
+))
+
+const image = [
+    {
+        src: '/img/itsame/raul.jpg',
+        photographer: 'Raúl',
+        photographerLink: 'https://twitter.com/MrRaulWhite',
+    },
+    {
+        src: '/img/itsame/manu.jpg',
+        photographer: 'Manu',
+        photographerLink: 'https://twitter.com/_M1ndbl0w',
+    },
+][Math.trunc(Math.random() * 2)]
 
 const AboutMe = ({ t }: WithTranslation) => (
-    <div>
+    <>
 
         <Helmet>
-            <title>About me</title>
-            <meta name="Description"
-                content="A page with some questions and answers about me - melchor9000/melchor629" />
+            <title>{t('about-me.title')}</title>
+            <meta name="Description" content={t('about-me.description')} />
         </Helmet>
 
-        <h2 id="¿que-música-escuchas">{ t('about-me.whatMusicDoIListen.question') }</h2>
-        <p>
-            <Trans i18nKey="about-me.whatMusicDoIListen.answer">
-                .<a href="http://www.lastfm.es/user/melchor629">.</a>.
+        <h1 className="display-4 text-center d-none d-sm-block">
+            <Trans i18nKey="about-me.page-heading">
+                Soy <b>melchor629</b> (aka <b>melchor9000</b>)
+            </Trans>
+        </h1>
+        <h1 className="d-sm-none text-center">
+            <Trans i18nKey="about-me.page-heading">
+                Soy <b>melchor629</b> (aka <b>melchor9000</b>)
+            </Trans>
+        </h1>
+
+        <p className="lead mb-4 text-center">
+            <Trans i18nKey="about-me.page-subheading">
+                .<em>.</em>.
             </Trans>
         </p>
 
-        <h2 id="¿que-haces-ahora">{ t('about-me.whatAreYouDoingNow.question') }</h2>
-        <p>{ t('about-me.whatAreYouDoingNow.answer') }</p>
+        <figure className="figure">
+            <img src={image.src} className="figure-img img-fluid rounded" alt={`It's me (📷 ${image.photographer})`} />
+            <figcaption className="figure-caption text-right">
+                It's me -&nbsp;
+                <Link href={image.photographerLink}>
+                    <span role="img" aria-label="Camera emoji">📷</span>
+                    &nbsp;
+                    {image.photographer}
+                </Link>
+            </figcaption>
+        </figure>
 
-        <h2 id="¿que-otras-cosas-te-gusta-hacer">{ t('about-me.whatOtherThingsDoYouLikeToDo.question') }</h2>
-        <p>{ t('about-me.whatOtherThingsDoYouLikeToDo.answer') }</p>
+        <h2 className="mt-4">{t('about-me.programmer.heading')}</h2>
 
-        <h2 id="¿y-que-no">{ t('about-me.andWhatNot.question') }</h2>
-        <p>{ t('about-me.andWhatNot.answer') }</p>
-
-        <h2 id="¿que-lenguajes-de-programación-conoces">{ t('about-me.whatProgrammingLanguagesDoIKnow.question') }</h2>
-        <p>
-            { t('about-me.whatProgrammingLanguagesDoIKnow.answer') }
-        </p>
-        <ul className="list-unstyled">
-            <li className="mb-2">
-                <a href="https://www.java.com/">Java</a>
-                <ProgressBar n={0.7} />
-            </li>
-            <li className="mb-2">
-                JavaScript/TypeScript
-                <ProgressBar n={0.4} />
-            </li>
-            <li className="mb-2">
-                <a href="http://coffeescript.org/">CoffeeScript</a>
-                <ProgressBar n={0.15} />
-            </li>
-            <li className="mb-2">
-                C++
-                <ProgressBar n={0.3} />
-            </li>
-            <li className="mb-2">
-                C
-                <ProgressBar n={0.3} />
-            </li>
-            <li className="mb-2">
-                <a href="https://swift.org">Swift</a>
-                <ProgressBar n={0.3} />
-            </li>
-            <li className="mb-2">
-                <a href="https://kotlinlang.org">Kotlin</a>
-                <ProgressBar n={0.1} />
-            </li>
-            <li className="mb-2">
-                <a href="https://www.python.org">Python</a>
-                <ProgressBar n={0.4} />
-            </li>
-            <li className="mb-2">
-                <a href={'https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/' +
-                'ProgrammingWithObjectiveC/Introduction/Introduction.html'}>Objective-C</a>
-                <ProgressBar n={0.35} />
-            </li>
-            <li className="mb-2">
-                C#
-                <ProgressBar n={0.3} />
-            </li>
-            <li className="mb-2">
-                { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail3') }: ARM y MIPS
-                <ProgressBar n={0.2} />
-            </li>
-        </ul>
-        <div>
-            <span>{ t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail4') } CSS { t('and') } SCSS.</span>
-            <ProgressBar n={0.333333333333333333} />
-        </div>
-        <p>
-            { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail5') } <em>HTML</em> { t('and') }
-            &nbsp;<em><a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a></em>.
-        </p>
-        <p>
-            { t('about-me.whatProgrammingLanguagesDoIKnow.answerDetail6') } <em><a href="http://json.org">JSON</a></em>,
-            &nbsp;<em>XML</em> { t('and') } <em><a href="http://www.yaml.org">YAML</a></em>.
-        </p>
-        <div className="pb-3">
-            <span>
-                <Trans i18nKey="about-me.whatProgrammingLanguagesDoIKnow.answerDetail7">
-                    .<a href="https://docker.com">.</a>.
-                </Trans>
-            </span>
-            <ProgressBar n={0.5} />
-        </div>
-        <div className="pb-3">
-            <span>
-                <Trans i18nKey="about-me.whatProgrammingLanguagesDoIKnow.answerDetail8">
-                    .<a href="https://kubernetes.io">.</a>.
-                </Trans>
-            </span>
-            <ProgressBar n={0.3} />
-        </div>
-
-        <h2 id="tienes">{ t('about-me.haveYouGot<>.question') }</h2>
-        <p>
-            { t('about-me.haveYouGot<>.answer1') } <span role="img" aria-label="thinking emoji">🤔</span>
-            <br />
-            { t('about-me.haveYouGot<>.answer2') }
+        <p className="lead">
+            <Trans i18nKey="about-me.programmer.p1">.</Trans>
         </p>
 
-        <h2 id="¿tienes-un-pepino-de-pe-se">{ t('about-me.isYourComputerPowerful.question') }</h2>
-        <p>{ t('about-me.isYourComputerPowerful.answer') }</p>
-
-        <h2 id="¿tienes-un-pepino-de-movris">{ t('about-me.isYourPhonePowerful.question') }</h2>
-        <p>{ t('about-me.isYourPhonePowerful.answer') }</p>
-
-        <h2 id="¿tienes-un-pepino-de-interné">{ t('about-me.isYourNetworkConnectionSpeedy.question') }</h2>
-        <p>{ t('about-me.isYourNetworkConnectionSpeedy.answer') }</p>
-        <p>
-            <img src="https://www.speedtest.net/result/7930548398.png" style={{ maxWidth: '100%' }} alt="Speed Test" />
+        <p className="lead">
+            <Trans i18nKey="about-me.programmer.p2">.<em>.</em>.</Trans>
         </p>
 
-        <h2 id="mmm"><span role="img" aria-label="thinking emoji">🤔</span></h2>
-        <p>
-            <span style={{ transform: 'scale(-1, 1)', display: 'inline-block', marginLeft: '4px' }}>
-                <span role="img" aria-label="thinking emoji">🤔</span>
-            </span>
+        <p className="lead">
+            <Trans i18nKey="about-me.programmer.p3">.</Trans>
         </p>
 
-    </div>
+        <h2 className="mt-4">{t('about-me.sysadmin.heading')}</h2>
+
+        <p className="lead">
+            <Trans i18nKey="about-me.sysadmin.p1">.</Trans>
+        </p>
+
+        <p className="lead">
+            <Trans i18nKey="about-me.sysadmin.p2">
+                .<Link href="https://antonioangel.xyz">Antonio</Link>.<em>Redes</em>.
+            </Trans>
+        </p>
+
+        <p className="lead">
+            <Trans i18nKey="about-me.sysadmin.p3">
+                .<Link href="https://casita.melchor9000.me">.</Link>.
+            </Trans>
+        </p>
+
+        <h2 className="mt-4">{t('about-me.devops.heading')}</h2>
+
+        <p className="lead">
+            <Trans i18nKey="about-me.devops.p1">
+                .<em>.</em>.<em>.</em>.
+                <Link href="https://www.jenkins.io">Jenkins</Link>
+                .
+                <Link href="https://www.docker.com">Docker</Link>
+                .
+                <Link href="https://www.amgxv.com">Andrés</Link>
+                .
+                <Link href="https://majorcadevs.com">MajorcaDevs</Link>
+                .
+                <Link href="https://kubernetes.io">Kubernetes</Link>
+                .
+            </Trans>
+        </p>
+
+        <h2 className="mt-4">{t('about-me.photography.heading')}</h2>
+
+        <p className="lead">
+            <Trans i18nKey="about-me.photography.p1">
+                .<Link href="https://en.wikipedia.org/wiki/Canon_EOS_400D">Canon 400D</Link>
+                .
+                <Link href="https://en.wikipedia.org/wiki/Canon_EOS_1300D">Canon 1300D</Link>
+                .
+            </Trans>
+        </p>
+
+        <p className="lead">
+            <Trans i18nKey="about-me.photography.p2">
+                .<RouterLink to="/gallery">la galería de esta web</RouterLink>.
+            </Trans>
+        </p>
+
+        <h2 className="mt-4 text-center">
+            {t('about-me.page-footer')}
+        </h2>
+
+        <h2 className="mt-4 mb-5 text-center"><span role="img" aria-label="thinking emoji">🤔</span></h2>
+
+    </>
 )
 
 export default withTranslation('translations')(AboutMe)

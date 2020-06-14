@@ -4,8 +4,8 @@
     "bio": {
       "year": "{{count}} Año",
       "year_plural": "{{count}} Años",
-      "text1": "Ingeniero de Software en la Universidad de Málaga",
-      "text2": "Programador..."
+      "text1": "Ingeniero de Software - Programador",
+      "text2": "A veces fotógrafo..."
     },
     "darkMode": [
       "I'm Batman!",
@@ -32,51 +32,31 @@
 
   "about-me": {
     "title": "Sobre mi",
-    "whatMusicDoIListen": {
-      "question": "¿Que música escuchas?",
-      "answer": "Pues escucho de todo… Si entráis en mi perfil de <1>Last.fm</1> podéis ver lo que suelo escuchar, pero no está todo."
+    "description": "Una página que habla sobre mi - melchor9000/melchor629",
+    "page-heading": "Soy <1>melchor629</1> (aka <3>melchor9000</3>)",
+    "page-subheading": "Programador (<1>frontend developer</1>). Amante de Linux y macOS. De vez en cuando soy sysadmin/devops en Linux. Otras veces soy fotógrafo.",
+    "programmer": {
+      "heading": "¿Cómo me hice programador?",
+      "p1": "Empecé en el mundo de la programación con simples webs con PHP en Adobe Dreamweaver y un blog en Blogspot (qué tiempos aquellos...). Seria esto con 11-12 años... Poco después, instalamos Ubuntu 10.10 en casa y empecé a pelearme con Shell scripts, C y C++ (pero no salió muy bien). Con el boom del Minecraft, empecé a aprender Java. Estamos hablando de cuando tendria unos 14-15 años. Y le dediqué mucho tiempo con Java. Muchos proyectos propios hechos en Java. Buen lenguaje para aprender a programar la verdad. También le dediqué algo más a PHP, pero nada público. Con Java, llegó Android. Algo aprendí de Android (y algún repo en Github hay, que datan de 2012, con 16 años).",
+      "p2": "Con estas experiencias a golpe de darle cabezazos al teclado, decidí empezar a aprender JavaScript. Para el navegador, y para node.js. También con un iMac en casa, retomé C y C++, pero también empecé a aprender Objective-C (efectivamente, has leído bien). Con estas experiencias, me fuí a estudiar Ingeniería del Software (en algunos lugares es una mención de Informática) en la Universidad de Málaga. Allí afiancé conocimientos de programación, como patrones de diseño, <1>bad smells</1>, arquitectura... Pero también aprendí lenguajes como Haskell, C# o Python, y a pelearme con servidores SQL (SQL Server y Oracle SQL). Y de aquí también me viene lo de sysadmin, pero hablaremos de ello en otro momento. En estos tiempos apareció Swift y ganó bastante fama Go, y me aprendí algo de ellos.",
+      "p3": "Acabando el Grado, hice prácticas en una empresa (2018), donde acabé de aprender Python, y aprendí otras cosas relacionadas con DevOps (de aqui me viene lo de DevOps). El trabajo de Fin de Grado fué mayormente frontend con React y containers con Docker. Con ambas cosas, me di cuenta qué era lo que más me gustaba de todo en la programación: el frontend (React mayormente) y lo turbio de C/C++/Go. Después de presentar el TFG, entré a trabajar en la empresa en la que sigo actualmente, donde aprendí C# (pero de verdad), .NET Core y aún más de SQL Server."
     },
-    "whatAreYouDoingNow": {
-      "question": "¿Qué haces ahora?",
-      "answer": "Trabajar como programador (y a veces de devops?)..."
+    "sysadmin": {
+      "heading": "¿De donde te viene lo de sysadmin?",
+      "p1": "Antes de nada, dejar claro que no soy un gran sysadmin, pero las experiencias me han dado algunos conocimientos. A si que ahí va.",
+      "p2": "Estudiando en Málaga, entré como becario de \"informática\" en la residencia en la que estaba (2015), junto con el buen compañero <1>Antonio</1>. Las tareas eran basicamente mantener una red cableada decente y WiFi (?) en la mierda. Por suerte, conseguimos que se invirtiera dinero en la residencia y renovar por completo toda la instalación (2017-2018). En todo ese proceso, hemos aprendido mucho de redes y Linux. También añadir que la asignatura de <3>Redes</3> del Grado también nos vino bien para todo esto. Y para finalizar, de esta etapa de becarios, la Universidad conseguieron llevar a una conferencia europea que se realizaba ese año en Trondheim (Noruega) para hablar un poco sobre este proyecto.",
+      "p3": "Actualmente, donde vivimos, tenemos un tinglado montado con el internet en el hogar. Y bastante bien que ha quedado: <1>la web de mi casita</1>."
     },
-    "whatOtherThingsDoYouLikeToDo": {
-      "question": "¿Qué otras cosas te gusta hacer?",
-      "answer": "Me gusta hacer vídeos, y su montaje. Blender (software para hacer modelado tridimensional) y montajes con él. Escuchar música a todas horas. Mecagoncristobendito, que has fet? Fotografía, cuando se puede. Ir en bicicleta, trayectos buenos y largos, cuando es posible."
+    "devops": {
+      "heading": "¿De donde te viene lo de devops?",
+      "p1": "En las prácticas del Grado, en la empresa donde estuve haciéndolas, tenian montado un sistema para <1>Continuous Integration</1> y <3>Continuous Delivery</3> con <5>Jenkins</5> y <7>Docker</7>. A la vez estuve ayudando a <9>Andrés</9> con su proyecto y aprendiendo ambos Docker (2018). Unos meses más tarde, abrimos <11>MajorcaDevs</11>, donde tenemos varios projectos ejecutandose y nuestro propio CI/CD. En la empresa actual he podido aprender <13>Kubernetes</13> (2020). Tengo ganas de seguir aprendiendo cosas por este camino, que es muy interesante y muy mágico todo."
     },
-    "andWhatNot": {
-      "question": "¿Y qué no?",
-      "answer": "Ir a correr. Ir en moto. Discotecas."
+    "photography": {
+      "heading": "Has mencionado fotografía...",
+      "p1": "Un hobby como el de devops y sysadmin (aunque devops parece no serlo tanto ultimamente). Empecé con la fotografía bastante tiempo atrás (hablamos de cuando tenía 10-11 años ojo), donde asistí a un curso introductorio a la fotografía para jóvenes. Después del curso, fuí aprendiendo de mi madre. En ese momento nos compraron una <1>Canon 400D</1>, y con ella empecé a hacer fotografías de vez en cuando. Actualmente tengo una <3>Canon 1300D</3>.",
+      "p2": "Estuve haciendo fotografías bastantes años, pero perdimos las que hice antes de pillar la 1300D. Cuando eso pasó, basicamente paré de hacer fotos. Estudiando en Málaga retomé la fotografía, usando el movil que tenia en ese momento. Actualmente, podemos encontrar un mix de la 1300D con el movil actual. Podéis encontrar una colección de ellas en <1>la galería de esta web</1>."
     },
-    "whatProgrammingLanguagesDoIKnow": {
-      "question": "¿Que lenguajes de programación conoces?",
-      "answer": "Conocer, conozco muchos, pero que sepa, ya no tantos. Esos son lo que os pondré:",
-      "answerDetail1": "Gracias a la carrera",
-      "answerDetail2": "(creo que ha cambiado mucho desde que lo usé)",
-      "answerDetail3": "Ensamblador",
-      "answerDetail4": "Para estilos en la Web: ",
-      "answerDetail5": "Y sobre lenguajes de marcado (Markup Languages), tenemos simplemente",
-      "answerDetail6": "Y por último, sobre formatos para intercambio de datos tenemos",
-      "answerDetail7": "Espera, que también estoy aprendiendo <1>Docker</1> :)",
-      "answerDetail8": "Ah, y de <1>Kubernetes</1> también sé cosillas"
-    },
-    "haveYouGot<>": {
-      "question": "¿Tienes <INSERTE-NOMBRE-DE-RED-SOCIAL>?",
-      "answer1": "Puede...",
-      "answer2": "Mira en el pié de página a la derecha, hay varias redes sociales. También el código fuente de la web."
-    },
-    "isYourComputerPowerful": {
-      "question": "¿Tienes un pepino de PC?",
-      "answer": "Pues si, no me quejo de nada, menos de la RAM de la gráfica, que es muy poca."
-    },
-    "isYourPhonePowerful": {
-      "question": "¿Tienes un pepino de movris?",
-      "answer": "Sip… Es un OnePlus 6."
-    },
-    "isYourNetworkConnectionSpeedy": {
-      "question": "¿Tienes un pepino de interné?",
-      "answer": "Bueno, empieza a estar decente ahora mismo:"
-    }
+    "page-footer": "Podéis encontrar mis redes sociales en el pié de página"
   },
 
 
