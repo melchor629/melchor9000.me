@@ -11,7 +11,9 @@
     "dist": "npm run lint && npm run build",
     "audit": "audit-ci --moderate --pass-enoaudit"
   },
-  "engines": {},
+  "engines": {
+    "node": "10"
+  },
   "main": "lib/index.js",
   "dependencies": {
     "commonmark": "^0.29.0",

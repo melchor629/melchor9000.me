@@ -55,8 +55,9 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
 
     componentDidUpdate() {
         // @ts-ignore
-        const { MathJax } = window
-        MathJax.Hub.Queue([ 'Typeset', MathJax.Hub ])
+        const { MathJax, twttr } = window
+        MathJax?.Hub.Queue([ 'Typeset', MathJax.Hub ])
+        twttr?.widgets?.load()
         if(!this.state.entry && !this.state.notFound) {
             this.findPost()
         }
