@@ -4,7 +4,7 @@ pipeline {
   agent {
     docker {
       label 'docker'
-      image 'node:12-alpine'
+      image 'node:10-alpine'
       args '-e HOME=$WORKSPACE'
     }
   }
