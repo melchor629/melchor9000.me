@@ -16,10 +16,18 @@ export interface EffectsState {
 
 export const effects = (state: EffectsState | undefined, action: any): EffectsState => {
     if(state === undefined) {
+        let darkModeStored: boolean | null = JSON.parse(window.localStorage.getItem('melchor9000:darkMode') || 'null')
+        if(darkModeStored === null && 'matchMedia' in window) {
+            const matches = window.matchMedia('screen and (prefers-color-scheme: dark)')
+            darkModeStored = matches.matches
+        } else {
+            darkModeStored = false
+        }
+
         state = {
             barrelRoll: false,
             flipIt: null,
-            darkMode: JSON.parse(window.localStorage.getItem('darkMode') || 'false'),
+            darkMode: darkModeStored,
             visualizationMode: null,
             navbarHideMode: null,
         }
@@ -29,7 +37,7 @@ export const effects = (state: EffectsState | undefined, action: any): EffectsSt
         case DO_A_BARREL_ROLL: return { ...state, barrelRoll: action.value }
         case FLIP_IT: return { ...state, flipIt: action.value }
         case TOGGLE_DARK_MODE: {
-            window.localStorage.setItem('darkMode', String(!state.darkMode))
+            window.localStorage.setItem('melchor9000:darkMode', JSON.stringify(!state.darkMode))
             return { ...state, darkMode: !state.darkMode }
         }
         case CHANGE_VISUALIZATION: {
