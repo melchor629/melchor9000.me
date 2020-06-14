@@ -8,7 +8,10 @@ i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-        fallbackLng: 'en',
+        fallbackLng: {
+            ca: [ 'es' ],
+            default: [ 'en', 'es' ],
+        },
         ns: [ 'translations' ],
         defaultNS: 'translations',
         debug: process.env.NODE_ENV !== 'production',
