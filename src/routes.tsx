@@ -31,6 +31,7 @@ const Home = asyncComponent(() => import('./containers/home'))
 const Gallery = asyncComponent(() => import('./components/gallery'))
 const Posts = asyncComponent(() => import('./containers/posts'))
 const Experiments = asyncComponent(() => import('./components/experiments'))
+const SupportMe = asyncComponent(() => import('./components/support-me'))
 const Admin = asyncComponent(() => import('./containers/admin/admin'))
 
 export const routes: Array<Route<any, any>> = [
@@ -40,5 +41,6 @@ export const routes: Array<Route<any, any>> = [
     route('/blog', 'Posts', withDefaultContainer(Posts)),
     route('/projects', 'Projects', withDefaultContainer(Projects)),
     route('/experiments', 'Experiments', withDefaultContainer(Experiments)),
+    route('/support-me', 'Support Me', withDefaultContainer(SupportMe)),
     privateRoute('/admin', 'Admin page', Admin),
 ]

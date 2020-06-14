@@ -1,11 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,300,100&display=swap');
 
+$enable-responsive-font-sizes: true;
+
 @import "material_design_colors";
 @import "~bootstrap/scss/bootstrap.scss";
-/*@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '~@fortawesome/fontawesome-free/scss/regular.scss';
-@import '~@fortawesome/fontawesome-free/scss/solid.scss';
-@import '~@fortawesome/fontawesome-free/scss/brands.scss';*/
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
 /**
@@ -227,7 +225,8 @@ body.darkmode { background-color: rgb(40, 40, 40) }
 }
 
 .backdrop {
-  -webkit-backdrop-filter: saturate(200%) blur(20px)
+  -webkit-backdrop-filter: saturate(200%) blur(20px);
+  backdrop-filter: saturate(200%) blur(20px);
 }
 
 /**

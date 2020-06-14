@@ -169,6 +169,14 @@
 
 
 
+  "support-me": {
+    "title": "Support Me!",
+    "description": "Llocs on es pot donar-me suport econòmic, si es vol",
+    "subheading": "Si t'agrada el meu traball, paga'm un cafè"
+  },
+
+
+
   "and": "i",
   "yes": "si",
   "no": "no"
