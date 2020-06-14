@@ -12,7 +12,9 @@ const Experiment = ({ id }: { id: string }) => {
             <div className="card-body">
                 <h5 className="card-title">{t(`experiments.${id}.title`)}</h5>
                 <p className="card-text">{t(`experiments.${id}.description`)}</p>
-                <Link to={`/experiments/${id}`} className="btn btn-primary">{t('experiments.goToExperiment')}</Link>
+                <Link to={`/experiments/${id}`} className="btn btn-primary text-white">
+                    {t('experiments.goToExperiment')}
+                </Link>
             </div>
         </div>
     )

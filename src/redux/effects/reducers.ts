@@ -20,7 +20,7 @@ export const effects = (state: EffectsState | undefined, action: any): EffectsSt
         if(darkModeStored === null && 'matchMedia' in window) {
             const matches = window.matchMedia('screen and (prefers-color-scheme: dark)')
             darkModeStored = matches.matches
-        } else {
+        } else if(darkModeStored === null) {
             darkModeStored = false
         }
 
