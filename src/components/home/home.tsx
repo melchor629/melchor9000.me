@@ -25,7 +25,7 @@ const images = [
     getAssetUrl('img/home/Ci-4rIQWgAABok3.jpg'),
     getAssetUrl('img/home/Cx9ZotYXUAAhih5.jpg'),
     getAssetUrl('img/home/CyiKCaAXgAAfp84.jpg'),
-    'https://pbs.twimg.com/profile_images/1074988668769710080/R0klIFsf_400x400.jpg',
+    getAssetUrl('img/home/Ch71hdog06jqm31.jpg'),
 ]
 
 const specialDatesImages: Array<{ day: number, month: number, image: string | string[] }> = [
@@ -290,13 +290,16 @@ export default class Home extends React.Component<IndexProps, StateProps> {
         )
 
         return (
-            <div>
+            <>
 
                 <Helmet>
                     <title>Home</title>
                 </Helmet>
 
-                <div className="d-flex justify-content-center align-items-center">
+                <div
+                    className="d-flex justify-content-center align-items-center"
+                    style={{ minHeight: 'calc(100vh - 130px)' }}
+                >
                     <div className="profile">
                         <div className="profile_name">
                             <h1>melchor9000</h1>
@@ -331,7 +334,7 @@ export default class Home extends React.Component<IndexProps, StateProps> {
                     audioSource={ this.state.audioSource }
                     visualizationMode={ this.props.visualizationMode }
                     theme={ this.props.darkMode ? 'dark' : 'light' } />
-            </div>
+            </>
         )
     }
 

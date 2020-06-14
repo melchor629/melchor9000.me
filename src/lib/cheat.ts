@@ -117,12 +117,10 @@ export class Cheat {
     public ondone?: (sequence: Sequence) => void
     public onfail?: () => void
     private readonly seqs: Sequence[]
-    private matchingSeqs: Sequence[]
     private keysPressed: string[]
 
     constructor() {
         this.seqs = []
-        this.matchingSeqs = []
         this.keysPressed = []
     }
 
@@ -135,28 +133,22 @@ export class Cheat {
     keydown(key: string) {
         this.keysPressed.push(key)
 
-        this.matchingSeqs = []
-        for(const seq of this.seqs) {
-            if(seq.startsWith(this.keysPressed)) {
-                this.matchingSeqs.push(seq)
-            }
+        const matchingSeqs = this.seqs.filter(seq => seq.startsWith(this.keysPressed))
+
+        if(matchingSeqs.length > 0 && this.onnext) {
+            this.onnext(key, matchingSeqs[0].seq[this.keysPressed.length - 1])
         }
 
-        if(this.matchingSeqs.length > 0 && this.onnext) {
-            this.onnext(key, this.matchingSeqs[0].seq[this.keysPressed.length - 1])
-        }
-
-        if(this.matchingSeqs.length === 0) {
+        if(matchingSeqs.length === 0) {
             this.reset()
-        } else if(this.matchingSeqs.length === 1) {
-            if(this.matchingSeqs[0].match(this.keysPressed)) {
-                this.done(this.matchingSeqs[0])
+        } else if(matchingSeqs.length === 1) {
+            if(matchingSeqs[0].match(this.keysPressed)) {
+                this.done(matchingSeqs[0])
             }
         }
     }
 
     done(seq: Sequence) {
-        this.matchingSeqs = []
         this.keysPressed = []
         if(this.ondone) {
             this.ondone(seq)
@@ -167,7 +159,6 @@ export class Cheat {
     }
 
     reset() {
-        this.matchingSeqs = []
         this.keysPressed = []
         if(this.onfail) {
             this.onfail()

@@ -55,7 +55,6 @@ class Player {
             const fr = new FileReader()
             fr.onload = () => {
                 const filebuffer = fr.result
-                // noinspection JSIgnoredPromiseFromCall
                 this.audioContext.decodeAudioData(filebuffer as ArrayBuffer, buffer => {
                     this.soundBuffers.set(name, { url: 'bl0b', buffer })
                     accept()
@@ -67,50 +66,44 @@ class Player {
         })
     }
 
-    playSound(name: string, start?: number): Promise<AudioBufferSourceNode> {
-        return new Promise((accept, reject) => {
-            const leBody = () => {
-                let buffer = this.soundBuffers.get(name)!.buffer!
-
-                if(start) {
-                    const s = Math.round(start * buffer.sampleRate)
-                    const l = Math.round((buffer.duration - start) * buffer.sampleRate)
-                    const newBuffer = this.context.createBuffer(
-                        buffer.numberOfChannels,
-                        l,
-                        buffer.sampleRate,
-                    )
-
-                    for(let i = 0; i < buffer.numberOfChannels; i++) {
-                        const fullSamples = buffer!.getChannelData(i)
-                        const samples = fullSamples.slice(s, s + l)
-                        newBuffer.copyToChannel(samples, i)
-                    }
-
-                    buffer = newBuffer
-                }
-
-                const source = this.context.createBufferSource()
-                source.buffer = buffer
-                source.addEventListener('end', () => {
-                    this.context.suspend().catch()
-                })
-                accept(source)
+    async playSound(name: string, start?: number): Promise<AudioBufferSourceNode> {
+        if(this.soundBuffers.has(name)) {
+            if(this.soundBuffers.get(name)!.buffer === null) {
+                await this.asyncLoad(name)
             }
-            if(this.soundBuffers.has(name)) {
-                if(this.soundBuffers.get(name)!.buffer === null) {
-                    this.asyncLoad(name)
-                        .then(() => this.context.resume())
-                        .then(leBody)
-                        .catch(reject)
-                } else {
-                    this.context.resume().then(leBody)
-                        .catch(reject)
-                }
-            } else {
-                reject(new Error('No existe sonido'))
+
+            await this.context.resume()
+        } else {
+            throw new Error('No existe sonido')
+        }
+
+        let buffer = this.soundBuffers.get(name)!.buffer!
+
+        if(start) {
+            const s = Math.round(start * buffer.sampleRate)
+            const l = Math.round((buffer.duration - start) * buffer.sampleRate)
+            const newBuffer = this.context.createBuffer(
+                buffer.numberOfChannels,
+                l,
+                buffer.sampleRate,
+            )
+
+            for(let i = 0; i < buffer.numberOfChannels; i++) {
+                const fullSamples = buffer!.getChannelData(i)
+                const samples = fullSamples.slice(s, s + l)
+                newBuffer.copyToChannel(samples, i)
             }
+
+            buffer = newBuffer
+        }
+
+        const source = this.context.createBufferSource()
+        source.buffer = buffer
+        source.addEventListener('end', () => {
+            this.context.suspend().catch()
         })
+
+        return source
     }
 
     unloadSong(name: string) {

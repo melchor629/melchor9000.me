@@ -145,11 +145,11 @@ class Visualizer extends React.Component<VisualizerProp, VisualizerState> {
         }
         return (
             <canvas id="background"
-                className={ classes.join(' ') }
-                width={ width * this.pixelRatio }
-                height={ height * this.pixelRatio }
-                style={ style }
-                ref={ this.canvasRef as any } />
+                className={classes.join(' ')}
+                width={width * this.pixelRatio}
+                height={height * this.pixelRatio}
+                style={style}
+                ref={this.canvasRef} />
         )
     }
 
