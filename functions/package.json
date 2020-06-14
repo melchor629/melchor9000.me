@@ -11,9 +11,7 @@
     "dist": "npm run lint && npm run build",
     "audit": "audit-ci --moderate --pass-enoaudit"
   },
-  "engines": {
-    "node": "10"
-  },
+  "engines": {},
   "main": "lib/index.js",
   "dependencies": {
     "commonmark": "^0.29.0",
@@ -22,7 +20,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^8.6.0",
     "firebase-functions": "^3.3.0",
-    "highlight.js": "^10.0.1"
+    "highlight.js": "10.0.2"
   },
   "devDependencies": {
     "@types/commonmark": "^0.27.4",
