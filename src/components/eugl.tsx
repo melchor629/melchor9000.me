@@ -1,4 +1,5 @@
 import React from 'react'
+import Cropper from 'react-cropper'
 import { Helmet } from 'react-helmet'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import * as THREE from 'three'
@@ -7,7 +8,6 @@ import * as toast from '../lib/toast'
 import { getAssetUrl } from '../lib/url'
 
 import 'cropperjs/dist/cropper.css'
-const Cropper = require('react-cropper').default
 
 function sleep(time: number) {
     return new Promise(accept => setTimeout(() => accept(), time * 1000))
@@ -72,7 +72,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     private readonly geometry: THREE.InstancedBufferGeometry
     private material: THREE.RawShaderMaterial
     private readonly containerRef = React.createRef<HTMLDivElement>()
-    private readonly cropperRef = React.createRef<any>()
+    private readonly cropperRef = { current: null as any }
     private readonly videoRef = React.createRef<HTMLVideoElement>()
     private readonly textures = new Map<string, THREE.Texture>()
     private loopHandle: number | null = null
@@ -129,7 +129,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
         this.renderer.setClearColor(0x121212)
         this.renderer.setPixelRatio(window.devicePixelRatio)
 
-        const gl = this.renderer.context
+        const gl = this.renderer.getContext()
         gl.enable(gl.CULL_FACE)
         gl.enable(gl.BLEND)
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
@@ -200,7 +200,10 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
                         ref={ this.videoRef } style={{ display: videoFromCamera ? 'block' : 'none' }} />
                     <hr style={{ display: imageToCrop ? 'block' : 'none' }} />
                     { imageToCrop && <Cropper src={ imageToCrop } aspectRatio={ 1 }
-                        style={{ width: '400px', height: '225px' }} ref={ this.cropperRef } /> }
+                        style={{ width: '400px', height: '225px' }}
+                        onInitialized={ c => {
+                            this.cropperRef.current = c
+                        } } /> }
                     <input type="button" className="btn btn-sm btn-success mt-2" onClick={ this.croppedImage }
                         style={{ display: imageToCrop ? 'block' : 'none' }}
                         value={ t<string>('eugl.showMyImage') } />
