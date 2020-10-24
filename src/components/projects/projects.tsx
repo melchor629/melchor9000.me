@@ -126,13 +126,14 @@ const Projects = () => {
                 ))}
             </div>
 
-            {filteredProjects ? (
-                <div className="card-columns">
-                    {filteredProjects.map(project => (
-                        <Project project={project} key={project._id} darkMode={darkMode} />
-                    ))}
-                </div>
-            ) :
+            {filteredProjects ?
+                (
+                    <div className="card-columns">
+                        {filteredProjects.map(project => (
+                            <Project project={project} key={project._id} darkMode={darkMode} />
+                        ))}
+                    </div>
+                ) :
                 <LoadSpinner />
             }
         </div>

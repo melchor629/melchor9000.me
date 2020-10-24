@@ -243,57 +243,64 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
                 </form>
 
                 <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={ preview }>
-                    { toggle => ((vals: { val: number }) => !toggle ?
-                        null : (
-                            <animated.div role="main" className="ml-sm-auto px-4" style={{
-                                position: 'absolute',
-                                overflowY: 'scroll',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: 'calc(100vh - 30px)',
-                                backgroundColor: darkMode ? '#222' : 'white',
-                                zIndex: 1,
-                                transform: (vals.val as any).interpolate((x: any) => `translateX(${(1 - x) * 100}vw)`),
-                            }}>
-                                <div className="text-center">
-                                    <img src={ img } className="img-fluid" alt={ title } />
-                                </div>
-
-                                <div className="d-flex justify-content-end" style={{ position: 'sticky', top: 40 }}>
-                                    <div className="btn btn-group">
-                                        <button className="btn btn-outline-primary" onClick={ this.previewToggle }>
-                                            &times;
-                                        </button>
+                    { toggle => (({ val }: { val: number }) => (
+                        !toggle ?
+                            null :
+                            (
+                                <animated.div role="main" className="ml-sm-auto px-4" style={{
+                                    position: 'absolute',
+                                    overflowY: 'scroll',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: 'calc(100vh - 30px)',
+                                    backgroundColor: darkMode ? '#222' : 'white',
+                                    zIndex: 1,
+                                    transform: (val as any).interpolate((x: any) => `translateX(${(1 - x) * 100}vw)`),
+                                }}>
+                                    <div className="text-center">
+                                        <img src={ img } className="img-fluid" alt={ title } />
                                     </div>
-                                </div>
 
-                                <h1>{ title }</h1>
-                                <p className="lead" dangerouslySetInnerHTML={{ __html: contentRendered || '<p />' }} />
-                            </animated.div>
-                        )
-                    ) }
+                                    <div className="d-flex justify-content-end" style={{ position: 'sticky', top: 40 }}>
+                                        <div className="btn btn-group">
+                                            <button className="btn btn-outline-primary" onClick={ this.previewToggle }>
+                                                &times;
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <h1>{ title }</h1>
+                                    <p
+                                        className="lead"
+                                        dangerouslySetInnerHTML={{ __html: contentRendered || '<p />' }}
+                                    />
+                                </animated.div>
+                            )
+                    )) }
                 </Transition>
 
                 <Transition native={ true } from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }}
                     items={ this.props.saving || this.state.saving }>
-                    { toggle => ((vals: any) => !toggle ?
-                        null : (
-                            <animated.div role="main" className="ml-sm-auto px-4" style={{
-                                position: 'absolute',
-                                overflowY: 'scroll',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: 'calc(100vh - 30px)',
-                                backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.55)',
-                                zIndex: 1,
-                                opacity: vals.val.interpolate((x: number) => `${x}`),
-                            }}>
-                                <LoadSpinner />
-                            </animated.div>
-                        )
-                    ) }
+                    { toggle => ((vals: any) => (
+                        !toggle ?
+                            null :
+                            (
+                                <animated.div role="main" className="ml-sm-auto px-4" style={{
+                                    position: 'absolute',
+                                    overflowY: 'scroll',
+                                    top: 0,
+                                    left: 0,
+                                    width: '100%',
+                                    height: 'calc(100vh - 30px)',
+                                    backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.55)',
+                                    zIndex: 1,
+                                    opacity: vals.val.interpolate((x: number) => `${x}`),
+                                }}>
+                                    <LoadSpinner />
+                                </animated.div>
+                            )
+                    )) }
                 </Transition>
             </div>
         )

@@ -20,20 +20,23 @@ const ImageViewImpl = ({ imageSwitcher, imageUrl1, imageUrl2, changeDirection }:
     })
 
     return (
-        <>{transitions.map(({ item, props }) => !item ? (
-            <animated.div className="img" id="img" key="img1"
-                style={{
-                    ...props,
-                    backgroundImage: `url(${imageUrl1})`,
-                }} />
-        ) : (
-            <animated.div className="img" id="img2" key="img2"
-                style={{
-                    ...props,
-                    backgroundImage: `url(${imageUrl2})`,
-                }} />
-        ),
-        )}</>
+        <>{transitions.map(({ item, props }) => (
+            !item ?
+                (
+                    <animated.div className="img" id="img" key="img1"
+                        style={{
+                            ...props,
+                            backgroundImage: `url(${imageUrl1})`,
+                        }} />
+                ) :
+                (
+                    <animated.div className="img" id="img2" key="img2"
+                        style={{
+                            ...props,
+                            backgroundImage: `url(${imageUrl2})`,
+                        }} />
+                )
+        ))}</>
     )
 }
 

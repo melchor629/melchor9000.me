@@ -17,23 +17,24 @@
     "luxon": "^1.23.0",
     "parallax-js": "^3.1.0",
     "popper.js": "^1.15.0",
-    "react": "^16.9.0",
+    "react": "^17.0.1",
     "react-cropper": "^2.1.4",
-    "react-dom": "^16.9.0",
+    "react-dom": "^17.0.1",
     "react-helmet": "^6.0.0",
     "react-i18next": "^11.2.7",
     "react-ink": "^6.4.0",
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.4.3",
+    "react-scripts": "4.0.0",
     "react-spring": "^8.0.25",
     "react-swipeable": "^5.5.0",
     "react-toastify": "^6.0.5",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "speakingurl": "^14.0.1",
-    "three": "0.120.1"
+    "three": "0.121.1",
+    "web-vitals": "^0.2.4"
   },
   "scripts": {
     "test": "react-scripts test --env=jsdom",
@@ -62,7 +63,7 @@
     "firebase-tools": "^8.2.0",
     "node-sass-chokidar": "^1.3.5",
     "prop-types": "^15.7.2",
-    "typescript": "^3.7.0"
+    "typescript": "^4.0.3"
   },
   "browserslist": {
     "production": [

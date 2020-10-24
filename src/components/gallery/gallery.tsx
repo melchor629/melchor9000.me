@@ -18,7 +18,7 @@ const withConfig = (Component: any) => (props: any) => <Component {...props} {..
 const GalleryListPageComponent = withDefaultContainer(withConfig(GalleryListPage as any))
 const PhotoPageComponent = withConfig(PhotoPage)
 
-export default () => (
+const Gallery = () => (
     <>
         <Route exact={ true }
             path="/gallery/"
@@ -27,3 +27,5 @@ export default () => (
             component={ PhotoPageComponent } />
     </>
 )
+
+export default Gallery

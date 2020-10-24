@@ -12,7 +12,7 @@ const links = [
     { url: 'https://www.linkedin.com/in/melchor9000/', key: 'linkedin', fab: 'linkedin' },
 ]
 
-export default () => (
+const Footer = () => (
     <div className="container">
         <div className="row">
             <div className="col col-sm-auto text-sm-right">
@@ -35,3 +35,5 @@ export default () => (
         </div>
     </div>
 )
+
+export default Footer

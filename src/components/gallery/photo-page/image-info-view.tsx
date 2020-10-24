@@ -27,12 +27,16 @@ const ImageInfoViewImpl = ({ photo, loading, rootRef, t }: OverlayImageInfoProps
     const exifMap = exifToMap(photo)
     let geolocation = null
 
-    const InfoItem = useMemo(() => ({ id, children }: { id: string, children: any }) => children ? (
-        <div className="lead col-12 col-md-6 mb-2 info-item">
-            <small>{ t(`gallery.photoPage.${id}`) }</small><br/>
-            <span>{ children }</span>
-        </div>
-    ) : null, [ t ])
+    const InfoItem = useMemo(() => ({ id, children }: { id: string, children: any }) => (
+        children ?
+            (
+                <div className="lead col-12 col-md-6 mb-2 info-item">
+                    <small>{ t(`gallery.photoPage.${id}`) }</small><br/>
+                    <span>{ children }</span>
+                </div>
+            ) :
+            null
+    ), [ t ])
 
     if(info) {
         if(info.location) {

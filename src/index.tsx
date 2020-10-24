@@ -13,6 +13,7 @@ import Footer from './Footer'
 import * as serviceWorker from './serviceWorker'
 import i18n from './i18n'
 import LoadingSpinner from './components/load-spinner'
+import reportWebVitals from './report-web-vitals'
 
 import 'firebase/firestore'
 import 'firebase/functions'
@@ -51,15 +52,17 @@ firebase.initializeApp({
 
     ReactDOM.render(
         (
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Suspense fallback={ LoadingSpinner }>
-                        <I18nextProvider i18n={ i18n }>
-                            <App/>
-                        </I18nextProvider>
-                    </Suspense>
-                </BrowserRouter>
-            </Provider>
+            <React.StrictMode>
+                <Provider store={store}>
+                    <BrowserRouter>
+                        <Suspense fallback={ LoadingSpinner }>
+                            <I18nextProvider i18n={ i18n }>
+                                <App/>
+                            </I18nextProvider>
+                        </Suspense>
+                    </BrowserRouter>
+                </Provider>
+            </React.StrictMode>
         ),
         document.getElementById('root'),
     )
@@ -69,12 +72,12 @@ firebase.initializeApp({
         document.getElementById('footer'),
     )
 
-    /*serviceWorker.register({
-        onUpdate: () =>
-            warning('Ey, actualiza la web para obtener los últimos cambios', { autoClose: false }),
-        onFail: () =>
-            warning('Hemos detectado que no estás conectado a internet. ' +
-                    'Habrán cosas que no funcionarán correctamente :(', { autoClose: false }),
-    })*/
     serviceWorker.unregister()
+
+    // If you want to start measuring performance in your app, pass a function
+    // to log results (for example: reportWebVitals(console.log))
+    // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+    reportWebVitals(e => {
+        console.log('web-vitals', e)
+    })
 })()

@@ -2,26 +2,26 @@ import * as React from 'react'
 import { withDefaultContainer } from './components/default-container'
 import asyncComponent from './components/async-component'
 
-type LeComponent<Props, State> = React.ComponentType<Props>
+type LeComponent<Props> = React.ComponentType<Props>
 
-export interface Route<Props = any, State = any> {
+export interface Route<Props = any> {
     route: string
     title: string
-    component: LeComponent<Props, State>
+    component: LeComponent<Props>
     extra: any
     private: boolean
 }
 
-function route<Props = any, State = any>(_route: string,
+function route<Props = any>(_route: string,
     title: string,
-    component: LeComponent<Props, State>, extra?: any): Route<Props, State> {
+    component: LeComponent<Props>, extra?: any): Route<Props> {
     return { route: _route, title, component, extra: extra || {}, private: false }
 }
 
-function privateRoute<Props = any, State = any>(_route: string,
+function privateRoute<Props = any>(_route: string,
     title: string,
-    component: LeComponent<Props, State>,
-    extra?: any): Route<Props, State> {
+    component: LeComponent<Props>,
+    extra?: any): Route<Props> {
     return { route: _route, title, component, extra: extra || {}, private: true }
 }
 
@@ -34,7 +34,7 @@ const Experiments = asyncComponent(() => import('./components/experiments'))
 const SupportMe = asyncComponent(() => import('./components/support-me'))
 const Admin = asyncComponent(() => import('./containers/admin/admin'))
 
-export const routes: Array<Route<any, any>> = [
+export const routes: Array<Route<any>> = [
     route('/', 'Home', withDefaultContainer(Home), { exact: true }),
     route('/about-me', 'About me', withDefaultContainer(AboutMe)),
     route('/gallery', 'Photo Gallery', Gallery),

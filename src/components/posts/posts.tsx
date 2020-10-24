@@ -7,7 +7,7 @@ import './posts.scss'
 
 type PostsProps = PostsStateToProps & PostsDispatchToProps & RouteComponentProps<{}>
 
-export default (props: PostsProps) => {
+const Posts = (props: PostsProps) => {
     useEffect(() => {
         props.subscribePosts()
         return () => props.unsuscribePosts()
@@ -20,3 +20,5 @@ export default (props: PostsProps) => {
         </>
     )
 }
+
+export default Posts

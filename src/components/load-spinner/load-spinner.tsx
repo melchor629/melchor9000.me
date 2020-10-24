@@ -6,7 +6,7 @@ interface LoadSpinnerProps {
     className?: string
 }
 
-export default ({ show, className }: LoadSpinnerProps) => {
+const LoadSpinner = ({ show, className }: LoadSpinnerProps) => {
     if(show || show === undefined) {
         return (
             <div className={ `load-spin-container d-flex justify-content-center ${className || ''}` }>
@@ -22,3 +22,5 @@ export default ({ show, className }: LoadSpinnerProps) => {
         return null
     }
 }
+
+export default LoadSpinner
