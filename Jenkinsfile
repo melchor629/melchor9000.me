@@ -24,7 +24,7 @@ pipeline {
     stage('Checks') {
       steps {
         sh 'yarn lint'
-        sh 'yarn audit'
+        sh 'yarn run audit'
       }
     }
 

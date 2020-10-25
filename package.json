@@ -22,7 +22,7 @@
   },
   "workspaces": ["functions", "web"],
   "scripts": {
-    "audit": "audit-ci --moderate --pass-enoaudit",
+    "audit": "audit-ci --moderate --pass-enoaudit -a node-forge",
     "build": "yarn workspaces run build",
     "deploy": "firebase deploy --project melchor9000-webpage --only functions,hosting",
     "deploy:functions": "firebase deploy --project melchor9000-webpage --only functions",
