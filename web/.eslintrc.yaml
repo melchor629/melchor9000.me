@@ -1,0 +1,16 @@
+extends:
+  - 'react-app'
+  - 'airbnb-typescript'
+overrides:
+  - files: ['**/*.ts?(x)', '**/*.js?(x)']
+    parserOptions:
+      project: 'tsconfig.json'
+    rules:
+      semi: 0
+      '@typescript-eslint/semi':
+      - error
+      - never
+rules:
+  no-console: 0
+  react/react-in-jsx-scope: 0
+  react/no-danger: 0

@@ -4,6 +4,7 @@ import * as firebase from 'firebase-admin'
 import { promisify } from 'util'
 import { handlerCatch } from '../utils/decorators'
 import renderPost from '../utils/logic/render-post'
+
 const { version } = require('../../package.json')
 
 const renderPostController: RequestHandler = handlerCatch(async (req, res) => {
@@ -30,13 +31,13 @@ const renderPostController: RequestHandler = handlerCatch(async (req, res) => {
   }
 
   let [{ etag, timeCreated, updated }] = await file.getMetadata()
-  let cachedFileContents: { version: string, etag: string, lastModified: string, content: string | null }
+  let cachedFileContents: { version: string, etag: string, lastModified: string, content: string }
   if (!cachedFileExists) {
     cachedFileContents = {
       version,
       etag,
       lastModified: new Date(0).toISOString(),
-      content: null,
+      content: '',
     }
   } else {
     try {
@@ -46,7 +47,7 @@ const renderPostController: RequestHandler = handlerCatch(async (req, res) => {
         version,
         etag,
         lastModified: new Date(0).toISOString(),
-        content: null,
+        content: '',
       }
     }
   }

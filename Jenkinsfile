@@ -17,17 +17,14 @@ pipeline {
   stages {
     stage('Install packages') {
       steps {
-        sh 'npm install'
-        sh 'npm --prefix functions install'
+        sh 'yarn'
       }
     }
 
     stage('Checks') {
       steps {
-        sh 'npm run lint'
-        sh 'npm run audit'
-        sh 'npm --prefix functions run lint'
-        sh 'npm --prefix functions run audit'
+        sh 'yarn lint'
+        sh 'yarn audit'
       }
     }
 
@@ -44,8 +41,7 @@ pipeline {
       }
 
       steps {
-        sh 'npm run build'
-        sh 'npm --prefix functions run build'
+        sh 'yarn build'
       }
     }
 
@@ -59,7 +55,7 @@ pipeline {
       }
 
       steps {
-        sh 'npm run deploy'
+        sh 'yarn deploy'
       }
 
       post {

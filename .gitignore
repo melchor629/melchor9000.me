@@ -7,7 +7,7 @@ node_modules
 /coverage
 
 # production
-/build
+/web/build
 /functions/lib
 
 # misc
