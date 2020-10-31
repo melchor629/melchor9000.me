@@ -5,12 +5,12 @@
   "homepage": "https://melchor9000.me",
   "dependencies": {
     "@firebase/auth-types": "^0.10.1",
-    "@firebase/firestore-types": "^1.5.0",
+    "@firebase/firestore-types": "^2.0.0",
     "@fortawesome/fontawesome-free": "^5.8.2",
     "bootstrap": "^4.5.0",
     "debounce": "^1.2.0",
     "disqus-react": "^1.0.6",
-    "firebase": "^7.6.1",
+    "firebase": "^8.0.0",
     "highlight.js": "^10.0.1",
     "i18next": "^19.0.2",
     "i18next-browser-languagedetector": "^6.0.1",
@@ -36,7 +36,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "speakingurl": "^14.0.1",
-    "three": "0.121.1",
+    "three": "0.122.0",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

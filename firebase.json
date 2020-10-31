@@ -62,6 +62,6 @@
     ]
   }],
   "functions": {
-    "predeploy": "yarn workspace functions deploy"
+    "predeploy": "yarn workspace functions dist"
   }
 }

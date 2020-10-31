@@ -7,7 +7,8 @@
     "watch": "tsc --pretty -w -p .",
     "logs": "firebase functions:log",
     "lint": "eslint --ext js,ts src",
-    "dist": "yarn lint && yarn build"
+    "dist": "yarn lint && yarn build",
+    "config:get": "firebase functions:config:get > .runtimeconfig.json"
   },
   "engines": {
     "node": "10"
@@ -16,15 +17,18 @@
   "dependencies": {
     "commonmark": "^0.29.0",
     "cors": "^2.8.5",
+    "ejs": "^3.1.5",
     "etag": "^1.8.1",
     "express": "^4.17.1",
     "firebase-admin": "^9.3.0",
     "firebase-functions": "^3.3.0",
+    "got": "^11.8.0",
     "highlight.js": "^10.3.1"
   },
   "devDependencies": {
     "@types/commonmark": "^0.27.4",
     "@types/cors": "^2.8.6",
+    "@types/ejs": "^3.0.5",
     "@types/etag": "^1.8.0",
     "@types/highlight.js": "^9.12.3",
     "eslint": "^7.12.0",

@@ -35,3 +35,4 @@ package-lock.json
 cors.json
 .firebase/
 *.log
+.runtimeconfig.json
