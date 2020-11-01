@@ -2,6 +2,7 @@ import * as firebase from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import postsApp from './posts'
 import nowPlayingApp from './now-playing'
+import galleryApp from './gallery'
 
 firebase.initializeApp()
 
@@ -16,3 +17,8 @@ export const nowPlaying = euFunctions
   .runWith({ timeoutSeconds: 10, memory: '128MB' })
   .https
   .onRequest(nowPlayingApp)
+
+export const gallery = euFunctions
+  .runWith({ timeoutSeconds: 10, memory: '128MB' })
+  .https
+  .onRequest(galleryApp)
