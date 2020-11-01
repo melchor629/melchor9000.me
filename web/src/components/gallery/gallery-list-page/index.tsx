@@ -1,31 +1,31 @@
 import $ from 'jquery'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { RouteComponentProps } from 'react-router'
 
 import Header from './header'
 import PhotoItem from './photo-item'
 import { useGalleryListActions, useGalleryListState } from './redux-connector'
 import LoadSpinner from '../../load-spinner'
 
-interface GalleryListProps {
-  userId: string
-  photosetId: string
-}
-
-const GalleryListPage = ({ userId, photosetId }: GalleryListProps) => {
+const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>) => {
+  const { photosetId } = match.params
   const [page, setPage] = useState(0)
-  const {
-    primary,
-    photos,
-    totalPhotos,
-    loadingPhotosList,
-  } = useGalleryListState()
-  const { loadFirstPhotos, loadMorePhotos } = useGalleryListActions(userId, photosetId)
+  const photoset = useGalleryListState(photosetId)
+  const { loadFirstPhotos, loadMorePhotos } = useGalleryListActions(photosetId)
 
   useEffect(() => {
-    loadFirstPhotos()
-    }, []); //eslint-disable-line
+    if (!photoset) {
+      loadFirstPhotos()
+    }
+  }, [photoset]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const {
+    loading,
+    photos,
+    primary,
+    totalPhotos,
+  } = photoset ?? { photos: [], totalPhotos: 0, primary: null }
   // TODO calculate this in a better way
   const perPage = window.document.body.clientWidth > 992 ? 16 : 15
   const photosLoaded = photos.length
@@ -38,7 +38,7 @@ const GalleryListPage = ({ userId, photosetId }: GalleryListProps) => {
     const onScroll = () => {
       const bottom = $(document).scrollTop()! + $(window).height()!
       const sizeOfPage = document.body.scrollHeight
-      if (sizeOfPage - bottom < 125 && !loadingPhotosList) {
+      if (sizeOfPage - bottom < 125 && !loading) {
         if (page * perPage >= photosLoaded) {
           loadMorePhotos()
         } else {
@@ -54,7 +54,7 @@ const GalleryListPage = ({ userId, photosetId }: GalleryListProps) => {
       window.removeEventListener('scroll', onScroll)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadingPhotosList, photosLoaded, totalPhotos, page, perPage])
+  }, [loading, photosLoaded, totalPhotos, page, perPage])
 
   const spinnerClasses = !morePhotosToLoad
     ? ['d-none']

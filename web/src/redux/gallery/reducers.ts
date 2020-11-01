@@ -6,75 +6,55 @@ import {
   LOADED_PHOTO_DETAIL,
   LOADED_PHOTO_IMAGE,
   LOADING_MORE_PHOTOS,
+  CHANGE_TO_PHOTO_DETAIL,
   LOADING_PHOTO_DETAIL,
   MORE_PHOTOS_LOADED,
 } from './actions'
-import { ExifData, Photo, PhotoInfo } from '../../lib/flickr'
+import { Photo, PhotosetPhoto } from '../../lib/flickr'
 
-interface GalleryPhotoSize {
-  width: number
-  height: number
+export interface GalleryPhoto extends Photo {
   url: string
-}
-
-export interface GalleryPhotoSizes {
-  'Square': GalleryPhotoSize
-  'Large Square'?: GalleryPhotoSize
-  'Thumbnail': GalleryPhotoSize
-  'Small': GalleryPhotoSize
-  'Small 320'?: GalleryPhotoSize
-  'Medium': GalleryPhotoSize
-  'Medium 640'?: GalleryPhotoSize
-  'Medium 800'?: GalleryPhotoSize
-  'Large': GalleryPhotoSize
-  'Large 1600'?: GalleryPhotoSize
-  'Large 2048'?: GalleryPhotoSize
-  'Original'?: GalleryPhotoSize
-}
-
-export type GalleryPhoto = Photo & {
-  url: string | null
-  info: PhotoInfo | null
-  exif: ExifData | null
-  sizes: GalleryPhotoSizes | null
   zoomUrl?: string
   zoomSize?: { w: number, h: number }
 }
 
-const initialState: GalleryState = {
-  primary: null,
-  totalPhotos: 0,
-  photos: [],
+export interface GalleryPhotosetPhoto extends PhotosetPhoto {
+  url: string
+}
 
-  detailedPhoto: undefined,
-  prevDetailedPhoto: undefined,
-  directionOfChange: 'next',
-  zoomEnabled: false,
-  nextPhoto: null,
-  prevPhoto: null,
-  imageSwitcher: true,
+interface GalleryPhotoset {
+  primary: string | null
+  totalPhotos: number
+  photos: GalleryPhotosetPhoto[]
+  loading: boolean
+}
 
-  loadingPhotos: true,
-  loadingPhotoDetailInfo: false,
-  loadingPhoto: false,
+interface GalleryDetailedState {
+  currentPhotoId?: string
+  previousPhotoId?: string
+  zoomEnabled: boolean
+  imageSwitcher: boolean
+  directionOfChange: 'next' | 'prev'
+  loadingInfo: boolean
+  loadingPhoto: boolean
 }
 
 export interface GalleryState {
-  primary: string | null
-  totalPhotos: number
-  photos: GalleryPhoto[]
+  photosets: { [P in string]?: GalleryPhotoset }
+  photos: { [P in string]?: GalleryPhoto }
+  detailed: GalleryDetailedState
+}
 
-  detailedPhoto: string | undefined
-  prevDetailedPhoto: string | undefined
-  directionOfChange: 'next' | 'prev'
-  zoomEnabled: boolean
-  nextPhoto: GalleryPhoto | null
-  prevPhoto: GalleryPhoto | null
-  imageSwitcher: boolean
-
-  loadingPhotos: boolean
-  loadingPhotoDetailInfo: boolean
-  loadingPhoto: boolean
+const initialState: GalleryState = {
+  photosets: {},
+  photos: {},
+  detailed: {
+    directionOfChange: 'next',
+    imageSwitcher: true,
+    loadingInfo: false,
+    loadingPhoto: false,
+    zoomEnabled: false,
+  },
 }
 
 export const galleryList = (
@@ -82,94 +62,133 @@ export const galleryList = (
   action: GalleryActions,
 ): GalleryState => {
   switch (action.type) {
-    case MORE_PHOTOS_LOADED:
-      return {
-        ...state,
-        photos: [...state.photos, ...action.photos],
-        loadingPhotos: false,
+    case MORE_PHOTOS_LOADED: {
+      const photoset = state.photosets[action.photosetId]
+      if (!photoset) {
+        return state
       }
 
-    case FIRST_PHOTOS_LOADED:
       return {
         ...state,
-        primary: action.primary,
-        totalPhotos: action.totalPhotos,
-        photos: action.photos,
-        loadingPhotos: false,
+        photosets: {
+          [action.photosetId]: {
+            ...photoset,
+            loading: false,
+            photos: [...photoset.photos, ...action.photos],
+          },
+        },
       }
+    }
+
+    case FIRST_PHOTOS_LOADED: {
+      const photoset = state.photosets[action.photosetId] || {}
+
+      return {
+        ...state,
+        photosets: {
+          [action.photosetId]: {
+            ...photoset,
+            loading: false,
+            primary: action.primary,
+            totalPhotos: action.totalPhotos,
+            photos: action.photos,
+          },
+        },
+        photos: {
+          ...state.photos,
+          [action.primaryPhoto.id]: action.primaryPhoto,
+        },
+      }
+    }
 
     case LOADING_MORE_PHOTOS:
-      return { ...state, loadingPhotos: true }
+      return {
+        ...state,
+        photosets: {
+          [action.photosetId]: {
+            ...(
+              state.photosets[action.photosetId] || { photos: [], primary: null, totalPhotos: 0 }
+            ),
+            loading: true,
+          },
+        },
+      }
 
     case HIDDEN_DETAILED:
       return {
         ...state,
-        detailedPhoto: undefined,
-        zoomEnabled: false,
-        nextPhoto: null,
-        prevPhoto: null,
-        directionOfChange: 'next',
+        detailed: {
+          ...state.detailed,
+          directionOfChange: 'next',
+          loadingInfo: false,
+          loadingPhoto: false,
+          currentPhotoId: undefined,
+          previousPhotoId: undefined,
+        },
       }
 
     case LOADING_PHOTO_DETAIL:
       return {
         ...state,
-        loadingPhotoDetailInfo: true,
-        loadingPhoto: true,
-        detailedPhoto: action.photoId,
-        prevDetailedPhoto: state.detailedPhoto,
-        imageSwitcher: !state.imageSwitcher,
+        detailed: {
+          ...state.detailed,
+          loadingPhoto: true,
+          loadingInfo: true,
+          currentPhotoId: action.photoId,
+          previousPhotoId: state.detailed.currentPhotoId,
+          imageSwitcher: !state.detailed.imageSwitcher,
+        },
       }
 
     case LOADED_PHOTO_DETAIL: {
-      const currentPhotoPosition = state.photos.findIndex((p) => p.id === action.photoId)
-      const prevPhoto = currentPhotoPosition > 0 ? state.photos[currentPhotoPosition - 1] : null
-      const nextPhoto = currentPhotoPosition < state.photos.length - 1
-        ? state.photos[currentPhotoPosition + 1]
-        : null
+      if (!state.detailed.currentPhotoId) {
+        return state
+      }
+
       return {
         ...state,
-        loadingPhotoDetailInfo: false,
-        zoomEnabled: false,
-        nextPhoto,
-        prevPhoto,
-        photos: state.photos.map((photo) => (photo.id === action.photoId
-          ? {
-            ...photo,
-            exif: action.exif,
-            info: action.info,
-            sizes: action.sizes,
-          }
-          : photo)),
-        // With the new size, a new image is going to be loaded
-        loadingPhoto: true,
+        detailed: {
+          ...state.detailed,
+          loadingInfo: false,
+          zoomEnabled: false,
+        },
+        photos: {
+          ...state.photos,
+          [action.photoId]: action.photo,
+        },
+      }
+    }
+
+    case CHANGE_TO_PHOTO_DETAIL: {
+      return {
+        ...state,
+        detailed: {
+          ...state.detailed,
+          loadingPhoto: true,
+          currentPhotoId: action.photoId,
+          previousPhotoId: state.detailed.currentPhotoId,
+          imageSwitcher: !state.detailed.imageSwitcher,
+        },
       }
     }
 
     case LOADED_PHOTO_IMAGE:
-      return { ...state, loadingPhoto: false }
-
-    case DETAILED_PHOTO_IS_GOING_TO_CHANGE: {
-      const currentPhotoPosition = state.photos.findIndex((p) => p.id === state.detailedPhoto)
-      if (action.direction === 'next') {
-        const prevPhoto = state.photos[currentPhotoPosition]
-        const nextPhoto = currentPhotoPosition < state.photos.length - 2
-          ? state.photos[currentPhotoPosition + 2]
-          : null
-        return {
-          ...state,
-          directionOfChange: action.direction,
-          prevPhoto,
-          nextPhoto,
-        }
-      }
-      const prevPhoto = currentPhotoPosition > 1 ? state.photos[currentPhotoPosition - 2] : null
-      const nextPhoto = state.photos[currentPhotoPosition]
       return {
         ...state,
-        directionOfChange: action.direction,
-        prevPhoto,
-        nextPhoto,
+        detailed: {
+          ...state.detailed,
+          loadingPhoto: false,
+        },
+      }
+
+    case DETAILED_PHOTO_IS_GOING_TO_CHANGE: {
+      // TODO ???
+      return {
+        ...state,
+        detailed: {
+          ...state.detailed,
+          directionOfChange: action.direction,
+        },
       }
     }
 

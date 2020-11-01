@@ -1,150 +1,187 @@
-const apiKey = process.env.REACT_APP_FLICKR_API_KEY!
-const apiUrl = process.env.REACT_APP_FLICKR_API_URL || 'https://api.flickr.com/services/rest/'
+import { DateTime } from 'luxon'
+import firebaseFunction from './firebase-function'
 
-const randomString = () => {
-  const rand = () => Math.round(Math.random() * 1000000)
-  const str = [...Array(8)].map(() => {
-    const num = Math.trunc(Math.random() * 3) % 3
-    if (num === 0) {
-      return String.fromCharCode((rand() % 26) + 97)
-    }
-    if (num === 1) {
-      return String.fromCharCode((rand() % 26) + 65)
-    }
-    return String.fromCharCode((rand() % 10) + 48)
-  }).join('')
-  return str
+interface Photoset {
+  id: string
+  owner: string
+  username: string
+  primary: string
+  secret: string
+  server: string
+  farm: string
+  counts: {
+    views: number
+    comments: number
+    photos: number
+    videos: number
+  }
+  title: string
+  description: string
+  dateCreated: DateTime
+  dateUpdated: DateTime
 }
 
-const buildUrl = (url: string, parameters: any) => {
-  const queryString = new URLSearchParams(parameters).toString()
-  if (queryString) {
-    return `${url}?${queryString}`
-  }
-  return url
+interface PhotosetList {
+  page: number
+  pages: number
+  total: number
+  photosets: Photoset[]
 }
 
-const doRequest = <T>(request: any): Promise<T> => new Promise((resolve) => {
-  const rndCbk = `flickr_${randomString()}`
-  const script = document.createElement('script')
-  const augmentedRequest = {
-    ...request,
-    api_key: apiKey,
-    format: 'json',
-    jsoncallback: rndCbk,
-  }
-  window[rndCbk] = (json: any) => {
-    resolve(json)
-    delete window[rndCbk]
-    document.head!.removeChild(script)
-  }
-  script.src = buildUrl(apiUrl, augmentedRequest)
-  document.head!.appendChild(script)
-})
-
-const protoFunc = <Params extends object, DataType>(method: string) => (
-  (params: Params) => doRequest<DataType>({ ...(params as object), method })
-)
-
-export interface Photo {
+export interface PhotosetPhoto {
   id: string
   secret: string
   server: string
-  farm: number
-  title: string | { _content: string }
-  isprimary: string
-  ispublic: number
-  isfriend: number
-  isfamily: number
+  farm: string
+  title: string
 }
 
-interface PhotoInfoLocationPlace {
-  _content: string
-  place_id: string
-  woeid: string
-}
-
-export interface PhotoInfo extends Photo {
-  description: { _content: string }
-  urls: { url: Array<{ _content: string }> }
-  dates: {
-    posted: string
-    taken: string
-    takengranularity: number
-    takenunknown: number
-    lastupdate: string
-  }
-  location?: {
-    latitude: string
-    longitude: string
-    accuracy: string
-    context: string
-    neighbourhood?: PhotoInfoLocationPlace
-    locality?: PhotoInfoLocationPlace
-    county?: PhotoInfoLocationPlace
-    region?: PhotoInfoLocationPlace
-    country?: PhotoInfoLocationPlace
-    place_id: string
-    woeid: string
-  }
-}
-
-export interface Photoset {
+export interface PhotosetPhotos {
+  page: number
+  pages: number
+  total: number
   id: string
   primary: string
   owner: string
-  photo: Photo[]
-  pages: number
-  total: number
+  photos: PhotosetPhoto[]
 }
 
-interface PhotosetsGetPhotosParams {
-  photoset_id: string
-  user_id: string
-  extras?: string
-  privacy_filter?: 1 | 2 | 3 | 4 | 5
-  per_page?: number
-  page?: number
-  media?: 'all' | 'photos' | 'videos'
-}
+type ExifNamespaces = 'IFD0' | 'ExifIFD' | 'IPTC' | 'Photoshop' | 'XMP-x' | 'XMP-aux' | 'XMP-crd' |
+'XMP-dc' | 'XMP-exifEX' | 'XMP-photoshop' | 'XMP-xmp' | 'XMP-xmpMM'
 
-interface PhotoGetInfoParams {
-  photo_id: string
-  secret?: string
-}
-
-export interface ExifData {
-  camera: string
-  exif: Array<{
-    tagspace: string
-    tagspaceid: number
-    tag: string
-    label: string
-    raw: { _content: string }
-    clean?: { _content: string }
-  }>
+interface ExifData {
+  label: string
+  value: string
+  clean?: string
 }
 
 interface PhotoSize {
   label: 'Square' | 'Large Square' | 'Thumbnail' | 'Small' | 'Small 320' | 'Medium' | 'Medium 640' | 'Medium 800' |
   'Large' | 'Large 1600' | 'Large 2048' | 'Original'
-  width: string
-  height: string
+  width: number
+  height: number
   source: string
   url: string
-  media: 'photo'
 }
 
-export const photos = {
-  getInfo: protoFunc<PhotoGetInfoParams, { photo: PhotoInfo }>('flickr.photos.getInfo'),
-  getExif: protoFunc<PhotoGetInfoParams, { photo: ExifData }>('flickr.photos.getExif'),
-  getSizes: protoFunc<PhotoGetInfoParams, { sizes: { size: PhotoSize[] } }>('flickr.photos.getSizes'),
+export interface Photo {
+  // photo
+  id: string
+  secret: string
+  server: string
+  farm: number
+  title: string
+  description: string
+  rotation: number
+  urls: Array<{ type: string, url: string }>
+  datePosted: DateTime
+  dateUpdated: DateTime
+  dateTaken: DateTime
+  location?: {
+    latitude: number
+    longitude: number
+    accuracy: number
+    context?: string
+    neighbourhood?: string
+    locality?: string
+    county?: string
+    region?: string
+    country?: string
+    place_id: string
+    woeid: string
+  }
+  // exif
+  camera: string
+  exif: { [tagspace in ExifNamespaces]?: { [tag in string]?: ExifData } }
+  // sizes
+  sizes: PhotoSize[]
 }
 
-export const photosets = {
-  getPhotos: protoFunc<PhotosetsGetPhotosParams, { photoset: Photoset }>('flickr.photosets.getPhotos'),
+class GalleryError extends Error {
+  public body: any
+
+  constructor(public readonly response: Response, message?: string) {
+    super(message)
+  }
 }
 
-export const buildThumbnailUrl = (photo: Photo) => `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`
-export const buildPhotoUrl = (photo: Photo) => `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`
-export const buildLargePhotoUrl = (photo: Photo) => `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`
+const throwIfUnsuccess = async (res: Response): Promise<void> => {
+  if (!res.ok) {
+    const error = new GalleryError(res, `Response is not ok: ${res.statusText} (${res.status})`)
+    if (res.headers.get('Content-Type')?.includes('application/json')) {
+      error.body = await res.json()
+    } else {
+      error.body = await res.text()
+    }
+
+    throw error
+  }
+}
+
+const photos = {
+  getInfo: async (photoId: string): Promise<Photo> => {
+    const url = firebaseFunction.gallery(`/photos/${photoId}`)
+    const res = await fetch(url)
+    await throwIfUnsuccess(res)
+    const photo: Photo = await res.json()
+    return {
+      ...photo,
+      datePosted: DateTime.fromISO(photo.datePosted as unknown as string),
+      dateUpdated: DateTime.fromISO(photo.dateUpdated as unknown as string),
+      dateTaken: DateTime.fromFormat(
+        photo.dateTaken as unknown as string,
+        'yyyy-MM-dd HH:mm:ss',
+        { zone: 'Europe/Madrid' },
+      ),
+    }
+  },
+}
+
+const photosets = {
+  get: async (): Promise<PhotosetList> => {
+    const url = firebaseFunction.gallery('/photosets')
+    const res = await fetch(url)
+    await throwIfUnsuccess(res)
+    const list: PhotosetList = await res.json()
+    return {
+      ...list,
+      photosets: list.photosets.map((p) => ({
+        ...p,
+        dateCreated: DateTime.fromISO(p.dateCreated as unknown as string),
+        dateUpdated: DateTime.fromISO(p.dateUpdated as unknown as string),
+      })),
+    }
+  },
+  getInfo: async (photosetId: string): Promise<Photoset> => {
+    const url = firebaseFunction.gallery(`/photosets/${encodeURIComponent(photosetId)}`)
+    const res = await fetch(url)
+    await throwIfUnsuccess(res)
+    const photoset = await res.json()
+    return {
+      ...photoset,
+      dateCreated: DateTime.fromISO(photoset.dateCreated),
+      dateUpdated: DateTime.fromISO(photoset.dateUpdated),
+    }
+  },
+  getPhotos: async (
+    photosetId: string,
+    params: { page: number, perPage: number },
+  ): Promise<PhotosetPhotos> => {
+    const query = new URLSearchParams({
+      page: params.page.toString(),
+      perPage: params.perPage.toString(),
+    }).toString()
+    const url = firebaseFunction.gallery(`/photosets/${encodeURIComponent(photosetId)}/photos?${query}`)
+    const res = await fetch(url)
+    await throwIfUnsuccess(res)
+    return res.json()
+  },
+}
+
+export default {
+  photos,
+  photosets,
+  buildThumbnailUrl: (photo: Photo | PhotosetPhoto) => `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`,
+  buildPhotoUrl: (photo: Photo | PhotosetPhoto) => `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`,
+  buildLargePhotoUrl: (photo: Photo | PhotosetPhoto) => `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`,
+}

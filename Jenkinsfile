@@ -30,7 +30,6 @@ pipeline {
 
     stage('Build') {
       environment {
-        REACT_APP_FLICKR_API_KEY = credentials('melchor9000-flickr-api-key')
         REACT_APP_FIREBASE_API_KEY = credentials('melchor9000-firebase-api-key')
         REACT_APP_FIREBASE_AUTH_DOMAIN = credentials('melchor9000-firebase-auth-domain')
         REACT_APP_FIREBASE_DATABASE_URL = credentials('melchor9000-firebase-database-url')

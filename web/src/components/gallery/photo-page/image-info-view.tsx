@@ -1,33 +1,21 @@
-/* eslint-disable no-underscore-dangle */
 import { DateTime } from 'luxon'
 import React, { memo, useMemo } from 'react'
-import { withTranslation, WithTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
-import { GalleryPhoto } from '../../../redux/gallery/reducers'
+import { GalleryPhoto, GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
 import { DefaultContainer } from '../../default-container'
 import LoadSpinner from '../../load-spinner'
 
 interface OverlayImageInfoProps {
-  photo: GalleryPhoto
+  photo: GalleryPhoto | GalleryPhotosetPhoto
   loading: boolean
   rootRef?: React.RefObject<HTMLDivElement>
 }
 
-const exifToMap = (photo: GalleryPhoto): Map<string, string> => {
-  if (!photo.exif) {
-    return new Map()
-  }
-
-  return photo.exif.exif
-    .reduce((map, exif) => map.set(`${exif.tagspace}:${exif.tag}`, exif.raw._content), new Map())
-}
-
-const ImageInfoViewImpl = ({
-  photo, loading, rootRef, t,
-}: OverlayImageInfoProps & WithTranslation) => {
-  const info = photo.info ? photo.info : null
-  const exif = photo.exif ? photo.exif : null
-  const exifMap = exifToMap(photo)
+const ImageInfoView = ({
+  photo, loading, rootRef,
+}: OverlayImageInfoProps) => {
+  const [t] = useTranslation()
   let geolocation = null
 
   const InfoItem = useMemo(() => ({ id, children }: { id: string, children: any }) => (
@@ -42,29 +30,50 @@ const ImageInfoViewImpl = ({
       : null
   ), [t])
 
-  if (info) {
-    if (info.location) {
-      const l = info.location
-      const locationString = [
-        l.neighbourhood && `${l.neighbourhood._content},`,
-        l.locality && `${l.locality._content},`,
-        l.county && `${l.county._content} -`,
-        l.region && l.region._content,
-        l.country && `(${l.country._content})`,
-      ].filter((f) => f).join(' ')
-      const url = `https://www.google.es/maps/@${l.latitude},${l.longitude},15z?q=${l.latitude},${l.longitude}`
-      geolocation = (
-        <InfoItem id="geoposition">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            { locationString }
-          </a>
-        </InfoItem>
-      )
-    }
+  if (!('dateTaken' in photo) || loading) {
+    return (
+      <div className="image-info" ref={rootRef}>
+        <DefaultContainer>
+          <Helmet>
+            <title>
+              { photo.title }
+              {' '}
+              - Gallery
+            </title>
+          </Helmet>
+
+          <div className="page-header">
+            <h2>{photo.title}</h2>
+          </div>
+
+          <div className="d-flex justify-content-center"><LoadSpinner /></div>
+        </DefaultContainer>
+      </div>
+    )
+  }
+
+  const { exif } = photo
+  if ('location' in photo && photo.location) {
+    const l = photo.location
+    const locationString = [
+      l.neighbourhood && `${l.neighbourhood},`,
+      l.locality && `${l.locality},`,
+      l.county && `${l.county} -`,
+      l.region,
+      l.country && `(${l.country})`,
+    ].filter((f) => f).join(' ')
+    const url = `https://www.google.es/maps/@${l.latitude},${l.longitude},15z?q=${l.latitude},${l.longitude}`
+    geolocation = (
+      <InfoItem id="geoposition">
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {locationString}
+        </a>
+      </InfoItem>
+    )
   }
 
   return (
@@ -76,21 +85,18 @@ const ImageInfoViewImpl = ({
             {' '}
             - Gallery
           </title>
-          { info && <meta name="Description" content={`Photo: ${info.description._content}`} /> }
+          <meta name="Description" content={`Photo: ${photo.description}`} />
         </Helmet>
 
         <div className="page-header">
           <h2>{ photo.title }</h2>
-          { info && <span id="descripcion">{ info.description._content }</span> }
+          <span id="descripcion">{photo.description}</span>
         </div>
-
-        { loading && <div className="d-flex justify-content-center"><LoadSpinner /></div> }
 
         <div className="mt-3 row">
           <InfoItem id="captureDate">
             {
-              info && DateTime
-                .fromFormat(info.dates.taken, 'yyyy-MM-dd HH:mm:ss', { zone: 'Europe/Madrid' })
+              photo.dateTaken
                 .toLocaleString({
                   ...DateTime.DATETIME_HUGE,
                   timeZone: undefined,
@@ -98,65 +104,65 @@ const ImageInfoViewImpl = ({
                 })
             }
           </InfoItem>
-          { geolocation }
-          <InfoItem id="camera">{ exif && exif.camera }</InfoItem>
-          <InfoItem id="lens">{ exif && exifMap.get('ExifIFD:LensModel') }</InfoItem>
-          <InfoItem id="exposure">{ exifMap.get('ExifIFD:ExposureTime') }</InfoItem>
-          <InfoItem id="aperture">{ exifMap.get('ExifIFD:FNumber') }</InfoItem>
-          <InfoItem id="iso">{ exifMap.get('ExifIFD:ISO') }</InfoItem>
-          <InfoItem id="focalDistance">{ exifMap.get('ExifIFD:FocalLength') }</InfoItem>
+          {geolocation}
+          <InfoItem id="camera">{photo.camera}</InfoItem>
+          <InfoItem id="lens">{exif.ExifIFD?.LensModel?.value}</InfoItem>
+          <InfoItem id="exposure">{exif.ExifIFD?.ExposureTime?.value}</InfoItem>
+          <InfoItem id="aperture">{exif.ExifIFD?.FNumber?.value}</InfoItem>
+          <InfoItem id="iso">{exif.ExifIFD?.ISO?.value}</InfoItem>
+          <InfoItem id="focalDistance">{exif.ExifIFD?.FocalLength?.value}</InfoItem>
           <InfoItem id="flash">
             {
-                        exifMap.get('ExifIFD:Flash')
-                            && t(`gallery.photoPage.flash-${!exifMap.get('ExifIFD:Flash')!.includes('Off')}`)
-                    }
+              exif.ExifIFD?.Flash?.value
+                && t(`gallery.photoPage.flash-${!exif.ExifIFD!.Flash!.value.includes('Off')}`)
+            }
           </InfoItem>
           <InfoItem id="width">
             {
-                        exifMap.get('IFD0:ImageWidth')
-                        || (photo.sizes && photo.sizes.Original && photo.sizes.Original.width)
-                    }
+              exif.IFD0?.ImageWidth?.value
+                || photo.sizes.find((s) => s.label === 'Original')?.width
+            }
           </InfoItem>
           <InfoItem id="height">
             {
-                        exifMap.get('IFD0:ImageHeight')
-                        || (photo.sizes && photo.sizes.Original && photo.sizes.Original.height)
-                    }
+              exif.IFD0?.ImageHeight?.value
+                || ('sizes' in photo && photo.sizes.find((s) => s.label === 'Original')?.height)
+            }
           </InfoItem>
           <InfoItem id="rotation">
             {
-                        exifMap.get('IFD0:Orientation')
-                        && /(\d+)/.exec(exifMap.get('IFD0:Orientation')!)
-                        && `${(exifMap.get('IFD0:Orientation')!.endsWith('CCW') ? '-' : '')
-                            + /(\d+)/.exec(exifMap.get('IFD0:Orientation')!)![1]}º`
-                    }
+              exif.IFD0?.Orientation?.value
+                && /(\d+)/.exec(exif.IFD0!.Orientation!.value)
+                && `${(exif.IFD0!.Orientation!.value.endsWith('CCW') ? '-' : '')
+                      + /(\d+)/.exec(exif.IFD0!.Orientation!.value)![1]}º`
+            }
           </InfoItem>
-          <InfoItem id="exposureMode">{ exifMap.get('ExifIFD:ExposureMode') }</InfoItem>
-          <InfoItem id="colorSpace">{ exifMap.get('ExifIFD:ColorSpace') }</InfoItem>
-          <InfoItem id="software">{ exifMap.get('IFD0:Software') }</InfoItem>
+          <InfoItem id="exposureMode">{exif.ExifIFD?.ExposureMode?.value}</InfoItem>
+          <InfoItem id="colorSpace">{exif.ExifIFD?.ColorSpace?.value}</InfoItem>
+          <InfoItem id="software">{exif.IFD0?.Software?.value}</InfoItem>
         </div>
 
         <div className="mt-2">
-          { info && info.urls.url.length > 0 && (
+          {photo.urls.length > 0 && (
             <p id="enlace">
-              <a href={info.urls.url[0]._content} target="_blank" rel="noopener noreferrer">
-                { t('gallery.photoPage.seeFlickr') }
+              <a href={photo.urls[0].url} target="_blank" rel="noopener noreferrer">
+                {t('gallery.photoPage.seeFlickr')}
               </a>
             </p>
-          ) }
+          )}
         </div>
       </DefaultContainer>
     </div>
   )
 }
 
-ImageInfoViewImpl.defaultProps = {
+ImageInfoView.defaultProps = {
   rootRef: undefined as (React.RefObject<HTMLDivElement> | undefined),
 }
 
-const ImageInfoView = memo(
-  withTranslation()(ImageInfoViewImpl),
-  (a, b) => a.photo.id === b.photo.id && !a.photo.info && !b.photo.info,
+const ImageInfoViewMemo = memo(
+  ImageInfoView,
+  (a, b) => a.photo.id === b.photo.id && a.loading === b.loading,
 )
 
-export default ImageInfoView
+export default ImageInfoViewMemo

@@ -1,11 +1,10 @@
 import React, {
   memo, useEffect, useRef, useState,
 } from 'react'
-import { WithTranslation, withTranslation } from 'react-i18next'
 import { animated, useSpring } from 'react-spring'
 import { GalleryPhoto } from '../../../redux/gallery/reducers'
 
-interface ZoomImageOverlayProps extends WithTranslation {
+interface ZoomImageOverlayProps {
   photo: GalleryPhoto
   currentSizeImageUrl: string
   initialMousePosition?: [number, number]
@@ -63,17 +62,17 @@ const calculateInitialTranslation = (
   return translate(position, scale)
 }
 
-const ZoomImageViewImpl = ({
+const ZoomImageView = ({
   currentSizeImageUrl,
   onClose,
   initialMousePosition,
   photo,
   imageViewRef,
 }: ZoomImageOverlayProps) => {
-  const bestQualityImage = Object.entries(photo.sizes!)
-  // Original give us tons of problems with rotation
-    .filter(([label]) => label !== 'Original')
-    .sort((a, b) => Math.max(b[1].width, b[1].height) - Math.max(a[1].width, a[1].height))[0][1]
+  const bestQualityImage = photo.sizes
+    // Original give us tons of problems with rotation
+    .filter(({ label }) => label !== 'Original')
+    .sort((a, b) => Math.max(b.width, b.height) - Math.max(a.width, a.height))[0]
   const currentPositionRef = useRef<Coords>(
     initialMousePosition
       ? calculateTranslation(bestQualityImage, normalizeMouseCoordinates(initialMousePosition))
@@ -96,6 +95,7 @@ const ZoomImageViewImpl = ({
   useEffect(() => {
     window.document.body.style.overflow = 'hidden'
     return () => {
+      // TODO disable this after animation ended
       window.document.body.style.overflow = ''
     }
   }, [])
@@ -228,29 +228,25 @@ const ZoomImageViewImpl = ({
         <img
           src={currentSizeImageUrl}
           className="img-small"
-          // eslint-disable-next-line no-underscore-dangle
-          alt={photo.info!.description._content || 'Zoomed image'}
+          alt={photo.description || 'Zoomed image'}
         />
         <img
-          src={bestQualityImage.url}
+          src={bestQualityImage.source}
           className="img-big"
-          // eslint-disable-next-line no-underscore-dangle
-          alt={photo.info!.description._content || 'Zoomed image'}
+          alt={photo.description || 'Zoomed image'}
         />
       </animated.div>
     </animated.div>
   )
 }
 
-ZoomImageViewImpl.defaultProps = {
+ZoomImageView.defaultProps = {
   initialMousePosition: undefined,
 }
 
-const ZoomImageView = withTranslation()(
-  memo(
-    ZoomImageViewImpl,
-    (a, b) => a.photo.id === b.photo.id,
-  ),
+const ZoomImageViewMemo = memo(
+  ZoomImageView,
+  (a, b) => a.photo.id === b.photo.id,
 )
 
-export default ZoomImageView
+export default ZoomImageViewMemo

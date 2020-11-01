@@ -10,7 +10,7 @@ interface OverlayImageViewProps {
 
 const translateXFromDirection = (u: number, direction: 'next' | 'prev') => `translateX(${(direction === 'next' ? 25 : -25) * u}px)`
 
-const ImageViewImpl = ({
+const ImageView = ({
   imageSwitcher, imageUrl1, imageUrl2, changeDirection,
 }: OverlayImageViewProps) => {
   const transitions = useTransition(imageSwitcher, null, {
@@ -51,5 +51,5 @@ const ImageViewImpl = ({
   )
 }
 
-const ImageView = memo(ImageViewImpl)
-export default ImageView
+const ImageViewMemo = memo(ImageView)
+export default ImageViewMemo

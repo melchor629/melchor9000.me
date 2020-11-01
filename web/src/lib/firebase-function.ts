@@ -7,4 +7,8 @@ const firebaseFunction = (funcName: string, path: string = '') => {
   return `http://${window.location.hostname}:5000/${process.env.REACT_APP_FIREBASE_PROJECT_ID}/${region}/${funcName}${path}`
 }
 
+firebaseFunction.gallery = (path: string = '') => firebaseFunction('gallery', path)
+firebaseFunction.posts = (path: string = '') => firebaseFunction('posts', path)
+firebaseFunction.nowPlaying = (path: string = '') => firebaseFunction('nowPlaying', path)
+
 export default firebaseFunction

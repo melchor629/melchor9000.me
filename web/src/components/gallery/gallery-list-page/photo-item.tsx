@@ -1,15 +1,17 @@
 import React, { memo } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { GalleryPhoto } from '../../../redux/gallery/reducers'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+import { GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
 import { runOnEnter } from '../../../lib/aria-utils'
 
 interface PhotoItemProps {
-  photo: GalleryPhoto
+  photo: GalleryPhotosetPhoto
 }
 
-const PhotoItemImpl = ({ photo, history }: PhotoItemProps & RouteComponentProps) => {
+const PhotoItemImpl = ({ photo }: PhotoItemProps) => {
+  const history = useHistory()
+  const match = useRouteMatch<{ photosetId: string }>()
   const photoImageStyles = { backgroundImage: `url(${photo.url})` }
-  const openImage = () => history.push(`/gallery/${photo.id}`)
+  const openImage = () => history.push(`/gallery/${match.params.photosetId}/${photo.id}`)
   return (
     <div className="photo-item">
       <div className="photo-item-container">
@@ -29,7 +31,7 @@ const PhotoItemImpl = ({ photo, history }: PhotoItemProps & RouteComponentProps)
 }
 
 const PhotoItem = memo(
-  withRouter(PhotoItemImpl),
+  PhotoItemImpl,
   ({ photo: oldPhoto }, { photo }) => oldPhoto.id === photo.id && oldPhoto.url === photo.url,
 )
 

@@ -2,42 +2,37 @@ import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react'
 import { EventData, useSwipeable } from 'react-swipeable'
-import { WithTranslation, withTranslation } from 'react-i18next'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import ZoomImageView from './zoom-image-view'
-import ImageInfoView from './image-info-view'
+import ImageInfoViewMemo from './image-info-view'
 import ImageView from './image-view'
 import { usePhotoActions, usePhotoState } from './redux-connector'
 import LoadSpinner from '../../load-spinner'
-import { GalleryPhoto, GalleryPhotoSizes } from '../../../redux/gallery/reducers'
+import { GalleryPhoto } from '../../../redux/gallery/reducers'
 import { runOnEnter } from '../../../lib/aria-utils'
 
-type OverlayProps = RouteComponentProps<{ id: string }> & WithTranslation & {
-  userId: string
-  photosetId: string
-  perPage: number
-}
+type OverlayProps = RouteComponentProps<{ id: string, photosetId: string }>
 
 const requestIdleCallback = (window as any).requestIdleCallback || setTimeout
 
-const findImageSuitableForScreen = (sizes: GalleryPhotoSizes): string => {
+const findImageSuitableForScreen = (sizes: GalleryPhoto['sizes']): string => {
   let dimensionValue = Math.max(window.document.body.clientWidth, window.document.body.clientHeight)
   dimensionValue *= window.devicePixelRatio
   // Allow smaller images, it won't get noticed by the users in general :)
   dimensionValue *= 3 / 4
-  const sortedSizes = Object.entries(sizes)
-  // Discard original size, never is a good idea
-    .filter((a) => a[0] !== 'Original')
-    .sort((a, b) => Math.max(a[1].width, a[1].height) - Math.max(b[1].width, b[1].height))
-  const goodSizes = sortedSizes.filter((a) => Math.max(a[1].width, a[1].height) >= dimensionValue)
+  const sortedSizes = sizes
+    // Discard original size, never is a good idea
+    .filter((a) => a.label !== 'Original')
+    .sort((a, b) => Math.max(a.width, a.height) - Math.max(b.width, b.height))
+  const goodSizes = sortedSizes.filter((a) => Math.max(a.width, a.height) >= dimensionValue)
   if (goodSizes.length > 0) {
     // The first is the smaller and suitable one
-    return goodSizes[0][1].url
+    return goodSizes[0].source
   }
 
   // Return the bigger one, there's no suitable
-  return sortedSizes[sortedSizes.length - 1][1].url
+  return sortedSizes[sortedSizes.length - 1].source
 }
 
 interface SwipingState {
@@ -48,10 +43,8 @@ interface SwipingState {
   y: number
 }
 
-const PhotoImpl = ({
-  userId, photosetId, match, history,
-}: OverlayProps) => {
-  const photoId = match.params.id
+const PhotoPage = ({ match, history }: OverlayProps) => {
+  const { id: photoId, photosetId } = match.params
   const [topOrBottom, setTopOrBottom] = useState<'top' | 'bottom'>('top')
   const [zoomOpenStatus, setZoomOpenStatus] = useState<[ number, number ] | false>(false)
   const [swipingState, setSwipingState] = useState<SwipingState | null>(null)
@@ -67,7 +60,8 @@ const PhotoImpl = ({
     imageIsLoading,
     imageInfoIsLoading,
     imageSwitcher,
-  } = usePhotoState()
+    photoset,
+  } = usePhotoState(photosetId)
   const {
     close,
     loadFullInfoForPhoto,
@@ -76,7 +70,7 @@ const PhotoImpl = ({
     prev,
     enableHideNavbarOnTopMode,
     disableHideNavbarOnTopMode,
-  } = usePhotoActions(userId, photosetId)
+  } = usePhotoActions(photosetId)
 
   useEffect(() => {
     enableHideNavbarOnTopMode()
@@ -95,10 +89,10 @@ const PhotoImpl = ({
       const onKeyPress = (e: KeyboardEvent) => {
         if (e.key === 'ArrowRight' && nextPhoto) {
           next()
-          requestIdleCallback(() => history.push(`/gallery/${nextPhoto.id}`))
+          requestIdleCallback(() => history.push(`/gallery/${photosetId}/${nextPhoto.id}`))
         } else if (e.key === 'ArrowLeft' && prevPhoto) {
           prev()
-          requestIdleCallback(() => history.push(`/gallery/${prevPhoto.id}`))
+          requestIdleCallback(() => history.push(`/gallery/${photosetId}/${prevPhoto.id}`))
         }
       }
 
@@ -107,7 +101,8 @@ const PhotoImpl = ({
     }
 
     return () => undefined
-    }, [ prevPhoto, nextPhoto, zoomOpenStatus ]); //eslint-disable-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prevPhoto, nextPhoto, zoomOpenStatus, photosetId])
 
   useEffect(() => {
     const onScroll = () => {
@@ -141,16 +136,16 @@ const PhotoImpl = ({
     }
   }, [imagePageContainerRef.current]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onSwipedHorizontal = useCallback((newPhoto: GalleryPhoto | null, n: () => void) => () => {
+  const onSwipedHorizontal = useCallback((newPhoto: { id: string } | null, n: () => void) => () => {
     setSwipingState(null)
     if (newPhoto) {
       n()
       // For some reason, requestIdleCallback here caused a big delay in the transition
-      setTimeout(() => history.push(`/gallery/${newPhoto.id}`))
+      setTimeout(() => history.push(`/gallery/${photosetId}/${newPhoto.id}`))
     } else if (window.navigator.vibrate) {
       window.navigator.vibrate(150)
     }
-  }, [history])
+  }, [history, photosetId])
 
   const scrollToInfo = useCallback(() => {
     if (topOrBottom === 'top') {
@@ -207,12 +202,13 @@ const PhotoImpl = ({
   }
 
   const handlers = useSwipeable({
-    onSwipedLeft: onSwipedHorizontal(nextPhoto, next),
-    onSwipedRight: onSwipedHorizontal(prevPhoto, prev),
+    onSwipedLeft: onSwipedHorizontal(nextPhoto || null, next),
+    onSwipedRight: onSwipedHorizontal(prevPhoto || null, prev),
     onSwiping,
   })
 
-  if (!photo) {
+  if (!photo || !photoset) {
+    console.log('loading lles')
     return (
       <div className="photo-overlay">
         <div className="load-spinner-container show">
@@ -225,10 +221,12 @@ const PhotoImpl = ({
   const previousPhotoUrl = (previousPhoto?.sizes
     ? findImageSuitableForScreen(previousPhoto.sizes)
     : previousPhoto?.url) ?? ''
-  const currentPhotoUrl = imageIsLoading || !photo.sizes
-    ? photo.url!
+  const currentPhotoUrl = imageIsLoading || !('sizes' in photo) || !photo.sizes
+    ? photo.url
     : findImageSuitableForScreen(photo.sizes)
-  const currentPhotoBigUrl = photo.sizes ? findImageSuitableForScreen(photo.sizes) : photo.url!
+  const currentPhotoBigUrl = 'sizes' in photo && photo.sizes
+    ? findImageSuitableForScreen(photo.sizes)
+    : photo.url!
   const imageUrl1 = imageSwitcher ? previousPhotoUrl : currentPhotoUrl
   const imageUrl2 = imageSwitcher ? currentPhotoUrl : previousPhotoUrl
 
@@ -242,7 +240,7 @@ const PhotoImpl = ({
         <div
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...handlers}
-          className={`image-view ${photo.sizes ? '' : 'disable-zoom'}`}
+          className={`image-view ${'sizes' in photo ? '' : 'disable-zoom'}`}
           onClick={(e) => (e.target as HTMLElement).classList.contains('img') && openZoomModal(e as any)}
           onKeyUp={runOnEnter((e) => (e.target as HTMLElement).classList.contains('img') && openZoomModal(e as any))}
           role="button"
@@ -250,15 +248,13 @@ const PhotoImpl = ({
         >
           <img
             src={currentPhotoBigUrl}
-            onLoad={photoIsLoaded}
+            // do not sent the onload event if bigger sizes are not loaded yet
+            onLoad={'sizes' in photo && photo.sizes ? photoIsLoaded : undefined}
             style={{ display: 'none' }}
-            // eslint-disable-next-line no-underscore-dangle
-            alt={typeof photo.title === 'string' ? photo.title : photo.title._content}
+            alt={photo.title}
           />
-          { nextPhoto && nextPhoto.url
-              && <img src={nextPhoto.url} className="d-none" alt="preload next" /> }
-          { prevPhoto && prevPhoto.url
-              && <img src={prevPhoto.url} className="d-none" alt="preload prev" /> }
+          {nextPhoto?.url && <img src={nextPhoto.url} className="d-none" alt="preload next" />}
+          {prevPhoto?.url && <img src={prevPhoto.url} className="d-none" alt="preload prev" />}
 
           <ImageView
             imageSwitcher={imageSwitcher}
@@ -271,7 +267,7 @@ const PhotoImpl = ({
             className={`nav-button next-button ${nextPhoto || 'hide'}`}
             style={swipeZoom('l')}
           >
-            <Link to={`/gallery/${nextPhoto && nextPhoto.id}`} onClick={next}>
+            <Link to={`/gallery/${photosetId}/${nextPhoto && nextPhoto.id}`} onClick={next}>
               <i className="fas fa-chevron-right" />
             </Link>
           </div>
@@ -279,12 +275,12 @@ const PhotoImpl = ({
             className={`nav-button prev-button ${prevPhoto || 'hide'}`}
             style={swipeZoom('r')}
           >
-            <Link to={`/gallery/${prevPhoto && prevPhoto.id}`} onClick={prev}>
+            <Link to={`/gallery/${photosetId}/${prevPhoto && prevPhoto.id}`} onClick={prev}>
               <i className="fas fa-chevron-left" />
             </Link>
           </div>
           <div className="nav-button secondary back-to-gallery">
-            <Link to="/gallery">
+            <Link to={`/gallery/${photosetId}`}>
               <i className="fas fa-arrow-left mr-2" />
               <i className="fas fa-images" />
             </Link>
@@ -299,22 +295,20 @@ const PhotoImpl = ({
           </div>
         </div>
 
-        { photo.sizes && zoomOpenStatus
-          && (
-            <ZoomImageView
-              photo={photo}
-              currentSizeImageUrl={currentPhotoUrl}
-              initialMousePosition={zoomOpenStatus}
-              onClose={() => setZoomOpenStatus(false)}
-              imageViewRef={imageViewRef}
-            />
-          ) }
+        {'sizes' in photo && zoomOpenStatus && (
+          <ZoomImageView
+            photo={photo}
+            currentSizeImageUrl={currentPhotoUrl}
+            initialMousePosition={zoomOpenStatus}
+            onClose={() => setZoomOpenStatus(false)}
+            imageViewRef={imageViewRef}
+          />
+        )}
 
-        <ImageInfoView photo={photo} loading={imageInfoIsLoading} rootRef={imageInfoRef} />
+        <ImageInfoViewMemo photo={photo} loading={imageInfoIsLoading} rootRef={imageInfoRef} />
       </div>
     </div>
   )
 }
 
-const PhotoPage = withTranslation()(PhotoImpl)
 export default PhotoPage
