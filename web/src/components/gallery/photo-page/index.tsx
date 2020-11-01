@@ -60,7 +60,8 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
     imageIsLoading,
     imageInfoIsLoading,
     imageSwitcher,
-    photoset,
+    error,
+    photosetError,
   } = usePhotoState(photosetId)
   const {
     close,
@@ -207,8 +208,53 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
     onSwiping,
   })
 
-  if (!photo || !photoset) {
-    console.log('loading lles')
+  if (error) {
+    let text: string
+    if (error.kind === 'not-found') {
+      text = 'This image does not exist'
+    } else if (error.kind === 'api') {
+      text = 'There was a problem in the servers'
+    } else {
+      text = 'Something unknown happened...'
+    }
+
+    return (
+      <div className="photo-overlay">
+        <div className="image-page-container" role="document">
+          <div className="text-center pt-5">
+            <h1>{text}</h1>
+            <p>{error.message}</p>
+            <Link to={`/gallery/${photosetId}`}>Go to photoset gallery</Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (photosetError) {
+    let text: string
+    if (photosetError.kind === 'not-found') {
+      text = 'This photoset does not exist'
+    } else if (photosetError.kind === 'api') {
+      text = 'There was a problem in the servers'
+    } else {
+      text = 'Something unknown happened...'
+    }
+
+    return (
+      <div className="photo-overlay">
+        <div className="image-page-container" role="document">
+          <div className="text-center pt-5">
+            <h1>{text}</h1>
+            <p>{photosetError.message}</p>
+            <Link to="/gallery">Go to gallery</Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!photo) {
     return (
       <div className="photo-overlay">
         <div className="load-spinner-container show">

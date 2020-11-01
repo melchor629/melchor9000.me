@@ -2,6 +2,7 @@ import $ from 'jquery'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { RouteComponentProps } from 'react-router'
+import { Link } from 'react-router-dom'
 
 import Header from './header'
 import PhotoItem from './photo-item'
@@ -55,6 +56,20 @@ const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, photosLoaded, totalPhotos, page, perPage])
+
+  if (photoset?.error) {
+    return (
+      <div className="text-center pt-5">
+        <h1>
+          {photoset.error.kind === 'not-found'
+            ? 'This photoset does not exist'
+            : 'Something bad happened :('}
+        </h1>
+        <p>{photoset.error.message}</p>
+        <Link to="/gallery">Go to gallery</Link>
+      </div>
+    )
+  }
 
   const spinnerClasses = !morePhotosToLoad
     ? ['d-none']

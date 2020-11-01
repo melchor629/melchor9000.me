@@ -1,21 +1,21 @@
 import {
   DETAILED_PHOTO_IS_GOING_TO_CHANGE,
-  FIRST_PHOTOS_LOADED,
+  PHOTOSET_FIRST_PHOTOS_LOADED,
   GalleryActions,
-  HIDDEN_DETAILED,
-  LOADED_PHOTO_DETAIL,
-  LOADED_PHOTO_IMAGE,
-  LOADING_MORE_PHOTOS,
-  CHANGE_TO_PHOTO_DETAIL,
-  LOADING_PHOTO_DETAIL,
-  MORE_PHOTOS_LOADED,
+  DETAILED_HIDDEN,
+  DETAILED_LOADED_INFO,
+  DETAILED_PHOTO_LOADED,
+  PHOTOSET_LOADING_PHOTOS,
+  DETAILED_CHANGE_PHOTO,
+  DETAILED_LOADING_INFO,
+  PHOTOSET_LOADED_PHOTOS,
+  PHOTOSET_ERROR_LOADING,
+  DETAILED_PHOTO_ERROR,
 } from './actions'
 import { Photo, PhotosetPhoto } from '../../lib/flickr'
 
 export interface GalleryPhoto extends Photo {
   url: string
-  zoomUrl?: string
-  zoomSize?: { w: number, h: number }
 }
 
 export interface GalleryPhotosetPhoto extends PhotosetPhoto {
@@ -27,6 +27,7 @@ interface GalleryPhotoset {
   totalPhotos: number
   photos: GalleryPhotosetPhoto[]
   loading: boolean
+  error?: { kind: 'not-found' | 'api' | 'other', message: string }
 }
 
 interface GalleryDetailedState {
@@ -37,6 +38,7 @@ interface GalleryDetailedState {
   directionOfChange: 'next' | 'prev'
   loadingInfo: boolean
   loadingPhoto: boolean
+  error?: { kind: 'not-found' | 'api' | 'other', message: string }
 }
 
 export interface GalleryState {
@@ -62,7 +64,7 @@ export const galleryList = (
   action: GalleryActions,
 ): GalleryState => {
   switch (action.type) {
-    case MORE_PHOTOS_LOADED: {
+    case PHOTOSET_LOADED_PHOTOS: {
       const photoset = state.photosets[action.photosetId]
       if (!photoset) {
         return state
@@ -71,6 +73,7 @@ export const galleryList = (
       return {
         ...state,
         photosets: {
+          ...state.photosets,
           [action.photosetId]: {
             ...photoset,
             loading: false,
@@ -80,12 +83,13 @@ export const galleryList = (
       }
     }
 
-    case FIRST_PHOTOS_LOADED: {
+    case PHOTOSET_FIRST_PHOTOS_LOADED: {
       const photoset = state.photosets[action.photosetId] || {}
 
       return {
         ...state,
         photosets: {
+          ...state.photosets,
           [action.photosetId]: {
             ...photoset,
             loading: false,
@@ -101,20 +105,45 @@ export const galleryList = (
       }
     }
 
-    case LOADING_MORE_PHOTOS:
+    case PHOTOSET_LOADING_PHOTOS:
       return {
         ...state,
         photosets: {
+          ...state.photosets,
           [action.photosetId]: {
             ...(
               state.photosets[action.photosetId] || { photos: [], primary: null, totalPhotos: 0 }
             ),
             loading: true,
+            error: undefined,
           },
         },
       }
 
-    case HIDDEN_DETAILED:
+    case PHOTOSET_ERROR_LOADING: {
+      const photoset = state.photosets[action.photosetId] || {
+        loading: false,
+        photos: [],
+        totalPhotos: 0,
+        primary: null,
+      }
+
+      return {
+        ...state,
+        photosets: {
+          ...state.photosets,
+          [action.photosetId]: {
+            ...photoset,
+            error: {
+              kind: action.kind,
+              message: action.message,
+            },
+          },
+        },
+      }
+    }
+
+    case DETAILED_HIDDEN:
       return {
         ...state,
         detailed: {
@@ -127,7 +156,7 @@ export const galleryList = (
         },
       }
 
-    case LOADING_PHOTO_DETAIL:
+    case DETAILED_LOADING_INFO:
       return {
         ...state,
         detailed: {
@@ -137,10 +166,11 @@ export const galleryList = (
           currentPhotoId: action.photoId,
           previousPhotoId: state.detailed.currentPhotoId,
           imageSwitcher: !state.detailed.imageSwitcher,
+          error: undefined,
         },
       }
 
-    case LOADED_PHOTO_DETAIL: {
+    case DETAILED_LOADED_INFO: {
       if (!state.detailed.currentPhotoId) {
         return state
       }
@@ -159,7 +189,7 @@ export const galleryList = (
       }
     }
 
-    case CHANGE_TO_PHOTO_DETAIL: {
+    case DETAILED_CHANGE_PHOTO: {
       return {
         ...state,
         detailed: {
@@ -168,11 +198,12 @@ export const galleryList = (
           currentPhotoId: action.photoId,
           previousPhotoId: state.detailed.currentPhotoId,
           imageSwitcher: !state.detailed.imageSwitcher,
+          error: undefined,
         },
       }
     }
 
-    case LOADED_PHOTO_IMAGE:
+    case DETAILED_PHOTO_LOADED:
       return {
         ...state,
         detailed: {
@@ -180,6 +211,21 @@ export const galleryList = (
           loadingPhoto: false,
         },
       }
+
+    case DETAILED_PHOTO_ERROR: {
+      return {
+        ...state,
+        detailed: {
+          ...state.detailed,
+          loadingPhoto: false,
+          loadingInfo: false,
+          error: {
+            kind: action.kind,
+            message: action.message,
+          },
+        },
+      }
+    }
 
     case DETAILED_PHOTO_IS_GOING_TO_CHANGE: {
       // TODO ???

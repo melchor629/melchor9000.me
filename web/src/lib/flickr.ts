@@ -97,7 +97,7 @@ export interface Photo {
   sizes: PhotoSize[]
 }
 
-class GalleryError extends Error {
+export class GalleryError extends Error {
   public body: any
 
   constructor(public readonly response: Response, message?: string) {

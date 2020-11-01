@@ -3,7 +3,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import { State } from '../../../redux/reducers'
 import {
-  hideDetailed, loadDetailedPhoto, loadedPhotoImage, nextDetailed, prevDetailed,
+  hideDetailed, loadDetailedPhoto, detailedPhotoLoaded, nextDetailed, prevDetailed,
 } from '../../../redux/gallery/actions'
 import { changeNavbarHideMode } from '../../../redux/effects/actions'
 
@@ -29,7 +29,8 @@ export const usePhotoState = (photosetId: string) => useSelector(({ galleryList 
     directionOfChange: galleryList.detailed.directionOfChange,
     imageInfoIsLoading: galleryList.detailed.loadingInfo || (photoset?.loading ?? false),
     imageSwitcher: galleryList.detailed.imageSwitcher,
-    photoset,
+    error: galleryList.detailed.error,
+    photosetError: photoset?.error,
   }
 }, shallowEqual)
 
@@ -39,7 +40,7 @@ export const usePhotoActions = (photosetId: string) => {
     loadFullInfoForPhoto: (photoId: string) => (
       dispatch(loadDetailedPhoto(photoId, photosetId))
     ),
-    photoIsLoaded: () => dispatch(loadedPhotoImage()),
+    photoIsLoaded: () => dispatch(detailedPhotoLoaded()),
     next: () => dispatch(nextDetailed()),
     prev: () => dispatch(prevDetailed()),
     close: () => dispatch(hideDetailed()),
