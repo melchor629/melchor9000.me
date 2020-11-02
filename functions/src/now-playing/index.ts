@@ -9,11 +9,10 @@ const app = express()
 
 app.disable('x-powered-by')
 app.engine('.ejs', ejs.renderFile)
-app.use(cors())
 
-app.get('/', handlerCatch(nowPlayingController))
+app.get('/', cors(), handlerCatch(nowPlayingController))
 app.get('/svg', handlerCatch(nowPlayingSvgController))
-app.get('/:user', handlerCatch(nowPlayingController))
+app.get('/:user', cors(), handlerCatch(nowPlayingController))
 app.get('/:user/svg', handlerCatch(nowPlayingSvgController))
 
 app.use(notFound)

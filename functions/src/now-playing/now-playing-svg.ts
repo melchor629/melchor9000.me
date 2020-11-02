@@ -6,7 +6,7 @@ const nowPlayingSvgController: RequestHandler = async (req, res) => {
   const user = req.params.user || 'melchor629'
   const { recenttracks: { track } } = await lastfm.user.getRecentTracks(user, 15)
 
-  const nowPlayingTrack = (track as any[]).find((t) => t['@attr']?.nowplaying)
+  const nowPlayingTrack = track.find((t) => t['@attr']?.nowplaying)
   const params: any = {}
   if (nowPlayingTrack) {
     params.status = 'Vibing to:'

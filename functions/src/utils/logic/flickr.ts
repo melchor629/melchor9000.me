@@ -20,7 +20,12 @@ const doRequest = async <T>(request: any): Promise<T> => {
     nojsoncallback: '1',
   }
   const url = buildUrl(apiUrl, augmentedRequest)
-  const response = await got<T>(url, { responseType: 'json' })
+  const response = await got<T>(url, {
+    responseType: 'json',
+    headers: {
+      'user-agent': 'melchor9000.me/functions (https://github.com/melchor629/melchor9000.me)',
+    },
+  })
   return response.body
 }
 
