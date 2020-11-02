@@ -1,0 +1,80 @@
+.now-playing-container {
+  padding-top: 60px;
+  padding-bottom: 20px;
+  height: calc(100vh - 40px);
+  // that is, the size of one card plus the padding bottom (aprox)
+  min-height: 510px;
+  overflow-x: scroll;
+
+  > div {
+    // half of the .now-playing-container width minus half of a card minus the missing margin from the last card
+    margin-left: calc(100% / 2 - (300px + 3rem) / 2 - 1rem);
+    padding-right: calc(100% / 2 - (300px + 3rem) / 2 - 1rem);
+  }
+}
+
+.np-track-card {
+  $border-radius: 12px;
+  --background-color: rgba(50, 50, 50, 0.9);
+  --text-color: rgba(255, 255, 255, 0.8);
+  .darkmode & {
+    --background-color: rgba(210, 210, 210, 0.9);
+    --text-color: rgba(0, 0, 0, 0.8);
+  }
+
+  padding: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-radius: $border-radius;
+  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
+  will-change: opacity, transform;
+
+  background-color: var(--background-color);
+
+  &-cover-art {
+    width: 300px;
+    height: 300px;
+    margin: 1rem .5rem;
+    margin-bottom: 1.5rem;
+
+    > img {
+      border-radius: $border-radius;
+      box-shadow: 0 0 40px 0px rgba(0, 0, 0, 0.25),
+                  0 0 16px 2px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &-content {
+    overflow: hidden;
+    width: calc(300px + 1rem);
+    user-select: none;
+    text-align: center;
+
+    > [class^="np-track-card-content-"] {
+      color: var(--text-color);
+      white-space: nowrap;
+
+      > div > div > span {
+        color: var(--text-color);
+      }
+    }
+
+    &-title {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    &-artist,
+    &-album {
+      font-size: 1.25rem;
+    }
+
+    &-album {
+      font-weight: 100;
+    }
+
+    &-scrobbled {
+      font-size: 0.75rem;
+    }
+  }
+}

@@ -16,6 +16,7 @@ const Experiments = () => {
         <div className="col-12">
           <Experiment id="eugl" />
           <Experiment id="viz" />
+          <Experiment id="now-playing" />
         </div>
       </div>
     </>

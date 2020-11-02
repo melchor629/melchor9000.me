@@ -164,6 +164,10 @@
     "viz": {
       "title": "Viz",
       "description": "Visualizador de ondas o barras de la canción que pongas. Experimento que al final se llevó a la página principal también."
+    },
+    "now-playing": {
+      "title": "¿Qué estoy escuchando?",
+      "description": "Muestra una lista de canciones que he escuchado recientemente, además de la canción actualmente en reproducción, con un diseño muy interesante"
     }
   },
 

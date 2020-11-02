@@ -22,6 +22,7 @@ interface RecentTrack {
     uts: number
   }
   url: string
+  mbid: string
 }
 
 const getRecentTracks = async (username: string, count: number = 10) => {

@@ -164,6 +164,10 @@
     "viz": {
       "title": "Viz",
       "description": "Wave or bar visualizer from the song you put in. This experiment can be also found in the home page."
+    },
+    "now-playing": {
+      "title": "Now Playing",
+      "descrption": "A list of recent tracks of mine, as well as the current playing track, with a neat design"
     }
   },
 

@@ -43,7 +43,7 @@ export const routes: Array<Route<any>> = [
   route('/gallery', 'Photo Gallery', Gallery),
   route('/blog', 'Posts', withDefaultContainer(Posts)),
   route('/projects', 'Projects', withDefaultContainer(Projects)),
-  route('/experiments', 'Experiments', withDefaultContainer(Experiments)),
+  route('/experiments', 'Experiments', Experiments),
   route('/support-me', 'Support Me', withDefaultContainer(SupportMe)),
   privateRoute('/admin', 'Admin page', Admin),
 ]

@@ -164,6 +164,10 @@
     "viz": {
       "title": "Viz",
       "description": "Visualiztador de ones o barres de la cançó que posis a la web. Experiment que, a més, es va dur a la pàgina principal."
+    },
+    "now-playing": {
+      "title": "Que estic escoltant?",
+      "descrption": "Mostra una llista de cançons que he escoltat recentment, a més de la cançó que estic escoltant ara mateix, amb un diseny molt interesant"
     }
   },
 

@@ -14,6 +14,7 @@ const nowPlayingController: RequestHandler = async (req, res) => {
     })),
     nowPlaying: t['@attr']?.nowplaying,
     scrobbledAt: t.date && new Date(t.date.uts * 1000),
+    mbid: t.mbid,
   }))
   res.json({
     recentTracks: mappedTracks.filter((t) => !t.nowPlaying),
