@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
-import asyncComponent from '../async-component'
 import Experiments from './experiments'
 
-const Viz = asyncComponent(() => import('../viz'))
-const Eugl = asyncComponent(() => import('../eugl'))
+const Viz = lazy(() => import('../viz'))
+const Eugl = lazy(() => import('../eugl'))
 
 const ExperimentsRoutes = () => (
   <div>

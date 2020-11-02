@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { useSelector } from 'react-redux'
 import { Switch, withRouter } from 'react-router'
 import { Link, Route, RouteComponentProps } from 'react-router-dom'
@@ -11,12 +11,12 @@ import { routes } from './routes'
 import { State } from './redux/reducers'
 import PrivateRoute from './containers/private-route'
 import { withDefaultContainer } from './components/default-container'
-import asyncComponent from './components/async-component'
+import LoadSpinner from './components/load-spinner'
 
 import './app.scss'
 
-const PageNotFound = asyncComponent(() => import('./components/404/404'))
-const Login = asyncComponent(() => import('./containers/login'))
+const PageNotFound = React.lazy(() => import('./components/404/404'))
+const Login = React.lazy(() => import('./containers/login'))
 
 const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
   const [offcanvas, setOffcanvas] = useState(false)
@@ -142,30 +142,32 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
 
       <ToastContainer pauseOnHover={false} />
 
-      <Switch>
-        {routes
-          .filter((route) => !route.private)
-          .map((route) => (
-            <Route
-              path={route.route}
-              component={route.component}
-              key={route.route}
-              {...route.extra}
-            />
-          ))}
-        {routes
-          .filter((route) => route.private)
-          .map((route) => (
-            <PrivateRoute
-              path={route.route}
-              component={route.component}
-              key={route.route}
-              {...route.extra}
-            />
-          ))}
-        <Route path="/login" component={withDefaultContainer(Login)} />
-        <Route component={withDefaultContainer(PageNotFound)} />
-      </Switch>
+      <Suspense fallback={<div className="d-flex justify-content-center mt-5"><LoadSpinner /></div>}>
+        <Switch>
+          {routes
+            .filter((route) => !route.private)
+            .map((route) => (
+              <Route
+                path={route.route}
+                component={route.component}
+                key={route.route}
+                {...route.extra}
+              />
+            ))}
+          {routes
+            .filter((route) => route.private)
+            .map((route) => (
+              <PrivateRoute
+                path={route.route}
+                component={route.component}
+                key={route.route}
+                {...route.extra}
+              />
+            ))}
+          <Route path="/login" component={withDefaultContainer(Login)} />
+          <Route component={withDefaultContainer(PageNotFound)} />
+        </Switch>
+      </Suspense>
 
     </div>
   )

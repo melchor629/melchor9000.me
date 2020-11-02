@@ -1,6 +1,5 @@
-import * as React from 'react'
+import React, { lazy } from 'react'
 import { withDefaultContainer } from './components/default-container'
-import asyncComponent from './components/async-component'
 
 type LeComponent<Props> = React.ComponentType<Props>
 
@@ -29,14 +28,14 @@ function privateRoute<Props = any>(_route: string,
   }
 }
 
-const AboutMe = asyncComponent(() => import('./components/about-me'))
-const Projects = asyncComponent(() => import('./components/projects'))
-const Home = asyncComponent(() => import('./containers/home'))
-const Gallery = asyncComponent(() => import('./components/gallery'))
-const Posts = asyncComponent(() => import('./containers/posts'))
-const Experiments = asyncComponent(() => import('./components/experiments'))
-const SupportMe = asyncComponent(() => import('./components/support-me'))
-const Admin = asyncComponent(() => import('./containers/admin/admin'))
+const AboutMe = lazy(() => import('./components/about-me'))
+const Projects = lazy(() => import('./components/projects'))
+const Home = lazy(() => import('./containers/home'))
+const Gallery = lazy(() => import('./components/gallery'))
+const Posts = lazy(() => import('./containers/posts'))
+const Experiments = lazy(() => import('./components/experiments'))
+const SupportMe = lazy(() => import('./components/support-me'))
+const Admin = lazy(() => import('./containers/admin/admin'))
 
 export const routes: Array<Route<any>> = [
   route('/', 'Home', withDefaultContainer(Home), { exact: true }),

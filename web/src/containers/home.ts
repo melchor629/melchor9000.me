@@ -36,4 +36,4 @@ const mapDispatchToProps = (dispatch: any): IndexDispatchToProps => ({
 })
 
 export const Home = withTranslation('translations')(connect(mapStateToProps, mapDispatchToProps)(HomeComponent))
-export const Component = Home
+export default Home

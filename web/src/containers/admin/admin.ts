@@ -23,4 +23,4 @@ const mapDispatchToProps = (dispatch: any): AdminDispatchToProps => ({
 })
 
 export const Admin = connect(mapStateToProps, mapDispatchToProps)(AdminComponent)
-export const Component = Admin
+export default Admin

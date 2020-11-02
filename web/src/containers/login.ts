@@ -25,4 +25,4 @@ const mapDispatchToProps = (dispatch: any): LoginDispatchToProps => ({
 })
 
 export const Login = connect(mapStateToProps, mapDispatchToProps)(LoginComponent as any)
-export const Component = Login
+export default Login
