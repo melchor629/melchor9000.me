@@ -18,7 +18,6 @@ const nowPlayingController: RequestHandler = async (req, res) => {
   res.json({
     recentTracks: mappedTracks.filter((t) => !t.nowPlaying),
     nowPlaying: mappedTracks.find((t) => t.nowPlaying) || null,
-    _orig: track,
   })
 }
 

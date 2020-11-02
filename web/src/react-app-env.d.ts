@@ -13,8 +13,6 @@ declare module 'debounce' {
 
 declare module NodeJS {
   interface ProcessEnv {
-    readonly REACT_APP_FLICKR_API_KEY?: string
-    readonly REACT_APP_FLICKR_SECRET_KEY?: string
     readonly REACT_APP_FIREBASE_API_KEY?: string
     readonly REACT_APP_FIREBASE_AUTH_DOMAIN?: string
     readonly REACT_APP_FIREBASE_DATABASE_URL?: string
