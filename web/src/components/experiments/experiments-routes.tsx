@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import asyncComponent from '../async-component'
 import Experiments from './experiments'
 
-const Viz = asyncComponent(() => import('../../containers/viz'))
+const Viz = asyncComponent(() => import('../viz'))
 const Eugl = asyncComponent(() => import('../eugl'))
 
 const ExperimentsRoutes = () => (

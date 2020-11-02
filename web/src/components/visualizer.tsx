@@ -153,6 +153,7 @@ class Visualizer extends React.Component<VisualizerProp, VisualizerState> {
   private drawBars(): void {
     const { width, height } = this
     this.audioAnalyser.fftSize = 512
+    this.audioAnalyser.smoothingTimeConstant = 0.7
     const bufferLength = this.audioAnalyser.frequencyBinCount
     const dataArray = new Uint8Array(bufferLength)
 
@@ -165,7 +166,7 @@ class Visualizer extends React.Component<VisualizerProp, VisualizerState> {
       this.canvasContext.fillStyle = theme === 'light' ? 'white' : '#282828'
       this.canvasContext.fillRect(0, 0, width(), height())
 
-      const barWidth = width() / (bufferLength * 2.5)
+      const barWidth = width() / bufferLength
       let x = 0
 
       for (let i = 0; i < bufferLength; i += 1) {
@@ -184,6 +185,7 @@ class Visualizer extends React.Component<VisualizerProp, VisualizerState> {
   private drawWave(): void {
     const { width, height } = this
     this.audioAnalyser.fftSize = 4096
+    this.audioAnalyser.smoothingTimeConstant = 0.9
     const bufferLength = this.audioAnalyser.frequencyBinCount
     const dataArray = new Uint8Array(bufferLength)
 
