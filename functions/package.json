@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "build": "tsc -p .",
     "start": "yarn build && firebase serve --only functions",
