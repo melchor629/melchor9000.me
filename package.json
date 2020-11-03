@@ -31,5 +31,6 @@
     "deploy:functions": "firebase deploy --project melchor9000-webpage --only functions",
     "deploy:hosting": "firebase deploy --project melchor9000-webpage --only hosting",
     "lint": "yarn workspaces run lint"
-  }
+  },
+  "version": "0.0.0"
 }
