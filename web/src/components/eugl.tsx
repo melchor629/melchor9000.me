@@ -11,7 +11,7 @@ import { getAssetUrl } from '../lib/url'
 import 'cropperjs/dist/cropper.css'
 
 function sleep(time: number) {
-  return new Promise((accept) => setTimeout(() => accept(), time * 1000))
+  return new Promise<void>((accept) => setTimeout(() => accept(), time * 1000))
 }
 
 const DEFAULT_VERTEX_SHADER = `

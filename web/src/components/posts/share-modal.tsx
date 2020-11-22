@@ -1,4 +1,4 @@
-import React, { memo, PropsWithChildren } from 'react'
+import { memo, PropsWithChildren } from 'react'
 import Ink from 'react-ink'
 import { useTranslation } from 'react-i18next'
 

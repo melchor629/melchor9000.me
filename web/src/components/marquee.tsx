@@ -1,14 +1,16 @@
-import React, {
+import {
+  forwardRef,
   useCallback,
   useLayoutEffect,
   useRef,
   useState,
+  PropsWithChildren,
 } from 'react'
 
 // based from https://github.com/cdtinney/react-double-marquee/blob/master/src/index.jsx
 // uses other kind of triggering for the animation and is full hooks
 
-type MarqueeProps = React.PropsWithChildren<{
+type MarqueeProps = PropsWithChildren<{
   childMargin: number
   direction: 'left' | 'right'
   loop: boolean
@@ -110,7 +112,7 @@ const Marquee = ({
   }, [resetPosition, requestAnimationIfNeeded, itemIsLargerThanContainer])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const Child = useCallback(React.forwardRef<HTMLSpanElement>((_, ref) => (
+  const Child = useCallback(forwardRef<HTMLSpanElement>((_, ref) => (
     <span ref={ref} style={{ margin: `0 ${childMargin}px` }}>
       {children}
     </span>

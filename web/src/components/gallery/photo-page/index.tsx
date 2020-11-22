@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react'
-import { EventData, useSwipeable } from 'react-swipeable'
+import { SwipeEventData, useSwipeable } from 'react-swipeable'
 import { Link, RouteComponentProps } from 'react-router-dom'
 
 import ZoomImageView from './zoom-image-view'
@@ -166,7 +166,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
     setZoomOpenStatus(initialPosition)
   }, [setZoomOpenStatus])
 
-  const onSwiping = useCallback((e: EventData) => {
+  const onSwiping = useCallback((e: SwipeEventData) => {
     if (e.dir !== 'Left' && e.dir !== 'Right') {
       return
     }

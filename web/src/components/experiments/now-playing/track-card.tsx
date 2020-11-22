@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import React, { memo } from 'react'
+import { memo } from 'react'
 import { animated } from 'react-spring'
 import {
   NowPlayingTrack,

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import React, { memo, useMemo } from 'react'
+import { memo, useMemo, RefObject } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { GalleryPhoto, GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
@@ -9,7 +9,7 @@ import LoadSpinner from '../../load-spinner'
 interface OverlayImageInfoProps {
   photo: GalleryPhoto | GalleryPhotosetPhoto
   loading: boolean
-  rootRef?: React.RefObject<HTMLDivElement>
+  rootRef?: RefObject<HTMLDivElement>
 }
 
 const ImageInfoView = ({
@@ -157,7 +157,7 @@ const ImageInfoView = ({
 }
 
 ImageInfoView.defaultProps = {
-  rootRef: undefined as (React.RefObject<HTMLDivElement> | undefined),
+  rootRef: undefined as (RefObject<HTMLDivElement> | undefined),
 }
 
 const ImageInfoViewMemo = memo(

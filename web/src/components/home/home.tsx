@@ -1,4 +1,4 @@
-import React from 'react'
+import { Component } from 'react'
 import { WithTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 
@@ -175,7 +175,7 @@ interface StateProps {
   audioSource: AudioBufferSourceNode | null
 }
 
-export default class Home extends React.Component<IndexProps, StateProps> {
+export default class Home extends Component<IndexProps, StateProps> {
   player = new Player()
 
   private readonly cheat = new Cheat()

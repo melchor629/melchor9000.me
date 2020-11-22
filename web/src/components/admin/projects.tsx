@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { Component } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import type { ProjectsDispatchToProps, ProjectsStateToProps } from '../../containers/admin/projects'
 import { ProjectsHome } from '../../containers/admin/projects/home'
@@ -6,7 +6,7 @@ import { ProjectEditor } from '../../containers/admin/projects/editor'
 
 type ProjectsPageProps = ProjectsStateToProps & ProjectsDispatchToProps
 
-export default class Posts extends React.Component<ProjectsPageProps> {
+export default class Posts extends Component<ProjectsPageProps> {
   componentDidMount() {
     const { subscribe } = this.props
     subscribe()

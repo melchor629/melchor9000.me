@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
 import { runOnEnter } from '../../../lib/aria-utils'

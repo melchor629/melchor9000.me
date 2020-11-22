@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import React, { memo, PropsWithChildren } from 'react'
+import { memo, PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Post } from '../../redux/posts/reducers'

@@ -1,4 +1,3 @@
-import React from 'react'
 import './footer.scss'
 
 // eslint-disable-next-line global-require

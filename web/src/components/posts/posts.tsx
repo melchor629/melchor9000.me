@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Route, RouteComponentProps } from 'react-router'
 import { PostsDispatchToProps, PostsStateToProps } from '../../containers/posts/posts.interfaces'
 import { PostList } from '../../containers/posts/post-list'

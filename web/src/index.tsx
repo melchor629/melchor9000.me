@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import { Suspense, StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { applyMiddleware, compose, createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -52,7 +52,7 @@ firebase.initializeApp({
 
   ReactDOM.render(
     (
-      <React.StrictMode>
+      <StrictMode>
         <Provider store={store}>
           <BrowserRouter>
             <Suspense fallback={LoadingSpinner}>
@@ -62,7 +62,7 @@ firebase.initializeApp({
             </Suspense>
           </BrowserRouter>
         </Provider>
-      </React.StrictMode>
+      </StrictMode>
     ),
     document.getElementById('root'),
   )

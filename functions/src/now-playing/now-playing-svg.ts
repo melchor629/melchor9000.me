@@ -25,7 +25,7 @@ const nowPlayingSvgController: RequestHandler = async (req, res) => {
   }
 
   res.type('image/svg+xml').send(
-    await promisify<string, object>(res.render.bind(res))('now-playing.ejs', params),
+    await promisify<string, object, string>(res.render.bind(res))('now-playing.ejs', params),
   )
 }
 

@@ -1,7 +1,7 @@
-import React, { lazy } from 'react'
+import { lazy, ComponentType } from 'react'
 import { withDefaultContainer } from './components/default-container'
 
-type LeComponent<Props> = React.ComponentType<Props>
+type LeComponent<Props> = ComponentType<Props>
 
 export interface Route<Props = any> {
   route: string

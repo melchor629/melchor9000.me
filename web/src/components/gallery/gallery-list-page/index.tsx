@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'

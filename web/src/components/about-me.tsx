@@ -1,9 +1,9 @@
-import React from 'react'
+import { memo } from 'react'
 import { Trans, WithTranslation, withTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { Link as RouterLink } from 'react-router-dom'
 
-const Link = React.memo(({ children, href }: any) => (
+const Link = memo(({ children, href }: any) => (
   <a href={href} rel="noreferrer noopener">{children}</a>
 ))
 
