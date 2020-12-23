@@ -29,7 +29,7 @@
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "4.0.0",
+    "react-scripts": "4.0.1",
     "react-spring": "^8.0.25",
     "react-swipeable": "^6.0.0",
     "react-toastify": "^6.0.5",

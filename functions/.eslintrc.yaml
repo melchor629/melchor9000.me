@@ -1,7 +1,7 @@
 extends:
   - airbnb-typescript/base
 overrides:
-  - files: ['**/*.ts']
+  - files: ['**/*.ts', '**/*.js']
     parserOptions:
       project: 'tsconfig.json'
   - files: ['**/index.ts']
