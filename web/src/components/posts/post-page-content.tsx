@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Post } from '../../redux/posts/reducers'
 
-const PostPageContentImpl = ({ children, entry }: PropsWithChildren<{ entry: Post | null}>) => {
+const PostPageContentImpl = ({ children, entry }: PropsWithChildren<{ entry: Post | null }>) => {
   const [t] = useTranslation()
 
   if (entry === null) {

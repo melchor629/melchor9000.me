@@ -6,7 +6,7 @@ import { PostsDispatchToProps, PostsStateToProps } from './posts.interfaces'
 const mapStateToProps = (): PostsStateToProps => ({})
 
 const mapDispatchToProps = (dispatch: any): PostsDispatchToProps => ({
-  subscribePosts: () => dispatch(subscribe('posts', '-date', '<=', new Date())),
+  subscribePosts: () => dispatch(subscribe('posts', '-date', [['date', '<=', new Date()], ['hide', '==', false]])),
   unsuscribePosts: () => dispatch(unsubscribe('posts')),
 })
 

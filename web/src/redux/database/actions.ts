@@ -14,8 +14,7 @@ export const CLEAR_ERROR = 'database:CLEAR_ERROR'
 export const subscribe = (
   collection: string,
   orderBy: string | null = null,
-  filterOperator: '<' | '>' | '<=' | '>=' | null = null,
-  filterValue: any | null = null,
+  filters: [string, '<' | '>' | '<=' | '>=' | '==' | '!=', any][] | null = null,
 ) => (dispatch: Dispatch<any>) => {
   const db = firebase.firestore()
   let query: any = db.collection(collection)
@@ -29,13 +28,9 @@ export const subscribe = (
       query = query.orderBy(orderBy, 'asc')
     }
 
-    if (filterOperator !== null) {
-      if (filterValue === null) {
-        throw new Error('filter must have an value')
-      }
-
-      query = query.where(orderBy, filterOperator, filterValue)
-    }
+    (filters ?? []).forEach(([field, op, value]) => {
+      query = query.where(field, op, value)
+    })
   }
 
   dispatch({
