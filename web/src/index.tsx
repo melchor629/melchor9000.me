@@ -33,8 +33,14 @@ firebase.initializeApp({
 (async () => {
   try {
     const fs = firebase.firestore()
-    fs.settings({ cacheSizeBytes: 4000 * 1000 })
-    await fs.enablePersistence({ synchronizeTabs: true })
+    if (process.env.NODE_ENV === 'production') {
+      fs.settings({ cacheSizeBytes: 4_000_000 })
+      await fs.enablePersistence({ synchronizeTabs: true })
+    } else {
+      fs.settings({ experimentalForceLongPolling: true })
+      await fs.clearPersistence()
+    }
+
     await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
   } catch (error) {
     console.error(error)
