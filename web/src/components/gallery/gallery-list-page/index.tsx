@@ -1,5 +1,9 @@
-import $ from 'jquery'
-import { useEffect, useState } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import { Helmet } from 'react-helmet'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -14,6 +18,23 @@ const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>)
   const [page, setPage] = useState(0)
   const photoset = useGalleryListState(photosetId)
   const { loadFirstPhotos, loadMorePhotos } = useGalleryListActions(photosetId)
+  const spinnerRef = useRef<HTMLDivElement>(null)
+  const loadEntriesRef = useRef<() => void>()
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        loadEntriesRef.current?.()
+      }
+    }, { rootMargin: '100px 0px' })
+    if (spinnerRef.current) {
+      observer.observe(spinnerRef.current)
+    }
+
+    return () => {
+      observer.disconnect()
+    }
+  })
 
   useEffect(() => {
     if (!photoset) {
@@ -31,31 +52,18 @@ const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>)
   const perPage = window.document.body.clientWidth > 992 ? 16 : 15
   const photosLoaded = photos.length
   const morePhotosToLoad = page < Math.floor(totalPhotos / perPage) + 1
-  useEffect(() => {
-    if (!morePhotosToLoad) {
-      return () => {}
+
+  loadEntriesRef.current = useCallback(() => {
+    if (loading) {
+      return
     }
 
-    const onScroll = () => {
-      const bottom = $(document).scrollTop()! + $(window).height()!
-      const sizeOfPage = document.body.scrollHeight
-      if (sizeOfPage - bottom < 125 && !loading) {
-        if (page * perPage >= photosLoaded) {
-          loadMorePhotos()
-        } else {
-          setPage(page + 1)
-        }
-        window.removeEventListener('scroll', onScroll)
-      }
+    if (page * perPage >= photosLoaded) {
+      loadMorePhotos()
+    } else {
+      setPage(page + 1)
     }
-
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, photosLoaded, totalPhotos, page, perPage])
+  }, [loading, loadMorePhotos, photosLoaded, page, perPage])
 
   if (photoset?.error) {
     return (
@@ -91,7 +99,7 @@ const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>)
         {photos.slice(0, page * perPage).map((photo) => <PhotoItem photo={photo} key={photo.id} />)}
       </div>
 
-      <div className={spinnerClasses.join(' ')}>
+      <div className={spinnerClasses.join(' ')} ref={spinnerRef}>
         <LoadSpinner />
       </div>
     </div>

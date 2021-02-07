@@ -1,5 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState, Suspense } from 'react'
+import React, {
+  useEffect, useRef, useState, Suspense,
+} from 'react'
 import { useSelector } from 'react-redux'
 import { Switch, withRouter } from 'react-router'
 import { Link, Route, RouteComponentProps } from 'react-router-dom'
@@ -29,6 +31,7 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
     darkMode: state.effects.darkMode,
     navbarHideMode: state.effects.navbarHideMode,
   }))
+  const navbarThresholdRef = useRef<HTMLDivElement>(null)
 
   const linkActive = (route: any) => {
     if (route.extra && route.extra.exact) {
@@ -73,21 +76,23 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
     if (navbarHideMode === null && navbarExtraClases.length > 0) {
       setNavbarExtraClasses([])
     } else if (navbarHideMode === 'top-only') {
-      const onScroll = () => {
-        if (window.scrollY > 125 && navbarExtraClases.includes('hide-top')) {
-          setNavbarExtraClasses([])
-        } else if (window.scrollY <= 125 && !navbarExtraClases.includes('hide-top')) {
+      const observer = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
           setNavbarExtraClasses(['hide-top'])
+        } else {
+          setNavbarExtraClasses([])
         }
+      })
+      observer.observe(navbarThresholdRef.current!)
+
+      return () => {
+        observer.disconnect()
       }
-      onScroll()
-      window.addEventListener('scroll', onScroll, { passive: true })
-      return () => window.removeEventListener('scroll', onScroll)
     } else if (navbarHideMode === 'always' && !navbarExtraClases.includes('hide')) {
       setNavbarExtraClasses(['hide'])
     }
 
-    return () => undefined
+    return () => {}
   }, [navbarHideMode, navbarExtraClases])
 
   const navbarClasses = `navbar navbar-default navbar-dark navbar-expand-lg fixed-top ${navbarExtraClases.join(' ')}`
@@ -105,6 +110,8 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
                         (aka melchor9000, aka melchor629)"
         />
       </Helmet>
+
+      <div style={{ position: 'absolute', top: 125 }} ref={navbarThresholdRef} />
 
       <nav className={navbarClasses}>
         <button

@@ -51,6 +51,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
   const imagePageContainerRef = useRef<HTMLDivElement | null>(null)
   const imageViewRef = useRef<HTMLDivElement | null>(null)
   const imageInfoRef = useRef<HTMLDivElement | null>(null)
+  const observerRef = useRef<IntersectionObserver>()
   const {
     currentPhoto: photo,
     directionOfChange,
@@ -106,28 +107,26 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
   }, [prevPhoto, nextPhoto, zoomOpenStatus, photosetId])
 
   useEffect(() => {
-    const onScroll = () => {
-      const imageInfoElement = imageInfoRef.current
-      if (imageInfoElement === null) {
-        return
-      }
-
-      const windowHeight = window.innerHeight
-      const verticalScroll = window.scrollY
-      const imageInfoVerticalPosition = (
-        imageInfoElement.getBoundingClientRect()!.top + verticalScroll
-      )
-      const limit = imageInfoVerticalPosition - windowHeight * 0.5
-      if (limit > verticalScroll && topOrBottom === 'bottom') {
-        setTopOrBottom('top')
-      } else if (limit < verticalScroll && topOrBottom === 'top') {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
         setTopOrBottom('bottom')
+      } else {
+        setTopOrBottom('top')
       }
-    }
+    }, { threshold: 0.5 })
+    observerRef.current = observer
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [topOrBottom, imageInfoRef])
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  const hasPhoto = !error && !photosetError && !!photo
+  useEffect(() => {
+    if (hasPhoto) {
+      observerRef.current!.observe(imageInfoRef.current!)
+    }
+  }, [hasPhoto])
 
   useEffect(() => {
     if (imagePageContainerRef.current) {
