@@ -8,7 +8,7 @@
 
 The web is deployed in Firebase, the source code of it can be found inside the `web` folder. There are some Firebase Functions that helps the web work, those can be found inside `functions`.
 
-To develop in local you need node 10.x and `yarn`. This repo uses yarn workspaces. Useful commands:
+To develop in local you need node 12.x and `yarn`. This repo uses yarn workspaces. Useful commands:
 
 - In root:
     - `yarn run audit`: checks if there are any packages with security issues
