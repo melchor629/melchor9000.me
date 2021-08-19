@@ -15,7 +15,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "commonmark": "^0.29.0",
+    "commonmark": "^0.30.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.5",
     "etag": "^1.8.1",
@@ -23,7 +23,7 @@
     "firebase-admin": "^9.3.0",
     "firebase-functions": "^3.3.0",
     "got": "^11.8.0",
-    "highlight.js": "^10.3.1"
+    "highlight.js": "^11.2.0"
   },
   "devDependencies": {
     "@types/commonmark": "^0.27.4",
@@ -33,7 +33,7 @@
     "@types/express": "^4.11.1",
     "eslint": "^7.12.0",
     "eslint-plugin-import": "^2.18.2",
-    "firebase-functions-test": "^0.2.1"
+    "firebase-functions-test": "^0.3.2"
   },
   "private": true
 }

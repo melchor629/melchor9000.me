@@ -1,5 +1,7 @@
 import { Parser, HtmlRenderer } from 'commonmark'
-import { highlight, highlightAuto } from 'highlight.js'
+import * as highlight from 'highlight.js'
+
+const codeRegex = /<pre><code(?: class="language-(.+)")?>/
 
 export default (contents: string, format: 'html' | 'md') => {
   let html = contents
@@ -11,7 +13,7 @@ export default (contents: string, format: 'html' | 'md') => {
   }
 
   let i = 0
-  let codeMatches = /<pre><code(?: class="language-(.+)")?>/.exec(html.substr(i))
+  let codeMatches = codeRegex.exec(html.substr(i))
   while (codeMatches !== null) {
     const codeStart = i + codeMatches.index + codeMatches[0].length
     const codeEnd = /<\/code><\/pre>/.exec(html.substr(codeStart))!.index
@@ -21,11 +23,13 @@ export default (contents: string, format: 'html' | 'md') => {
       .replace(/&amp;/g, '&')
       .replace(/&quot;/g, '"')
     const codeRendered = codeMatches[1]
-      ? highlight(codeMatches[1], code).value
-      : highlightAuto(code).value
+      // @ts-ignore
+      ? highlight.highlight(code, { language: codeMatches[1] }).value
+      // @ts-ignore
+      : highlight.highlightAuto(code).value
     html = html.substr(0, codeStart) + codeRendered + html.substr(codeStart + codeEnd)
     i = codeStart + codeRendered.length
-    codeMatches = /<pre><code(?: class="language-(.+)")?>/.exec(html.substr(i))
+    codeMatches = codeRegex.exec(html.substr(i))
   }
 
   return html
