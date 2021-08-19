@@ -7,7 +7,7 @@ const Link = memo(({ children, href }: any) => (
   <a href={href} rel="noreferrer noopener">{children}</a>
 ))
 
-const image = [
+const images = [
   {
     src: '/img/itsame/raul.jpg',
     photographer: 'Raúl',
@@ -18,7 +18,13 @@ const image = [
     photographer: 'Manu',
     photographerLink: 'https://twitter.com/_M1ndbl0w',
   },
-][Math.trunc(Math.random() * 2)]
+  {
+    src: '/img/itsame/raul2.jpg',
+    photographer: 'Raúl',
+    photographerLink: 'https://twitter.com/MrRaulWhite',
+  },
+]
+const image = images[Math.trunc(Math.random() * images.length)]
 
 const AboutMe = ({ t }: WithTranslation) => (
   <>
