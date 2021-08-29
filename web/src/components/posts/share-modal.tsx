@@ -32,11 +32,9 @@ const ShareItem = memo(({
 const ShareModalImpl = ({ post }: { post: Post }) => {
   const [t] = useTranslation()
 
-  function query(object: any): string {
-    return new URLSearchParams(Object.entries(object)).toString()
-  }
+  const query = (object: any): string => new URLSearchParams(Object.entries(object)).toString()
 
-  function twitterButtonPressed() {
+  const twitterButtonPressed = () => {
     const q = query({
       text: encodeURIComponent(post.title),
       url: encodeURIComponent(window.location.toString()),
@@ -46,15 +44,15 @@ const ShareModalImpl = ({ post }: { post: Post }) => {
     window.open(`http://twitter.com/intent/tweet?${q}`)
   }
 
-  function telegramButtonPressed() {
+  const telegramButtonPressed = () => {
     window.location.assign(`tg://msg_url?url=${encodeURIComponent(window.location.toString())}`)
   }
 
-  function whatsappButtonPressed() {
+  const whatsappButtonPressed = () => {
     window.location.assign(`whatsapp://send?text=${encodeURIComponent(`${post.title}: ${window.location}`)}`)
   }
 
-  function emailButtonPressed() {
+  const emailButtonPressed = () => {
     const q = query({
       subject: encodeURIComponent(`${post.title} - melchor9000`),
       body: encodeURIComponent(
@@ -66,19 +64,19 @@ const ShareModalImpl = ({ post }: { post: Post }) => {
     window.open(`mailto:?${q}`)
   }
 
-  function redditButtonPressed() {
+  const redditButtonPressed = () => {
     const url = encodeURIComponent(window.location.toString())
     const title = encodeURIComponent(post.title)
     window.open(`https://www.reddit.com/submit?url=${url}&title=${title}`)
   }
 
-  function linkedinButtonPressed() {
+  const linkedinButtonPressed = () => {
     const url = encodeURIComponent(window.location.toString())
     const title = encodeURIComponent(post.title)
     window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`)
   }
 
-  function facebookButtonPressed() {
+  const facebookButtonPressed = () => {
     const url = encodeURIComponent(window.location.toString())
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`)
   }

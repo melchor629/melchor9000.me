@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import firebase from 'firebase/app'
-import { animated, Transition } from 'react-spring/renderprops'
+import { animated, Transition } from '@react-spring/web'
 import { nanoid } from 'nanoid'
 import * as toast from '../../../lib/toast'
 import LoadSpinner from '../../load-spinner'
@@ -199,7 +199,10 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
             checking: { ...checking, [a]: false },
           }))
         } catch (error) {
-          toast.error(error.message)
+          if (error instanceof Error) {
+            toast.error(error.message)
+          }
+
           this.setState(({ exists, checking }) => ({
             exists: {
               ...exists,

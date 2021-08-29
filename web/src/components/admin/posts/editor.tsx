@@ -5,10 +5,9 @@ import firebase from 'firebase/app'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   animated,
-  Keyframes,
-  Spring,
+  useSpring,
   Transition,
-} from 'react-spring/renderprops'
+} from '@react-spring/web'
 import { Helmet } from 'react-helmet'
 import speakingurl from 'speakingurl'
 import { StaticContext } from 'react-router'
@@ -20,38 +19,29 @@ import { Post } from '../../../redux/posts/reducers'
 import { AdminInput } from '../admin-input'
 import { dateValidator, valueValidator } from '../../../lib/validators'
 
-const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefined }) => (
-  <Keyframes
-    native
-    config={{ duration: 1000, easing: (t: number) => t }}
-    wiggle={async (next: any) => {
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        // eslint-disable-next-line no-await-in-loop
-        await next(Spring, {
-          from: { r: 0 },
-          to: { r: 2 * Math.PI },
-        })
-      }
-    }}
-  >
-    {(vals: any) => (
-      <animated.div
-        style={{
-          transform: vals.r.interpolate((x: number) => `rotateZ(${x}rad)`),
-          display: 'inline-block',
-          position: 'absolute',
-          top: 5,
-          right: 10,
-        }}
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...props}
-      >
-        <i className="fas fa-spinner" />
-      </animated.div>
-    )}
-  </Keyframes>
-)
+const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefined }) => {
+  const [spring] = useSpring({
+    config: { duration: 1000, easing: (t) => t },
+    from: { r: 0 },
+    to: { r: 2 * Math.PI },
+    loop: () => true,
+  }, [])
+  return (
+    <animated.div
+      style={{
+        transform: spring.r.to((x) => `rotateZ(${x}rad)`),
+        display: 'inline-block',
+        position: 'absolute',
+        top: 5,
+        right: 10,
+      }}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+    >
+      <i className="fas fa-spinner" />
+    </animated.div>
+  )
+}
 
 LittleSpinner.defaultProps = { ref: undefined }
 

@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { animated, useTransition } from 'react-spring'
+import { animated, useTransition } from '@react-spring/web'
 
 interface OverlayImageViewProps {
   imageSwitcher: boolean
@@ -13,7 +13,7 @@ const translateXFromDirection = (u: number, direction: 'next' | 'prev') => `tran
 const ImageView = ({
   imageSwitcher, imageUrl1, imageUrl2, changeDirection,
 }: OverlayImageViewProps) => {
-  const transitions = useTransition(imageSwitcher, null, {
+  const transitions = useTransition(imageSwitcher, {
     from: { opacity: 0, transform: translateXFromDirection(1, changeDirection) },
     enter: { opacity: 1, transform: translateXFromDirection(0, changeDirection) },
     leave: { opacity: 0, transform: translateXFromDirection(-1, changeDirection) },
@@ -22,7 +22,7 @@ const ImageView = ({
 
   return (
     <>
-      {transitions.map(({ item, props }) => (
+      {transitions((props, item) => (
         !item
           ? (
             <animated.div

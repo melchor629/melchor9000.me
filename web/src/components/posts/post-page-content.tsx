@@ -11,9 +11,9 @@ const PostPageContentImpl = ({ children, entry }: PropsWithChildren<{ entry: Pos
     return <>{ children }</>
   }
 
-  const createdDate = DateTime.fromJSDate(entry.date.toDate(), { locale: 'UTC' })
+  const createdDate = DateTime.fromJSDate(entry.date.toDate(), { zone: 'UTC' })
   const modifiedDate = entry.modifiedDate
-    ? DateTime.fromJSDate(entry.modifiedDate!.toDate(), { locale: 'UTC' })
+    ? DateTime.fromJSDate(entry.modifiedDate!.toDate(), { zone: 'UTC' })
     : null
   return (
     <article className="postPage">

@@ -1,7 +1,7 @@
 import React, {
   memo, useEffect, useRef, useState,
 } from 'react'
-import { animated, useSpring } from 'react-spring'
+import { animated, useSpring } from '@react-spring/web'
 import { GalleryPhoto } from '../../../redux/gallery/reducers'
 
 interface ZoomImageOverlayProps {
@@ -219,7 +219,7 @@ const ZoomImageView = ({
       onMouseMove={onMouseMove}
       onClick={onWantToClose}
       onWheel={onWheel}
-      onScroll={(e) => e.preventDefault()}
+      onScroll={(e: any) => e.preventDefault()}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}

@@ -462,25 +462,24 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
   private startCapturing() {
     const { t } = this.props
     this.setState({ videoCaptureText: t('eugl.wait') })
-    if (!navigator.getUserMedia) {
+    if (!navigator.mediaDevices?.getUserMedia) {
       toast.error(t('eugl.unsuppoertedNavigator'))
       return
     }
-    navigator.getUserMedia(
-      {
-        audio: false,
-        video: {
-          facingMode: 'user',
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
-      }, (stream) => {
+    navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        facingMode: 'user',
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+      },
+    })
+      .then((stream) => {
         this.setState({ videoFromCamera: stream })
         this.videoRef.current!.srcObject = stream
         this.videoRef.current!.play().catch()
-      },
-      (error) => toast.error(t('eugl.cannotCapture') + error.message),
-    )
+      })
+      .catch((error) => toast.error(t('eugl.cannotCapture') + error.message))
   }
 
   render() {

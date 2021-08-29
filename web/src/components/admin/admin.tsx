@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, RouteComponentProps, Switch } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
-import { animated, Trail } from 'react-spring/renderprops'
+import { animated, useTrail } from '@react-spring/web'
 import { Helmet } from 'react-helmet'
 import type { AdminDispatchToProps, AdminStateToProps } from '../../containers/admin/admin'
 import { Posts } from '../../containers/admin/posts'
@@ -14,28 +14,32 @@ const containerStyle: React.CSSProperties = { width: '100%' }
 type AdminPageProps = AdminDispatchToProps & AdminStateToProps & RouteComponentProps<null>
 
 const pages = ['/admin/posts', '/admin/projects']
-const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties }) => (
-  <div className="row align-items-center justify-content-center text-center" style={{ ...containerStyle, ...style }}>
-    <div className="col-auto">
-      <h1 className="display-4">
-        Hola
-        { user.displayName }
-      </h1>
-    </div>
-    <Trail native from={{ scale: 0 }} to={{ scale: 1 }} keys={pages} items={pages}>
-      { (page) => ({ scale }: any) => (
+const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties }) => {
+  const trail = useTrail(pages.length, {
+    from: { scale: 0 },
+    to: { scale: 1 },
+  })
+  return (
+    <div className="row align-items-center justify-content-center text-center" style={{ ...containerStyle, ...style }}>
+      <div className="col-auto">
+        <h1 className="display-4">
+          Hola
+          { user.displayName }
+        </h1>
+      </div>
+      {trail.map(({ scale }, i) => (
         <animated.div
           className="col-4 col-md-3 col-lg-2"
-          style={{ transform: scale.interpolate((x: number) => `scale(${x})`) }}
+          style={{ transform: scale.to((x) => `scale(${x})`) }}
         >
-          <Link to={page}>
-            <p className="lead">{ page }</p>
+          <Link to={pages[i]}>
+            <p className="lead">{pages[i]}</p>
           </Link>
         </animated.div>
-      ) }
-    </Trail>
-  </div>
-)
+      ))}
+    </div>
+  )
+}
 
 Home.defaultProps = {
   style: {},

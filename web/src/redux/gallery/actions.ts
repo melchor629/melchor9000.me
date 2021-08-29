@@ -216,7 +216,7 @@ export const loadFirstPhotos = (photosetId: string) => (
         primary: primaryPhoto.sizes.find((s) => s.label === 'Large')!.source,
       }, primaryPhoto))
     } catch (e) {
-      dispatch(photosetErrorLoading(photosetId, e))
+      dispatch(photosetErrorLoading(photosetId, e as Error))
     }
   }
 )
@@ -244,7 +244,7 @@ export const loadMorePhotos = (
     })
     dispatch(photosetLoadedPhotos(photoset))
   } catch (e) {
-    dispatch(photosetErrorLoading(photosetId, e))
+    dispatch(photosetErrorLoading(photosetId, e as Error))
   }
 }
 
@@ -309,7 +309,7 @@ const loadDetailedPhotoImpl = debounce(async (
       }))
     }
   } catch (e) {
-    dispatch(photosetErrorLoading(photosetId, e))
+    dispatch(photosetErrorLoading(photosetId, e as Error))
     return
   }
 
@@ -324,7 +324,7 @@ const loadDetailedPhotoImpl = debounce(async (
     const info = await flickr.photos.getInfo(photoId)
     dispatch(detailedLoadedInfo(info))
   } catch (e) {
-    dispatch(detailedPhotoError(photoId, e))
+    dispatch(detailedPhotoError(photoId, e as Error))
   }
 }, 250)
 

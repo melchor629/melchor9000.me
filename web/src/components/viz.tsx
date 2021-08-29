@@ -1,4 +1,4 @@
-import React, {
+import {
   useCallback,
   useEffect,
   useReducer,
@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Spring } from 'react-spring/renderprops'
+import { Spring, animated } from '@react-spring/web'
 import { Helmet } from 'react-helmet'
 import * as toast from '../lib/toast'
 import Visualizer from './visualizer'
@@ -313,16 +313,14 @@ const Viz = () => {
         from={{ opacity: 0, zIndex: -1 }}
         to={{ opacity: dragging ? 1 : 0, zIndex: dragging ? 1 : -1 }}
       >
-        {(style: React.CSSProperties) => (
-          <div
+        {(style) => (
+          <animated.div
             style={{
-              opacity: 0,
               position: 'fixed',
               width: '100%',
               height: '100%',
               top: 0,
               left: 0,
-              zIndex: -1,
               backgroundColor: 'rgb(200, 200, 200, 0.4)',
               ...style,
             }}
@@ -331,7 +329,7 @@ const Viz = () => {
             <div className="text-center">
               { t('viz.drop') }
             </div>
-          </div>
+          </animated.div>
         )}
       </Spring>
     </div>

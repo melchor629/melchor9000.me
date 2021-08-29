@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Redirect, RouteComponentProps, StaticContext } from 'react-router'
-import { animated, Spring } from 'react-spring/renderprops'
+import { animated, Spring } from '@react-spring/web'
 import { Helmet } from 'react-helmet'
 import * as toast from '../lib/toast'
 import type { LoginDispatchToProps, LoginStateToProps } from '../containers/login'
@@ -142,16 +142,19 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
       </animated.div>
     )
 
-    const salutation = (style: React.CSSProperties) => (
-      <div style={{
-        ...style, position: 'relative', top: -150, transform: `scale(${style.opacity!})`,
+    const salutation = (style: any) => (
+      <animated.div style={{
+        ...style,
+        position: 'relative',
+        top: -150,
+        transform: style.opacity.to((x: number) => `scale(${x})`),
       }}
       >
         <h1 className="h3 mb-3 font-weight-normal">
           Bienvenido
           {user!.displayName}
         </h1>
-      </div>
+      </animated.div>
     )
 
     return (
@@ -169,21 +172,19 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
             alt="favicon"
           />
           <Spring
-            native
             from={{ alpha: 1 }}
             to={{ alpha: loggingIn || user ? 0 : 1 }}
           >
             {!user ? form : () => (<animated.div />)}
           </Spring>
           <Spring
-            native
             from={{ alpha: 0 }}
             to={{ alpha: loggingIn && !user ? 1 : 0 }}
           >
             { loading }
           </Spring>
           <Spring from={{ opacity: 0 }} to={{ opacity: user ? 1 : 0 }}>
-            {user ? salutation : () => (<div />)}
+            {user ? salutation : () => (<animated.div />)}
           </Spring>
         </form>
       </div>

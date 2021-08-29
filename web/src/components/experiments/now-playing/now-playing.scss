@@ -1,15 +1,27 @@
 .now-playing-container {
   padding-top: 60px;
   padding-bottom: 20px;
-  height: calc(100vh - 40px);
-  // that is, the size of one card plus the padding bottom (aprox)
-  min-height: 510px;
-  overflow-x: scroll;
 
-  > div {
-    // half of the .now-playing-container width minus half of a card minus the missing margin from the last card
-    margin-left: calc(100% / 2 - (300px + 3rem) / 2 - 1rem);
-    padding-right: calc(100% / 2 - (300px + 3rem) / 2 - 1rem);
+  @media (max-width: 800px) {
+    height: calc(100vh - 40px);
+    // that is, the size of one card plus the padding bottom (aprox)
+    min-height: 510px;
+    overflow-x: scroll;
+
+    > div {
+      // half of the .now-playing-container width minus half of a card minus the missing margin from the last card
+      margin-left: calc(100% / 2 - (300px + 3rem) / 2 - 1rem);
+      padding-right: calc(100% / 2 - (300px + 3rem) / 2 - 1rem);
+    }
+  }
+
+  @media (min-width: 800px) {
+    overflow-y: scroll;
+    justify-content: center;
+
+    > div {
+      flex-direction: column !important;
+    }
   }
 }
 
@@ -28,6 +40,16 @@
   border-radius: $border-radius;
   box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
   will-change: opacity, transform;
+
+  @media (min-width: 800px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &:not(:last-of-type) {
+      margin-bottom: 1rem;
+    }
+  }
 
   background-color: var(--background-color);
 

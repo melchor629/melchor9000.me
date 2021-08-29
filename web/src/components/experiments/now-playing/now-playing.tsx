@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { useTransition } from 'react-spring'
+import { useTransition } from '@react-spring/web'
 import {
   getRecentTrackList,
   getRecentTrackListForUser,
@@ -61,8 +61,8 @@ const NowPlaying = ({ match }: RouteComponentProps<{ user?: string }>) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  const transitions = useTransition(tracks, (t) => t.key, {
-    initial: { opacity: 0, transform: 'translateY(0px) translateX(0px)' },
+  const transitions = useTransition(tracks, {
+    keys: tracks.map((t) => t.key),
     from: { opacity: 0, transform: 'translateY(15px) translateX(0px)' },
     enter: { opacity: 1, transform: 'translateY(0px) translateX(0px)' },
     leave: { opacity: 0, transform: 'translateY(15px) translateX(0px)' },
@@ -91,8 +91,8 @@ const NowPlaying = ({ match }: RouteComponentProps<{ user?: string }>) => {
   return (
     <div className="d-flex align-items-center now-playing-container">
       <div className="d-flex flex-row">
-        {transitions.map(({ item, props, key }) => (
-          <TrackCard key={key} track={item} style={props} />
+        {transitions((props, item) => (
+          <TrackCard track={item} style={props} />
         ))}
       </div>
     </div>
