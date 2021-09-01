@@ -227,24 +227,20 @@ const Viz = () => {
 
       <div className="row">
         <div className="col-sm-6 col-12">
-          <label className="custom-file" htmlFor="cancion">
-            <input
-              type="file"
-              id="cancion"
-              name="cancion"
-              accept="audio/*"
-              onChange={fileChanged}
-              className="custom-file-input"
-            />
-            <span className="custom-file-label">
-              {fileName || t('viz.selectFile')}
-            </span>
-          </label>
+          <input
+            type="file"
+            id="cancion"
+            name="cancion"
+            accept="audio/*"
+            onChange={fileChanged}
+            className="form-control"
+          />
         </div>
         <div className="col-sm-6 col-12">
           <select
             id="visualizador"
-            className="form-control custom-select"
+            className="form-select"
+            aria-label="Select form of wave"
             value={visualizationMode}
             onChange={visualizationModeChanged}
           >
@@ -280,6 +276,7 @@ const Viz = () => {
       <div className="row mt-2">
         <input
           type="range"
+          className="form-range"
           id="pos"
           min={0}
           max={timeDuration + startPos}
@@ -299,6 +296,7 @@ const Viz = () => {
           top: 0,
           left: 0,
           zIndex: -1,
+          display: 'flex',
         }}
       >
         <Visualizer

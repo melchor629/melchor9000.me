@@ -67,7 +67,7 @@ const AboutMe = ({ t }: WithTranslation) => (
 
     <figure className="figure">
       <img src={image.src} className="figure-img img-fluid rounded" alt={`It's me (📷 ${image.photographer})`} />
-      <figcaption className="figure-caption text-right">
+      <figcaption className="figure-caption text-end">
         It&apos;s me -&nbsp;
         <Link href={image.photographerLink}>
           <span role="img" aria-label="Camera emoji">📷</span>

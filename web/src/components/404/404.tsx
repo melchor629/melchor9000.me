@@ -7,13 +7,13 @@ const Parallax = require('parallax-js')
 const PageNotFound = () => {
   const [{ width, height }, setSize] = useState(() => ({
     width: document.body.clientWidth,
-    height: document.body.clientHeight,
+    height: document.body.clientHeight - 32,
   }))
 
   useLayoutEffect(() => {
     const onResize = () => setSize({
       width: document.body.clientWidth,
-      height: document.body.clientHeight,
+      height: document.body.clientHeight - 32,
     })
 
     const parallax = new Parallax(document.querySelector('#scene'))
@@ -28,12 +28,7 @@ const PageNotFound = () => {
   }, [])
 
   return (
-    <div id="scene" className="d-flex align-items-center" style={{ height }}>
-      <div className="layer" data-depth="0.3">
-        <h3 className="subtitle" style={{ top: Math.max(height / 2 - (width * 0.8) / 3, -20) }}>
-          Mira si te has equvocado al poner la URL...
-        </h3>
-      </div>
+    <div id="scene" className="d-flex align-items-center" style={{ height, overflow: 'hidden' }}>
       <div className="layer" data-depth="0.5">
         <img
           width="100%"

@@ -99,7 +99,6 @@ const ImageInfoView = ({
               photo.dateTaken
                 .toLocaleString({
                   ...DateTime.DATETIME_HUGE,
-                  timeZone: undefined,
                   timeZoneName: undefined,
                 })
             }

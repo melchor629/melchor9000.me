@@ -114,42 +114,44 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
       <div style={{ position: 'absolute', top: 125 }} ref={navbarThresholdRef} />
 
       <nav className={navbarClasses}>
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={toggleNavigation}
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <Link className="navbar-brand" to="/">The Abode of melchor9000</Link>
+        <div className="container-fluid">
+          <button
+            className="navbar-toggler"
+            type="button"
+            onClick={toggleNavigation}
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <Link className="navbar-brand" to="/">The Abode of melchor9000</Link>
 
-        <div
-          className={`collapse navbar-collapse offcanvas-collapse ${offcanvas ? 'open' : ''}`}
-          id="navbarSupportedContent"
-        >
-          <ul className="navbar-nav mr-auto">
-            {routes.filter((route) => !route.private && route.title).map((route) => (
-              <li className={`nav-item ${linkActive(route)}`} key={route.route}>
-                <Link
-                  to={route.route}
-                  className="nav-link"
-                  onClick={() => setOffcanvas(false)}
-                >
-                  {t(`${route.route.substr(1)}.title`, { defaultValue: route.title })}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div
+            className={`collapse navbar-collapse offcanvas-collapse ${offcanvas ? 'open' : ''}`}
+            id="navbarSupportedContent"
+          >
+            <ul className="navbar-nav mr-auto">
+              {routes.filter((route) => !route.private && route.title).map((route) => (
+                <li className={`nav-item ${linkActive(route)}`} key={route.route}>
+                  <Link
+                    to={route.route}
+                    className="nav-link"
+                    onClick={() => setOffcanvas(false)}
+                  >
+                    {t(`${route.route.substr(1)}.title`, { defaultValue: route.title })}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </nav>
 
       <ToastContainer pauseOnHover={false} />
 
-      <Suspense fallback={<div className="d-flex justify-content-center mt-5"><LoadSpinner /></div>}>
+      <Suspense fallback={<div className="d-flex justify-content-center pt-5"><LoadSpinner /></div>}>
         <Switch>
           {routes
             .filter((route) => !route.private)
@@ -172,7 +174,7 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
               />
             ))}
           <Route path="/login" component={withDefaultContainer(Login)} />
-          <Route component={withDefaultContainer(PageNotFound)} />
+          <Route component={PageNotFound} />
         </Switch>
       </Suspense>
 

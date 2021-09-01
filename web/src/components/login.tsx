@@ -87,13 +87,12 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
 
     const form = ({ alpha }: any) => (
       <animated.div style={{
-        transform: alpha.interpolate((x: number) => `translate3d(${(1 - x) * -100}px,0,0)`),
-        opacity: alpha.interpolate((x: number) => `${x}`),
+        transform: alpha.to((x: number) => `translate3d(${(1 - x) * -100}px,0,0)`),
+        opacity: alpha.to((x: number) => `${x}`),
       }}
       >
         <h1 className="h3 mb-3 font-weight-normal">Demuestrame quien eres</h1>
-        <label htmlFor="inputEmail" className="sr-only">
-          Email address
+        <div className="form-floating">
           <input
             type="email"
             id="inputEmail"
@@ -104,20 +103,27 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
             value={username}
             onChange={this.usernameChanged}
           />
-        </label>
-        <label htmlFor="inputPassword" className="sr-only">
-          Password
-          <input
+          <label htmlFor="inputEmail">
+            Email address
+          </label>
+        </div>
+        <div className="form-floating">
+
+        <input
             type="password"
             id="inputPassword"
             className="form-control"
             placeholder="Contraseña"
             required
+            autoComplete=""
             style={passwordInputStyle}
             value={password}
             onChange={this.passwordChanged}
           />
-        </label>
+          <label htmlFor="inputPassword">
+            Password
+          </label>
+        </div>
         <button
           className="btn btn-lg btn-primary btn-block"
           type="submit"
@@ -130,8 +136,8 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
 
     const loading = ({ alpha }: any) => (
       <animated.div style={{
-        transform: alpha.interpolate((x: number) => `translate3d(${(1 - x) * 100}px,0,0)`),
-        opacity: alpha.interpolate((x: number) => `${x}`),
+        transform: alpha.to((x: number) => `translate3d(${(1 - x) * 100}px,0,0)`),
+        opacity: alpha.to((x: number) => `${x}`),
         position: 'relative',
         top: -187,
         zIndex: -1,

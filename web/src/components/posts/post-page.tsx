@@ -2,7 +2,6 @@ import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Helmet } from 'react-helmet'
 import { WithTranslation } from 'react-i18next'
-import $ from 'jquery'
 import { Post } from '../../redux/posts/reducers'
 import type { PostPageDispatchToProps, PostPageStateToProps } from '../../containers/posts/post-page'
 import LoadSpinner from '../load-spinner/load-spinner'
@@ -28,6 +27,7 @@ type PostPageProps = PostPageStateToProps
 interface PostPageState {
   entry: Post | null
   notFound: boolean
+  showShareModal: boolean
 }
 
 export default class PostPage extends React.Component<PostPageProps, PostPageState> {
@@ -38,6 +38,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
     this.state = {
       entry: null,
       notFound: false,
+      showShareModal: false,
     }
   }
 
@@ -96,7 +97,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
     let domContent
     let disqusConfig
     const { content } = this.props
-    const { entry, notFound } = this.state
+    const { entry, notFound, showShareModal } = this.state
     if (content) {
       domContent = (
         // eslint-disable-next-line react/no-danger
@@ -147,8 +148,8 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
         <div
           className="circle-button share"
           style={{ ...styles }}
-          onClick={() => ($('#share-modal') as any).modal('show')}
-          onKeyUp={runOnEnter(() => ($('#share-modal') as any).modal('show'))}
+          onClick={() => this.setState({ showShareModal: true })}
+          onKeyUp={runOnEnter(() => this.setState({ showShareModal: true }))}
           role="button"
           tabIndex={0}
         >
@@ -157,7 +158,7 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
 
         <PostPageContent entry={entry}>{ domContent }</PostPageContent>
         <DisqusWrapper shortName="personal-website-11" config={disqusConfig} />
-        {entry && <ShareModal post={entry} />}
+        {entry && <ShareModal post={entry} show={showShareModal} onHide={() => this.setState({ showShareModal: false })} />}
       </div>
     )
   }

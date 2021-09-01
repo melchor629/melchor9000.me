@@ -1,5 +1,6 @@
+import Masonry from 'masonry-layout'
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useEffect, useMemo, useState, useRef,
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
@@ -9,6 +10,7 @@ import { removeError, subscribe, unsubscribe } from '../../redux/database/action
 import LoadSpinner from '../load-spinner'
 import Project from './project'
 import './projects.scss'
+import { useLayoutEffect } from 'react'
 
 export interface ProjectInfo {
   _id: string
@@ -23,6 +25,7 @@ export interface ProjectInfo {
 }
 
 const Projects = () => {
+  const masonryRef = useRef<Masonry>()
   const [t] = useTranslation()
   const dispatch = useDispatch()
   const { darkMode, projects, subscriptionError } = useSelector(({ database, effects }) => ({
@@ -95,6 +98,22 @@ const Projects = () => {
     }
   }, [])
 
+  const configureMasonry = useCallback((ref: HTMLDivElement) => {
+    const masonry = new Masonry(ref, {
+      percentPosition: true,
+    })
+
+    masonryRef.current = masonry
+  }, [])
+
+  useLayoutEffect(() => {
+    if (masonryRef.current) {
+      const elem = (masonryRef.current as any).element
+      masonryRef.current.destroy?.()
+      configureMasonry(elem)
+    }
+  }, [filteredProjects, configureMasonry])
+
   return (
     <div>
 
@@ -146,10 +165,10 @@ const Projects = () => {
 
       {filteredProjects
         ? (
-          <div className="card-columns">
+          <div className="row mt-4" ref={configureMasonry}>
             {filteredProjects.map((project) => (
               // eslint-disable-next-line no-underscore-dangle
-              <Project project={project} key={project._id} darkMode={darkMode} />
+              <Project project={project} key={project._id} darkMode={darkMode} onImageLoaded={() => masonryRef.current?.layout?.()} />
             ))}
           </div>
         )

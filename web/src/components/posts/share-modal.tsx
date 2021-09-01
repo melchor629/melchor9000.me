@@ -1,4 +1,5 @@
-import { memo, PropsWithChildren } from 'react'
+import * as bootstrap from 'bootstrap'
+import { memo, PropsWithChildren, useRef, useLayoutEffect } from 'react'
 import Ink from 'react-ink'
 import { useTranslation } from 'react-i18next'
 
@@ -29,8 +30,9 @@ const ShareItem = memo(({
   </div>
 ))
 
-const ShareModalImpl = ({ post }: { post: Post }) => {
+const ShareModalImpl = ({ post, show, onHide }: { post: Post, show: boolean, onHide: () => void }) => {
   const [t] = useTranslation()
+  const modalRef = useRef<HTMLDivElement>(null)
 
   const query = (object: any): string => new URLSearchParams(Object.entries(object)).toString()
 
@@ -81,8 +83,25 @@ const ShareModalImpl = ({ post }: { post: Post }) => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`)
   }
 
+  useLayoutEffect(() => {
+    const modal = bootstrap.Modal.getOrCreateInstance(modalRef.current!)
+    if (show) {
+      modal?.show()
+    } else {
+      modal?.hide()
+    }
+  }, [show])
+
+  useLayoutEffect(() => {
+    const elBicho = modalRef.current
+    elBicho?.addEventListener('hidden.bs.modal', onHide)
+    return () => elBicho?.addEventListener('hidden.bs.modal', onHide)
+  }, [onHide])
+
+  useLayoutEffect(() => () => bootstrap.Modal.getOrCreateInstance(modalRef.current!).dispose(), [])
+
   return (
-    <div className="modal share-modal fade" id="share-modal" tabIndex={-1} role="dialog">
+    <div className="modal share-modal fade" id="share-modal" tabIndex={-1} role="dialog" ref={modalRef}>
       <div className="modal-dialog modal-sm">
         <div className="modal-content">
           <div className="modal-header">

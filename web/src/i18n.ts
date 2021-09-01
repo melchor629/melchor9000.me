@@ -1,5 +1,5 @@
 import i18n from 'i18next'
-import Backend from 'i18next-xhr-backend'
+import Backend from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
 
@@ -16,7 +16,7 @@ i18n
     defaultNS: 'translations',
     debug: process.env.NODE_ENV !== 'production',
     interpolation: { escapeValue: false },
-    react: { wait: true },
+    react: { useSuspense: true },
   })
 
 export default i18n

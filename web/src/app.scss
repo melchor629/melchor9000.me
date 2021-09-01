@@ -43,7 +43,6 @@ a:link, a:visited, a:focus, ~a.btn {
 
 a:hover {
   color: $primary-color-light;
-  text-decoration: none;
 
   .darkmode & {
     color: $primary-color-light;
@@ -379,7 +378,7 @@ body.darkmode { background-color: rgb(40, 40, 40) }
   .info div,
   .info p,
   .info span {
-    $color: rgba(white, 0.9);
+    $color: rgba(black, 0.9);
     color: $color;
 
     .text-muted {
@@ -403,7 +402,7 @@ body.darkmode { background-color: rgb(40, 40, 40) }
   .error div,
   .error p,
   .error span {
-    $color: rgba(white, 0.9);
+    $color: rgba(black, 0.9);
     color: $color;
 
     .text-muted {
