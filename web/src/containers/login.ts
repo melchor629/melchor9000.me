@@ -1,4 +1,4 @@
-import { User } from '@firebase/auth-types'
+import { User } from 'firebase/auth'
 import { connect } from 'react-redux'
 import { State } from '../redux/reducers'
 import { logIn } from '../redux/auth/actions'

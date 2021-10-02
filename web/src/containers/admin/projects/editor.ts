@@ -24,7 +24,7 @@ const mapStateToProps = (state: State): ProjectEditorStateToProps => ({
 
 const mapDispatchToProps = (dispatch: (...args: any) => void): ProjectEditorDispatchToProps => ({
   save: (project: Partial<ProjectInfo>) => dispatch(insert('projects', project)),
-  update: (project: Partial<ProjectInfo>) => dispatch(update('projects', project, true)),
+  update: (project: Partial<ProjectInfo>) => dispatch(update('projects', project)),
   clearError: () => dispatch(removeError('projects')),
 })
 

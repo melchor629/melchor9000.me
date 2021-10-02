@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import firebase from 'firebase/app'
+import { getStorage, ref, deleteObject } from 'firebase/storage'
 import { Helmet } from 'react-helmet'
+import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
 import type { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home'
 import { Post } from '../../../redux/posts/reducers'
@@ -45,9 +46,7 @@ export default class PostsHome extends React.Component<PostsPageProps, PostHomeS
     const { postToDelete: post } = this.state
     const { delete: deletePost } = this.props
 
-    firebase.storage()
-      .ref(post!.file)
-      .delete()
+    deleteObject(ref(getStorage(app), post!.file))
       .then(() => {
         deletePost(post!)
       })

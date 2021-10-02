@@ -1,9 +1,9 @@
-import firebase from 'firebase/app'
-import { User } from '@firebase/auth-types'
+import { getAuth, User } from 'firebase/auth'
 import { AnyAction } from 'redux'
 import {
   LOG_IN, LOG_IN_ERROR, LOG_OUT, LOG_OUT_ERROR, LOGGING_IN,
 } from './actions'
+import app from '../../lib/firebase'
 
 export interface AuthState {
   user: User | null
@@ -14,7 +14,7 @@ export interface AuthState {
 export const auth = (state: AuthState | undefined, action: AnyAction): AuthState => {
   if (state === undefined) {
     return {
-      user: firebase.auth().currentUser,
+      user: getAuth(app).currentUser,
       loggingIn: false,
       error: null,
     }

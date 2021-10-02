@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot } from '@firebase/firestore-types'
+import { QueryDocumentSnapshot } from 'firebase/firestore'
 import {
   CHANGE,
   CLEAR_ERROR,

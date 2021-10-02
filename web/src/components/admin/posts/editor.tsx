@@ -1,7 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react'
 import { DateTime } from 'luxon'
-import firebase from 'firebase/app'
+import * as firestore from 'firebase/firestore'
+import * as storage from 'firebase/storage'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   animated,
@@ -11,6 +12,7 @@ import {
 import { Helmet } from 'react-helmet'
 import speakingurl from 'speakingurl'
 import { StaticContext } from 'react-router'
+import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
 import getFirebaseFunctionUrl from '../../../lib/firebase-function'
 import type { PostEditorDispatchToProps, PostEditorStateToProps } from '../../../containers/admin/posts/editor'
@@ -128,9 +130,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
         original: { ...post, _id },
         saving: false,
       })
-      firebase.storage()
-        .ref(post.file)
-        .getDownloadURL()
+      const fileRef = storage.ref(storage.getStorage(app), post.file)
+      storage.getDownloadURL(fileRef)
         .then((url) => fetch(url))
         .then((res) => res.text())
         .then(async (content) => {
@@ -145,9 +146,10 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
       setStateFromPost(post, post._id!)
     } else if (match.params.id) {
       this.setState({ saving: true })
-      firebase.firestore().collection('posts')
-        .doc(match.params.id)
-        .get()
+      const db = firestore.getFirestore(app)
+      const col = firestore.collection(db, 'posts')
+      const document = firestore.doc(col, match.params.id)
+      firestore.getDoc(document)
         .then((obj) => {
           setStateFromPost(obj.data(), match.params.id!)
         })
@@ -171,10 +173,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
         PostEditor.showError('No se pudo subir los metadatos del post...', errorSaving)
         clearError()
         const pd = `${publishDate.get('year')}-${publishDate.get('month')}-${publishDate.get('day')}`
-        firebase.storage()
-          .ref(`/posts/${pd}-${url}.md`)
-          .delete()
-          .catch()
+        const fileRef = storage.ref(storage.getStorage(app), `/posts/${pd}-${url}.md`)
+        storage.deleteObject(fileRef).catch()
       }
     }
   }
@@ -253,9 +253,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
     this.setState({ saving: true })
     const { original, content } = this.state
     if (original) {
-      firebase.storage()
-        .ref(original.file)
-        .putString(content, firebase.storage.StringFormat.RAW)
+      const fileRef = storage.ref(storage.getStorage(app), original.file)
+      storage.uploadString(fileRef, content, storage.StringFormat.RAW)
         .then(() => {
           const {
             publishDate,
@@ -265,12 +264,12 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
           } = this.state
           const { update } = this.props
           update({
-            date: firebase.firestore.Timestamp.fromDate(publishDate.toJSDate()),
+            date: firestore.Timestamp.fromDate(publishDate.toJSDate()),
             file: original!.file,
             img,
             title,
             url,
-            modifiedDate: firebase.firestore.Timestamp.fromDate(DateTime.utc().toJSDate()),
+            modifiedDate: firestore.Timestamp.fromDate(DateTime.utc().toJSDate()),
             _id: original!._id,
           })
         })
@@ -280,9 +279,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
         })
     } else {
       const { publishDate: pd, url } = this.state
-      firebase.storage()
-        .ref(`/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${url}.md`)
-        .putString(content, firebase.storage.StringFormat.RAW)
+      const fileRef = storage.ref(storage.getStorage(app), `/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${url}.md`)
+      storage.uploadString(fileRef, content, storage.StringFormat.RAW)
         .then(() => {
           const {
             publishDate,
@@ -291,7 +289,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
           } = this.state
           const { save } = this.props
           save({
-            date: firebase.firestore.Timestamp.fromDate(publishDate.toJSDate()),
+            date: firestore.Timestamp.fromDate(publishDate.toJSDate()),
             file: `/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${url}.md`,
             img,
             title,

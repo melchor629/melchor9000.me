@@ -1,8 +1,9 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import firebase from 'firebase/app'
+import { getFirestore, collection, doc, getDoc } from 'firebase/firestore'
 import { animated, Transition } from '@react-spring/web'
 import { nanoid } from 'nanoid'
+import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
 import LoadSpinner from '../../load-spinner'
 import Project from '../../projects/project'
@@ -66,9 +67,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
   componentDidMount() {
     const { match } = this.props
     if (match.params.id) {
-      firebase.firestore().collection('projects')
-        .doc(match.params.id)
-        .get()
+      getDoc(doc(collection(getFirestore(app), 'projects'), match.params.id))
         .then((obj) => {
           const project = obj.data() as ProjectInfo
           this.setState({

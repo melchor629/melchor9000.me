@@ -1,10 +1,10 @@
+import * as firebaseAuth from 'firebase/auth'
 import { Suspense, StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { applyMiddleware, compose, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import { BrowserRouter } from 'react-router-dom'
-import firebase from 'firebase/app'
 import { I18nextProvider } from 'react-i18next'
 import 'bootstrap'
 
@@ -13,34 +13,11 @@ import Footer from './Footer'
 import i18n from './i18n'
 import LoadingSpinner from './components/load-spinner'
 import reportWebVitals from './report-web-vitals'
-
-import 'firebase/firestore'
-import 'firebase/functions'
-import 'firebase/auth'
-import 'firebase/storage'
-
-firebase.initializeApp({
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-});
+import firebaseApp from './lib/firebase';
 
 (async () => {
   try {
-    const fs = firebase.firestore()
-    if (process.env.NODE_ENV === 'production') {
-      fs.settings({ cacheSizeBytes: 4_000_000 })
-      await fs.enablePersistence({ synchronizeTabs: true })
-    } else {
-      fs.settings({ experimentalForceLongPolling: true })
-      await fs.clearPersistence()
-    }
-
-    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    await firebaseAuth.getAuth(firebaseApp).setPersistence({ type: 'SESSION' })
   } catch (error) {
     console.error(error)
   }

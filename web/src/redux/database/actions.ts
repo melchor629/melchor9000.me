@@ -1,6 +1,9 @@
 /* eslint-disable no-underscore-dangle */
-import firebase from 'firebase/app'
+import {
+  getFirestore, collection, onSnapshot, query, orderBy, where, addDoc, doc, updateDoc, deleteDoc,
+} from 'firebase/firestore'
 import { Dispatch } from 'redux'
+import app from '../../lib/firebase'
 
 export const SUBSCRIPTION = 'database:SUBSCRIPTION'
 export const UNSUBSCRIBE = 'database:UNSUBSCRIBE'
@@ -12,71 +15,72 @@ export const OPERATION_ERROR = 'database:OPERATION_ERROR'
 export const CLEAR_ERROR = 'database:CLEAR_ERROR'
 
 export const subscribe = (
-  collection: string,
-  orderBy: string | null = null,
+  collectionName: string,
+  orderByField: string | null = null,
   filters: [string, '<' | '>' | '<=' | '>=' | '==' | '!=', any][] | null = null,
 ) => (dispatch: Dispatch<any>) => {
-  const db = firebase.firestore()
-  let query: any = db.collection(collection)
+  const db = getFirestore(app)
+  let collectionQuery = query(collection(db, collectionName))
 
-  if (orderBy !== null) {
-    if (orderBy[0] === '-') {
-      // eslint-disable-next-line no-param-reassign
-      orderBy = orderBy.substr(1)
-      query = query.orderBy(orderBy, 'desc')
+  if (orderByField !== null) {
+    if (orderByField[0] === '-') {
+      collectionQuery = query(collectionQuery, orderBy(orderByField.substr(1), 'desc'))
     } else {
-      query = query.orderBy(orderBy, 'asc')
+      collectionQuery = query(collectionQuery, orderBy(orderByField, 'asc'))
     }
 
     (filters ?? []).forEach(([field, op, value]) => {
-      query = query.where(field, op, value)
+      collectionQuery = query(collectionQuery, where(field, op, value))
     })
   }
 
+  const subscription = onSnapshot(
+    collectionQuery,
+    (snapshot) => dispatch({ type: CHANGE, collection: collectionName, snapshot }),
+    (error) => dispatch({ type: SUBSCRIPTION_ERROR, collection: collectionName, error }),
+  )
+
   dispatch({
     type: SUBSCRIPTION,
-    collection,
-    subscription: query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot) => {
-      dispatch({ type: CHANGE, collection, snapshot })
-    }, (error: Error) => {
-      dispatch({ type: SUBSCRIPTION_ERROR, collection, error })
-    }),
+    collection: collectionName,
+    subscription,
   })
 }
 
-export const insert = (collection: string, values: any) => async (dispatch: Dispatch<any>) => {
-  const db = firebase.firestore()
-  const col = db.collection(collection)
-  dispatch({ type: OPERATION_DOING, collection })
+export const insert = (collectionName: string, values: any) => async (dispatch: Dispatch<any>) => {
+  const db = getFirestore(app)
+  const col = collection(db, collectionName)
+  dispatch({ type: OPERATION_DOING, collection: collectionName })
 
   try {
     const updatedValues = { ...values, _id: undefined }
-    await col.add(updatedValues)
-    dispatch({ type: OPERATION_DONE, collection })
+    await addDoc(col, updatedValues)
+    dispatch({ type: OPERATION_DONE, collection: collectionName })
   } catch (error) {
     dispatch({
       type: OPERATION_ERROR,
-      collection,
+      collection: collectionName,
       error,
       operation: 'INSERT',
     })
   }
 }
 
-export const update = (collection: string, object: any, merge: boolean = false) => (
+export const update = (collectionName: string, object: any) => (
   async (dispatch: Dispatch<any>) => {
-    const db = firebase.firestore()
-    const item = db.collection(collection).doc(object._id)
-    dispatch({ type: OPERATION_DOING, collection })
+    const db = getFirestore(app)
+    const col = collection(db, collectionName)
+    const document = doc(col, object._id)
+    dispatch({ type: OPERATION_DOING, collection: collectionName })
 
     try {
       const updatedObject = { ...object, _id: undefined }
-      await item.set(updatedObject, { merge })
-      dispatch({ type: OPERATION_DONE, collection })
+      await updateDoc(document, updatedObject)
+      dispatch({ type: OPERATION_DONE, collection: collectionName })
     } catch (error) {
       dispatch({
         type: OPERATION_ERROR,
-        collection,
+        collection: collectionName,
         error,
         operation: 'UPDATE',
       })
@@ -84,30 +88,31 @@ export const update = (collection: string, object: any, merge: boolean = false) 
   }
 )
 
-export const remove = (collection: string, object: any) => async (dispatch: Dispatch<any>) => {
-  const db = firebase.firestore()
-  const item = db.collection(collection).doc(object._id)
-  dispatch({ type: OPERATION_DOING, collection })
+export const remove = (collectionName: string, object: any) => async (dispatch: Dispatch<any>) => {
+  const db = getFirestore(app)
+  const col = collection(db, collectionName)
+  const document = doc(col, object._id)
+  dispatch({ type: OPERATION_DOING, collection: collectionName })
 
   try {
-    await item.delete()
-    dispatch({ type: OPERATION_DONE, collection })
+    await deleteDoc(document)
+    dispatch({ type: OPERATION_DONE, collection: collectionName })
   } catch (error) {
     dispatch({
       type: OPERATION_ERROR,
-      collection,
+      collection: collectionName,
       error,
       operation: 'DELETE',
     })
   }
 }
 
-export const unsubscribe = (collection: string) => ({
+export const unsubscribe = (collectionName: string) => ({
   type: UNSUBSCRIBE,
-  collection,
+  collection: collectionName,
 })
 
-export const removeError = (collection: string) => ({
+export const removeError = (collectionName: string) => ({
   type: CLEAR_ERROR,
-  collection,
+  collection: collectionName,
 })
