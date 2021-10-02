@@ -165,12 +165,7 @@ const Marquee = ({
 }
 
 Marquee.defaultProps = {
-  speed: 0.04,
-  direction: 'left',
-  childMargin: 15,
-  loop: false,
   children: null,
-  trigger: 'on-mouse-enter',
 }
 
 export default Marquee

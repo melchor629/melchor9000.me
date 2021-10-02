@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux'
-import { Timestamp } from '@firebase/firestore-types'
+import { Timestamp } from 'firebase/firestore'
 import {
   GET_POST,
   GETTING_POST,

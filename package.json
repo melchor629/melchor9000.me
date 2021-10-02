@@ -5,9 +5,6 @@
   "author": "melchor629 <melchor9000@gmail.com>",
   "license": "CC0",
   "devDependencies": {
-    "@firebase/app-types": "^0.7.0",
-    "@firebase/auth-types": "^0.11.0",
-    "@firebase/util": "^1.2.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "audit-ci": "^4.1.0",

@@ -307,9 +307,9 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     const key = event.code
     if (EuglPage.manualMove) {
       if (key === 'KeyW' || key === 'ArrowUp') {
-        this.manualMoveSpeed = -25 * (+event.shiftKey + 1) / (+event.ctrlKey + 1)
+        this.manualMoveSpeed = -25 * ((+event.shiftKey + 1) / (+event.ctrlKey + 1))
       } else if (key === 'KeyS' || key === 'ArrowDown') {
-        this.manualMoveSpeed = 25 * (+event.shiftKey + 1) / (+event.ctrlKey + 1)
+        this.manualMoveSpeed = 25 * ((+event.shiftKey + 1) / (+event.ctrlKey + 1))
       }
     }
   }

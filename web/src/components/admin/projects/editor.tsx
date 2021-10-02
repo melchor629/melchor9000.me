@@ -1,6 +1,8 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { getFirestore, collection, doc, getDoc } from 'firebase/firestore'
+import {
+  getFirestore, collection, doc, getDoc,
+} from 'firebase/firestore'
 import { animated, Transition } from '@react-spring/web'
 import { nanoid } from 'nanoid'
 import app from '../../../lib/firebase'

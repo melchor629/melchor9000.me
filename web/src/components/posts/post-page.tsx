@@ -158,7 +158,13 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
 
         <PostPageContent entry={entry}>{ domContent }</PostPageContent>
         <DisqusWrapper shortName="personal-website-11" config={disqusConfig} />
-        {entry && <ShareModal post={entry} show={showShareModal} onHide={() => this.setState({ showShareModal: false })} />}
+        {entry && (
+          <ShareModal
+            post={entry}
+            show={showShareModal}
+            onHide={() => this.setState({ showShareModal: false })}
+          />
+        )}
       </div>
     )
   }

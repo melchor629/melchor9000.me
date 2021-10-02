@@ -1,5 +1,10 @@
 import * as bootstrap from 'bootstrap'
-import { memo, PropsWithChildren, useRef, useLayoutEffect } from 'react'
+import {
+  memo,
+  PropsWithChildren,
+  useRef,
+  useLayoutEffect,
+} from 'react'
 import Ink from 'react-ink'
 import { useTranslation } from 'react-i18next'
 
@@ -13,7 +18,13 @@ interface ShareItemProps {
   children: string
 }
 
-const ShareItem = memo(({
+interface ShareModalProps {
+  post: Post
+  show: boolean
+  onHide: () => void
+}
+
+const ShareItem = ({
   onClick,
   fab,
   fas,
@@ -28,9 +39,14 @@ const ShareItem = memo(({
     </div>
     <Ink />
   </div>
-))
+)
 
-const ShareModalImpl = ({ post, show, onHide }: { post: Post, show: boolean, onHide: () => void }) => {
+ShareItem.defaultProps = {
+  fab: '',
+  fas: '',
+}
+
+const ShareModalImpl = ({ post, show, onHide }: ShareModalProps) => {
   const [t] = useTranslation()
   const modalRef = useRef<HTMLDivElement>(null)
 

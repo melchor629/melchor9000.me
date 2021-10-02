@@ -3,6 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { getAssetUrl } from '../../lib/url'
 import type { ProjectInfo } from './projects'
 
+interface ProjectProps {
+  project: ProjectInfo
+  darkMode: boolean
+  onImageLoaded?: () => void
+}
+
 const getDescription = (project: ProjectInfo, i18n: i18next): string => {
   if (project.intlDescription) {
     let avail = project.intlDescription[i18n.language]
@@ -18,7 +24,7 @@ const getDescription = (project: ProjectInfo, i18n: i18next): string => {
   return project.description
 }
 
-const Project = ({ project, darkMode, onImageLoaded }: { project: ProjectInfo, darkMode: boolean, onImageLoaded?: () => void }) => {
+const Project = ({ project, darkMode, onImageLoaded }: ProjectProps) => {
   const [t, i18n] = useTranslation()
   return (
     <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
@@ -47,6 +53,10 @@ const Project = ({ project, darkMode, onImageLoaded }: { project: ProjectInfo, d
       </div>
     </div>
   )
+}
+
+Project.defaultProps = {
+  onImageLoaded: undefined,
 }
 
 export default Project

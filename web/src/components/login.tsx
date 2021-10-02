@@ -103,13 +103,13 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
             value={username}
             onChange={this.usernameChanged}
           />
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor="inputEmail">
             Email address
           </label>
         </div>
         <div className="form-floating">
-
-        <input
+          <input
             type="password"
             id="inputPassword"
             className="form-control"
@@ -120,6 +120,7 @@ export default class LoginPage extends React.Component<LoginPageProps, LoginPage
             value={password}
             onChange={this.passwordChanged}
           />
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor="inputPassword">
             Password
           </label>

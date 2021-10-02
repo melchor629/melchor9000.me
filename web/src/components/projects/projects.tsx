@@ -1,6 +1,6 @@
 import Masonry from 'masonry-layout'
 import React, {
-  useCallback, useEffect, useMemo, useState, useRef,
+  useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect,
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
@@ -10,7 +10,6 @@ import { removeError, subscribe, unsubscribe } from '../../redux/database/action
 import LoadSpinner from '../load-spinner'
 import Project from './project'
 import './projects.scss'
-import { useLayoutEffect } from 'react'
 
 export interface ProjectInfo {
   _id: string
@@ -167,8 +166,13 @@ const Projects = () => {
         ? (
           <div className="row mt-4" ref={configureMasonry}>
             {filteredProjects.map((project) => (
-              // eslint-disable-next-line no-underscore-dangle
-              <Project project={project} key={project._id} darkMode={darkMode} onImageLoaded={() => masonryRef.current?.layout?.()} />
+              <Project
+                project={project}
+                // eslint-disable-next-line no-underscore-dangle
+                key={project._id}
+                darkMode={darkMode}
+                onImageLoaded={() => masonryRef.current?.layout?.()}
+              />
             ))}
           </div>
         )

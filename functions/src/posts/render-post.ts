@@ -1,4 +1,3 @@
-// import { once } from 'events'
 import { RequestHandler } from 'express'
 import * as firebase from 'firebase-admin'
 import { promisify } from 'util'
