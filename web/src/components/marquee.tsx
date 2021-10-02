@@ -11,11 +11,11 @@ import {
 // uses other kind of triggering for the animation and is full hooks
 
 type MarqueeProps = PropsWithChildren<{
-  childMargin: number
-  direction: 'left' | 'right'
-  loop: boolean
-  speed: number
-  trigger: 'on-mouse-enter'
+  childMargin?: number
+  direction?: 'left' | 'right'
+  loop?: boolean
+  speed?: number
+  trigger?: 'on-mouse-enter'
 }>
 
 const Marquee = ({
@@ -38,8 +38,8 @@ const Marquee = ({
 
   const getInitialPosition = useCallback(() => (
     direction === 'right'
-      ? -((innerRef.current?.clientWidth ?? 0) / 2) - childMargin
-      : -childMargin
+      ? -((innerRef.current?.clientWidth ?? 0) / 2) - childMargin!
+      : -childMargin!
   ), [direction, childMargin])
 
   const resetPosition = useCallback(() => {
@@ -53,12 +53,12 @@ const Marquee = ({
     (timeDelta) => {
       const nextPosX = (() => {
         if (direction === 'right') {
-          const nextPos = s.current.x + timeDelta * speed
-          return nextPos > -childMargin ? getInitialPosition() : nextPos
+          const nextPos = s.current.x + timeDelta * speed!
+          return nextPos > -childMargin! ? getInitialPosition() : nextPos
         }
         if (direction === 'left') {
-          const nextPos = s.current.x - timeDelta * speed
-          return nextPos < -((innerRef.current?.clientWidth ?? 0) / 2) - childMargin
+          const nextPos = s.current.x - timeDelta * speed!
+          return nextPos < -((innerRef.current?.clientWidth ?? 0) / 2) - childMargin!
             ? getInitialPosition()
             : nextPos
         }
@@ -165,7 +165,12 @@ const Marquee = ({
 }
 
 Marquee.defaultProps = {
+  speed: 0.04,
+  direction: 'left',
+  childMargin: 15,
+  loop: false,
   children: null,
+  trigger: 'on-mouse-enter',
 }
 
 export default Marquee
