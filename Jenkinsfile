@@ -4,7 +4,7 @@ pipeline {
   agent {
     docker {
       label 'docker'
-      image 'node:12-alpine'
+      image 'node:14-alpine'
       args '-e HOME=$WORKSPACE'
     }
   }
@@ -23,7 +23,7 @@ pipeline {
 
     stage('Checks') {
       steps {
-        sh 'yarn lint'
+        sh 'yarn workspaces run lint'
         sh 'yarn run audit'
       }
     }
@@ -40,7 +40,7 @@ pipeline {
       }
 
       steps {
-        sh 'yarn build'
+        sh 'yarn workspaces run build'
       }
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "functions",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "scripts": {
     "build": "tsc -p .",
     "start": "yarn build && firebase serve --only functions",
@@ -11,7 +11,7 @@
     "config:get": "firebase functions:config:get > .runtimeconfig.json"
   },
   "engines": {
-    "node": "12"
+    "node": "14"
   },
   "main": "lib/index.js",
   "dependencies": {

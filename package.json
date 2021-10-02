@@ -24,11 +24,11 @@
   ],
   "scripts": {
     "audit": "audit-ci --moderate --pass-enoaudit",
-    "build": "yarn workspaces run build",
+    "build": "npm run build --workspaces",
     "deploy": "firebase deploy --project melchor9000-webpage --only functions,hosting",
     "deploy:functions": "firebase deploy --project melchor9000-webpage --only functions",
     "deploy:hosting": "firebase deploy --project melchor9000-webpage --only hosting",
-    "lint": "yarn workspaces run lint"
+    "lint": "npm run lint --workspaces"
   },
   "version": "0.0.0"
 }
