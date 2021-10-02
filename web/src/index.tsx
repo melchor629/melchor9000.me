@@ -17,7 +17,7 @@ import firebaseApp from './lib/firebase';
 
 (async () => {
   try {
-    await firebaseAuth.getAuth(firebaseApp).setPersistence({ type: 'SESSION' })
+    await firebaseAuth.getAuth(firebaseApp).setPersistence(firebaseAuth.browserSessionPersistence)
   } catch (error) {
     console.error(error)
   }

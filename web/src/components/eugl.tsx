@@ -46,10 +46,7 @@ varying float zVal;
 
 void main() {
     gl_FragColor = texture2D(texture, uvFrag);
-    gl_FragColor.a *= opacity;
-    if(zVal >= 90.0) {
-        gl_FragColor.a *= (100.0 - zVal) / 10.0;
-    }
+    gl_FragColor.a *= opacity * clamp((110.0 - zVal) / 20.0, 0.0, 1.0);
 }
 `
 
@@ -92,6 +89,10 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
 
   private lastTime: number | null = null
 
+  private resizeObserver?: ResizeObserver
+
+  private manualMoveSpeed = 0
+
   private readonly someDataStyle: React.CSSProperties = {
     position: 'fixed',
     top: 40,
@@ -127,13 +128,14 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     this.resized = this.resized.bind(this)
     this.focused = this.focused.bind(this)
     this.blurred = this.blurred.bind(this)
+    this.keyDown = this.keyDown.bind(this)
     this.keyUp = this.keyUp.bind(this)
     this.loop = this.loop.bind(this)
 
     this.width = window.innerWidth
     this.height = window.innerHeight
     this.scene = new THREE.Scene()
-    this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 100)
+    this.camera = new THREE.PerspectiveCamera(45, this.width / this.height, 0.1, 110)
     this.renderer = new THREE.WebGLRenderer({ alpha: true })
 
     this.renderer.setSize(this.width, this.height)
@@ -160,22 +162,32 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
 
   componentDidMount() {
     this.containerRef.current!.appendChild(this.renderer.domElement)
+    if (typeof window.ResizeObserver !== 'undefined') {
+      this.resizeObserver = new ResizeObserver(([body]) => {
+        this.resized(body.target.clientWidth, body.target.clientHeight)
+      })
+      this.resizeObserver.observe(document.body)
+    }
 
     window.addEventListener('focus', this.focused)
     window.addEventListener('blur', this.blurred)
     window.addEventListener('keyup', this.keyUp)
+    window.addEventListener('keydown', this.keyDown)
   }
 
   componentWillUnmount() {
     window.removeEventListener('focus', this.focused)
     window.removeEventListener('blur', this.blurred)
     window.removeEventListener('keyup', this.keyUp)
+    window.removeEventListener('keydown', this.keyDown)
 
     cancelAnimationFrame(this.loopHandle!)
     const { videoFromCamera } = this.state
     if (videoFromCamera) {
       videoFromCamera!.getTracks()[0].stop()
     }
+
+    this.resizeObserver?.disconnect()
   }
 
   private get max() {
@@ -284,8 +296,21 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
         document.onwebkitfullscreenchange = onFullscreenChange
         document.onfullscreenchange = onFullscreenChange
       }
-    } else {
-      console.log(key)
+    } else if (EuglPage.manualMove) {
+      if (key === 'KeyW' || key === 'ArrowUp' || key === 'KeyS' || key === 'ArrowDown') {
+        this.manualMoveSpeed = 0
+      }
+    }
+  }
+
+  private keyDown(event: KeyboardEvent) {
+    const key = event.code
+    if (EuglPage.manualMove) {
+      if (key === 'KeyW' || key === 'ArrowUp') {
+        this.manualMoveSpeed = -25 * (+event.shiftKey + 1) / (+event.ctrlKey + 1)
+      } else if (key === 'KeyS' || key === 'ArrowDown') {
+        this.manualMoveSpeed = 25 * (+event.shiftKey + 1) / (+event.ctrlKey + 1)
+      }
     }
   }
 
@@ -311,7 +336,7 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     }
 
     this.material.uniforms.opacity.value = Math.max(0, this.material.uniforms.opacity.value)
-    this.camera.position.z += delta * (EuglPage.manualMove ? 0 : -25)
+    this.camera.position.z += delta * (EuglPage.manualMove ? this.manualMoveSpeed : -25)
 
     this.renderer.render(this.scene, this.camera)
     if (EuglPage.debugInfo) {
@@ -429,9 +454,9 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     return textureLoader
   }
 
-  private resized() {
-    this.width = window.innerWidth
-    this.height = window.innerHeight
+  private resized(width?: number, height?: number) {
+    this.width = width || window.innerWidth
+    this.height = height || window.innerHeight
     this.camera.aspect = this.width / this.height
     this.camera.updateProjectionMatrix()
     this.renderer.setSize(this.width, this.height)
@@ -500,7 +525,12 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
 
         <div
           className="someData backdrop"
-          style={{ ...this.someDataStyle, zIndex: someDataZIndex, top: 40 - 40 * someDataZIndex }}
+          style={{
+            ...this.someDataStyle,
+            zIndex: someDataZIndex,
+            top: 40 - 40 * someDataZIndex,
+            borderRadius: '0 0 5px 0',
+          }}
         >
           { EuglPage.debugInfo && (
           <div>
