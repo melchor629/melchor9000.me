@@ -48,8 +48,7 @@ const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>)
     primary,
     totalPhotos,
   } = photoset ?? { photos: [], totalPhotos: 0, primary: null }
-  // TODO calculate this in a better way
-  const perPage = window.document.body.clientWidth > 992 ? 16 : 15
+  const perPage = 15
   const photosLoaded = photos.length
   const morePhotosToLoad = page < Math.floor(totalPhotos / perPage) + 1
 
@@ -95,7 +94,7 @@ const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>)
 
       <Header photo={primary} />
 
-      <div className="d-flex flex-wrap gallery">
+      <div className="gallery">
         {photos.slice(0, page * perPage).map((photo) => <PhotoItem photo={photo} key={photo.id} />)}
       </div>
 
