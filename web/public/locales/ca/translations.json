@@ -115,7 +115,10 @@
 
   "blog": {
     "title": "Blog",
-    "share": "Compartir entrada",
+    "share": "Compartir",
+    "linkCopied": "Enllaç copiat!",
+    "linkCopyFailed": "No s'ha pogut copiar l'enllaç :(",
+    "shareMenuFailed": "No s'ha pogut obrir el menu de compartir :(",
     "created_at": "Creat el",
     "modified_at": "Modificat el",
     "disqus": {

@@ -115,7 +115,10 @@
 
   "blog": {
     "title": "Blog",
-    "share": "Compartir entrada",
+    "share": "Compartir",
+    "linkCopied": "¡Enlace copiado!",
+    "linkCopyFailed": "No se pudo copiar el enlace :(",
+    "shareMenuFailed": "No se pudo abrir el menú de compartir :(",
     "created_at": "Creado el",
     "modified_at": "Modificado el",
     "disqus": {

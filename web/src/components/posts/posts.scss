@@ -138,6 +138,7 @@
 
   pre {
     background-color: #1e1e1e;
+    max-height: 80vh;
 
     code, code > span:not([class^="hljs-"]) {
       color: #eee;
@@ -148,7 +149,7 @@
     background-color: #ddd;
     border-radius: 3px;
     padding: 5px 5px 5px 15px;
-    
+
     .darkmode & {
       background-color: #666;
       color: white;

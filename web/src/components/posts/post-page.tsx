@@ -8,8 +8,6 @@ import LoadSpinner from '../load-spinner/load-spinner'
 import Zoom from '../../lib/zoom.js/zoom'
 import DisqusWrapper from './disqus-wrapper'
 import PostPageContent from './post-page-content'
-import ShareModal from './share-modal'
-import { runOnEnter } from '../../lib/aria-utils'
 import 'highlight.js/styles/vs2015.css'
 
 interface RouteParams {
@@ -27,7 +25,6 @@ type PostPageProps = PostPageStateToProps
 interface PostPageState {
   entry: Post | null
   notFound: boolean
-  showShareModal: boolean
 }
 
 export default class PostPage extends React.Component<PostPageProps, PostPageState> {
@@ -38,7 +35,6 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
     this.state = {
       entry: null,
       notFound: false,
-      showShareModal: false,
     }
   }
 
@@ -97,11 +93,11 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
     let domContent
     let disqusConfig
     const { content } = this.props
-    const { entry, notFound, showShareModal } = this.state
+    const { entry, notFound } = this.state
     if (content) {
       domContent = (
         // eslint-disable-next-line react/no-danger
-        <section className="content" dangerouslySetInnerHTML={{ __html: content }} />
+        <div className="content" dangerouslySetInnerHTML={{ __html: content }} />
       )
       if (entry) {
         disqusConfig = {
@@ -125,10 +121,6 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
       )
     }
 
-    const styles = window.document.body.clientWidth > 568
-      ? { top: 15, right: 40 }
-      : { bottom: 45, right: 20 }
-
     let title: string
     if (notFound) {
       title = 'Post not found - Posts'
@@ -139,33 +131,14 @@ export default class PostPage extends React.Component<PostPageProps, PostPageSta
     }
 
     return (
-      <div>
-
+      <main>
         <Helmet>
           <title>{title}</title>
         </Helmet>
 
-        <div
-          className="circle-button share"
-          style={{ ...styles }}
-          onClick={() => this.setState({ showShareModal: true })}
-          onKeyUp={runOnEnter(() => this.setState({ showShareModal: true }))}
-          role="button"
-          tabIndex={0}
-        >
-          <i className="fas fa-share" />
-        </div>
-
         <PostPageContent entry={entry}>{ domContent }</PostPageContent>
         <DisqusWrapper shortName="personal-website-11" config={disqusConfig} />
-        {entry && (
-          <ShareModal
-            post={entry}
-            show={showShareModal}
-            onHide={() => this.setState({ showShareModal: false })}
-          />
-        )}
-      </div>
+      </main>
     )
   }
 }
