@@ -36,7 +36,7 @@ jobs:
         run: yarn run audit -- --skip-dev
 
       - name: Build
-        run: yarn build
+        run: yarn workspaces run build
         # Defines env vars
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
