@@ -179,6 +179,15 @@ pre {
   border-radius: 3px;
   padding: 1rem;
   white-space: pre;
+
+  > code {
+    padding: 0;
+  }
+}
+
+code {
+  padding: 0.125rem 0.25rem;
+  border-radius: 3px;
 }
 
 /**

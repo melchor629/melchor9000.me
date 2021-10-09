@@ -44,22 +44,22 @@
     }
 
     .card-title, .card-title * {
-      color: $primary-color-normal;
+      color: $md-grey-800;
     }
 
     .card-text, .card-text * {
-      color: #777;
+      color: $md-grey-600;
     }
 
     .darkmode & {
-      background-color: #444 !important;
+      background-color: #414141 !important;
 
       .card-title, .card-title * {
-        color: $primary-color-light;
+        color: $md-grey-100;
       }
 
       .card-text, .card-text * {
-        color: #ddd;
+        color: $md-grey-300;
       }
     }
   }
@@ -140,8 +140,12 @@
     background-color: #1e1e1e;
     max-height: 80vh;
 
-    code, code > span:not([class^="hljs-"]) {
-      color: #eee;
+    code {
+      word-wrap: normal;
+
+      &, & > span:not([class^="hljs-"]) {
+        color: #eee;
+      }
     }
   }
 

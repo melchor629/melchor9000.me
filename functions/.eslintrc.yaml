@@ -13,3 +13,4 @@ rules:
   '@typescript-eslint/semi':
     - error
     - never
+  no-restricted-syntax: 0
