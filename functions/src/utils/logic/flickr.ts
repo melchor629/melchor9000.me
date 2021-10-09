@@ -25,6 +25,7 @@ const doRequest = async <T>(request: any): Promise<T> => {
     headers: {
       'user-agent': 'melchor9000.me/functions (https://github.com/melchor629/melchor9000.me)',
     },
+    timeout: 6000,
   })
   return response.body
 }
