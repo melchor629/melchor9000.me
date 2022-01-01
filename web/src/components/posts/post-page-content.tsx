@@ -9,7 +9,7 @@ const PostPageContentImpl = ({ children, entry }: PropsWithChildren<{ entry: Pos
   const [t] = useTranslation()
 
   if (entry === null) {
-    return <>{ children }</>
+    return <div>{children}</div>
   }
 
   const createdDate = DateTime.fromJSDate(entry.date.toDate(), { zone: 'UTC' })

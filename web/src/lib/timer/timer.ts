@@ -2,7 +2,7 @@ export default class Timer {
   protected handle: any | null = null
 
   constructor(
-    public time: number = 1000,
+    public time: number,
     protected readonly cbk: (some?: any) => void,
     autostart: boolean = false,
   ) {

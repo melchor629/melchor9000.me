@@ -7,10 +7,10 @@ import './posts.scss'
 
 type PostsProps = PostsStateToProps & PostsDispatchToProps & RouteComponentProps<{}>
 
-const Posts = (props: PostsProps) => {
+const Posts = ({ subscribePosts, unsuscribePosts }: PostsProps) => {
   useEffect(() => {
-    props.subscribePosts()
-    return () => props.unsuscribePosts()
+    subscribePosts()
+    return () => unsuscribePosts()
     }, []); //eslint-disable-line
 
   return (

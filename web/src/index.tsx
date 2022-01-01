@@ -30,7 +30,7 @@ import firebaseApp from './lib/firebase';
     reduxCompose(applyMiddleware(thunk)),
   )
 
-  await new Promise((accept) => setTimeout(accept, 10))
+  await new Promise((accept) => { setTimeout(accept, 10) })
 
   ReactDOM.render(
     (

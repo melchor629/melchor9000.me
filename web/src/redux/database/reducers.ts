@@ -25,6 +25,7 @@ const initialState: DatabaseState = {
 }
 
 export const database = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
   state: DatabaseState | undefined = initialState,
   action: any,
 ): DatabaseState => {

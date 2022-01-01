@@ -117,10 +117,12 @@ class Visualizer extends React.Component<VisualizerProp, VisualizerState> {
           break
         default:
           this.canvasContext!.fillStyle = theme === 'light' ? 'white' : '#282828'
-          this.canvasContext!.fillRect(0,
+          this.canvasContext!.fillRect(
+            0,
             0,
             width * this.pixelRatio,
-            height * this.pixelRatio)
+            height * this.pixelRatio,
+          )
           break
       }
     }

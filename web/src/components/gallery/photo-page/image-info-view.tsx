@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon'
-import { memo, useMemo, RefObject } from 'react'
+import {
+  memo, useCallback, FC, RefObject,
+} from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { GalleryPhoto, GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
@@ -18,7 +20,7 @@ const ImageInfoView = ({
   const [t] = useTranslation()
   let geolocation = null
 
-  const InfoItem = useMemo(() => ({ id, children }: { id: string, children: any }) => (
+  const InfoItem: FC<{ id: string }> = useCallback(({ id, children }) => (
     children
       ? (
         <div className="lead col-12 col-md-6 mb-2 info-item">

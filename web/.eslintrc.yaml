@@ -13,5 +13,10 @@ overrides:
       - never
 rules:
   no-console: 0
+  no-restricted-exports: 0
   react/react-in-jsx-scope: 0
   react/no-danger: 0
+  react/function-component-definition:
+    - error
+    - namedComponents: arrow-function
+      unnamedComponents: arrow-function

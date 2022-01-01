@@ -445,6 +445,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
         </form>
 
         <Transition native from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={preview}>
+          {/* eslint-disable-next-line react/no-unstable-nested-components */}
           { (toggle) => ((vals: any) => toggle && (
           <animated.div
             className="ml-sm-auto px-4"
@@ -471,6 +472,7 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
           leave={{ val: 0 }}
           items={saving}
         >
+          {/* eslint-disable-next-line react/no-unstable-nested-components */}
           { (toggle) => ((vals: any) => toggle && (
           <animated.div
             role="main"

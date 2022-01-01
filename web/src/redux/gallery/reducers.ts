@@ -60,6 +60,7 @@ const initialState: GalleryState = {
 }
 
 export const galleryList = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
   state: GalleryState = initialState,
   action: GalleryActions,
 ): GalleryState => {

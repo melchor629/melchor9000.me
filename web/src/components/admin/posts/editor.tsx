@@ -427,6 +427,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
         </form>
 
         <Transition native from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={preview}>
+          {/* eslint-disable-next-line react/no-unstable-nested-components */}
           { (toggle) => (({ val }: { val: number }) => (
             !toggle
               ? null
@@ -475,6 +476,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
           leave={{ val: 0 }}
           items={saving2 || saving}
         >
+          {/* eslint-disable-next-line react/no-unstable-nested-components */}
           { (toggle) => ((vals: any) => (
             !toggle
               ? null

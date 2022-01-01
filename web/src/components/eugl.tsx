@@ -11,7 +11,9 @@ import { getAssetUrl } from '../lib/url'
 import 'cropperjs/dist/cropper.css'
 
 function sleep(time: number) {
-  return new Promise<void>((accept) => setTimeout(() => accept(), time * 1000))
+  return new Promise<void>((accept) => {
+    setTimeout(() => accept(), time * 1000)
+  })
 }
 
 const DEFAULT_VERTEX_SHADER = `
@@ -448,8 +450,10 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     textureLoader.load(getAssetUrl('img/eu/doge.png'), (texture) => this.textures.set('doge', texture))
     textureLoader.load(getAssetUrl('img/eu/melchor.png'), (texture) => this.textures.set('melchor', texture))
     textureLoader.load(getAssetUrl('img/eu/pato.png'), (texture) => this.textures.set('pato', texture))
-    textureLoader.load(getAssetUrl('img/eu/fallout-pipboy.png'),
-      (texture) => this.textures.set('fallout_pipboy', texture))
+    textureLoader.load(
+      getAssetUrl('img/eu/fallout-pipboy.png'),
+      (texture) => this.textures.set('fallout_pipboy', texture),
+    )
     textureLoader.load(getAssetUrl('img/eu/thincc.png'), (texture) => this.textures.set('thincc', texture))
     return textureLoader
   }

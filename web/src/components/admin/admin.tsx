@@ -97,6 +97,7 @@ const AdminPage = ({ darkMode, ...props }: AdminPageProps) => (
           <Route
             exact
             path="/admin"
+            // eslint-disable-next-line react/no-unstable-nested-components
             component={() => React.createElement(Home, { ...props, darkMode })}
           />
           <Route path="/admin/posts" component={Posts} />

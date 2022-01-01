@@ -11,18 +11,23 @@ export interface Route<Props = any> {
   private: boolean
 }
 
-function route<Props = any>(_route: string,
+function route<Props = any>(
+  _route: string,
   title: string,
-  component: LeComponent<Props>, extra?: any): Route<Props> {
+  component: LeComponent<Props>,
+  extra?: any,
+): Route<Props> {
   return {
     route: _route, title, component, extra: extra || {}, private: false,
   }
 }
 
-function privateRoute<Props = any>(_route: string,
+function privateRoute<Props = any>(
+  _route: string,
   title: string,
   component: LeComponent<Props>,
-  extra?: any): Route<Props> {
+  extra?: any,
+): Route<Props> {
   return {
     route: _route, title, component, extra: extra || {}, private: true,
   }

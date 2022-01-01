@@ -27,6 +27,7 @@ export interface Post {
   hide?: boolean
 }
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 export const posts = (state: PostsState = {
   scroll: 0,
   posts: null,
