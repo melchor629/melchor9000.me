@@ -1,49 +1,22 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import React, {
-  useEffect, useRef, useState, Suspense,
-} from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Switch, withRouter } from 'react-router'
-import { Link, Route, RouteComponentProps } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { withTranslation, WithTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 
-import { routes } from './routes'
+import Navbar from './components/navbar'
+import AppRoutes from './routes'
 import { State } from './redux/reducers'
-import PrivateRoute from './containers/private-route'
-import { withDefaultContainer } from './components/default-container'
-import LoadSpinner from './components/load-spinner'
 
 import './app.scss'
 
-const PageNotFound = React.lazy(() => import('./components/404/404'))
-const Login = React.lazy(() => import('./containers/login'))
-
-const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
-  const [offcanvas, setOffcanvas] = useState(false)
-  const [navbarExtraClases, setNavbarExtraClasses] = useState<string[]>([])
+const App = () => {
   const {
-    barrelRoll, flipIt, darkMode, navbarHideMode,
+    barrelRoll, flipIt, darkMode,
   } = useSelector((state: State) => ({
     barrelRoll: state.effects.barrelRoll,
     flipIt: state.effects.flipIt,
     darkMode: state.effects.darkMode,
-    navbarHideMode: state.effects.navbarHideMode,
   }))
-  const navbarThresholdRef = useRef<HTMLDivElement>(null)
-
-  const linkActive = (route: any) => {
-    if (route.extra && route.extra.exact) {
-      return history.location.pathname === route.route ? 'active' : ''
-    }
-    return history.location.pathname.startsWith(route.route) ? 'active' : ''
-  }
-
-  const toggleNavigation = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setOffcanvas(!offcanvas)
-  }
 
   useEffect(() => {
     if (flipIt === null) {
@@ -72,30 +45,6 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
     }
   }, [darkMode])
 
-  useEffect(() => {
-    if (navbarHideMode === null && navbarExtraClases.length > 0) {
-      setNavbarExtraClasses([])
-    } else if (navbarHideMode === 'top-only') {
-      const observer = new IntersectionObserver((entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setNavbarExtraClasses(['hide-top'])
-        } else {
-          setNavbarExtraClasses([])
-        }
-      })
-      observer.observe(navbarThresholdRef.current!)
-
-      return () => {
-        observer.disconnect()
-      }
-    } else if (navbarHideMode === 'always' && !navbarExtraClases.includes('hide')) {
-      setNavbarExtraClasses(['hide'])
-    }
-
-    return () => {}
-  }, [navbarHideMode, navbarExtraClases])
-
-  const navbarClasses = `navbar navbar-default navbar-dark navbar-expand-lg fixed-top ${navbarExtraClases.join(' ')}`
   return (
     <div className="wrap">
 
@@ -111,75 +60,13 @@ const App = ({ history, t }: RouteComponentProps & WithTranslation) => {
         />
       </Helmet>
 
-      <div style={{ position: 'absolute', top: 125 }} ref={navbarThresholdRef} />
-
-      <nav className={navbarClasses}>
-        <div className="container-fluid">
-          <button
-            className="navbar-toggler"
-            type="button"
-            onClick={toggleNavigation}
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <Link className="navbar-brand" to="/">The Abode of melchor9000</Link>
-
-          <div
-            className={`collapse navbar-collapse offcanvas-collapse ${offcanvas ? 'open' : ''}`}
-            id="navbarSupportedContent"
-          >
-            <ul className="navbar-nav mr-auto">
-              {routes.filter((route) => !route.private && route.title).map((route) => (
-                <li className={`nav-item ${linkActive(route)}`} key={route.route}>
-                  <Link
-                    to={route.route}
-                    className="nav-link"
-                    onClick={() => setOffcanvas(false)}
-                  >
-                    {t(`${route.route.substr(1)}.title`, { defaultValue: route.title })}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </nav>
-
+      <Navbar />
       <ToastContainer pauseOnHover={false} />
-
-      <Suspense fallback={<div className="d-flex justify-content-center pt-5"><LoadSpinner /></div>}>
-        <Switch>
-          {routes
-            .filter((route) => !route.private)
-            .map((route) => (
-              <Route
-                path={route.route}
-                component={route.component}
-                key={route.route}
-                {...route.extra}
-              />
-            ))}
-          {routes
-            .filter((route) => route.private)
-            .map((route) => (
-              <PrivateRoute
-                path={route.route}
-                component={route.component}
-                key={route.route}
-                {...route.extra}
-              />
-            ))}
-          <Route path="/login" component={withDefaultContainer(Login)} />
-          <Route component={PageNotFound} />
-        </Switch>
-      </Suspense>
+      <AppRoutes />
 
     </div>
   )
 }
+// https://reactrouter.com/docs/en/v6/upgrading/v5
 
-export default withTranslation('translations')(withRouter(App))
+export default App

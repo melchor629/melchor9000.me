@@ -3,11 +3,11 @@
   "version": "0.4.0",
   "scripts": {
     "build": "tsc -p .",
-    "start": "yarn build && firebase serve --only functions",
+    "start": "npm run build && firebase serve --only functions",
     "watch": "tsc --pretty -w -p .",
     "logs": "firebase functions:log",
     "lint": "eslint --ext js,ts src",
-    "dist": "yarn lint && yarn build",
+    "dist": "npm run lint && npm run build",
     "config:get": "firebase functions:config:get > .runtimeconfig.json"
   },
   "engines": {
@@ -20,7 +20,7 @@
     "ejs": "^3.1.5",
     "etag": "^1.8.1",
     "express": "^4.17.1",
-    "firebase-admin": "^9.3.0",
+    "firebase-admin": "^10.0.1",
     "firebase-functions": "^3.3.0",
     "got": "^11.8.0",
     "highlight.js": "^11.2.0"

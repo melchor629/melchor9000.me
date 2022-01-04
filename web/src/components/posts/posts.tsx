@@ -1,23 +1,23 @@
 import { useEffect } from 'react'
-import { Route, RouteComponentProps } from 'react-router'
+import { Route, Routes } from 'react-router'
 import { PostsDispatchToProps, PostsStateToProps } from '../../containers/posts/posts.interfaces'
 import { PostList } from '../../containers/posts/post-list'
 import { PostPage } from '../../containers/posts/post-page'
 import './posts.scss'
 
-type PostsProps = PostsStateToProps & PostsDispatchToProps & RouteComponentProps<{}>
+type PostsProps = PostsStateToProps & PostsDispatchToProps
 
 const Posts = ({ subscribePosts, unsuscribePosts }: PostsProps) => {
   useEffect(() => {
     subscribePosts()
     return () => unsuscribePosts()
-    }, []); //eslint-disable-line
+  }, []); //eslint-disable-line
 
   return (
-    <>
-      <Route exact path="/blog/" component={PostList} />
-      <Route path="/blog/:year(\d{4})/:month(\d{1,2})/:day(\d{1,2})/:title" component={PostPage} />
-    </>
+    <Routes>
+      <Route index element={<PostList />} />
+      <Route path=":year/:month/:day/:title" element={<PostPage />} />
+    </Routes>
   )
 }
 

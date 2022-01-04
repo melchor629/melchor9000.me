@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { runOnEnter } from '../../lib/aria-utils'
 import { Post } from '../../redux/posts/reducers'
 
@@ -9,17 +9,17 @@ interface PostEntryProps {
 }
 
 const PostEntry = ({ entry }: PostEntryProps) => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const { date, img, title } = entry
   const parsedDate = DateTime.fromJSDate(date.toDate(), { zone: 'UTC' })
   const fecha = parsedDate.toLocal().toLocaleString(DateTime.DATETIME_FULL)
-  const url = `/blog/${parsedDate.get('year')}/${parsedDate.get('month')}/${parsedDate.get('day')}/${entry.url}`
+  const url = `${parsedDate.get('year')}/${parsedDate.get('month')}/${parsedDate.get('day')}/${entry.url}`
 
   const changeUrl = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
-    history.push(url)
-  }, [history, url])
+    navigate(url)
+  }, [navigate, url])
 
   return (
     <div className="card" onClick={changeUrl} onKeyUp={runOnEnter(changeUrl)} role="button" tabIndex={0}>

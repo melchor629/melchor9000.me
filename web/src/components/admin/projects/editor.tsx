@@ -1,11 +1,10 @@
 import React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
-import {
-  getFirestore, collection, doc, getDoc,
-} from 'firebase/firestore'
+// import {
+//   getFirestore, collection, doc, getDoc,
+// } from 'firebase/firestore'
 import { animated, Transition } from '@react-spring/web'
 import { nanoid } from 'nanoid'
-import app from '../../../lib/firebase'
+// import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
 import LoadSpinner from '../../load-spinner'
 import Project from '../../projects/project'
@@ -18,8 +17,7 @@ import {
 } from '../../../lib/validators'
 import { AdminBigInput, AdminInput } from '../admin-input'
 
-type ProjectEditorProps = ProjectEditorStateToProps & ProjectEditorDispatchToProps &
-RouteComponentProps<{ id?: string }>
+type ProjectEditorProps = ProjectEditorStateToProps & ProjectEditorDispatchToProps
 
 interface ProjectEditorState {
   title: string
@@ -67,7 +65,8 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
   }
 
   componentDidMount() {
-    const { match } = this.props
+    // TODO refactor component into FC
+    /* const { match } = this.props
     if (match.params.id) {
       getDoc(doc(collection(getFirestore(app), 'projects'), match.params.id))
         .then((obj) => {
@@ -85,19 +84,19 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
               .map(([lang, description]) => ({ id: nanoid(), lang, description })),
           })
         })
-    }
+    } */
   }
 
   componentDidUpdate(prevProps: ProjectEditorProps) {
     const {
       saving,
       errorSaving,
-      history,
+      // history,
       clearError,
     } = this.props
     if (prevProps.saving && !saving) {
       if (!errorSaving) {
-        history.push('/admin/projects/')
+        // history.push('/admin/projects/')
       } else {
         toast.error(`No se pudo añadir el nuevo proyecto...${errorSaving.message}`)
         clearError()

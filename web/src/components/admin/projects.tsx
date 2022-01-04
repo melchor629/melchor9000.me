@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import type { ProjectsDispatchToProps, ProjectsStateToProps } from '../../containers/admin/projects'
 import { ProjectsHome } from '../../containers/admin/projects/home'
 import { ProjectEditor } from '../../containers/admin/projects/editor'
@@ -19,11 +19,11 @@ export default class Posts extends Component<ProjectsPageProps> {
 
   render() {
     return (
-      <Switch>
-        <Route exact path="/admin/projects/" component={ProjectsHome} />
-        <Route path="/admin/projects/create" component={ProjectEditor} />
-        <Route path="/admin/projects/edit/:id" component={ProjectEditor} />
-      </Switch>
+      <Routes>
+        <Route index element={<ProjectsHome />} />
+        <Route path="create" element={<ProjectEditor />} />
+        <Route path="edit/:id" element={<ProjectEditor />} />
+      </Routes>
     )
   }
 }

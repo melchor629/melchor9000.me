@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
 import { runOnEnter } from '../../../lib/aria-utils'
 
@@ -8,10 +8,9 @@ interface PhotoItemProps {
 }
 
 const PhotoItemImpl = ({ photo }: PhotoItemProps) => {
-  const history = useHistory()
-  const match = useRouteMatch<{ photosetId: string }>()
+  const navigate = useNavigate()
   const photoImageStyles = { backgroundImage: `url(${photo.url})` }
-  const openImage = () => history.push(`/gallery/${match.params.photosetId}/${photo.id}`)
+  const openImage = () => navigate(`${photo.id}`)
   return (
     <div className="photo-item">
       <div className="photo-item-container">

@@ -3,7 +3,6 @@ import React from 'react'
 import { DateTime } from 'luxon'
 import * as firestore from 'firebase/firestore'
 import * as storage from 'firebase/storage'
-import { RouteComponentProps } from 'react-router-dom'
 import {
   animated,
   useSpring,
@@ -11,7 +10,6 @@ import {
 } from '@react-spring/web'
 import { Helmet } from 'react-helmet'
 import speakingurl from 'speakingurl'
-import { StaticContext } from 'react-router'
 import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
 import getFirebaseFunctionUrl from '../../../lib/firebase-function'
@@ -73,8 +71,7 @@ interface PostEditorState {
 }
 
 type PostEditorProps = PostEditorStateToProps &
-PostEditorDispatchToProps &
-RouteComponentProps<{ id?: string }, StaticContext, { post: Post } | null | undefined>
+PostEditorDispatchToProps
 
 export default class PostEditor extends React.Component<PostEditorProps, PostEditorState> {
   private static showError(message: string, error: any) {
@@ -119,7 +116,8 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
   }
 
   componentDidMount() {
-    const setStateFromPost = (post: Post | any, _id: string) => {
+    // TODO refactor into FC
+    /* const setStateFromPost = (post: Post | any, _id: string) => {
       this.setState({
         title: post.title,
         img: post.img,
@@ -153,14 +151,14 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
         .then((obj) => {
           setStateFromPost(obj.data(), match.params.id!)
         })
-    }
+    } */
   }
 
   componentDidUpdate(prevProps: PostEditorProps) {
     const {
       saving,
       errorSaving,
-      history,
+      // history,
       clearError,
     } = this.props
     const { publishDate, url } = this.state
@@ -168,7 +166,7 @@ export default class PostEditor extends React.Component<PostEditorProps, PostEdi
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ saving: false })
       if (!errorSaving) {
-        history.push('/admin/posts/')
+        // history.push('/admin/posts/')
       } else {
         PostEditor.showError('No se pudo subir los metadatos del post...', errorSaving)
         clearError()

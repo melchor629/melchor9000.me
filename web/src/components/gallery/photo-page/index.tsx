@@ -1,8 +1,9 @@
 import React, {
   useCallback, useEffect, useRef, useState,
 } from 'react'
+import { useNavigate, useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import { SwipeEventData, useSwipeable } from 'react-swipeable'
-import { Link, RouteComponentProps } from 'react-router-dom'
 
 import ZoomImageView from './zoom-image-view'
 import ImageInfoViewMemo from './image-info-view'
@@ -11,8 +12,6 @@ import { usePhotoActions, usePhotoState } from './redux-connector'
 import LoadSpinner from '../../load-spinner'
 import { GalleryPhoto } from '../../../redux/gallery/reducers'
 import { runOnEnter } from '../../../lib/aria-utils'
-
-type OverlayProps = RouteComponentProps<{ id: string, photosetId: string }>
 
 const requestIdleCallback = (window as any).requestIdleCallback || setTimeout
 
@@ -43,12 +42,12 @@ interface SwipingState {
   y: number
 }
 
-const PhotoPage = ({ match, history }: OverlayProps) => {
-  const { id: photoId, photosetId } = match.params
+const PhotoPage = () => {
+  const { id: photoId, photosetId } = useParams()
+  const navigate = useNavigate()
   const [topOrBottom, setTopOrBottom] = useState<'top' | 'bottom'>('top')
   const [zoomOpenStatus, setZoomOpenStatus] = useState<[ number, number ] | false>(false)
   const [swipingState, setSwipingState] = useState<SwipingState | null>(null)
-  const imagePageContainerRef = useRef<HTMLDivElement | null>(null)
   const imageViewRef = useRef<HTMLDivElement | null>(null)
   const imageInfoRef = useRef<HTMLDivElement | null>(null)
   const observerRef = useRef<IntersectionObserver>()
@@ -63,7 +62,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
     imageSwitcher,
     error,
     photosetError,
-  } = usePhotoState(photosetId)
+  } = usePhotoState(photosetId!)
   const {
     close,
     loadFullInfoForPhoto,
@@ -72,7 +71,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
     prev,
     enableHideNavbarOnTopMode,
     disableHideNavbarOnTopMode,
-  } = usePhotoActions(photosetId)
+  } = usePhotoActions(photosetId!)
 
   useEffect(() => {
     enableHideNavbarOnTopMode()
@@ -83,7 +82,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    loadFullInfoForPhoto(photoId)
+    loadFullInfoForPhoto(photoId!)
   }, [photoId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
@@ -91,10 +90,10 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
       const onKeyPress = (e: KeyboardEvent) => {
         if (e.key === 'ArrowRight' && nextPhoto) {
           next()
-          requestIdleCallback(() => history.push(`/gallery/${photosetId}/${nextPhoto.id}`))
+          requestIdleCallback(() => navigate(`../${nextPhoto.id}`))
         } else if (e.key === 'ArrowLeft' && prevPhoto) {
           prev()
-          requestIdleCallback(() => history.push(`/gallery/${photosetId}/${prevPhoto.id}`))
+          requestIdleCallback(() => navigate(`../${prevPhoto.id}`))
         }
       }
 
@@ -128,24 +127,24 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
     }
   }, [hasPhoto])
 
-  useEffect(() => {
-    if (imagePageContainerRef.current) {
-      imageViewRef.current = imagePageContainerRef.current.querySelector('.image-view')! as HTMLDivElement
+  const setRefs = useCallback((ref: HTMLDivElement | null) => {
+    if (ref) {
+      imageViewRef.current = ref.querySelector('.image-view') as HTMLDivElement
     } else {
       imageViewRef.current = null
     }
-  }, [imagePageContainerRef.current]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   const onSwipedHorizontal = useCallback((newPhoto: { id: string } | null, n: () => void) => () => {
     setSwipingState(null)
     if (newPhoto) {
       n()
       // For some reason, requestIdleCallback here caused a big delay in the transition
-      setTimeout(() => history.push(`/gallery/${photosetId}/${newPhoto.id}`))
+      setTimeout(() => navigate(`../${newPhoto.id}`))
     } else if (window.navigator.vibrate) {
       window.navigator.vibrate(150)
     }
-  }, [history, photosetId])
+  }, [navigate])
 
   const scrollToInfo = useCallback(() => {
     if (topOrBottom === 'top') {
@@ -223,7 +222,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
           <div className="text-center pt-5">
             <h1>{text}</h1>
             <p>{error.message}</p>
-            <Link to={`/gallery/${photosetId}`}>Go to photoset gallery</Link>
+            <Link to="..">Go to photoset gallery</Link>
           </div>
         </div>
       </div>
@@ -246,7 +245,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
           <div className="text-center pt-5">
             <h1>{text}</h1>
             <p>{photosetError.message}</p>
-            <Link to="/gallery">Go to gallery</Link>
+            <Link to="../..">Go to gallery</Link>
           </div>
         </div>
       </div>
@@ -281,7 +280,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
         <LoadSpinner />
       </div>
 
-      <div className="image-page-container" role="document" ref={imagePageContainerRef}>
+      <div className="image-page-container" role="document" ref={setRefs}>
         <div
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...handlers}
@@ -312,7 +311,7 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
             className={`nav-button next-button ${nextPhoto || 'hide'}`}
             style={swipeZoom('l')}
           >
-            <Link to={`/gallery/${photosetId}/${nextPhoto && nextPhoto.id}`} onClick={next}>
+            <Link to={`../${nextPhoto && nextPhoto.id}`} onClick={next}>
               <i className="fas fa-chevron-right" />
             </Link>
           </div>
@@ -320,12 +319,12 @@ const PhotoPage = ({ match, history }: OverlayProps) => {
             className={`nav-button prev-button ${prevPhoto || 'hide'}`}
             style={swipeZoom('r')}
           >
-            <Link to={`/gallery/${photosetId}/${prevPhoto && prevPhoto.id}`} onClick={prev}>
+            <Link to={`../${prevPhoto && prevPhoto.id}`} onClick={prev}>
               <i className="fas fa-chevron-left" />
             </Link>
           </div>
           <div className="nav-button secondary back-to-gallery">
-            <Link to={`/gallery/${photosetId}`}>
+            <Link to="..">
               <i className="fas fa-arrow-left mr-2" />
               <i className="fas fa-images" />
             </Link>

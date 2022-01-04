@@ -1,4 +1,8 @@
-const join = (a: string, b: string) => (a.endsWith('/') ? a + b : `${a}/${b}`)
+const join = (a: string, b: string) => {
+  const aStripped = a.replace(/\/$/, '')
+  const bStripped = b.replace(/^\//, '')
+  return `${aStripped}/${bStripped}`
+}
 
 export const publicUrl = (process.env.PUBLIC_URL || '/')
 export const assetsUrl = publicUrl

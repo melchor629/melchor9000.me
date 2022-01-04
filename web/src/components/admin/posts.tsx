@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import type { PostsDispatchToProps, PostsStateToProps } from '../../containers/admin/posts'
 import { PostsHome } from '../../containers/admin/posts/home'
 import { PostEditor } from '../../containers/admin/posts/editor'
@@ -19,11 +19,11 @@ export default class Posts extends Component<PostsPageProps> {
 
   render() {
     return (
-      <Switch>
-        <Route exact path="/admin/posts/" component={PostsHome} />
-        <Route path="/admin/posts/create" component={PostEditor} />
-        <Route path="/admin/posts/edit/:id" component={PostEditor} />
-      </Switch>
+      <Routes>
+        <Route index element={<PostsHome />} />
+        <Route path="create" element={<PostEditor />} />
+        <Route path="edit/:id" element={<PostEditor />} />
+      </Routes>
     )
   }
 }

@@ -1,5 +1,6 @@
+import clsx from 'clsx'
 import React from 'react'
-import { Route, RouteComponentProps, Switch } from 'react-router'
+import { Route, Routes } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import { animated, useTrail } from '@react-spring/web'
 import { Helmet } from 'react-helmet'
@@ -11,10 +12,10 @@ import './admin.scss'
 
 const containerStyle: React.CSSProperties = { width: '100%' }
 
-type AdminPageProps = AdminDispatchToProps & AdminStateToProps & RouteComponentProps<null>
+type AdminPageProps = AdminDispatchToProps & AdminStateToProps
 
 const pages = ['/admin/posts', '/admin/projects']
-const Home = ({ user, style }: AdminPageProps & { style?: React.CSSProperties }) => {
+const Home = ({ user, style }: Pick<AdminPageProps, 'user'> & { style?: React.CSSProperties }) => {
   const trail = useTrail(pages.length, {
     from: { scale: 0 },
     to: { scale: 1 },
@@ -45,6 +46,7 @@ Home.defaultProps = {
   style: {},
 }
 
+const navLinkClasses = ({ isActive }: { isActive: boolean }) => clsx('nav-link', isActive && 'active')
 const AdminPage = ({ darkMode, ...props }: AdminPageProps) => (
   <div className="container-fluid">
 
@@ -69,22 +71,22 @@ const AdminPage = ({ darkMode, ...props }: AdminPageProps) => (
         <div className="sidebar-sticky">
           <ul className="nav flex-column mb-2">
             <li className="nav-item">
-              <NavLink exact to="/admin" className="nav-link" activeClassName="active">
+              <NavLink to="/" className={navLinkClasses}>
                 Dashboard
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/admin/posts" className="nav-link" activeClassName="active">
+              <NavLink to="posts" className={navLinkClasses}>
                 Posts
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/admin/projects" className="nav-link" activeClassName="active">
+              <NavLink to="projects" className={navLinkClasses}>
                 Projects
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/admin/logout" className="nav-link" activeClassName="active">
+              <NavLink to="logout" className={navLinkClasses}>
                 Log out
               </NavLink>
             </li>
@@ -93,17 +95,15 @@ const AdminPage = ({ darkMode, ...props }: AdminPageProps) => (
       </nav>
 
       <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <Switch>
+        <Routes>
           <Route
-            exact
-            path="/admin"
-            // eslint-disable-next-line react/no-unstable-nested-components
-            component={() => React.createElement(Home, { ...props, darkMode })}
+            index
+            element={React.createElement(Home, props)}
           />
-          <Route path="/admin/posts" component={Posts} />
-          <Route path="/admin/projects" component={Projects} />
-          <Route path="/admin/logout" component={Logout} />
-        </Switch>
+          <Route path="posts" element={<Posts />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="logout" element={<Logout />} />
+        </Routes>
       </main>
     </div>
   </div>

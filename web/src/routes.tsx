@@ -1,54 +1,63 @@
-import { lazy, ComponentType } from 'react'
-import { withDefaultContainer } from './components/default-container'
+import {
+  lazy,
+  ComponentType,
+  FC,
+  Suspense,
+} from 'react'
+import { Routes, Route, Outlet } from 'react-router'
+import { DefaultContainer } from './components/default-container'
+import LoadSpinner from './components/load-spinner'
+import PrivateRoute from './containers/private-route'
 
-type LeComponent<Props> = ComponentType<Props>
+const AppRouteLoading = () => (
+  <div className="d-flex justify-content-center pt-5">
+    <LoadSpinner />
+  </div>
+)
 
-export interface Route<Props = any> {
-  route: string
-  title: string
-  component: LeComponent<Props>
-  extra: any
-  private: boolean
+const LazyRoute = ({ children }: any) => (
+  <Suspense fallback={<AppRouteLoading />}>
+    {children}
+  </Suspense>
+)
+
+const DefaultLayout = () => <DefaultContainer><Outlet /></DefaultContainer>
+
+function withLazyRoute(fn: () => Promise<{ default: ComponentType<any> }>): FC {
+  const Component = lazy(fn)
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  return (props) => <LazyRoute><Component {...props} /></LazyRoute>
 }
 
-function route<Props = any>(
-  _route: string,
-  title: string,
-  component: LeComponent<Props>,
-  extra?: any,
-): Route<Props> {
-  return {
-    route: _route, title, component, extra: extra || {}, private: false,
-  }
-}
+const AboutMe = withLazyRoute(() => import('./components/about-me'))
+const Projects = withLazyRoute(() => import('./components/projects'))
+const Home = withLazyRoute(() => import('./containers/home'))
+const Gallery = withLazyRoute(() => import('./components/gallery'))
+const Posts = withLazyRoute(() => import('./containers/posts'))
+const Experiments = withLazyRoute(() => import('./components/experiments'))
+const SupportMe = withLazyRoute(() => import('./components/support-me'))
+const Admin = withLazyRoute(() => import('./containers/admin/admin'))
 
-function privateRoute<Props = any>(
-  _route: string,
-  title: string,
-  component: LeComponent<Props>,
-  extra?: any,
-): Route<Props> {
-  return {
-    route: _route, title, component, extra: extra || {}, private: true,
-  }
-}
+const Login = withLazyRoute(() => import('./containers/login'))
+const PageNotFound = withLazyRoute(() => import('./components/404/404'))
 
-const AboutMe = lazy(() => import('./components/about-me'))
-const Projects = lazy(() => import('./components/projects'))
-const Home = lazy(() => import('./containers/home'))
-const Gallery = lazy(() => import('./components/gallery'))
-const Posts = lazy(() => import('./containers/posts'))
-const Experiments = lazy(() => import('./components/experiments'))
-const SupportMe = lazy(() => import('./components/support-me'))
-const Admin = lazy(() => import('./containers/admin/admin'))
+const AppRoutes = () => (
+  <Routes>
+    <Route element={<DefaultLayout />}>
+      <Route index element={<Home />} />
+      <Route path="about-me" element={<AboutMe />} />
+      <Route path="blog/*" element={<Posts />} />
+      <Route path="projects" element={<Projects />} />
+      <Route path="support-me" element={<SupportMe />} />
+      <Route path="login" element={<Login />} />
+    </Route>
 
-export const routes: Array<Route<any>> = [
-  route('/', 'Home', withDefaultContainer(Home), { exact: true }),
-  route('/about-me', 'About me', withDefaultContainer(AboutMe)),
-  route('/gallery', 'Photo Gallery', Gallery),
-  route('/blog', 'Posts', withDefaultContainer(Posts)),
-  route('/projects', 'Projects', withDefaultContainer(Projects)),
-  route('/experiments', 'Experiments', Experiments),
-  route('/support-me', 'Support Me', withDefaultContainer(SupportMe)),
-  privateRoute('/admin', 'Admin page', Admin),
-]
+    <Route path="gallery/*" element={<Gallery />} />
+    <Route path="experiments/*" element={<Experiments />} />
+    <Route path="admin/*" element={<PrivateRoute><Admin /></PrivateRoute>} />
+
+    <Route path="*" element={<PageNotFound />} />
+  </Routes>
+)
+
+export default AppRoutes

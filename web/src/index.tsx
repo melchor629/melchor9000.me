@@ -51,7 +51,7 @@ import firebaseApp from './lib/firebase';
 })()
 
 ReactDOM.render(
-  <Footer />,
+  <StrictMode><Footer /></StrictMode>,
   document.getElementById('footer'),
 )
 

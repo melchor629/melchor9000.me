@@ -1,34 +1,23 @@
-import React from 'react'
-import {
-  Redirect,
-  Route,
-  RouteProps,
-  RouteComponentProps,
-} from 'react-router'
+import { FC, ReactElement, useLayoutEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 
-interface PrivateRouteProps extends RouteProps {
-  component: React.ComponentType<any>
-}
-
-const RedirectToLogin = ({ location }: RouteComponentProps) => (
-  <Redirect to={{ pathname: '/login', state: { from: location } }} />
-)
-
-const PrivateRoute = ({ component, ...rest }: PrivateRouteProps) => {
+const PrivateRoute: FC<{ children: ReactElement }> = ({ children }) => {
   const loggedIn = useSelector(({ auth }) => !!auth.user)
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useLayoutEffect(() => {
+    if (!loggedIn) {
+      navigate('/login', { state: { from: location } })
+    }
+  })
 
   if (!loggedIn) {
-    return React.createElement(Route, {
-      ...rest,
-      component: RedirectToLogin,
-    })
+    return null
   }
 
-  return React.createElement(Route, {
-    ...rest,
-    component,
-  })
+  return children
 }
 
 export default PrivateRoute

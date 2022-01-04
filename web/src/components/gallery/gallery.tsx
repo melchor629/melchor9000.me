@@ -1,4 +1,5 @@
-import { Redirect, Route } from 'react-router'
+import { useEffect } from 'react'
+import { Route, Routes, useNavigate } from 'react-router'
 
 import GalleryListPage from './gallery-list-page'
 import PhotoPage from './photo-page'
@@ -10,23 +11,38 @@ const photosetId = '72157667134867210'
 
 const GalleryListPageComponent = withDefaultContainer(GalleryListPage)
 
+const TempRedirect = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    navigate(photosetId)
+  }, [navigate])
+
+  return null
+}
+
 const Gallery = () => (
-  <>
+  <Routes>
     <Route
-      exact
-      path="/gallery"
-      render={() => <Redirect to={`/gallery/${photosetId}`} />}
+      index
+      element={<TempRedirect />}
     />
     <Route
-      exact
-      path="/gallery/:photosetId"
-      component={GalleryListPageComponent}
+      path=":photosetId/*"
+      element={(
+        <Routes>
+          <Route
+            index
+            element={<GalleryListPageComponent />}
+          />
+          <Route
+            path=":id"
+            element={<PhotoPage />}
+          />
+        </Routes>
+      )}
     />
-    <Route
-      path="/gallery/:photosetId/:id"
-      component={PhotoPage}
-    />
-  </>
+  </Routes>
 )
 
 export default Gallery

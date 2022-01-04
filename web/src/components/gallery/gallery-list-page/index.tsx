@@ -5,7 +5,7 @@ import {
   useState,
 } from 'react'
 import { Helmet } from 'react-helmet'
-import { RouteComponentProps } from 'react-router'
+import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
 import Header from './header'
@@ -13,11 +13,11 @@ import PhotoItem from './photo-item'
 import { useGalleryListActions, useGalleryListState } from './redux-connector'
 import LoadSpinner from '../../load-spinner'
 
-const GalleryListPage = ({ match }: RouteComponentProps<{ photosetId: string }>) => {
-  const { photosetId } = match.params
+const GalleryListPage = () => {
+  const { photosetId } = useParams()
   const [page, setPage] = useState(0)
-  const photoset = useGalleryListState(photosetId)
-  const { loadFirstPhotos, loadMorePhotos } = useGalleryListActions(photosetId)
+  const photoset = useGalleryListState(photosetId!)
+  const { loadFirstPhotos, loadMorePhotos } = useGalleryListActions(photosetId!)
   const spinnerRef = useRef<HTMLDivElement>(null)
   const loadEntriesRef = useRef<() => void>()
 

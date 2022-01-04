@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
+import { useParams } from 'react-router'
 import { useTransition } from '@react-spring/web'
 import {
   getRecentTrackList,
@@ -19,8 +19,8 @@ const compareTracks = (a: RecentTrack | NowPlayingTrack, b: RecentTrack | NowPla
   return a.title === b.title && a.artist === b.artist && a.album === b.album
 }
 
-const NowPlaying = ({ match }: RouteComponentProps<{ user?: string }>) => {
-  const { user } = match.params
+const NowPlaying = () => {
+  const { user } = useParams()
   const [data, setData] = useState<RecentTracksResponse | undefined>()
   const [tracks, setTracks] = useState<Array<(RecentTrack | NowPlayingTrack) & { key: string }>>([])
 

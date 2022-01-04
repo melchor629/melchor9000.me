@@ -1,9 +1,10 @@
-import * as React from 'react'
-import { Redirect, RouteComponentProps, StaticContext } from 'react-router'
 import { animated, Spring } from '@react-spring/web'
+import { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router'
 import * as toast from '../lib/toast'
-import type { LoginDispatchToProps, LoginStateToProps } from '../containers/login'
+import { logIn } from '../redux/auth/actions'
 import LoadSpinner from './load-spinner'
 
 const formStyle: React.CSSProperties = {
@@ -25,176 +26,169 @@ const passwordInputStyle: React.CSSProperties = {
   marginBottom: 15,
 }
 
-interface LoginPageState {
-  username: string
-  password: string
-  canRedirect: boolean
-}
+const LoginPage = () => {
+  const [user, loggingIn, loginError] = useSelector(
+    ({ auth }) => [auth.user, auth.loggingIn, auth.error] as const,
+    shallowEqual,
+  )
+  const dispatch = useDispatch()
 
-type LoginPageProps = LoginStateToProps
-& LoginDispatchToProps
-& RouteComponentProps<{}, StaticContext, { from: { pathname: string } } | null | undefined>
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [canRedirect, setCanRedirect] = useState(!!user)
+  const location = useLocation()
+  const navigate = useNavigate()
 
-export default class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
-  constructor(props: LoginPageProps) {
-    super(props)
-    this.state = {
-      username: '',
-      password: '',
-      canRedirect: !!props.user,
-    }
-    this.usernameChanged = this.usernameChanged.bind(this)
-    this.passwordChanged = this.passwordChanged.bind(this)
-    this.buttonPressed = this.buttonPressed.bind(this)
-  }
+  const usernameChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value)
+  }, [])
 
-  componentDidUpdate(prevProps: Readonly<LoginStateToProps & LoginDispatchToProps>): void {
-    const { loginError, user } = this.props
-    if (!prevProps.loginError && loginError) {
+  const passwordChanged = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value)
+  }, [])
+
+  const buttonPressed = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    dispatch(logIn(username, password))
+  }, [dispatch, username, password])
+
+  useEffect(() => {
+    if (loginError) {
       toast.error(loginError.message)
     }
+  }, [loginError])
 
-    if (!prevProps.user && user) {
+  useEffect(() => {
+    if (user) {
       setTimeout(() => {
-        this.setState({ canRedirect: true })
+        setCanRedirect(true)
       }, 2000)
     }
-  }
+  }, [user])
 
-  private usernameChanged(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ username: e.target.value })
-  }
-
-  private passwordChanged(e: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ password: e.target.value })
-  }
-
-  private buttonPressed(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    const { logIn } = this.props
-    const { username, password } = this.state
-    logIn(username, password)
-  }
-
-  render() {
-    const { location, loggingIn, user } = this.props
-    const { canRedirect, username, password } = this.state
-
+  useEffect(() => {
     if (user && canRedirect) {
-      const to = { pathname: (location.state || { from: { pathname: '/' } }).from.pathname }
-      return <Redirect to={to} />
+      const state: { from?: { pathname?: string } } = location.state as any
+      const to = { pathname: state?.from?.pathname ?? '/' }
+      navigate(to)
     }
+  }, [user, canRedirect, location.state, navigate])
 
-    const form = ({ alpha }: any) => (
-      <animated.div style={{
-        transform: alpha.to((x: number) => `translate3d(${(1 - x) * -100}px,0,0)`),
-        opacity: alpha.to((x: number) => `${x}`),
-      }}
-      >
-        <h1 className="h3 mb-3 font-weight-normal">Demuestrame quien eres</h1>
-        <div className="form-floating">
-          <input
-            type="email"
-            id="inputEmail"
-            className="form-control"
-            placeholder="Correo electrónico"
-            required
-            style={emailInputStyle}
-            value={username}
-            onChange={this.usernameChanged}
-          />
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="inputEmail">
-            Email address
-          </label>
-        </div>
-        <div className="form-floating">
-          <input
-            type="password"
-            id="inputPassword"
-            className="form-control"
-            placeholder="Contraseña"
-            required
-            autoComplete=""
-            style={passwordInputStyle}
-            value={password}
-            onChange={this.passwordChanged}
-          />
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="inputPassword">
-            Password
-          </label>
-        </div>
-        <button
-          className="btn btn-lg btn-primary btn-block"
-          type="submit"
-          onClick={this.buttonPressed}
-        >
-          Dale
-        </button>
-      </animated.div>
-    )
-
-    const loading = ({ alpha }: any) => (
-      <animated.div style={{
-        transform: alpha.to((x: number) => `translate3d(${(1 - x) * 100}px,0,0)`),
-        opacity: alpha.to((x: number) => `${x}`),
-        position: 'relative',
-        top: -187,
-        zIndex: -1,
-      }}
-      >
-        <h1 className="h3 mb-3 font-weight-normal">Comprobando...</h1>
-        <LoadSpinner />
-      </animated.div>
-    )
-
-    const salutation = (style: any) => (
-      <animated.div style={{
-        ...style,
-        position: 'relative',
-        top: -150,
-        transform: style.opacity.to((x: number) => `scale(${x})`),
-      }}
-      >
-        <h1 className="h3 mb-3 font-weight-normal">
-          Bienvenido
-          {user!.displayName}
-        </h1>
-      </animated.div>
-    )
-
-    return (
-      <div className="d-flex align-items-center justify-content-center text-center" style={containerStyle}>
-
-        <Helmet>
-          <title>Log out</title>
-        </Helmet>
-
-        <form style={formStyle}>
-          <img
-            className="mb-4"
-            src={`${process.env.PUBLIC_URL}/ico/favicon.png`}
-            style={{ width: 64 }}
-            alt="favicon"
-          />
-          <Spring
-            from={{ alpha: 1 }}
-            to={{ alpha: loggingIn || user ? 0 : 1 }}
-          >
-            {!user ? form : () => (<animated.div />)}
-          </Spring>
-          <Spring
-            from={{ alpha: 0 }}
-            to={{ alpha: loggingIn && !user ? 1 : 0 }}
-          >
-            { loading }
-          </Spring>
-          <Spring from={{ opacity: 0 }} to={{ opacity: user ? 1 : 0 }}>
-            {user ? salutation : () => (<animated.div />)}
-          </Spring>
-        </form>
-      </div>
-    )
+  if (user && canRedirect) {
+    return null
   }
+
+  const form = ({ alpha }: any) => (
+    <animated.div style={{
+      transform: alpha.to((x: number) => `translate3d(${(1 - x) * -100}px,0,0)`),
+      opacity: alpha.to((x: number) => `${x}`),
+    }}
+    >
+      <h1 className="h3 mb-3 font-weight-normal">Demuestrame quien eres</h1>
+      <div className="form-floating">
+        <input
+          type="email"
+          id="inputEmail"
+          className="form-control"
+          placeholder="Correo electrónico"
+          required
+          style={emailInputStyle}
+          value={username}
+          onChange={usernameChanged}
+        />
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+        <label htmlFor="inputEmail">
+          Email address
+        </label>
+      </div>
+      <div className="form-floating">
+        <input
+          type="password"
+          id="inputPassword"
+          className="form-control"
+          placeholder="Contraseña"
+          required
+          autoComplete=""
+          style={passwordInputStyle}
+          value={password}
+          onChange={passwordChanged}
+        />
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+        <label htmlFor="inputPassword">
+          Password
+        </label>
+      </div>
+      <button
+        className="btn btn-lg btn-primary btn-block"
+        type="submit"
+        onClick={buttonPressed}
+      >
+        Dale
+      </button>
+    </animated.div>
+  )
+
+  const loading = ({ alpha }: any) => (
+    <animated.div style={{
+      transform: alpha.to((x: number) => `translate3d(${(1 - x) * 100}px,0,0)`),
+      opacity: alpha.to((x: number) => `${x}`),
+      position: 'relative',
+      top: -187,
+      zIndex: -1,
+    }}
+    >
+      <h1 className="h3 mb-3 font-weight-normal">Comprobando...</h1>
+      <LoadSpinner />
+    </animated.div>
+  )
+
+  const salutation = (style: any) => (
+    <animated.div style={{
+      ...style,
+      position: 'relative',
+      top: -150,
+      transform: style.opacity.to((x: number) => `scale(${x})`),
+    }}
+    >
+      <h1 className="h3 mb-3 font-weight-normal">
+        Bienvenido
+        {user!.displayName}
+      </h1>
+    </animated.div>
+  )
+
+  return (
+    <div className="d-flex align-items-center justify-content-center text-center" style={containerStyle}>
+
+      <Helmet>
+        <title>Log out</title>
+      </Helmet>
+
+      <form style={formStyle}>
+        <img
+          className="mb-4"
+          src={`${process.env.PUBLIC_URL}/ico/favicon.png`}
+          style={{ width: 64 }}
+          alt="favicon"
+        />
+        <Spring
+          from={{ alpha: 1 }}
+          to={{ alpha: loggingIn || user ? 0 : 1 }}
+        >
+          {!user ? form : () => (<animated.div />)}
+        </Spring>
+        <Spring
+          from={{ alpha: 0 }}
+          to={{ alpha: loggingIn && !user ? 1 : 0 }}
+        >
+          { loading }
+        </Spring>
+        <Spring from={{ opacity: 0 }} to={{ opacity: user ? 1 : 0 }}>
+          {user ? salutation : () => (<animated.div />)}
+        </Spring>
+      </form>
+    </div>
+  )
 }
+
+export default LoginPage
