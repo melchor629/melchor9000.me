@@ -64,7 +64,7 @@
     }
   ],
   "functions": {
-    "predeploy": "yarn workspace functions dist",
+    "predeploy": "npm run dist -w functions",
     "source": "functions"
   },
   "emulators": {

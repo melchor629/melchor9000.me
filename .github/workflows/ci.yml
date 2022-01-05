@@ -21,22 +21,22 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Use node 14
+      - name: Use node 16
         uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
+          node-version: '16.x'
 
       - name: Install packages
-        run: yarn
+        run: npm ci
 
       - name: Check linter
-        run: yarn workspaces run lint
+        run: npm run lint --workspaces
 
       - name: Check audit
-        run: yarn run audit -- --skip-dev
+        run: npm run audit -- --skip-dev
 
       - name: Build
-        run: yarn workspaces run build
+        run: npm run build --workspaces
         # Defines env vars
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
