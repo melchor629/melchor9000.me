@@ -27,8 +27,6 @@ src/**/*.css
 !src/lib/zoom.js/zoom.css
 
 ###
-yarn.lock
-package-lock.json
 .firebaserc
 .idea
 .vscode
