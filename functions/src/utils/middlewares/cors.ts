@@ -1,5 +1,5 @@
-import * as cors from 'cors'
-import * as os from 'os'
+import cors from 'cors'
+import os from 'node:os'
 
 export default (extraHosts?: Array<string | RegExp>) => cors({
   origin: [

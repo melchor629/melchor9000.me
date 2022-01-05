@@ -1,4 +1,4 @@
-import * as express from 'express'
+import express from 'express'
 import renderContentController from './render-content'
 import renderPostController from './render-post'
 import { cors, errorHandler, notFound } from '../utils/middlewares'

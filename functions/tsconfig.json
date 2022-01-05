@@ -7,7 +7,11 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2019"
+    "esModuleInterop": true,
+    "target": "es2020",
+    "jsx": "react-jsx",
+
+    "skipLibCheck": true // remove checks while @grpc/grpc-js is broken
   },
   "compileOnSave": true,
   "include": [

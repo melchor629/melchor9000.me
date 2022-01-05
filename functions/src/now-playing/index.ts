@@ -1,5 +1,5 @@
-import * as express from 'express'
-import * as ejs from 'ejs'
+import express from 'express'
+import ejs from 'ejs'
 import nowPlayingController from './now-playing'
 import nowPlayingSvgController from './now-playing-svg'
 import { handlerCatch } from '../utils/decorators'

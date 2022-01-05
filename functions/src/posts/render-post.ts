@@ -57,7 +57,7 @@ const renderPostController: RequestHandler = handlerCatch(async (req, res) => {
       || new Date(cachedFileContents.lastModified) < new Date(updated || timeCreated)
   ) {
     const fileContents = (await file.download())[0].toString('utf8')
-    const html = renderPost(fileContents, file.name.endsWith('.md') ? 'md' : 'html')
+    const html = await renderPost(fileContents, file.name.endsWith('.md') ? 'md' : 'html')
     cachedFileContents.content = html
 
     const stream = cachedFile.createWriteStream({ resumable: false, private: true, contentType: 'application/json' })

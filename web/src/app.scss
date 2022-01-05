@@ -25,7 +25,7 @@ body {
 /**
  * Text
  **/
-body, div, span, li {
+body {
   color: black;
 }
 
@@ -195,6 +195,10 @@ code {
  **/
 body.darkmode { background-color: rgb(40, 40, 40) }
 .darkmode {
+  body {
+    color: rgba(white, 0.9);
+  }
+
   h1, h2, h3, h4, h5, h6, div, span:not([class^="hljs-"]), p, li {
     color: rgba(white, 0.9);
   }

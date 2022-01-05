@@ -6,7 +6,6 @@ import LoadSpinner from '../load-spinner/load-spinner'
 import Zoom from '../../lib/zoom.js/zoom'
 import DisqusWrapper from './disqus-wrapper'
 import PostPageContent from './post-page-content'
-import 'highlight.js/styles/vs2015.css'
 
 type PostPageProps = PostPageStateToProps & PostPageDispatchToProps
 
@@ -68,8 +67,7 @@ const PostPage = ({ loadPost, content, posts }: PostPageProps) => {
 
   useLayoutEffect(() => {
     // @ts-ignore
-    const { MathJax, twttr } = window
-    MathJax?.Hub.Queue(['Typeset', MathJax.Hub])
+    const { twttr } = window
     twttr?.widgets?.load()
   })
 

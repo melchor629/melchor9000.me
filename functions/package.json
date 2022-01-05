@@ -6,7 +6,7 @@
     "start": "npm run build && firebase serve --only functions",
     "watch": "tsc --pretty -w -p .",
     "logs": "firebase functions:log",
-    "lint": "eslint --ext js,ts src",
+    "lint": "eslint --ext js,ts,tsx src",
     "dist": "npm run lint && npm run build",
     "config:get": "firebase functions:config:get > .runtimeconfig.json"
   },
@@ -15,7 +15,6 @@
   },
   "main": "lib/index.js",
   "dependencies": {
-    "commonmark": "^0.30.0",
     "cors": "^2.8.5",
     "ejs": "^3.1.5",
     "etag": "^1.8.1",
@@ -23,10 +22,18 @@
     "firebase-admin": "^10.0.1",
     "firebase-functions": "^3.3.0",
     "got": "^11.8.0",
-    "highlight.js": "^11.2.0"
+    "highlight.js": "^11.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-markdown": "^7.1.2",
+    "rehype-highlight": "^5.0.2",
+    "rehype-katex": "^6.0.2",
+    "rehype-raw": "^6.1.1",
+    "remark-gfm": "^3.0.1",
+    "remark-math": "^5.1.1",
+    "tsimportlib": "^0.0.3"
   },
   "devDependencies": {
-    "@types/commonmark": "^0.27.4",
     "@types/cors": "^2.8.6",
     "@types/ejs": "^3.0.5",
     "@types/etag": "^1.8.0",

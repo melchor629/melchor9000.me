@@ -1,8 +1,9 @@
 import { RequestHandler } from 'express'
-import * as etag from 'etag'
+import etag from 'etag'
 import renderPost from '../utils/logic/render-post'
+import { handlerCatch } from '../utils/decorators'
 
-const renderContentController: RequestHandler = (req, res) => {
+const renderContentController: RequestHandler = handlerCatch(async (req, res) => {
   const { content, format } = req.body
 
   if (!content || !format) {
@@ -18,11 +19,11 @@ const renderContentController: RequestHandler = (req, res) => {
     return res.status(304).end()
   }
 
-  const html = renderPost(content, format)
+  const html = await renderPost(content, format)
 
   return res.json({
     renderedHtml: html,
   })
-}
+})
 
 export default renderContentController
