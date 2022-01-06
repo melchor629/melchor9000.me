@@ -70,6 +70,9 @@ const renderPostController: RequestHandler = handlerCatch(async (req, res) => {
       'render',
     )
     cachedFileContents.content = html
+    cachedFileContents.lastModified = new Date().toISOString()
+    cachedFileContents.version = version
+    cachedFileContents.etag = etag
 
     const stream = cachedFile.createWriteStream({ resumable: false, private: true, contentType: 'application/json' })
     await res.measure(async () => {
