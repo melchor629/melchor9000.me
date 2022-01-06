@@ -64,21 +64,26 @@
     }
   ],
   "functions": {
-    "predeploy": "npm run dist -w functions",
     "source": "functions"
   },
   "emulators": {
     "functions": {
-      "port": 5001
+      "port": 5000
     },
     "firestore": {
       "port": 8080
     },
     "hosting": {
-      "port": 5000
+      "port": 5001
+    },
+    "storage": {
+      "port": 9199
     },
     "ui": {
       "enabled": true
     }
+  },
+  "storage": {
+    "rules": ".firebase/storage.rules"
   }
 }

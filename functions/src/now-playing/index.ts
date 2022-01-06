@@ -3,12 +3,15 @@ import ejs from 'ejs'
 import nowPlayingController from './now-playing'
 import nowPlayingSvgController from './now-playing-svg'
 import { handlerCatch } from '../utils/decorators'
-import { cors, errorHandler, notFound } from '../utils/middlewares'
+import {
+  cors, errorHandler, notFound, serverTiming,
+} from '../utils/middlewares'
 
 const app = express()
 
 app.disable('x-powered-by')
 app.engine('.ejs', ejs.renderFile)
+app.use(serverTiming())
 
 app.get('/', cors(), handlerCatch(nowPlayingController))
 app.get('/svg', handlerCatch(nowPlayingSvgController))

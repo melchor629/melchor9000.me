@@ -19,7 +19,7 @@ const renderContentController: RequestHandler = handlerCatch(async (req, res) =>
     return res.status(304).end()
   }
 
-  const html = await renderPost(content, format)
+  const html = await res.measure(renderPost(content, format), 'render')
 
   return res.json({
     renderedHtml: html,

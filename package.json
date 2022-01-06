@@ -29,6 +29,7 @@
     "deploy": "firebase deploy --project melchor9000-webpage --only functions,hosting",
     "deploy:functions": "firebase deploy --project melchor9000-webpage --only functions",
     "deploy:hosting": "firebase deploy --project melchor9000-webpage --only hosting",
+    "emulators": "firebase emulators:start --import=./.firebase/emulators-data --export-on-exit",
     "lint": "npm run lint --workspaces"
   },
   "version": "0.0.0"

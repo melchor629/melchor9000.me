@@ -6,12 +6,15 @@ import {
 } from './photosets'
 import { photosGetController, photosGetInfoController } from './photos'
 import { handlerCatch } from '../utils/decorators'
-import { cors, errorHandler, notFound } from '../utils/middlewares'
+import {
+  cors, errorHandler, notFound, serverTiming,
+} from '../utils/middlewares'
 
 const app = express()
 
 app.disable('x-powered-by')
 app.use(cors())
+app.use(serverTiming())
 
 app.get('/photosets', handlerCatch(photosetsGetListController))
 app.get('/photosets/:photosetId', handlerCatch(photosetsGetInfoController))
