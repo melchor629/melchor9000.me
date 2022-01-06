@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import type { ProjectsDispatchToProps, ProjectsStateToProps } from '../../containers/admin/projects'
 import { ProjectsHome } from '../../containers/admin/projects/home'
@@ -6,24 +6,21 @@ import { ProjectEditor } from '../../containers/admin/projects/editor'
 
 type ProjectsPageProps = ProjectsStateToProps & ProjectsDispatchToProps
 
-export default class Posts extends Component<ProjectsPageProps> {
-  componentDidMount() {
-    const { subscribe } = this.props
+const Posts = ({ subscribe, unsubscribe }: ProjectsPageProps) => {
+  useEffect(() => {
     subscribe()
-  }
 
-  componentWillUnmount() {
-    const { unsubscribe } = this.props
-    unsubscribe()
-  }
+    return () => unsubscribe()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  render() {
-    return (
-      <Routes>
-        <Route index element={<ProjectsHome />} />
-        <Route path="create" element={<ProjectEditor />} />
-        <Route path="edit/:id" element={<ProjectEditor />} />
-      </Routes>
-    )
-  }
+  return (
+    <Routes>
+      <Route index element={<ProjectsHome />} />
+      <Route path="create" element={<ProjectEditor />} />
+      <Route path="edit/:id" element={<ProjectEditor />} />
+    </Routes>
+  )
 }
+
+export default Posts

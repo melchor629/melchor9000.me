@@ -1,4 +1,6 @@
 import { initializeApp } from 'firebase/app'
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { getStorage, connectStorageEmulator } from 'firebase/storage'
 
 const app = initializeApp({
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -9,5 +11,10 @@ const app = initializeApp({
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 })
+
+if (process.env.NODE_ENV !== 'production') {
+  connectFirestoreEmulator(getFirestore(app), 'localhost', 8080)
+  connectStorageEmulator(getStorage(app), 'localhost', 9199)
+}
 
 export default app

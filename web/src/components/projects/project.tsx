@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import type { i18n as i18next } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { getAssetUrl } from '../../lib/url'
@@ -7,6 +8,7 @@ interface ProjectProps {
   project: ProjectInfo
   darkMode: boolean
   onImageLoaded?: () => void
+  fullWidth?: boolean
 }
 
 const getDescription = (project: ProjectInfo, i18n: i18next): string => {
@@ -24,10 +26,12 @@ const getDescription = (project: ProjectInfo, i18n: i18next): string => {
   return project.description
 }
 
-const Project = ({ project, darkMode, onImageLoaded }: ProjectProps) => {
+const Project = ({
+  project, darkMode, onImageLoaded, fullWidth,
+}: ProjectProps) => {
   const [t, i18n] = useTranslation()
   return (
-    <div className="col-sm-6 col-md-4 col-lg-3 mb-4">
+    <div className={clsx(!fullWidth && 'col-sm-6 col-md-4 col-lg-3', 'mb-4')}>
       <div className={`card ${darkMode ? 'bg-dark' : 'bg-light'}`}>
         {project.image && <img className="card-img-top" src={getAssetUrl(project.image)} alt={project.title} onLoad={onImageLoaded} />}
         <div className="card-body">
@@ -57,6 +61,7 @@ const Project = ({ project, darkMode, onImageLoaded }: ProjectProps) => {
 
 Project.defaultProps = {
   onImageLoaded: undefined,
+  fullWidth: false,
 }
 
 export default Project

@@ -21,8 +21,8 @@ const Home = ({ user, style }: Pick<AdminPageProps, 'user'> & { style?: React.CS
     to: { scale: 1 },
   })
   return (
-    <div className="row align-items-center justify-content-center text-center" style={{ ...containerStyle, ...style }}>
-      <div className="col-auto">
+    <div className="d-flex flex-column align-items-center justify-content-center text-center" style={{ ...containerStyle, ...style }}>
+      <div>
         <h1 className="display-4">
           Hola
           { user.displayName }
@@ -30,6 +30,7 @@ const Home = ({ user, style }: Pick<AdminPageProps, 'user'> & { style?: React.CS
       </div>
       {trail.map(({ scale }, i) => (
         <animated.div
+          key={pages[i]}
           className="col-4 col-md-3 col-lg-2"
           style={{ transform: scale.to((x) => `scale(${x})`) }}
         >
@@ -71,7 +72,7 @@ const AdminPage = ({ darkMode, ...props }: AdminPageProps) => (
         <div className="sidebar-sticky">
           <ul className="nav flex-column mb-2">
             <li className="nav-item">
-              <NavLink to="/" className={navLinkClasses}>
+              <NavLink to="./" className={navLinkClasses}>
                 Dashboard
               </NavLink>
             </li>
@@ -100,8 +101,8 @@ const AdminPage = ({ darkMode, ...props }: AdminPageProps) => (
             index
             element={React.createElement(Home, props)}
           />
-          <Route path="posts" element={<Posts />} />
-          <Route path="projects" element={<Projects />} />
+          <Route path="posts/*" element={<Posts />} />
+          <Route path="projects/*" element={<Projects />} />
           <Route path="logout" element={<Logout />} />
         </Routes>
       </main>

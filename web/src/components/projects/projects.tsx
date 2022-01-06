@@ -15,8 +15,8 @@ export interface ProjectInfo {
   _id: string
   title: string
   repo: string
-  demo: string
-  web: string
+  demo?: string
+  web?: string
   image?: string
   technologies: string[]
   description: string

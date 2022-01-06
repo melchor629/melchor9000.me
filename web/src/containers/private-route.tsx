@@ -1,4 +1,4 @@
-import { FC, ReactElement, useLayoutEffect } from 'react'
+import { FC, ReactElement, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 
@@ -7,11 +7,12 @@ const PrivateRoute: FC<{ children: ReactElement }> = ({ children }) => {
   const location = useLocation()
   const navigate = useNavigate()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!loggedIn) {
       navigate('/login', { state: { from: location } })
     }
-  })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn])
 
   if (!loggedIn) {
     return null

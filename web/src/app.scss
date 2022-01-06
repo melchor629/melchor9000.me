@@ -329,7 +329,7 @@ body.darkmode { background-color: rgb(40, 40, 40) }
   input, textarea {
     border: none;
     border-bottom: 1px solid $md-grey-600;
-    border-radius: 0;
+    border-radius: 3px 3px 0 0;
     background-color: $md-grey-100;
     transition: border-bottom .2s ease-in-out, opacity .2s ease-in-out;
 
@@ -347,6 +347,12 @@ body.darkmode { background-color: rgb(40, 40, 40) }
     &:disabled, &[readonly] {
       background-color: $md-grey-100;
       opacity: 0.5;
+      color: $md-grey-500;
+
+      .darkmode & {
+        background-color: $md-grey-800;
+        color: $md-grey-200;
+      }
     }
 
     &.is-invalid {

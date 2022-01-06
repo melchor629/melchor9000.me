@@ -53,7 +53,8 @@ export const insert = (collectionName: string, values: any) => async (dispatch: 
   dispatch({ type: OPERATION_DOING, collection: collectionName })
 
   try {
-    const updatedValues = { ...values, _id: undefined }
+    const updatedValues = { ...values }
+    delete updatedValues._id
     await addDoc(col, updatedValues)
     dispatch({ type: OPERATION_DONE, collection: collectionName })
   } catch (error) {
@@ -74,7 +75,8 @@ export const update = (collectionName: string, object: any) => (
     dispatch({ type: OPERATION_DOING, collection: collectionName })
 
     try {
-      const updatedObject = { ...object, _id: undefined }
+      const updatedObject = { ...object }
+      delete updatedObject._id
       await updateDoc(document, updatedObject)
       dispatch({ type: OPERATION_DONE, collection: collectionName })
     } catch (error) {

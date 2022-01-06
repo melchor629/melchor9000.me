@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import * as React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getStorage, ref, deleteObject } from 'firebase/storage'
 import { Helmet } from 'react-helmet'
@@ -8,47 +8,28 @@ import * as toast from '../../../lib/toast'
 import type { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home'
 import { Post } from '../../../redux/posts/reducers'
 import DeleteModal from '../delete-modal'
+import PostRow from './post-row'
 
 type PostsPageProps = PostsHomeStateToProps & PostsHomeDispatchToProps
 
-interface PostHomeState {
-  postToDelete: Post | null
-}
+const PostsHome = ({
+  clearError,
+  darkMode,
+  delete: deletePost,
+  deleting,
+  errorSaving,
+  posts,
+}: PostsPageProps) => {
+  const [postToDelete, setPostToDelete] = useState<Post | null>(null)
 
-export default class PostsHome extends React.Component<PostsPageProps, PostHomeState> {
-  constructor(props: PostsPageProps) {
-    super(props)
-    this.state = { postToDelete: null }
-  }
-
-  componentDidUpdate(prevProps: PostsPageProps) {
-    const { deleting, errorSaving, clearError } = this.props
-    if (prevProps.deleting && !deleting) {
-      if (errorSaving) {
-        toast.error(
-          <div>
-            No se pudo borrar los metadatos del post...
-            <br />
-            <span className="text-muted">{errorSaving.toString()}</span>
-          </div>,
-        )
-        clearError()
-      }
+  const effectivelyDeletePost = useCallback(() => {
+    if (!postToDelete) {
+      return
     }
-  }
 
-  private selectForDeleting(e: React.MouseEvent<HTMLButtonElement>, post: Post) {
-    e.preventDefault()
-    this.setState({ postToDelete: post })
-  }
-
-  private deletePost() {
-    const { postToDelete: post } = this.state
-    const { delete: deletePost } = this.props
-
-    deleteObject(ref(getStorage(app), post!.file))
+    deleteObject(ref(getStorage(app), postToDelete.file))
       .then(() => {
-        deletePost(post!)
+        deletePost(postToDelete)
       })
       .catch((error) => {
         toast.error(
@@ -59,71 +40,59 @@ export default class PostsHome extends React.Component<PostsPageProps, PostHomeS
           </div>,
         )
       })
-  }
+  }, [postToDelete, deletePost])
 
-  render() {
-    const { darkMode, posts } = this.props
-    const { postToDelete } = this.state
-    const postUrl = (post: Post) => {
-      const date = post.date.toDate()
-      return `/blog/${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}/${post.url}`
+  useEffect(() => {
+    if (!deleting && errorSaving) {
+      toast.error(
+        <div>
+          No se pudo borrar los metadatos del post...
+          <br />
+          <span className="text-muted">{errorSaving.toString()}</span>
+        </div>,
+      )
+      clearError()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deleting])
 
-    return (
-      <div>
+  return (
+    <div>
 
-        <Helmet>
-          <title>Posts - Admin</title>
-        </Helmet>
+      <Helmet>
+        <title>Posts - Admin</title>
+      </Helmet>
 
-        <div className="row align-items-center">
-          <div className="col"><h1>Posts</h1></div>
-          <div className="col-auto">
-            <Link to="/admin/posts/create" className="btn btn-sm btn-outline-success mb-2">
-              <i className="fas fa-plus" />
-            </Link>
-          </div>
+      <div className="row align-items-center">
+        <div className="col"><h1>Posts</h1></div>
+        <div className="col-auto">
+          <Link to="create" className="btn btn-sm btn-outline-success mb-2">
+            <i className="fas fa-plus" />
+          </Link>
         </div>
-        <table className={`table ${darkMode ? 'table-dark' : 'table-light'} table-hover`}>
-          <thead className={darkMode ? 'thead-dark' : 'thead-light'}>
-            <tr>
-              <th>Título</th>
-              <th>Fecha de publicación</th>
-              <th><span className="sr-only">Acciones</span></th>
-            </tr>
-          </thead>
-          <tbody>
-            {posts && posts.map((post) => (
-              <tr key={post._id} className="admin-list-row">
-                <td><Link to={postUrl(post)}>{ post.title }</Link></td>
-                <td>{ post.date.toDate().toLocaleString() }</td>
-                <td className="admin-list-row-actions">
-                  <Link
-                    to={`/admin/posts/edit/${post._id}`}
-                    className="btn btn-sm btn-outline-warning"
-                  >
-                    <i className="fas fa-pencil-alt" />
-                  </Link>
-                  &nbsp;
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-danger"
-                    onClick={(e) => this.selectForDeleting(e, post)}
-                  >
-                    <i className="fas fa-trash" />
-                  </button>
-                </td>
-              </tr>
-            )) }
-          </tbody>
-        </table>
-
-        <DeleteModal
-          item={postToDelete}
-          onClose={() => this.setState({ postToDelete: null })}
-          onDelete={() => this.deletePost()}
-        />
       </div>
-    )
-  }
+      <table className={`table ${darkMode ? 'table-dark' : 'table-light'} table-hover`}>
+        <thead className={darkMode ? 'thead-dark' : 'thead-light'}>
+          <tr>
+            <th>Título</th>
+            <th>Fecha de publicación</th>
+            <th><span className="sr-only">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts && posts.map((post) => (
+            <PostRow key={post._id} post={post} setPostToDelete={setPostToDelete} />
+          )) }
+        </tbody>
+      </table>
+
+      <DeleteModal
+        item={postToDelete}
+        onClose={useCallback(() => setPostToDelete(null), [])}
+        onDelete={effectivelyDeletePost}
+      />
+    </div>
+  )
 }
+
+export default PostsHome

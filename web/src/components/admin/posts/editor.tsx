@@ -1,14 +1,22 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-underscore-dangle */
-import React from 'react'
+import {
+  animated,
+  useSpring,
+  useTransition,
+  Transition,
+} from '@react-spring/web'
+import clsx from 'clsx'
 import { DateTime } from 'luxon'
 import * as firestore from 'firebase/firestore'
 import * as storage from 'firebase/storage'
 import {
-  animated,
-  useSpring,
-  Transition,
-} from '@react-spring/web'
+  useCallback, useEffect, useMemo, useRef, useState,
+} from 'react'
 import { Helmet } from 'react-helmet'
+import { useForm, useWatch, Control } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router'
+import { Link } from 'react-router-dom'
 import speakingurl from 'speakingurl'
 import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
@@ -17,7 +25,7 @@ import type { PostEditorDispatchToProps, PostEditorStateToProps } from '../../..
 import LoadSpinner from '../../load-spinner'
 import { Post } from '../../../redux/posts/reducers'
 import { AdminInput } from '../admin-input'
-import { dateValidator, valueValidator } from '../../../lib/validators'
+import { validateUrlByFetching } from '../../../lib/validators'
 
 const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefined }) => {
   const [spring] = useSpring({
@@ -45,6 +53,79 @@ const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefine
 
 LittleSpinner.defaultProps = { ref: undefined }
 
+interface PostPreviewProps {
+  darkMode: boolean
+  contentRendered: string
+  control: Control
+  previewToggle: (e: React.MouseEvent<HTMLButtonElement>) => void
+  show: boolean
+}
+
+const PostPreview = ({
+  darkMode, contentRendered, control, previewToggle, show,
+}: PostPreviewProps) => {
+  const [title, img] = useWatch({ name: ['title', 'img'], control })
+  const transitions = useTransition(show, {
+    from: { transform: 'translateX(100vw)' },
+    enter: { transform: 'translateX(0vw)' },
+    leave: { transform: 'translateX(100vw)' },
+  })
+
+  return transitions((styles, item) => item && (
+    <animated.div
+      role="main"
+      className="ml-sm-auto px-4"
+      style={{
+        position: 'absolute',
+        overflowY: 'scroll',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: 'calc(100vh - 30px)',
+        backgroundColor: darkMode ? '#222' : 'white',
+        zIndex: 100,
+        ...styles,
+      }}
+    >
+      <div className="text-center">
+        <img src={img} className="img-fluid" alt={title} />
+      </div>
+
+      <div className="d-flex justify-content-end" style={{ position: 'sticky', top: 40 }}>
+        <div className="btn btn-group">
+          <button type="button" className="btn btn-outline-primary" onClick={previewToggle}>
+            &times;
+          </button>
+        </div>
+      </div>
+
+      <h1>{title}</h1>
+      <p
+        className="lead"
+        dangerouslySetInnerHTML={{ __html: contentRendered || '<p />' }}
+      />
+    </animated.div>
+  ))
+}
+
+const PreviewUrl = ({ control }: { control: Control }) => {
+  const [publishDateString, slang] = useWatch({ name: ['publishDate', 'url'], control })
+  const publishDate = DateTime.fromISO(publishDateString).toUTC()
+  const url = publishDate.isValid && slang
+    ? `${process.env.PUBLIC_URL}/posts/${publishDate.toFormat('yyyy/MM/dd')}/${slang}`
+    : ''
+
+  if (!url) {
+    return null
+  }
+
+  return (
+    <div className="mx-2 mt-1">
+      <code>{url}</code>
+    </div>
+  )
+}
+
 const render = (content: string, format: 'html' | 'md') => (
   fetch(getFirebaseFunctionUrl('posts', '/render'), {
     method: 'POST',
@@ -55,451 +136,319 @@ const render = (content: string, format: 'html' | 'md') => (
     .then((res) => res.renderedHtml)
 )
 
-interface PostEditorState {
-  title: string
-  img: string
-  url: string
-  publishDate: DateTime
-  publishDateString: string
-  content: string
-  contentRendered: string | null
-  validImg: boolean
-  preview: boolean
-  loading: { img: boolean, content: boolean }
-  saving: boolean
-  original: Post | null
+type PostEditorProps = PostEditorStateToProps & PostEditorDispatchToProps
+
+const showError = (message: string, error: any) => {
+  toast.error(
+    <div>
+      { message }
+      <br />
+      <span className="text-muted">{ error.toString() }</span>
+    </div>,
+  )
 }
 
-type PostEditorProps = PostEditorStateToProps &
-PostEditorDispatchToProps
+const PostEditor = ({
+  clearError,
+  darkMode,
+  errorSaving,
+  update,
+  save,
+  saving: saving2,
+}: PostEditorProps) => {
+  const firstRenderRef = useRef(false)
+  const [saving, setSaving] = useState(false)
+  const [original, setOriginal] = useState<Post | null>(null)
+  const [contentRendered, setContentRendered] = useState('')
+  const [preview, setPreview] = useState(false)
+  const [loadingContent, setLoadingContent] = useState(false)
+  const params = useParams()
+  const navigate = useNavigate()
+  const {
+    register, control, handleSubmit, setValue, watch, formState: { errors, isValid },
+  } = useForm({ reValidateMode: 'onBlur', mode: 'onBlur' })
 
-export default class PostEditor extends React.Component<PostEditorProps, PostEditorState> {
-  private static showError(message: string, error: any) {
-    toast.error(
-      <div>
-        { message }
-        <br />
-        <span className="text-muted">{ error.toString() }</span>
-      </div>,
-    )
-  }
-
-  private contentRendererUnshifterTimer: NodeJS.Timer | null = null
-
-  private imageCheckerTimer: NodeJS.Timer | null = null
-
-  constructor(props: PostEditorProps) {
-    super(props)
-    this.state = {
-      title: '',
-      img: '',
-      url: '',
-      publishDate: DateTime.fromJSDate(new Date(Date.now() + 24 * 60 * 60 * 1000)),
-      publishDateString: DateTime
-        .fromJSDate(new Date(Date.now() + 24 * 60 * 60 * 1000))
-        .toISO({ includeOffset: false }),
-      content: '',
-      contentRendered: '',
-      validImg: true,
-      preview: false,
-      loading: { img: false, content: false },
-      saving: false,
-      original: null,
-    }
-
-    this.publishDateChanged = this.publishDateChanged.bind(this)
-    this.contentChanged = this.contentChanged.bind(this)
-    this.previewToggle = this.previewToggle.bind(this)
-    this.titleChanged = this.titleChanged.bind(this)
-    this.imgChanged = this.imgChanged.bind(this)
-    this.save = this.save.bind(this)
-  }
-
-  componentDidMount() {
-    // TODO refactor into FC
-    /* const setStateFromPost = (post: Post | any, _id: string) => {
-      this.setState({
-        title: post.title,
-        img: post.img,
-        url: post.url,
-        publishDate: DateTime.fromJSDate(post.date.toDate()),
-        publishDateString: DateTime.fromJSDate(post.date.toDate()).toISO({ includeOffset: false }),
-        loading: { img: false, content: true },
-        original: { ...post, _id },
-        saving: false,
-      })
-      const fileRef = storage.ref(storage.getStorage(app), post.file)
-      storage.getDownloadURL(fileRef)
-        .then((url) => fetch(url))
-        .then((res) => res.text())
-        .then(async (content) => {
-          this.setState(({ loading }) => ({ content, loading: { ...loading, content: false } }))
-          await this.renderContent()
-        })
-    }
-
-    const { location, match } = this.props
-    if (location.state && location.state.post) {
-      const { post } = location.state
-      setStateFromPost(post, post._id!)
-    } else if (match.params.id) {
-      this.setState({ saving: true })
+  useEffect(() => {
+    if (params.id) {
+      setSaving(true)
       const db = firestore.getFirestore(app)
       const col = firestore.collection(db, 'posts')
-      const document = firestore.doc(col, match.params.id)
+      const document = firestore.doc(col, params.id)
       firestore.getDoc(document)
         .then((obj) => {
-          setStateFromPost(obj.data(), match.params.id!)
-        })
-    } */
-  }
+          const post = obj.data()
+          if (!post) {
+            navigate('..')
+            toast.error(`El post con ID ${params.id} no existe`)
+            return
+          }
 
-  componentDidUpdate(prevProps: PostEditorProps) {
-    const {
-      saving,
-      errorSaving,
-      // history,
-      clearError,
-    } = this.props
-    const { publishDate, url } = this.state
-    if (prevProps.saving && !saving) {
-      // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ saving: false })
+          setValue('title', post.title)
+          setValue('img', post.img)
+          setValue('url', post.url)
+          setValue(
+            'publishedDate',
+            DateTime.fromJSDate(post.date.toDate()).toISO({ includeOffset: false }),
+          )
+          setValue('content', '')
+          setOriginal({ ...post, _id: params.id } as Post)
+          setSaving(false)
+
+          setLoadingContent(true)
+          const fileRef = storage.ref(storage.getStorage(app), post.file)
+          storage.getDownloadURL(fileRef)
+            .then((url) => fetch(url))
+            .then((res) => res.text())
+            .then((content) => {
+              setValue('content', content)
+              setLoadingContent(false)
+            })
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id])
+
+  useEffect(() => {
+    if (!firstRenderRef.current) {
+      firstRenderRef.current = true
+      return
+    }
+
+    if (!saving2) {
       if (!errorSaving) {
-        // history.push('/admin/posts/')
+        navigate('..')
       } else {
-        PostEditor.showError('No se pudo subir los metadatos del post...', errorSaving)
+        showError('No se pudo subir los metadatos del post...', errorSaving)
         clearError()
-        const pd = `${publishDate.get('year')}-${publishDate.get('month')}-${publishDate.get('day')}`
-        const fileRef = storage.ref(storage.getStorage(app), `/posts/${pd}-${url}.md`)
-        storage.deleteObject(fileRef).catch()
       }
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [saving2])
 
-  private titleChanged(e: React.ChangeEvent<HTMLInputElement>) {
+  const titleWatch = watch('title', '')
+  useEffect(() => {
+    setValue('url', speakingurl(titleWatch, { lang: 'es' }))
+  }, [titleWatch, setValue])
+
+  const contentWatch = watch('content', '')
+  useEffect(() => {
+    const renderTimer = setTimeout(() => {
+      if (!contentWatch) {
+        return
+      }
+
+      setLoadingContent(true)
+      render(contentWatch, 'md')
+        .then((renderedContent) => {
+          setContentRendered(renderedContent)
+        })
+        .catch((error) => {
+          setContentRendered('')
+          showError('No se pudo renderizar el contenido', error)
+        })
+        .finally(() => {
+          setLoadingContent(false)
+        })
+    }, 750)
+
+    return () => clearTimeout(renderTimer)
+  }, [contentWatch])
+
+  const previewToggle = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    this.setState({
-      title: e.target.value,
-      url: speakingurl(e.target.value, { lang: 'es' }),
-    })
-  }
+    setPreview((p) => !p)
+  }, [])
 
-  private publishDateChanged(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault()
-    const date = DateTime.fromISO(e.target.value)
-    this.setState({
-      publishDateString: e.target.value,
-      publishDate: date,
-    })
-  }
-
-  private imgChanged(e: React.ChangeEvent<HTMLInputElement>) {
-    e.preventDefault()
-    this.setState(({ validImg }) => ({
-      img: e.target.value,
-      validImg: e.target.value.length === 0 ? false : validImg,
-    }))
-
-    if (this.imageCheckerTimer) {
-      clearTimeout(this.imageCheckerTimer)
-    }
-
-    if (e.target.value.length > 0) {
-      this.imageCheckerTimer = setTimeout(async () => {
-        const { loading, img } = this.state
-        this.setState({ loading: { ...loading, img: true } })
-        try {
-          const req = await fetch(img, { method: 'HEAD' })
-          this.setState({
-            validImg: req.ok
-              && req.status === 200
-              && req.headers.get('Content-Type')!.includes('image'),
-            loading: { ...loading, img: false },
-          })
-        } catch (error) {
-          PostEditor.showError('No se pudo saber si la imagen existe...', error)
-          this.setState({ loading: { ...loading, img: false } })
-        }
-        this.imageCheckerTimer = null
-      }, 1000)
-    }
-  }
-
-  private contentChanged(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    e.preventDefault()
-    this.setState({ content: e.target.value })
-
-    if (this.contentRendererUnshifterTimer) {
-      clearTimeout(this.contentRendererUnshifterTimer)
-    }
-
-    this.contentRendererUnshifterTimer = setTimeout(async () => {
-      this.contentRendererUnshifterTimer = null
-      await this.renderContent()
-    }, 300)
-  }
-
-  private previewToggle(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    const { preview } = this.state
-    this.setState({ preview: !preview })
-  }
-
-  private save(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    this.setState({ saving: true })
-    const { original, content } = this.state
+  const effectivelySave = (data: any) => {
+    setSaving(true)
+    const publishDate = DateTime.fromISO(data.publishDate).toUTC()
     if (original) {
       const fileRef = storage.ref(storage.getStorage(app), original.file)
-      storage.uploadString(fileRef, content, storage.StringFormat.RAW)
+      storage.uploadString(
+        fileRef,
+        data.content,
+        storage.StringFormat.RAW,
+        { contentType: 'text/x-markdown' },
+      )
         .then(() => {
-          const {
-            publishDate,
-            img,
-            title,
-            url,
-          } = this.state
-          const { update } = this.props
           update({
             date: firestore.Timestamp.fromDate(publishDate.toJSDate()),
             file: original!.file,
-            img,
-            title,
-            url,
+            img: data.img,
+            title: data.title,
+            url: data.url,
             modifiedDate: firestore.Timestamp.fromDate(DateTime.utc().toJSDate()),
+            hide: false,
             _id: original!._id,
           })
         })
         .catch((error) => {
-          PostEditor.showError('No se pudo subir el contenido del post...', error)
-          this.setState({ saving: false })
+          showError('No se pudo subir el contenido del post...', error)
+          setSaving(false)
         })
     } else {
-      const { publishDate: pd, url } = this.state
-      const fileRef = storage.ref(storage.getStorage(app), `/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${url}.md`)
+      const {
+        url, img, title, content,
+      } = data
+      const file = `/posts/${publishDate.toFormat('yyyy-MM-dd')}-${url}.md`
+      const fileRef = storage.ref(storage.getStorage(app), file)
       storage.uploadString(fileRef, content, storage.StringFormat.RAW)
         .then(() => {
-          const {
-            publishDate,
-            img,
-            title,
-          } = this.state
-          const { save } = this.props
           save({
             date: firestore.Timestamp.fromDate(publishDate.toJSDate()),
-            file: `/posts/${pd.get('year')}-${pd.get('month')}-${pd.get('day')}-${url}.md`,
+            file,
             img,
             title,
             url,
           })
         })
         .catch((error) => {
-          PostEditor.showError('No se pudo subir el contenido del post...', error)
-          this.setState({ saving: false })
+          showError('No se pudo subir el contenido del post...', error)
+          setSaving(false)
         })
     }
   }
 
-  private async renderContent() {
-    this.setState(({ loading }) => ({ loading: { ...loading, content: true } }))
-    try {
-      const { content } = this.state
-      const contentRendered = await render(content, 'md')
-      this.setState(({ loading }) => ({
-        contentRendered,
-        loading: { ...loading, content: false },
-      }))
-    } catch (e) {
-      this.setState(({ loading }) => ({
-        contentRendered: null,
-        loading: { ...loading, content: false },
-      }))
-    }
-  }
+  return (
+    <div>
 
-  render() {
-    const {
-      title,
-      img,
-      url,
-      publishDate,
-      publishDateString,
-      validImg,
-      content,
-      contentRendered,
-      preview,
-      original,
-      loading,
-      saving,
-    } = this.state
-    const { darkMode, saving: saving2 } = this.props
+      <Helmet>
+        <title>{original !== null ? `Editing: ${titleWatch}` : `Creating new post: ${titleWatch}`}</title>
+      </Helmet>
 
-    return (
-      <div>
+      {original !== null ? <h1>Editando entrada</h1> : <h1>Crear nueva entrada</h1>}
 
-        <Helmet>
-          <title>{original !== null ? `Editing: ${title}` : `Creating new post: ${title}`}</title>
-        </Helmet>
-
-        {original !== null ? <h1>Editando entrada</h1> : <h1>Crear nueva entrada</h1>}
-
-        <form>
-          <AdminInput
-            type="text"
-            id="title"
-            placeholder="Título"
-            value={title}
-            required
-            onChange={this.titleChanged}
-          />
-          <AdminInput
-            type="datetime-local"
-            id="publishDate"
-            placeholder="Fecha de publicación"
-            min={DateTime.utc().toISO({ includeOffset: false })}
-            value={publishDateString}
-            required
-            validators={[dateValidator()]}
-            onChange={this.publishDateChanged}
-          />
-          <AdminInput
-            type="url"
-            id="url"
-            placeholder="URL"
-            disabled
-            value={publishDate
-              ? `${process.env.PUBLIC_URL}/posts/`
-                  + `${publishDate.toUTC().get('year')}/${publishDate.toUTC().get('month')}/`
-                  + `${publishDate.toUTC().get('day')}/${url}`
-              : ''}
-            required
-            onChange={() => null}
-          />
-          <AdminInput
-            type="url"
-            style={{ position: 'relative' }}
-            id="img"
-            placeholder="Imagen"
-            value={img}
-            required
-            validators={[valueValidator(validImg)]}
-            onChange={this.imgChanged}
-          >
-            { loading.img && <LittleSpinner /> }
-          </AdminInput>
-          <div className="form-group material" style={{ position: 'relative' }}>
-            <textarea
-              className={`form-control${contentRendered ? '' : ' is-invalid'}`}
-              style={{ height: 'calc(100vh - 466px)' }}
-              value={content}
-              onChange={this.contentChanged}
-            />
-            { loading.content && <LittleSpinner /> }
-          </div>
-          <div className="d-flex justify-content-end">
-            <div className="btn btn-group">
-              <button
-                type="button"
-                className="btn btn-outline-primary"
-                onClick={this.previewToggle}
-                disabled={!(validImg
-                            && !!contentRendered
-                            && title.length > 0)}
-              >
-                Vista previa
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-success"
-                onClick={this.save}
-                disabled={!(publishDate.isValid
-                            && validImg
-                            && !!contentRendered
-                            && title.length > 0)}
-              >
-                Guardar
-              </button>
-            </div>
-          </div>
-        </form>
-
-        <Transition native from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={preview}>
-          {/* eslint-disable-next-line react/no-unstable-nested-components */}
-          { (toggle) => (({ val }: { val: number }) => (
-            !toggle
-              ? null
-              : (
-                <animated.div
-                  role="main"
-                  className="ml-sm-auto px-4"
-                  style={{
-                    position: 'absolute',
-                    overflowY: 'scroll',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: 'calc(100vh - 30px)',
-                    backgroundColor: darkMode ? '#222' : 'white',
-                    zIndex: 1,
-                    transform: (val as any).interpolate((x: any) => `translateX(${(1 - x) * 100}vw)`),
-                  }}
-                >
-                  <div className="text-center">
-                    <img src={img} className="img-fluid" alt={title} />
-                  </div>
-
-                  <div className="d-flex justify-content-end" style={{ position: 'sticky', top: 40 }}>
-                    <div className="btn btn-group">
-                      <button type="button" className="btn btn-outline-primary" onClick={this.previewToggle}>
-                        &times;
-                      </button>
-                    </div>
-                  </div>
-
-                  <h1>{ title }</h1>
-                  <p
-                    className="lead"
-                    dangerouslySetInnerHTML={{ __html: contentRendered || '<p />' }}
-                  />
-                </animated.div>
-              )
-          )) }
-        </Transition>
-
-        <Transition
-          native
-          from={{ val: 0 }}
-          enter={{ val: 1 }}
-          leave={{ val: 0 }}
-          items={saving2 || saving}
+      <form onSubmit={handleSubmit(effectivelySave)}>
+        <AdminInput
+          type="text"
+          id="title"
+          placeholder="Título"
+          required
+          error={errors.title}
+          {...register('title', { required: true })}
+        />
+        <AdminInput
+          type="datetime-local"
+          id="publishDate"
+          placeholder="Fecha de publicación"
+          min={useMemo(() => (
+            DateTime
+              .local()
+              .plus({ hour: 1 })
+              .set({ minute: 0, second: 0, millisecond: 0 })
+              .toISO({ includeOffset: false, suppressMilliseconds: true, suppressSeconds: true })
+          ), [])}
+          defaultValue={useMemo(() => (
+            DateTime
+              .local()
+              .plus({ day: 1 })
+              .set({ minute: 0, second: 0, millisecond: 0 })
+              .toISO({ includeOffset: false, suppressMilliseconds: true, suppressSeconds: true })
+          ), [])}
+          required
+          error={errors.publishDate}
+          {...register('publishDate', { required: true })}
+        />
+        <AdminInput
+          type="text"
+          id="url"
+          placeholder="URL"
+          disabled
+          required
+          error={errors.url}
+          {...register('url', { required: true })}
         >
-          {/* eslint-disable-next-line react/no-unstable-nested-components */}
-          { (toggle) => ((vals: any) => (
-            !toggle
-              ? null
-              : (
-                <animated.div
-                  role="main"
-                  className="ml-sm-auto px-4"
-                  style={{
-                    position: 'absolute',
-                    overflowY: 'scroll',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: 'calc(100vh - 30px)',
-                    backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.55)',
-                    zIndex: 1,
-                    opacity: vals.val.interpolate((x: number) => `${x}`),
-                  }}
-                >
-                  <LoadSpinner />
-                </animated.div>
-              )
-          )) }
-        </Transition>
-      </div>
-    )
-  }
+          <PreviewUrl control={control} />
+        </AdminInput>
+        <AdminInput
+          type="text"
+          style={{ position: 'relative' }}
+          id="img"
+          placeholder="Imagen"
+          required
+          error={errors.img}
+          {...register('img', {
+            required: true,
+            validate: {
+              url: validateUrlByFetching('image/'),
+            },
+          })}
+        />
+        <div className="form-group material mb-3" style={{ position: 'relative' }}>
+          <textarea
+            className={clsx('form-control', errors.content && 'is-invalid')}
+            style={{ height: 'calc(100vh - 466px)' }}
+            {...register('content', { required: true })}
+          />
+          { loadingContent && <LittleSpinner /> }
+        </div>
+
+        <div className="d-flex justify-content-between mb-4">
+          <div className="btn btn-group">
+            <Link to=".." className="btn btn-outline-secondary">Atrás</Link>
+          </div>
+          <div className="btn btn-group">
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={previewToggle}
+              disabled={!isValid}
+            >
+              Vista previa
+            </button>
+            <button
+              type="submit"
+              className="btn btn-outline-success"
+              disabled={!isValid}
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <PostPreview
+        contentRendered={contentRendered}
+        control={control}
+        darkMode={darkMode}
+        previewToggle={previewToggle}
+        show={preview}
+      />
+
+      <Transition
+        native
+        from={{ val: 0 }}
+        enter={{ val: 1 }}
+        leave={{ val: 0 }}
+        items={saving2 || saving}
+      >
+        {/* eslint-disable-next-line react/no-unstable-nested-components */}
+        { ({ val }, toggle) => (
+          !toggle
+            ? null
+            : (
+              <animated.div
+                role="main"
+                className="ml-sm-auto px-4"
+                style={{
+                  position: 'fixed',
+                  overflowY: 'scroll',
+                  top: 30,
+                  left: 0,
+                  width: '100%',
+                  height: 'calc(100vh - 30px)',
+                  backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.55)',
+                  zIndex: 1,
+                  opacity: val.to((x: number) => `${x}`),
+                }}
+              >
+                <LoadSpinner />
+              </animated.div>
+            )
+        ) }
+      </Transition>
+    </div>
+  )
 }
+
+export default PostEditor

@@ -1,416 +1,301 @@
-import React from 'react'
-// import {
-//   getFirestore, collection, doc, getDoc,
-// } from 'firebase/firestore'
+/* eslint-disable no-underscore-dangle,react/jsx-props-no-spreading */
 import { animated, Transition } from '@react-spring/web'
-import { nanoid } from 'nanoid'
-// import app from '../../../lib/firebase'
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react'
+import {
+  useForm, useFieldArray, useWatch, Control,
+} from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router'
+import { Link } from 'react-router-dom'
+import {
+  getFirestore, collection, doc, getDoc,
+} from 'firebase/firestore'
+import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
 import LoadSpinner from '../../load-spinner'
 import Project from '../../projects/project'
 import type { ProjectEditorDispatchToProps, ProjectEditorStateToProps } from '../../../containers/admin/projects/editor'
 import type { ProjectInfo } from '../../../containers/admin/projects'
 import {
-  urlOrLocalValidator,
-  urlValidator,
-  valueValidator,
+  urlRegex,
+  urlOrLocalRegex,
+  validateUrlByFetching,
 } from '../../../lib/validators'
 import { AdminBigInput, AdminInput } from '../admin-input'
 
-type ProjectEditorProps = ProjectEditorStateToProps & ProjectEditorDispatchToProps
-
-interface ProjectEditorState {
-  title: string
-  description: string
-  intlDescription: Array<{ id: string, lang: string, description: string }>
-  repo: string
-  demo: string
-  web: string
-  image: string
-  technologies: Array<{ id: string, value: string }>
-  preview: boolean
-  original: ProjectInfo | null
-  exists: { [x: string]: boolean }
-  checking: { [x: string]: boolean }
+interface ProjectPreviewProps {
+  control: Control
+  darkMode: boolean
 }
 
-export default class ProjectEditor extends React.Component<ProjectEditorProps, ProjectEditorState> {
-  private urlFieldChangedTimers: { [x: string]: NodeJS.Timer | null } = {}
-
-  constructor(props: ProjectEditorProps) {
-    super(props)
-    this.state = {
-      title: '',
-      description: '',
-      intlDescription: [],
-      repo: '',
-      demo: '',
-      web: '',
-      image: '',
-      technologies: [{ id: nanoid(), value: '' }],
-      preview: false,
-      original: null,
-      exists: {},
-      checking: {},
-    }
-
-    this.changeLangDescription = this.changeLangDescription.bind(this)
-    this.changeDescription = this.changeDescription.bind(this)
-    this.removeDescription = this.removeDescription.bind(this)
-    this.removeTechnology = this.removeTechnology.bind(this)
-    this.addDescription = this.addDescription.bind(this)
-    this.previewToggle = this.previewToggle.bind(this)
-    this.addTechnology = this.addTechnology.bind(this)
-    this.save = this.save.bind(this)
+const ProjectPreview = ({ control, darkMode }: ProjectPreviewProps) => {
+  const {
+    description, title, demo, image, web, repository: repo, technologies, intlDescriptions,
+  } = useWatch({ control })
+  const project: ProjectInfo = {
+    _id: '--preview--',
+    description,
+    repo,
+    technologies: technologies.map(({ value }: any) => value),
+    title,
+    demo,
+    image,
+    intlDescription: Object.fromEntries(
+      intlDescriptions.map(({ lang, description: d }: any) => [lang, d]),
+    ),
+    web,
   }
 
-  componentDidMount() {
-    // TODO refactor component into FC
-    /* const { match } = this.props
-    if (match.params.id) {
-      getDoc(doc(collection(getFirestore(app), 'projects'), match.params.id))
+  return <Project project={project} darkMode={darkMode} fullWidth />
+}
+
+type ProjectEditorProps = ProjectEditorStateToProps & ProjectEditorDispatchToProps
+
+const ProjectEditor = ({
+  clearError,
+  darkMode,
+  errorSaving,
+  saving,
+  save,
+  update,
+}: ProjectEditorProps) => {
+  const firstRenderRef = useRef(false)
+  const [preview, setPreview] = useState(false)
+  const [original, setOriginal] = useState<ProjectInfo | null>(null)
+  const params = useParams()
+  const navigate = useNavigate()
+  const {
+    register, control, handleSubmit, setValue, formState: { errors },
+  } = useForm({ reValidateMode: 'onBlur' })
+  const technologies = useFieldArray({ control, name: 'technologies' })
+  const intlDescriptions = useFieldArray({ control, name: 'intlDescriptions' })
+
+  useEffect(() => {
+    if (params.id) {
+      getDoc(doc(collection(getFirestore(app), 'projects'), params.id))
         .then((obj) => {
           const project = obj.data() as ProjectInfo
-          this.setState({
-            original: { ...project, _id: obj.id },
-            title: project.title,
-            description: project.description,
-            repo: project.repo || '',
-            demo: project.demo || '',
-            web: project.web || '',
-            image: project.image || '',
-            technologies: project.technologies.map((value) => ({ value, id: nanoid() })),
-            intlDescription: Object.entries(project.intlDescription ?? {})
-              .map(([lang, description]) => ({ id: nanoid(), lang, description })),
-          })
-        })
-    } */
-  }
+          if (!project) {
+            navigate('..')
+            toast.error(`El projecto con ID ${params.id} no existe`)
+            return
+          }
 
-  componentDidUpdate(prevProps: ProjectEditorProps) {
-    const {
-      saving,
-      errorSaving,
-      // history,
-      clearError,
-    } = this.props
-    if (prevProps.saving && !saving) {
+          setOriginal({ ...project, _id: obj.id })
+          setValue('title', project.title)
+          setValue('description', project.description)
+          setValue('repository', project.repo || '')
+          setValue('demo', project.demo || '')
+          setValue('web', project.web || '')
+          setValue('image', project.image || '')
+          technologies.replace((project.technologies || []).map((value) => ({ value })))
+          intlDescriptions.replace(
+            Object.entries(project.intlDescription || {})
+              .map(([lang, description]) => ({ lang, description })),
+          )
+        })
+        .catch((error) => {
+          toast.error(`No se pudo cargar el projecto: ${error.message}`)
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.id])
+
+  useEffect(() => {
+    if (!firstRenderRef.current) {
+      firstRenderRef.current = true
+      return
+    }
+
+    if (!saving) {
       if (!errorSaving) {
-        // history.push('/admin/projects/')
+        navigate('..')
       } else {
-        toast.error(`No se pudo añadir el nuevo proyecto...${errorSaving.message}`)
+        toast.error(`No se pudo añadir el nuevo proyecto... ${errorSaving.message}`)
         clearError()
       }
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [saving])
 
-  private getProject() {
-    const {
-      title,
-      repo,
-      technologies,
-      description,
-      image,
-      demo,
-      web,
-      original,
-      intlDescription,
-    } = this.state
-    const project: Partial<ProjectInfo> = {
-      title,
-      repo,
-      technologies: technologies.map(({ value }) => value),
-      description,
+  const addTechnology = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    technologies.append({ value: '' })
+  }, [technologies])
+
+  const removeTechnology = useCallback((e: React.MouseEvent<HTMLButtonElement>, i: number) => {
+    e.preventDefault()
+    technologies.remove(i)
+  }, [technologies])
+
+  const previewToggle = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setPreview((p) => !p)
+  }, [])
+
+  const addDescription = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    intlDescriptions.append({ lang: '', description: '' })
+  }, [intlDescriptions])
+
+  const removeDescription = useCallback((e: React.MouseEvent<HTMLButtonElement>, i: number) => {
+    e.preventDefault()
+    intlDescriptions.remove(i)
+  }, [intlDescriptions])
+
+  const effectivelySave = useCallback((data: any) => {
+    const project = {
+      description: data.description,
+      repo: data.repository || null,
+      technologies: data.technologies.length
+        ? data.technologies.map(({ value }: any) => value)
+        : null,
+      title: data.title,
+      demo: data.demo || null,
+      image: data.image || null,
+      intlDescription: Object.fromEntries(
+        data.intlDescriptions.map(({ lang, description: d }: any) => [lang, d]),
+      ),
+      web: data.web || null,
     }
-
-    if (image) {
-      project.image = image
-    }
-
-    if (demo) {
-      project.demo = demo
-    }
-
-    if (web) {
-      project.web = web
-    }
-
     if (original) {
-      // eslint-disable-next-line no-underscore-dangle
-      project._id = original._id
-    }
-
-    if (intlDescription.length > 0) {
-      project.intlDescription = Object.fromEntries(
-        intlDescription.map(({ lang, description: desc }) => [lang, desc]),
-      )
-    }
-
-    return project
-  }
-
-  private addTechnology(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    const { technologies } = this.state
-    this.setState({
-      technologies: [
-        ...technologies,
-        { id: nanoid(), value: '' },
-      ],
-    })
-  }
-
-  private removeTechnology(e: React.MouseEvent<HTMLButtonElement>, i: number) {
-    e.preventDefault()
-    const { technologies } = this.state
-    this.setState({
-      technologies: [
-        ...technologies.slice(0, i),
-        ...technologies.slice(i + 1),
-      ],
-    })
-  }
-
-  private urlFieldChanged<K extends keyof ProjectEditorState>(
-    e: React.ChangeEvent<HTMLInputElement>,
-    a: K,
-    value: string,
-    valid: boolean,
-    type?: string,
-  ) {
-    e.preventDefault()
-    this.setState({ [a]: value } as any)
-
-    // eslint-disable-next-line react/destructuring-assignment
-    if ((valid || !this.state.exists[value]) && type) {
-      if (this.urlFieldChangedTimers[a] !== null) {
-        clearTimeout(this.urlFieldChangedTimers[a]!)
-      }
-
-      this.urlFieldChangedTimers[a] = setTimeout(async () => {
-        this.setState(({ checking }) => ({ checking: { ...checking, [a]: true } }))
-        try {
-          const res = await fetch(value, { method: 'HEAD' })
-          this.setState(({ exists, checking }) => ({
-            exists: {
-              ...exists,
-              [a]: res.ok && res.status === 200 && res.headers.get('Content-Type')!.includes(type),
-            },
-            checking: { ...checking, [a]: false },
-          }))
-        } catch (error) {
-          if (error instanceof Error) {
-            toast.error(error.message)
-          }
-
-          this.setState(({ exists, checking }) => ({
-            exists: {
-              ...exists,
-              [a]: false,
-            },
-            checking: { ...checking, [a]: false },
-          }))
-        }
-      }, 300)
-    }
-  }
-
-  private previewToggle(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    const { preview } = this.state
-    this.setState({ preview: !preview })
-  }
-
-  private addDescription(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    const { intlDescription, description } = this.state
-    this.setState({
-      intlDescription: [
-        ...intlDescription,
-        { id: nanoid(), lang: '', description },
-      ],
-    })
-  }
-
-  private changeDescription(e: React.ChangeEvent<HTMLTextAreaElement>, i: number) {
-    const { intlDescription } = this.state
-    this.setState({
-      intlDescription: [
-        ...intlDescription.slice(0, i),
-        { ...intlDescription[i], description: e.currentTarget.value },
-        ...intlDescription.slice(i + 1),
-      ],
-    })
-  }
-
-  private removeDescription(e: React.MouseEvent<HTMLButtonElement>, i: number) {
-    e.preventDefault()
-    const { intlDescription } = this.state
-    this.setState({
-      intlDescription: [
-        ...intlDescription.slice(0, i),
-        ...intlDescription.slice(i + 1),
-      ],
-    })
-  }
-
-  private changeLangDescription(e: React.ChangeEvent<HTMLInputElement>, i: number) {
-    const { intlDescription } = this.state
-    this.setState({
-      intlDescription: [
-        ...intlDescription.slice(0, i),
-        { ...intlDescription[i], lang: e.currentTarget.value.toLocaleLowerCase() },
-        ...intlDescription.slice(i + 1),
-      ],
-    })
-  }
-
-  private save(e: React.MouseEvent<HTMLButtonElement>) {
-    e.preventDefault()
-    const { original } = this.state
-    const { update, save } = this.props
-    if (original) {
-      update(this.getProject())
+      update({ ...project, _id: original._id })
     } else {
-      save(this.getProject())
+      save(project)
     }
-  }
+  }, [update, save, original])
 
-  render() {
-    const {
-      title,
-      description,
-      repo,
-      demo,
-      web,
-      image,
-      technologies,
-      preview,
-      exists,
-      intlDescription,
-    } = this.state
-    const { darkMode, saving } = this.props
+  return (
+    <div>
+      <h1>Añadir un nuevo proyecto</h1>
 
-    return (
-      <div>
-        <h1>Añadir un nuevo proyecto</h1>
-
-        <form>
-          <AdminInput
-            type="text"
-            id="title"
-            placeholder="Nombre"
-            value={title}
-            required
-            onChange={(e) => this.setState({ title: e.target.value })}
-          />
-          <AdminBigInput
-            type="text"
-            id="description"
-            placeholder="Descripción"
-            value={description}
-            required
-            onChange={(e) => this.setState({ description: e.target.value })}
-          />
-          <AdminInput
-            type="url"
-            id="repo"
-            placeholder="Repositorio"
-            value={repo}
-            validators={[urlValidator]}
-            onChangeAlt={(e, v, i) => this.urlFieldChanged(e, 'repo', v, i)}
-          />
-          <AdminInput
-            type="url"
-            id="demo"
-            placeholder="Web de demostración"
-            value={demo}
-            validators={[urlValidator]}
-            onChangeAlt={(e, v, i) => this.urlFieldChanged(e, 'demo', v, i)}
-          />
-          <AdminInput
-            type="url"
-            id="web"
-            placeholder="Web"
-            value={web}
-            validators={[urlValidator]}
-            onChangeAlt={(e, v, i) => this.urlFieldChanged(e, 'web', v, i)}
-          />
-          <AdminInput
-            type="url"
-            id="image"
-            placeholder="Imagen"
-            value={image}
-            validators={[urlOrLocalValidator, valueValidator(exists.image)]}
-            onChangeAlt={(e, v, i) => this.urlFieldChanged(e, 'image', v, i, 'image')}
-          />
-          <div className="row align-items-end mb-2">
-            <div className="col-auto">Traducciones</div>
-            <div className="col" />
-            <div className="col-auto">
-              <button type="button" className="btn btn-sm btn-outline-primary" onClick={this.addDescription}>
-                +
+      <form onSubmit={handleSubmit(effectivelySave)}>
+        <AdminInput
+          type="text"
+          id="title"
+          placeholder="Nombre"
+          required
+          error={errors.title}
+          {...register('title', { required: true })}
+        />
+        <AdminBigInput
+          type="text"
+          id="description"
+          placeholder="Descripción"
+          required
+          error={errors.description}
+          {...register('description', { required: true })}
+        />
+        <AdminInput
+          type="url"
+          id="repo"
+          placeholder="Repositorio"
+          error={errors.repository}
+          {...register('repository', {
+            pattern: urlRegex,
+            validate: {
+              url: validateUrlByFetching(),
+            },
+          })}
+        />
+        <AdminInput
+          type="url"
+          id="demo"
+          placeholder="Web de demostración"
+          error={errors.demo}
+          {...register('demo', {
+            pattern: urlRegex,
+            validate: {
+              url: validateUrlByFetching(),
+            },
+          })}
+        />
+        <AdminInput
+          type="url"
+          id="web"
+          placeholder="Web"
+          error={errors.web}
+          {...register('web', {
+            pattern: urlRegex,
+            validate: {
+              url: validateUrlByFetching(),
+            },
+          })}
+        />
+        <AdminInput
+          type="text"
+          id="image"
+          placeholder="Imagen"
+          error={errors.image}
+          {...register('image', {
+            pattern: urlOrLocalRegex,
+            validate: {
+              url: validateUrlByFetching('image/'),
+            },
+          })}
+        />
+        <div className="row align-items-end mb-4">
+          <div className="col-auto">Traducciones</div>
+          <div className="col" />
+          <div className="col-auto">
+            <button type="button" className="btn btn-sm btn-outline-primary" onClick={addDescription}>
+              +
+            </button>
+          </div>
+        </div>
+        {intlDescriptions.fields.map((item, i) => (
+          <div className="row" key={item.id}>
+            <div className="col-1">
+              <AdminInput
+                type="text"
+                id={`lang-${item.id}`}
+                placeholder="Lang"
+                required
+                error={errors[`intlDescriptions.${i}.lang`]}
+                {...register(`intlDescriptions.${i}.lang`, { required: true })}
+              />
+            </div>
+            <div className="col">
+              <AdminBigInput
+                type="text"
+                id={`description-${item.id}`}
+                required
+                error={errors[`intlDescriptions.${i}.description`]}
+                {...register(`intlDescriptions.${i}.description`, { required: true })}
+              />
+            </div>
+            <div className="col-auto d-flex align-items-center pl-0">
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-warning"
+                onClick={(e) => removeDescription(e, i)}
+              >
+                -
               </button>
             </div>
           </div>
-          {intlDescription.map(({ id, lang, description: desc }, i) => (
-            <div className="row" key={id}>
-              <div className="col-1">
-                <AdminInput
-                  type="text"
-                  id={`lang-${id}`}
-                  placeholder="Lang"
-                  required
-                  onChange={(e) => this.changeLangDescription(e, i)}
-                  value={lang}
-                />
-              </div>
-              <div className="col">
-                <AdminBigInput
-                  type="text"
-                  id={`description-${id}`}
-                  value={desc}
-                  required
-                  onChange={(e) => this.changeDescription(e, i)}
-                />
-              </div>
-              <div className="col-auto d-flex align-items-center pl-0">
-                <button
-                  type="button"
-                  className="btn btn-sm btn-outline-warning"
-                  onClick={(e) => this.removeDescription(e, i)}
-                >
-                  -
-                </button>
-              </div>
-            </div>
-          ))}
-          <div className="row align-items-end mb-2">
-            <div className="col-auto">Tecnologías</div>
-            <div className="col" />
-            <div className="col-auto">
-              <button type="button" className="btn btn-sm btn-outline-primary" onClick={this.addTechnology}>+</button>
-            </div>
+        ))}
+        <div className="row align-items-end mb-3">
+          <div className="col-auto">Tecnologías</div>
+          <div className="col" />
+          <div className="col-auto">
+            <button type="button" className="btn btn-sm btn-outline-primary" onClick={addTechnology}>+</button>
           </div>
-          {technologies.map(({ id, value }, i) => (
-            <div className="row" key={id}>
-              <div className="col">
-                <AdminInput
-                  type="text"
-                  id={`technology-${id}`}
-                  placeholder={`Tecnología ${i}`}
-                  value={value}
-                  required
-                  onChange={(e) => this.setState({
-                    technologies: [
-                      ...technologies.slice(0, i),
-                      { id, value: e.target.value },
-                      ...technologies.slice(i + 1),
-                    ],
-                  })}
-                />
-              </div>
-              { i > 0 && (
+        </div>
+        {technologies.fields.map((item, i) => (
+          <div className="row" key={item.id}>
+            <div className="col">
+              <AdminInput
+                type="text"
+                id={`technology-${item.id}`}
+                placeholder={`Tecnología ${i}`}
+                required
+                error={errors[`technologies.${i}.value`]}
+                {...register(`technologies.${i}.value`, { required: true })}
+              />
+            </div>
+            {i > 0 && (
               <div
                 className="col-auto d-flex align-items-center pl-0"
                 style={{ paddingBottom: '1em' }}
@@ -418,34 +303,36 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
                 <button
                   type="button"
                   className="btn btn-sm btn-outline-warning"
-                  onClick={(e) => this.removeTechnology(e, i)}
+                  onClick={(e) => removeTechnology(e, i)}
                 >
                   -
                 </button>
               </div>
-              ) }
-            </div>
-          )) }
-
-          <div className="d-flex justify-content-end">
-            <div className="btn btn-group">
-              <button type="button" className="btn btn-outline-primary" onClick={this.previewToggle}>
-                Vista previa
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-success"
-                onClick={this.save}
-              >
-                Guardar
-              </button>
-            </div>
+            )}
           </div>
-        </form>
+        ))}
 
-        <Transition native from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={preview}>
-          {/* eslint-disable-next-line react/no-unstable-nested-components */}
-          { (toggle) => ((vals: any) => toggle && (
+        <div className="d-flex justify-content-between mb-4">
+          <div className="btn btn-group">
+            <Link to=".." className="btn btn-outline-secondary">Atrás</Link>
+          </div>
+          <div className="btn btn-group">
+            <button type="button" className="btn btn-outline-primary" onClick={previewToggle}>
+              Vista previa
+            </button>
+            <button
+              type="submit"
+              className="btn btn-outline-success"
+            >
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <Transition native from={{ val: 0 }} enter={{ val: 1 }} leave={{ val: 0 }} items={preview}>
+        {/* eslint-disable-next-line react/no-unstable-nested-components */}
+        { ({ val }, toggle) => toggle && (
           <animated.div
             className="ml-sm-auto px-4"
             style={{
@@ -456,28 +343,28 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
               width: '300px',
               maxHeight: 'calc(100vh - 40px - 10px - 30px)',
               overflowY: 'scroll',
-              transform: vals.val.interpolate((x: number) => `translateX(${(1 - x) * 300}px)`),
+              transform: val.to((x: number) => `translateX(${(1 - x) * 300}px)`),
             }}
           >
-            <Project project={this.getProject() as ProjectInfo} darkMode={darkMode} />
+            <ProjectPreview control={control} darkMode={darkMode} />
           </animated.div>
-          )) }
-        </Transition>
+        ) }
+      </Transition>
 
-        <Transition
-          native
-          from={{ val: 0 }}
-          enter={{ val: 1 }}
-          leave={{ val: 0 }}
-          items={saving}
-        >
-          {/* eslint-disable-next-line react/no-unstable-nested-components */}
-          { (toggle) => ((vals: any) => toggle && (
+      <Transition
+        native
+        from={{ val: 0 }}
+        enter={{ val: 1 }}
+        leave={{ val: 0 }}
+        items={saving}
+      >
+        {/* eslint-disable-next-line react/no-unstable-nested-components */}
+        { ({ val }, toggle) => toggle && (
           <animated.div
             role="main"
             className="ml-sm-auto px-4"
             style={{
-              position: 'absolute',
+              position: 'fixed',
               overflowY: 'scroll',
               top: 0,
               left: 0,
@@ -485,15 +372,16 @@ export default class ProjectEditor extends React.Component<ProjectEditorProps, P
               height: 'calc(100vh - 30px)',
               backgroundColor: darkMode ? 'rgba(0, 0, 0, 0.55)' : 'rgba(255, 255, 255, 0.55)',
               zIndex: 1,
-              opacity: vals.val.interpolate((x: number) => `${x}`),
+              opacity: val.to((x: number) => `${x}`),
             }}
           >
             <LoadSpinner />
           </animated.div>
-          )) }
-        </Transition>
+        ) }
+      </Transition>
 
-      </div>
-    )
-  }
+    </div>
+  )
 }
+
+export default ProjectEditor
