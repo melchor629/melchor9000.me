@@ -2,8 +2,8 @@
   "": {
     "title": "Inici",
     "bio": {
-      "year": "{{count}} Any",
-      "year_plural": "{{count}} Anys",
+      "year_one": "{{count}} Any",
+      "year_other": "{{count}} Anys",
       "text1": "Enginer de Software - Programador",
       "text2": "De vegades fotògraf..."
     },
