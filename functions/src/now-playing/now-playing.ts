@@ -3,10 +3,13 @@ import lastfm from '../utils/logic/lastfm'
 
 const nowPlayingController: RequestHandler = async (req, res) => {
   const user = req.params.user || 'melchor629'
-  const { recenttracks: { track } } = await lastfm.user.getRecentTracks(user)
+  const { recenttracks: { track } } = await res.measure(
+    lastfm.user.getRecentTracks(user),
+    'lastfm.user.getRecentTracks',
+  )
   const mappedTracks = track.map((t) => ({
     artist: t.artist?.name,
-    album: t.album && t.album['#text'],
+    album: t.album?.['#text'],
     title: t.name,
     albumArtImages: t.image?.map((i) => ({
       url: i['#text'],

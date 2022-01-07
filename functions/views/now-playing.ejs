@@ -54,13 +54,6 @@
           width: 100px;
           height: 100px;
           border-radius: 5px;
-          transition: transform 75ms ease-in-out,
-                      box-shadow 75ms ease-in-out;
-        }
-
-        .cover:hover {
-          transform: scale(1.05);
-          box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.3);
         }
 
         #bars {
@@ -77,7 +70,7 @@
           height: 3px;
           position: absolute;
           background: #1DB954cc;
-          animation: sound 0ms -800ms linear infinite alternate;
+          animation: sound 0ms ease-out infinite alternate;
         }
 
         div {
@@ -97,12 +90,14 @@
         }
 
         <%
-          var barCount = 84;
-          var left = 1;
-          for(var i of [...Array(barCount)].map((_, num) => num + 1)) {
+          const barCount = 84;
+          const bars = [...Array(barCount)]
+          let left = 1;
+          for(const i of bars.map((_, num) => num + 1)) {
             %>
             .bar:nth-child(<%= i %>) {
               left: <%= left %>px;
+              animation-delay: <%= 1000 - Math.trunc(2000 * Math.random()) %>ms;
               animation-duration: <%= Math.trunc(350 * Math.random() + 1000) %>ms;
             }
             <%
@@ -122,7 +117,7 @@
           <div class="currentStatus"><%= status %></div>
           <div class="song"><%= songName %></div>
           <div class="artist"><%= artistName %></div>
-          <div id="bars"><%- [...Array(barCount)].map((_, num) => '<div class="bar"></div>').join('') %></div>
+          <div id="bars"><%- bars.map((_, num) => '<div class="bar"></div>').join('') %></div>
         </div>
       </div>
 

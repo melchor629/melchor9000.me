@@ -12,6 +12,7 @@ To develop in local you need node 14.x and `npm` v7 or higher. This repo uses np
     - `npm run audit`: checks if there are any packages with security issues
     - `npm build`: builds functions and web
     - `npm lint`: lints functions and web
+    - `npm run emulators`: runs firebase emulators (requires setup for storage)
 - For `functions`:
     - `npm start -w functions`: starts a local Firebase Function emulator
     - `npm run watch -w functions`: transpiles files when a change is found
