@@ -12,8 +12,6 @@ import { getAssetUrl } from '../../lib/url'
 
 import './home.scss'
 
-const Parallax = require('parallax-js')
-
 const images = [
   getAssetUrl('img/Pixel Art.png'),
   getAssetUrl('img/home/CERI-yNW0AIwIA6.jpg'),
@@ -182,12 +180,10 @@ export default class Home extends Component<IndexProps, StateProps> {
 
   private readonly cheat = new Cheat()
 
-  private parallax: any
-
   constructor(props: IndexProps) {
     super(props)
     this.state = {
-      image: 0,
+      image: Math.random() < 0.5 ? 0 : Math.trunc(Math.random() * images.length),
       keys: [],
       disappearTimeout: null,
       audioSource: null,
@@ -267,7 +263,6 @@ export default class Home extends Component<IndexProps, StateProps> {
   componentDidMount() {
     window.addEventListener('keydown', this.onWindowKeyDown)
     window.addEventListener('blur', this.onWindowBlur)
-    this.parallax = new Parallax(document.querySelector('.profile_img'), { pointerEvents: true })
   }
 
   componentDidUpdate({
@@ -294,7 +289,6 @@ export default class Home extends Component<IndexProps, StateProps> {
     window.removeEventListener('keydown', this.onWindowKeyDown)
     window.removeEventListener('blur', this.onWindowBlur)
     this.player.destroy()
-    this.parallax.destroy()
 
     const { disappearTimeout } = this.state
     if (disappearTimeout) {
@@ -355,13 +349,11 @@ export default class Home extends Component<IndexProps, StateProps> {
             </div>
 
             <div className="profile_img">
-              <div className="layer" data-depth="0.3">
-                <div className="image-wrapper">
-                  <div className="image-wrapper-inner">
-                    <Tapable onLongTap={this.changeImage}>
-                      <img src={images[image]} alt="Me" />
-                    </Tapable>
-                  </div>
+              <div className="image-wrapper">
+                <div className="image-wrapper-inner">
+                  <Tapable onLongTap={this.changeImage}>
+                    <img src={images[image]} alt="Me" />
+                  </Tapable>
                 </div>
               </div>
             </div>

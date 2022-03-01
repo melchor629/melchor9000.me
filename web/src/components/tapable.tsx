@@ -5,6 +5,7 @@ interface TapableProps {
   tapDelta?: number
   onTap?: (event: React.TouchEvent<HTMLElement>, position: TouchPosition) => void
   onLongTap?: (event: React.TouchEvent<HTMLElement>, position: TouchPosition) => void
+  children: React.ReactNode
 }
 
 interface TouchPosition {
@@ -82,6 +83,14 @@ class Tapable extends React.Component<TapableProps> {
       </div>
     )
   }
+}
+
+// @ts-ignore
+Tapable.defaultProps = {
+  tapTime: 250,
+  tapDelta: 10,
+  onTap: null,
+  onLongTap: null,
 }
 
 export default Tapable
