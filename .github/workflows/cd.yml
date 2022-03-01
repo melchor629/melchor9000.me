@@ -24,7 +24,9 @@ jobs:
           node-version: '16.x'
 
       - name: Install packages
-        run: npm ci
+        run: |
+          npm ci
+          npm install -g firebase-tools
 
       - name: Build
         run: npm run build --workspaces
