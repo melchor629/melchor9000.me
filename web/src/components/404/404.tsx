@@ -2,8 +2,6 @@ import { useLayoutEffect, useState } from 'react'
 
 import './404.scss'
 
-const Parallax = require('parallax-js')
-
 const PageNotFound = () => {
   const [{ width, height }, setSize] = useState(() => ({
     width: document.body.clientWidth,
@@ -16,12 +14,10 @@ const PageNotFound = () => {
       height: document.body.clientHeight - 32,
     })
 
-    const parallax = new Parallax(document.querySelector('#scene'))
     document.body.style.backgroundColor = '#005d8f'
     window.addEventListener('resize', onResize, { passive: true })
 
     return () => {
-      parallax.destroy()
       document.body.style.backgroundColor = ''
       window.removeEventListener('resize', onResize)
     }
