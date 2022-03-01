@@ -26,6 +26,8 @@ const images = [
   getAssetUrl('img/home/Cx9ZotYXUAAhih5.jpg'),
   getAssetUrl('img/home/CyiKCaAXgAAfp84.jpg'),
   getAssetUrl('img/home/Ch71hdog06jqm31.jpg'),
+  getAssetUrl('img/home/mlady.jpg'),
+  getAssetUrl('img/home/sapo-oculos.jpg'),
 ]
 
 const specialDatesImages: Array<{ day: number, month: number, image: string | string[] }> = [
