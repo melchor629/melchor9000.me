@@ -14,11 +14,11 @@ export const posts = euFunctions
   .onRequest(postsApp)
 
 export const nowPlaying = euFunctions
-  .runWith({ timeoutSeconds: 10, memory: '128MB' })
+  .runWith({ timeoutSeconds: 10, memory: '256MB' })
   .https
   .onRequest(nowPlayingApp)
 
 export const gallery = euFunctions
-  .runWith({ timeoutSeconds: 10, memory: '128MB' })
+  .runWith({ timeoutSeconds: 10, memory: '256MB' })
   .https
   .onRequest(galleryApp)
