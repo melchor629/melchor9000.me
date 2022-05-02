@@ -10,7 +10,7 @@ import ImageInfoViewMemo from './image-info-view'
 import ImageView from './image-view'
 import { usePhotoActions, usePhotoState } from './redux-connector'
 import LoadSpinner from '../../load-spinner'
-import { GalleryPhoto } from '../../../redux/gallery/reducers'
+import { GalleryPhoto } from '../../../redux/gallery/state'
 import { runOnEnter } from '../../../lib/aria-utils'
 
 const requestIdleCallback = (window as any).requestIdleCallback || setTimeout

@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { WithTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 import * as toast from '../../lib/toast'
 import { Cheat } from '../../lib/cheat'

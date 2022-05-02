@@ -7,12 +7,13 @@ import {
   DragEventHandler,
 } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { shallowEqual, useSelector } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 import { Spring, animated } from '@react-spring/web'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import * as toast from '../lib/toast'
 import Visualizer from './visualizer'
 import Player from '../lib/player'
+import { useSelector } from '../redux'
 
 // TODO terminar
 interface VizState {
@@ -43,7 +44,7 @@ const initialState: VizState = {
 }
 
 const Viz = () => {
-  const darkMode = useSelector((state) => state.effects.darkMode, shallowEqual)
+  const darkMode = useSelector(({ effects }) => effects.darkMode, shallowEqual)
   const [t] = useTranslation()
   const playerRef = useRef<Player>()
   const positionTimerRef = useRef<number>()

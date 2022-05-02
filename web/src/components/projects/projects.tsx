@@ -3,16 +3,17 @@ import React, {
   useCallback, useEffect, useMemo, useState, useRef, useLayoutEffect,
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet'
-import { useDispatch, useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet-async'
 import * as toast from '../../lib/toast'
 import { removeError, subscribe, unsubscribe } from '../../redux/database/actions'
 import LoadSpinner from '../load-spinner'
+import { useDispatch, useSelector } from '../../redux'
 import Project from './project'
 import './projects.scss'
+import { ID } from '../../redux/database/state'
 
 export interface ProjectInfo {
-  _id: string
+  [ID]: string
   title: string
   repo: string
   demo?: string
@@ -29,8 +30,8 @@ const Projects = () => {
   const dispatch = useDispatch()
   const { darkMode, projects, subscriptionError } = useSelector(({ database, effects }) => ({
     darkMode: effects.darkMode,
-    projects: database.snapshots.projects as ProjectInfo[] | undefined,
-    subscriptionError: database.snapshots.projectsError,
+    projects: database.projects?.snapshot as ProjectInfo[] | undefined,
+    subscriptionError: database.projects?.error,
   }))
 
   const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([])
@@ -61,7 +62,7 @@ const Projects = () => {
       Array.from(new Set(
         projects
           ?.map((p) => p.technologies.map((q) => q.toLowerCase()))
-          .reduce((l, p) => [...l, ...p]) ?? [],
+          .flat() ?? [],
       )).sort()
     ),
     [projects],
@@ -168,8 +169,7 @@ const Projects = () => {
             {filteredProjects.map((project) => (
               <Project
                 project={project}
-                // eslint-disable-next-line no-underscore-dangle
-                key={project._id}
+                key={project[ID]}
                 darkMode={darkMode}
                 onImageLoaded={() => masonryRef.current?.layout?.()}
               />

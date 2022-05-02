@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon'
 import {
-  memo, useCallback, FC, RefObject,
+  memo, useCallback, FC, RefObject, PropsWithChildren,
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet'
-import { GalleryPhoto, GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
+import { Helmet } from 'react-helmet-async'
+import { GalleryPhoto, GalleryPhotosetPhoto } from '../../../redux/gallery/state'
 import { DefaultContainer } from '../../default-container'
 import LoadSpinner from '../../load-spinner'
 
@@ -20,7 +20,7 @@ const ImageInfoView = ({
   const [t] = useTranslation()
   let geolocation = null
 
-  const InfoItem: FC<{ id: string }> = useCallback(({ id, children }) => (
+  const InfoItem: FC<PropsWithChildren<{ id: string }>> = useCallback(({ id, children }) => (
     children
       ? (
         <div className="lead col-12 col-md-6 mb-2 info-item">

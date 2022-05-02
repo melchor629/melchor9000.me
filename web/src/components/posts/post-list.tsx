@@ -1,6 +1,7 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import type { PostListDispatchToProps, PostListStateToPros } from '../../containers/posts/post-list'
+import { ID } from '../../redux/database/state'
 import LoadSpinner from '../load-spinner'
 import Entry from './post-entry'
 
@@ -52,8 +53,7 @@ export default class PostList extends React.Component<PostListProps, any> {
     if (posts) {
       const entries = posts
         .filter((e) => !e.hide)
-        // eslint-disable-next-line no-underscore-dangle
-        .map((entry) => <Entry entry={entry} key={entry._id!} />)
+        .map((entry) => <Entry entry={entry} key={entry[ID]} />)
 
       return (
         <div className="mainPage d-flex flex-wrap">

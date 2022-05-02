@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { withTranslation } from 'react-i18next'
-import { State } from '../redux/reducers'
+import { State } from '../redux/store'
 import {
   changeVisualization,
   doABarrelRoll,

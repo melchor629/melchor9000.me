@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
 import { useNavigate } from 'react-router'
 import { runOnEnter } from '../../lib/aria-utils'
-import { Post } from '../../redux/posts/reducers'
+import { Post } from '../../redux/posts/state'
 
 interface PostEntryProps {
   entry: Post

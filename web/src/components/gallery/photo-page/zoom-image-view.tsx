@@ -2,7 +2,7 @@ import React, {
   memo, useEffect, useRef, useState,
 } from 'react'
 import { animated, useSpring } from '@react-spring/web'
-import { GalleryPhoto } from '../../../redux/gallery/reducers'
+import { GalleryPhoto } from '../../../redux/gallery/state'
 
 interface ZoomImageOverlayProps {
   photo: GalleryPhoto

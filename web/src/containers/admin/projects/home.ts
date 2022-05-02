@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { State } from '../../../redux/reducers'
+import { State } from '../../../redux/store'
 import { remove, removeError } from '../../../redux/database/actions'
 import ProjectsHomeComponent from '../../../components/admin/projects/home'
 import type { ProjectInfo } from '../projects'
@@ -17,10 +17,10 @@ export interface ProjectsHomeDispatchToProps {
 }
 
 const mapStateToProps = (state: State): ProjectsHomeStateToProps => ({
-  projects: ((state.database.snapshots.projects || []) as ProjectInfo[])
+  projects: ((state.database.projects?.snapshot || []) as ProjectInfo[])
     .sort((a, b) => a.title.localeCompare(b.title)),
-  deleting: state.database.doing.posts || false,
-  errorDeleting: state.database.errors.posts,
+  deleting: state.database.posts?.doing ?? false,
+  errorDeleting: state.database.posts?.error,
   darkMode: state.effects.darkMode,
 })
 

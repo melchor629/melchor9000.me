@@ -4,7 +4,7 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 

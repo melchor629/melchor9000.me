@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle,react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-props-no-spreading */
 import { animated, Transition } from '@react-spring/web'
 import {
   useCallback, useEffect, useRef, useState,
@@ -23,6 +23,7 @@ import {
   validateUrlByFetching,
 } from '../../../lib/validators'
 import { AdminBigInput, AdminInput } from '../admin-input'
+import { ID } from '../../../redux/database/state'
 
 interface ProjectPreviewProps {
   control: Control
@@ -34,7 +35,7 @@ const ProjectPreview = ({ control, darkMode }: ProjectPreviewProps) => {
     description, title, demo, image, web, repository: repo, technologies, intlDescriptions,
   } = useWatch({ control })
   const project: ProjectInfo = {
-    _id: '--preview--',
+    [ID]: '--preview--',
     description,
     repo,
     technologies: technologies.map(({ value }: any) => value),
@@ -82,7 +83,7 @@ const ProjectEditor = ({
             return
           }
 
-          setOriginal({ ...project, _id: obj.id })
+          setOriginal({ ...project, [ID]: obj.id })
           setValue('title', project.title)
           setValue('description', project.description)
           setValue('repository', project.repo || '')
@@ -158,9 +159,10 @@ const ProjectEditor = ({
         data.intlDescriptions.map(({ lang, description: d }: any) => [lang, d]),
       ),
       web: data.web || null,
+      [ID]: '--empty--',
     }
     if (original) {
-      update({ ...project, _id: original._id })
+      update({ ...project, [ID]: original[ID] })
     } else {
       save(project)
     }

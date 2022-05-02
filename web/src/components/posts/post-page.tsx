@@ -1,11 +1,12 @@
 import { useLayoutEffect, useMemo } from 'react'
 import { useParams } from 'react-router'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import type { PostPageDispatchToProps, PostPageStateToProps } from '../../containers/posts/post-page'
 import LoadSpinner from '../load-spinner/load-spinner'
 import Zoom from '../../lib/zoom.js/zoom'
 import DisqusWrapper from './disqus-wrapper'
 import PostPageContent from './post-page-content'
+import { ID } from '../../redux/database/state'
 
 type PostPageProps = PostPageStateToProps & PostPageDispatchToProps
 
@@ -81,8 +82,7 @@ const PostPage = ({ loadPost, content, posts }: PostPageProps) => {
     if (entry) {
       disqusConfig = {
         url: window.location.toString(),
-        // eslint-disable-next-line no-underscore-dangle
-        identifier: entry!._id!,
+        identifier: entry![ID]!,
         title: entry!.title,
       }
     }

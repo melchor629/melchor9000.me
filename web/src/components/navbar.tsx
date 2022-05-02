@@ -3,9 +3,10 @@ import {
   useCallback, useLayoutEffect, useRef, useState, MouseEvent, KeyboardEvent,
 } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector, shallowEqual } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 import { useMatch } from 'react-router'
 import { Link } from 'react-router-dom'
+import { useSelector } from '../redux'
 
 const NavbarLink = ({ route }: any) => {
   const [t] = useTranslation()

@@ -1,6 +1,6 @@
 import { User } from 'firebase/auth'
 import { connect } from 'react-redux'
-import { State } from '../../redux/reducers'
+import { State } from '../../redux/store'
 import { logOut } from '../../redux/auth/actions'
 import AdminComponent from '../../components/admin/admin'
 

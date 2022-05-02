@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { GalleryPhotosetPhoto } from '../../../redux/gallery/reducers'
+import { GalleryPhotosetPhoto } from '../../../redux/gallery/state'
 import { runOnEnter } from '../../../lib/aria-utils'
 
 interface PhotoItemProps {

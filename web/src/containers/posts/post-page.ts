@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { Post } from '../../redux/posts/reducers'
-import { State } from '../../redux/reducers'
+import { Post } from '../../redux/posts/state'
+import { State } from '../../redux/store'
 import { getPost } from '../../redux/posts/actions'
 import PostPageComponent from '../../components/posts/post-page'
 
@@ -15,7 +15,7 @@ export interface PostPageDispatchToProps {
 
 const mapStateToProps = ({ database, posts }: State): PostPageStateToProps => ({
   content: posts.content,
-  posts: database.snapshots.posts,
+  posts: database.posts?.snapshot as Post[] | null,
 })
 
 const mapDispatchToProps = (dispatch: any): PostPageDispatchToProps => ({

@@ -1,6 +1,6 @@
 import { FC, ReactElement, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../redux'
 
 const PrivateRoute: FC<{ children: ReactElement }> = ({ children }) => {
   const loggedIn = useSelector(({ auth }) => !!auth.user)

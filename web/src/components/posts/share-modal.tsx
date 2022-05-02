@@ -4,7 +4,7 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Post } from '../../redux/posts/reducers'
+import { Post } from '../../redux/posts/state'
 import { runOnEnter } from '../../lib/aria-utils'
 import * as toast from '../../lib/toast'
 

@@ -1,9 +1,8 @@
 import * as firebaseAuth from 'firebase/auth'
 import { Suspense, StrictMode } from 'react'
-import ReactDOM from 'react-dom'
-import { applyMiddleware, compose, createStore } from 'redux'
+import { createRoot } from 'react-dom/client'
+import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
 import 'bootstrap'
@@ -13,7 +12,10 @@ import Footer from './Footer'
 import i18n from './i18n'
 import LoadingSpinner from './components/load-spinner'
 import reportWebVitals from './report-web-vitals'
-import firebaseApp from './lib/firebase';
+import firebaseApp from './lib/firebase'
+
+const appRoot = createRoot(document.getElementById('root')!, { identifierPrefix: 'app' })
+const footerRoot = createRoot(document.getElementById('footer')!, { identifierPrefix: 'footer' });
 
 (async () => {
   try {
@@ -22,38 +24,28 @@ import firebaseApp from './lib/firebase';
     console.error(error)
   }
 
-  // @ts-ignore - Do after initializing firestore, if not, app will crash
-  const reduxCompose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-  const store = createStore(
-    (await import('./redux/reducers')).reducers,
-    {},
-    reduxCompose(applyMiddleware(thunk)),
-  )
+  const { default: store } = await import('./redux/store')
 
-  await new Promise((accept) => { setTimeout(accept, 10) })
-
-  ReactDOM.render(
+  appRoot.render(
     (
       <StrictMode>
         <Provider store={store}>
           <BrowserRouter>
-            <Suspense fallback={LoadingSpinner}>
-              <I18nextProvider i18n={i18n}>
-                <App />
-              </I18nextProvider>
-            </Suspense>
+            <HelmetProvider>
+              <Suspense fallback={<LoadingSpinner />}>
+                <I18nextProvider i18n={i18n}>
+                  <App />
+                </I18nextProvider>
+              </Suspense>
+            </HelmetProvider>
           </BrowserRouter>
         </Provider>
       </StrictMode>
     ),
-    document.getElementById('root'),
   )
 })()
 
-ReactDOM.render(
-  <StrictMode><Footer /></StrictMode>,
-  document.getElementById('footer'),
-)
+footerRoot.render(<StrictMode><Footer /></StrictMode>)
 
 // https://bit.ly/CRA-vitals
 reportWebVitals((e) => {

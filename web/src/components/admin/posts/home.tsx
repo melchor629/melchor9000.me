@@ -1,14 +1,14 @@
-/* eslint-disable no-underscore-dangle */
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getStorage, ref, deleteObject } from 'firebase/storage'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import app from '../../../lib/firebase'
 import * as toast from '../../../lib/toast'
 import type { PostsHomeDispatchToProps, PostsHomeStateToProps } from '../../../containers/admin/posts/home'
-import { Post } from '../../../redux/posts/reducers'
+import { Post } from '../../../redux/posts/state'
 import DeleteModal from '../delete-modal'
 import PostRow from './post-row'
+import { ID } from '../../../redux/database/state'
 
 type PostsPageProps = PostsHomeStateToProps & PostsHomeDispatchToProps
 
@@ -81,7 +81,7 @@ const PostsHome = ({
         </thead>
         <tbody>
           {posts && posts.map((post) => (
-            <PostRow key={post._id} post={post} setPostToDelete={setPostToDelete} />
+            <PostRow key={post[ID]} post={post} setPostToDelete={setPostToDelete} />
           )) }
         </tbody>
       </table>

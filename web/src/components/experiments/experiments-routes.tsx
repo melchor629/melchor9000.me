@@ -1,6 +1,6 @@
 import { lazy } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import Experiments from './experiments'
 import { DefaultContainer, withDefaultContainer } from '../default-container'
 

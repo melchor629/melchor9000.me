@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../redux'
 
 const Experiment = ({ id }: { id: string }) => {
   const [t] = useTranslation()

@@ -1,16 +1,16 @@
 import { useMemo } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 
-import { State } from '../../../redux/reducers'
+import { useDispatch, useSelector } from '../../../redux'
 import {
   hideDetailed, loadDetailedPhoto, detailedPhotoLoaded, nextDetailed, prevDetailed,
 } from '../../../redux/gallery/actions'
 import { changeNavbarHideMode } from '../../../redux/effects/actions'
 
-export const usePhotoState = (photosetId: string) => useSelector(({ galleryList }: State) => {
-  const photoset = galleryList.photosets[photosetId]
+export const usePhotoState = (photosetId: string) => useSelector(({ gallery }) => {
+  const photoset = gallery.photosets[photosetId]
   const currentPhotoIndex = photoset?.photos
-    .findIndex((p) => p.id === galleryList.detailed.currentPhotoId) ?? -1
+    .findIndex((p) => p.id === gallery.detailed.currentPhotoId) ?? -1
   const nextPhotoId = currentPhotoIndex >= 0 && currentPhotoIndex + 1 < (photoset?.totalPhotos ?? 0)
     ? currentPhotoIndex + 1
     : -1
@@ -18,18 +18,18 @@ export const usePhotoState = (photosetId: string) => useSelector(({ galleryList 
     ? currentPhotoIndex - 1
     : -1
   return {
-    currentPhoto: galleryList.photos[galleryList.detailed.currentPhotoId || '']
+    currentPhoto: gallery.photos[gallery.detailed.currentPhotoId || '']
       || photoset?.photos[currentPhotoIndex],
-    previousPhoto: galleryList.photos[galleryList.detailed.previousPhotoId || ''],
-    isZoomed: galleryList.detailed.zoomEnabled,
+    previousPhoto: gallery.photos[gallery.detailed.previousPhotoId || ''],
+    isZoomed: gallery.detailed.zoomEnabled,
     nextPhoto: photoset?.photos[nextPhotoId],
     prevPhoto: photoset?.photos[prevPhotoId],
     totalPhotos: photoset?.totalPhotos,
-    imageIsLoading: galleryList.detailed.loadingPhoto,
-    directionOfChange: galleryList.detailed.directionOfChange,
-    imageInfoIsLoading: galleryList.detailed.loadingInfo || (photoset?.loading ?? false),
-    imageSwitcher: galleryList.detailed.imageSwitcher,
-    error: galleryList.detailed.error,
+    imageIsLoading: gallery.detailed.loadingPhoto,
+    directionOfChange: gallery.detailed.directionOfChange,
+    imageInfoIsLoading: gallery.detailed.loadingInfo || (photoset?.loading ?? false),
+    imageSwitcher: gallery.detailed.imageSwitcher,
+    error: gallery.detailed.error,
     photosetError: photoset?.error,
   }
 }, shallowEqual)

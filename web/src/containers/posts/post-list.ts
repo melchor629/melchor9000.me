@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import PostListComponent from '../../components/posts/post-list'
-import { Post } from '../../redux/posts/reducers'
-import { State } from '../../redux/reducers'
+import { Post } from '../../redux/posts/state'
+import { State } from '../../redux/store'
 import { saveScroll, showMore } from '../../redux/posts/actions'
 
 export interface PostListStateToPros {
@@ -17,11 +17,8 @@ export interface PostListDispatchToProps {
 
 const mapStateToProps = ({ database, posts }: State): PostListStateToPros => ({
   scroll: posts.scroll,
-  posts: database.snapshots.posts
-    ? database.snapshots.posts
-      .slice(0, posts.showing)
-    : null,
-  postsCount: database.snapshots.posts ? database.snapshots.posts.length : 0,
+  posts: (database.posts?.snapshot?.slice(0, posts.showing) ?? null) as Post[] | null,
+  postsCount: database.posts?.snapshot.length ?? 0,
 })
 
 const mapDispatchToProps = (dispatch: any): PostListDispatchToProps => ({

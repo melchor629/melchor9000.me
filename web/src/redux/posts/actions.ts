@@ -1,34 +1,17 @@
 import { Dispatch } from 'redux'
+import postsSlice from './slice'
+import { Post } from './state'
 import getFirebaseFunctionUrl from '../../lib/firebase-function'
+import { ID } from '../database/state'
 
-export const GETTING_POST = 'posts:GETTING_POST'
-export const GET_POST = 'posts:GET_POST'
-export const SAVE_SCROLL = 'posts:SAVE_SCROLL'
-export const SHOW_MORE = 'posts:SHOW_MORE'
+export const { saveScroll, showMore } = postsSlice.actions
+const { clearPostContent, setPostContent } = postsSlice.actions
 
-const gettingPost = () => ({ type: GETTING_POST })
-
-const postGot = (content: string) => ({
-  type: GET_POST,
-  content,
-})
-
-export const getPost = (post: any) => (dispatch: Dispatch) => {
-  dispatch(gettingPost())
-  // eslint-disable-next-line no-underscore-dangle
-  const url = getFirebaseFunctionUrl('posts', `/render/${post._id}`)
+export const getPost = (post: Post) => (dispatch: Dispatch) => {
+  dispatch(clearPostContent())
+  const url = getFirebaseFunctionUrl('posts', `/render/${post[ID]}`)
   fetch(url)
     .then((response) => response.json())
     .then(({ renderedHtml }) => renderedHtml)
-    .then((text) => dispatch(postGot(text)))
+    .then((text) => dispatch(setPostContent(text)))
 }
-
-export const saveScroll = (scroll: number) => ({
-  type: SAVE_SCROLL,
-  scroll,
-})
-
-export const showMore = (count = 3) => ({
-  type: SHOW_MORE,
-  count,
-})

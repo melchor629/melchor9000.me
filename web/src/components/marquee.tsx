@@ -50,7 +50,7 @@ const Marquee = ({
   }, [getInitialPosition])
 
   const updateInnerPosition = useCallback(
-    (timeDelta) => {
+    (timeDelta: number) => {
       const nextPosX = (() => {
         if (direction === 'right') {
           const nextPos = s.current.x + timeDelta * speed!

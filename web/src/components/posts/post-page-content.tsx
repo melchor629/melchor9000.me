@@ -3,7 +3,7 @@ import { memo, PropsWithChildren } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import ShareModal from './share-modal'
-import { Post } from '../../redux/posts/reducers'
+import { Post } from '../../redux/posts/state'
 
 const PostPageContentImpl = ({ children, entry }: PropsWithChildren<{ entry: Post | null }>) => {
   const [t] = useTranslation()

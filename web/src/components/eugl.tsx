@@ -1,6 +1,6 @@
 import React from 'react'
 import Cropper from 'react-cropper'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import * as THREE from 'three'
 
@@ -159,7 +159,6 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     this.geometry = this.prepareGeometry()
     this.material = this.prepareShaders(this.geometry)
     this.textureLoader = this.prepareTextures()
-    this.startLoop()
   }
 
   componentDidMount() {
@@ -175,6 +174,8 @@ class EuglPage extends React.Component<WithTranslation, EuglState> {
     window.addEventListener('blur', this.blurred)
     window.addEventListener('keyup', this.keyUp)
     window.addEventListener('keydown', this.keyDown)
+
+    this.startLoop()
   }
 
   componentWillUnmount() {

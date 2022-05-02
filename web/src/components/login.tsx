@@ -1,9 +1,10 @@
 import { animated, Spring } from '@react-spring/web'
 import { useCallback, useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { Helmet } from 'react-helmet-async'
+import { shallowEqual } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import * as toast from '../lib/toast'
+import { useDispatch, useSelector } from '../redux'
 import { logIn } from '../redux/auth/actions'
 import LoadSpinner from './load-spinner'
 

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
-import { State } from '../../../redux/reducers'
+import { State } from '../../../redux/store'
 import { insert, removeError, update } from '../../../redux/database/actions'
 import PostEditorComponent from '../../../components/admin/posts/editor'
-import { Post } from '../../../redux/posts/reducers'
+import { Post } from '../../../redux/posts/state'
 
 export interface PostEditorStateToProps {
   saving: boolean
@@ -17,8 +17,8 @@ export interface PostEditorDispatchToProps {
 }
 
 const mapStateToProps = (state: State): PostEditorStateToProps => ({
-  saving: state.database.doing.posts || false,
-  errorSaving: state.database.errors.posts,
+  saving: state.database.posts?.doing || false,
+  errorSaving: state.database.posts?.error,
   darkMode: state.effects.darkMode,
 })
 

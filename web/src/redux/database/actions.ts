@@ -1,18 +1,19 @@
-/* eslint-disable no-underscore-dangle */
 import {
   getFirestore, collection, onSnapshot, query, orderBy, where, addDoc, doc, updateDoc, deleteDoc,
 } from 'firebase/firestore'
 import { Dispatch } from 'redux'
 import app from '../../lib/firebase'
+import databaseSlice from './slice'
+import { ID, CollectionData } from './state'
 
-export const SUBSCRIPTION = 'database:SUBSCRIPTION'
-export const UNSUBSCRIBE = 'database:UNSUBSCRIBE'
-export const CHANGE = 'database:CHANGE'
-export const OPERATION_DOING = 'database:OP_DOING'
-export const OPERATION_DONE = 'database:OP_DONE'
-export const SUBSCRIPTION_ERROR = 'database:SUBSCRIPTION_ERROR'
-export const OPERATION_ERROR = 'database:OPERATION_ERROR'
-export const CLEAR_ERROR = 'database:CLEAR_ERROR'
+export const { unsubscribe, removeError } = databaseSlice.actions
+const {
+  change,
+  error,
+  operationDoing,
+  operationDone,
+  subscribe: leSubscribe,
+} = databaseSlice.actions
 
 export const subscribe = (
   collectionName: string,
@@ -34,87 +35,74 @@ export const subscribe = (
     })
   }
 
-  const subscription = onSnapshot(
-    collectionQuery,
-    (snapshot) => dispatch({ type: CHANGE, collection: collectionName, snapshot }),
-    (error) => dispatch({ type: SUBSCRIPTION_ERROR, collection: collectionName, error }),
-  )
-
-  dispatch({
-    type: SUBSCRIPTION,
+  dispatch(leSubscribe({
     collection: collectionName,
-    subscription,
-  })
+    unsubscribe: onSnapshot(
+      collectionQuery,
+      (snapshot) => dispatch(change({ collection: collectionName, snapshot })),
+      (e) => dispatch(error({ collection: collectionName, error: e, operation: 'SUBSCRIPTION' })),
+    ),
+  }))
 }
 
-export const insert = (collectionName: string, values: any) => async (dispatch: Dispatch<any>) => {
-  const db = getFirestore(app)
-  const col = collection(db, collectionName)
-  dispatch({ type: OPERATION_DOING, collection: collectionName })
-
-  try {
-    const updatedValues = { ...values }
-    delete updatedValues._id
-    await addDoc(col, updatedValues)
-    dispatch({ type: OPERATION_DONE, collection: collectionName })
-  } catch (error) {
-    dispatch({
-      type: OPERATION_ERROR,
-      collection: collectionName,
-      error,
-      operation: 'INSERT',
-    })
-  }
-}
-
-export const update = (collectionName: string, object: any) => (
-  async (dispatch: Dispatch<any>) => {
+export const insert = (
+  collectionName: string,
+  { [ID]: id, ...values }: CollectionData,
+) => (
+  async (dispatch: Dispatch) => {
     const db = getFirestore(app)
     const col = collection(db, collectionName)
-    const document = doc(col, object._id)
-    dispatch({ type: OPERATION_DOING, collection: collectionName })
+    dispatch(operationDoing({ collection: collectionName }))
 
     try {
-      const updatedObject = { ...object }
-      delete updatedObject._id
-      await updateDoc(document, updatedObject)
-      dispatch({ type: OPERATION_DONE, collection: collectionName })
-    } catch (error) {
-      dispatch({
-        type: OPERATION_ERROR,
+      await addDoc(col, values)
+      dispatch(operationDone({ collection: collectionName }))
+    } catch (e) {
+      dispatch(error({
         collection: collectionName,
-        error,
-        operation: 'UPDATE',
-      })
+        error: e as any,
+        operation: 'INSERT',
+      }))
     }
   }
 )
 
-export const remove = (collectionName: string, object: any) => async (dispatch: Dispatch<any>) => {
-  const db = getFirestore(app)
-  const col = collection(db, collectionName)
-  const document = doc(col, object._id)
-  dispatch({ type: OPERATION_DOING, collection: collectionName })
+export const update = (collectionName: string, { [ID]: id, ...values }: CollectionData) => (
+  async (dispatch: Dispatch<any>) => {
+    const db = getFirestore(app)
+    const col = collection(db, collectionName)
+    const document = doc(col, id)
+    dispatch(operationDoing({ collection: collectionName }))
 
-  try {
-    await deleteDoc(document)
-    dispatch({ type: OPERATION_DONE, collection: collectionName })
-  } catch (error) {
-    dispatch({
-      type: OPERATION_ERROR,
-      collection: collectionName,
-      error,
-      operation: 'DELETE',
-    })
+    try {
+      await updateDoc(document, values)
+      dispatch(operationDone({ collection: collectionName }))
+    } catch (e) {
+      dispatch(error({
+        collection: collectionName,
+        error: e as any,
+        operation: 'UPDATE',
+      }))
+    }
   }
-}
+)
 
-export const unsubscribe = (collectionName: string) => ({
-  type: UNSUBSCRIBE,
-  collection: collectionName,
-})
+export const remove = (collectionName: string, { [ID]: id }: CollectionData) => (
+  async (dispatch: Dispatch<any>) => {
+    const db = getFirestore(app)
+    const col = collection(db, collectionName)
+    const document = doc(col, id)
+    dispatch(operationDoing({ collection: collectionName }))
 
-export const removeError = (collectionName: string) => ({
-  type: CLEAR_ERROR,
-  collection: collectionName,
-})
+    try {
+      await deleteDoc(document)
+      dispatch(operationDone({ collection: collectionName }))
+    } catch (e) {
+      dispatch(error({
+        collection: collectionName,
+        error: e as any,
+        operation: 'DELETE',
+      }))
+    }
+  }
+)

@@ -1,21 +1,20 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 
 import Navbar from './components/navbar'
 import AppRoutes from './routes'
-import { State } from './redux/reducers'
+import { useSelector } from './redux'
 
 import './app.scss'
 
 const App = () => {
   const {
     barrelRoll, flipIt, darkMode,
-  } = useSelector((state: State) => ({
-    barrelRoll: state.effects.barrelRoll,
-    flipIt: state.effects.flipIt,
-    darkMode: state.effects.darkMode,
+  } = useSelector(({ effects }) => ({
+    barrelRoll: effects.barrelRoll,
+    flipIt: effects.flipIt,
+    darkMode: effects.darkMode,
   }))
 
   useEffect(() => {

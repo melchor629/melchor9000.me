@@ -1,7 +1,7 @@
-/* eslint-disable no-underscore-dangle */
 import { MouseEvent, useCallback, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Post } from '../../../redux/posts/reducers'
+import { ID } from '../../../redux/database/state'
+import { Post } from '../../../redux/posts/state'
 
 interface PostRowProps {
   post: Post
@@ -25,7 +25,7 @@ const PostRow = ({ post, setPostToDelete }: PostRowProps) => {
       <td>{post.date.toDate().toLocaleString()}</td>
       <td className="admin-list-row-actions">
         <Link
-          to={`edit/${post._id}`}
+          to={`edit/${post[ID]}`}
           className="btn btn-sm btn-outline-warning"
         >
           <i className="fas fa-pencil-alt" />

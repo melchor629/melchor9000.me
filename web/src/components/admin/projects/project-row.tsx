@@ -1,7 +1,7 @@
-/* eslint-disable no-underscore-dangle */
 import { MouseEvent, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import type { ProjectInfo } from '../../../containers/admin/projects'
+import { ID } from '../../../redux/database/state'
 
 interface ProjectRowProps {
   project: ProjectInfo
@@ -31,7 +31,7 @@ const ProjectRow = ({ project, setProjectToDelete }: ProjectRowProps) => {
         )}
         &nbsp;
         <Link
-          to={`edit/${project._id}`}
+          to={`edit/${project[ID]}`}
           className="btn btn-sm btn-outline-warning"
         >
           <i className="fas fa-pencil-alt" />

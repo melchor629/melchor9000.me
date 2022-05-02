@@ -1,0 +1,3 @@
+rules:
+  # RTK uses immer, this rule conflicts with that
+  no-param-reassign: [0]

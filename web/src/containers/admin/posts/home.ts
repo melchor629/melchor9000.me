@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
-import { State } from '../../../redux/reducers'
+import { State } from '../../../redux/store'
 import { remove, removeError } from '../../../redux/database/actions'
 import PostsHomeComponent from '../../../components/admin/posts/home'
-import { Post } from '../../../redux/posts/reducers'
+import { Post } from '../../../redux/posts/state'
 
 export interface PostsHomeStateToProps {
   posts: Post[] | null | undefined
@@ -17,9 +17,9 @@ export interface PostsHomeDispatchToProps {
 }
 
 const mapStateToProps = (state: State): PostsHomeStateToProps => ({
-  posts: state.database.snapshots.posts,
-  deleting: state.database.doing.posts || false,
-  errorSaving: state.database.errors.posts,
+  posts: state.database.posts?.snapshot as Post[] || [],
+  deleting: state.database.posts?.doing || false,
+  errorSaving: state.database.posts?.error,
   darkMode: state.effects.darkMode,
 })
 

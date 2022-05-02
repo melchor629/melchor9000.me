@@ -3,7 +3,7 @@ import { subscribe, unsubscribe } from '../../redux/database/actions'
 import ProjectsComponent from '../../components/admin/projects'
 import type { ProjectInfo as JajaProjectInfo } from '../../components/projects/projects'
 
-export type ProjectInfo = JajaProjectInfo & { _id?: string }
+export type ProjectInfo = JajaProjectInfo
 
 export interface ProjectsStateToProps {}
 

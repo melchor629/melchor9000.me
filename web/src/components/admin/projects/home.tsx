@@ -1,12 +1,12 @@
-/* eslint-disable no-underscore-dangle */
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import * as toast from '../../../lib/toast'
 import type { ProjectsHomeDispatchToProps, ProjectsHomeStateToProps } from '../../../containers/admin/projects/home'
 import type { ProjectInfo } from '../../../containers/admin/projects'
 import DeleteModal from '../delete-modal'
 import ProjectRow from './project-row'
+import { ID } from '../../../redux/database/state'
 
 type ProjectsPageProps = ProjectsHomeStateToProps & ProjectsHomeDispatchToProps
 
@@ -68,7 +68,7 @@ const ProjectsHome = ({
         <tbody>
           {projects.map((project) => (
             <ProjectRow
-              key={project._id}
+              key={project[ID]}
               project={project}
               setProjectToDelete={setProjectToDelete}
             />

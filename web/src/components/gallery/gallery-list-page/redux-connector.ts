@@ -1,11 +1,11 @@
 import { useMemo } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 
-import { State } from '../../../redux/reducers'
+import { useDispatch, useSelector } from '../../../redux'
 import { loadFirstPhotos, loadMorePhotos } from '../../../redux/gallery/actions'
 
 export const useGalleryListState = (photosetId: string) => useSelector(
-  ({ galleryList }: State) => galleryList.photosets[photosetId],
+  ({ gallery }) => gallery.photosets[photosetId],
   shallowEqual,
 )
 

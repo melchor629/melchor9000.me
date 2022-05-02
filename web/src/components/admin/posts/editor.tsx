@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-underscore-dangle */
 import {
   animated,
   useSpring,
@@ -13,7 +12,7 @@ import * as storage from 'firebase/storage'
 import {
   useCallback, useEffect, useMemo, useRef, useState,
 } from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { useForm, useWatch, Control } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -23,9 +22,10 @@ import * as toast from '../../../lib/toast'
 import getFirebaseFunctionUrl from '../../../lib/firebase-function'
 import type { PostEditorDispatchToProps, PostEditorStateToProps } from '../../../containers/admin/posts/editor'
 import LoadSpinner from '../../load-spinner'
-import { Post } from '../../../redux/posts/reducers'
+import { Post } from '../../../redux/posts/state'
 import { AdminInput } from '../admin-input'
 import { validateUrlByFetching } from '../../../lib/validators'
+import { ID } from '../../../redux/database/state'
 
 const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefined }) => {
   const [spring] = useSpring({
@@ -191,7 +191,7 @@ const PostEditor = ({
             DateTime.fromJSDate(post.date.toDate()).toISO({ includeOffset: false }),
           )
           setValue('content', '')
-          setOriginal({ ...post, _id: params.id } as Post)
+          setOriginal({ ...post, [ID]: params.id } as Post)
           setSaving(false)
 
           setLoadingContent(true)
@@ -279,7 +279,7 @@ const PostEditor = ({
             url: data.url,
             modifiedDate: firestore.Timestamp.fromDate(DateTime.utc().toJSDate()),
             hide: false,
-            _id: original!._id,
+            [ID]: original![ID],
           })
         })
         .catch((error) => {
@@ -300,6 +300,7 @@ const PostEditor = ({
             img,
             title,
             url,
+            [ID]: '--empty--',
           })
         })
         .catch((error) => {
