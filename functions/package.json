@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^10.0.1",
     "firebase-functions": "^3.3.0",
-    "got": "^11.8.0",
+    "got": "^11.8.5",
     "highlight.js": "^11.2.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
