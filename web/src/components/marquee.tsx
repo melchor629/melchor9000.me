@@ -18,6 +18,14 @@ type MarqueeProps = PropsWithChildren<{
   trigger?: 'on-mouse-enter'
 }>
 
+const Child = forwardRef<HTMLSpanElement, PropsWithChildren<{ childMargin: number }>>(
+  ({ children, childMargin }, ref) => (
+    <span ref={ref} style={{ margin: `0 ${childMargin}px` }}>
+      {children}
+    </span>
+  ),
+)
+
 const Marquee = ({
   children,
   childMargin,
@@ -111,13 +119,6 @@ const Marquee = ({
     requestAnimationIfNeeded()
   }, [resetPosition, requestAnimationIfNeeded, itemIsLargerThanContainer])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const Child = useCallback(forwardRef<HTMLSpanElement>((_, ref) => (
-    <span ref={ref} style={{ margin: `0 ${childMargin}px` }}>
-      {children}
-    </span>
-  )), [children, childMargin])
-
   useLayoutEffect(() => {
     resetPosition()
 
@@ -157,8 +158,8 @@ const Marquee = ({
       onTouchStart={trigger === 'on-mouse-enter' ? startAnimation : undefined}
     >
       <div ref={innerRef} style={{ display: 'inline-block', willChange: 'transform' }}>
-        <Child ref={itemRef} />
-        {itemIsLargerThanContainer && <Child />}
+        <Child ref={itemRef} childMargin={childMargin!}>{children}</Child>
+        {itemIsLargerThanContainer && <Child childMargin={childMargin!}>{children}</Child>}
       </div>
     </div>
   )
