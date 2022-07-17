@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import * as functions from 'firebase-functions'
-import { photosets } from '../../utils/logic/flickr'
-import { toNumber } from '../../utils/helpers'
+import { photosets } from '../../utils/logic/flickr.js'
+import { toNumber } from '../../utils/helpers.js'
 
 const photosetsGetInfoController: RequestHandler = async (req, res) => {
   const { photosetId } = req.params

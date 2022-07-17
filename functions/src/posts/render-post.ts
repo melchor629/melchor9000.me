@@ -1,10 +1,11 @@
 import { RequestHandler } from 'express'
+import fs from 'fs/promises'
 import * as firebase from 'firebase-admin'
 import { promisify } from 'util'
-import { handlerCatch } from '../utils/decorators'
-import renderPost from '../utils/logic/render-post'
+import { handlerCatch } from '../utils/decorators/index.js'
+import renderPost from '../utils/logic/render-post.js'
 
-const { version } = require('../../package.json')
+const { version } = JSON.parse(await fs.readFile('./package.json', 'utf-8'))
 
 const renderPostController: RequestHandler = handlerCatch(async (req, res) => {
   const { postId } = req.params

@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { RequestHandler } from 'express'
 import * as functions from 'firebase-functions'
-import { photos } from '../../utils/logic/flickr'
-import { toNumber } from '../../utils/helpers'
+import { photos } from '../../utils/logic/flickr.js'
+import { toNumber } from '../../utils/helpers.js'
 
 const photosGetInfoController: RequestHandler = async (req, res) => {
   const { photoId } = req.params

@@ -1,9 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import { RequestHandler } from 'express'
 import * as functions from 'firebase-functions'
-import BadRequest from '../../utils/errors/bad-request'
-import { people } from '../../utils/logic/flickr'
-import { toNumber, toNumberFromQuery } from '../../utils/helpers'
+import BadRequest from '../../utils/errors/bad-request.js'
+import { people } from '../../utils/logic/flickr.js'
+import { toNumber, toNumberFromQuery } from '../../utils/helpers.js'
 
 const photosGetController: RequestHandler = async (req, res) => {
   const perPage = toNumberFromQuery(req.query, 'perPage') ?? 500

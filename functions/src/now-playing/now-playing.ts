@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import lastfm from '../utils/logic/lastfm'
+import lastfm from '../utils/logic/lastfm.js'
 
 const nowPlayingController: RequestHandler = async (req, res) => {
   const user = req.params.user || 'melchor629'

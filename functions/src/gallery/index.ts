@@ -3,12 +3,12 @@ import {
   photosetsGetListController,
   photosetsGetInfoController,
   photosetsGetPhotosController,
-} from './photosets'
-import { photosGetController, photosGetInfoController } from './photos'
-import { handlerCatch } from '../utils/decorators'
+} from './photosets/index.js'
+import { photosGetController, photosGetInfoController } from './photos/index.js'
+import { handlerCatch } from '../utils/decorators/index.js'
 import {
   cors, errorHandler, notFound, serverTiming,
-} from '../utils/middlewares'
+} from '../utils/middlewares/index.js'
 
 const app = express()
 

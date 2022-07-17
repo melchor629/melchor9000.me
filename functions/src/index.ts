@@ -1,8 +1,8 @@
-import * as firebase from 'firebase-admin'
-import * as functions from 'firebase-functions'
-import postsApp from './posts'
-import nowPlayingApp from './now-playing'
-import galleryApp from './gallery'
+import firebase from 'firebase-admin'
+import functions from 'firebase-functions'
+import postsApp from './posts/index.js'
+import nowPlayingApp from './now-playing/index.js'
+import galleryApp from './gallery/index.js'
 
 firebase.initializeApp()
 

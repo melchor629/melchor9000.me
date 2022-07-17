@@ -1,9 +1,9 @@
 import express from 'express'
-import renderContentController from './render-content'
-import renderPostController from './render-post'
+import renderContentController from './render-content.js'
+import renderPostController from './render-post.js'
 import {
   cors, errorHandler, notFound, serverTiming,
-} from '../utils/middlewares'
+} from '../utils/middlewares/index.js'
 
 const app = express()
 

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import etag from 'etag'
-import renderPost from '../utils/logic/render-post'
-import { handlerCatch } from '../utils/decorators'
+import renderPost from '../utils/logic/render-post.js'
+import { handlerCatch } from '../utils/decorators/index.js'
 
 const renderContentController: RequestHandler = handlerCatch(async (req, res) => {
   const { content, format } = req.body

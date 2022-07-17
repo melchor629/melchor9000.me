@@ -1,1 +1,1 @@
-export { default as handlerCatch } from './handler-catch'
+export { default as handlerCatch } from './handler-catch.js'

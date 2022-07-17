@@ -1,11 +1,11 @@
 import express from 'express'
 import ejs from 'ejs'
-import nowPlayingController from './now-playing'
-import nowPlayingSvgController from './now-playing-svg'
-import { handlerCatch } from '../utils/decorators'
+import nowPlayingController from './now-playing.js'
+import nowPlayingSvgController from './now-playing-svg.js'
+import { handlerCatch } from '../utils/decorators/index.js'
 import {
   cors, errorHandler, notFound, serverTiming,
-} from '../utils/middlewares'
+} from '../utils/middlewares/index.js'
 
 const app = express()
 

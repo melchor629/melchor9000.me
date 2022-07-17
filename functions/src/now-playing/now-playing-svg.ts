@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import { promisify } from 'util'
-import lastfm from '../utils/logic/lastfm'
+import lastfm from '../utils/logic/lastfm.js'
 
 const nowPlayingSvgController: RequestHandler = async (req, res) => {
   const user = req.params.user || 'melchor629'

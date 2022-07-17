@@ -1,5 +1,5 @@
 import { Request } from 'express'
-import BadRequest from './errors/bad-request'
+import BadRequest from './errors/bad-request.js'
 
 export const toNumber = (input: string | number, radix: number = 10) => {
   if (typeof input === 'string') {
