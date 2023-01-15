@@ -63,7 +63,7 @@ const AdminPage = ({ darkMode, ...props }: AdminPageProps) => (
       <nav className={`col-md-2 d-none d-md-block ${darkMode ? 'bg-dark' : 'bg-light'} sidebar`}>
         <div className="text-center mt-4 sidebar-heading">
           <img
-            src={`${process.env.PUBLIC_URL}/ico/favicon.png`}
+            src={new URL('../../ico/favicon.png', import.meta.url).toString()}
             style={{ maxWidth: 180 }}
             alt="Web icon"
           />

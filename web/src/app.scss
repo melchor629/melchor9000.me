@@ -3,8 +3,8 @@
 $enable-responsive-font-sizes: true;
 
 @import "material_design_colors";
-@import "~bootstrap/scss/bootstrap.scss";
-@import '~@fortawesome/fontawesome-free/css/all.css';
+@import "npm:bootstrap/scss/bootstrap.scss";
+@import 'npm:@fortawesome/fontawesome-free/css/all.css';
 
 /**
  * Body
@@ -33,7 +33,7 @@ a {
   transition: color .1s linear;
 }
 
-a:link, a:visited, a:focus, ~a.btn {
+a:link, a:visited, a:focus {
   color: $primary-color-normal;
 
   .darkmode & {

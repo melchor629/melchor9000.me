@@ -168,7 +168,7 @@ const LoginPage = () => {
       <form style={formStyle}>
         <img
           className="mb-4"
-          src={`${process.env.PUBLIC_URL}/ico/favicon.png`}
+          src={new URL('../ico/favicon.png', import.meta.url).toString()}
           style={{ width: 64 }}
           alt="favicon"
         />

@@ -26,6 +26,7 @@ import { Post } from '../../../redux/posts/state'
 import { AdminInput } from '../admin-input'
 import { validateUrlByFetching } from '../../../lib/validators'
 import { ID } from '../../../redux/database/state'
+import { getAssetUrl } from '../../../lib/url'
 
 const LittleSpinner = (props: React.HTMLProps<HTMLDivElement> & { ref?: undefined }) => {
   const [spring] = useSpring({
@@ -112,7 +113,7 @@ const PreviewUrl = ({ control }: { control: Control }) => {
   const [publishDateString, slang] = useWatch({ name: ['publishDate', 'url'], control })
   const publishDate = DateTime.fromISO(publishDateString).toUTC()
   const url = publishDate.isValid && slang
-    ? `${process.env.PUBLIC_URL}/posts/${publishDate.toFormat('yyyy/MM/dd')}/${slang}`
+    ? getAssetUrl(`/posts/${publishDate.toFormat('yyyy/MM/dd')}/${slang}`)
     : ''
 
   if (!url) {

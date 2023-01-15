@@ -20,8 +20,8 @@
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/ico/favicon.ico">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="shortcut icon" href="./ico/favicon.ico">
     <title>The abode of melchor9000</title>
 
     <style>
@@ -56,6 +56,8 @@
         padding: 0 0 32px;
       }
     </style>
+    <link rel="stylesheet" href="./app.scss" />
+    <link rel="stylesheet" href="./footer.scss" />
 
     <script src="https://platform.twitter.com/widgets.js" async></script>
   </head>
@@ -66,7 +68,7 @@
 
     <div id="root">
       <div class="wrap loading">
-        <img style="width: 24px; height: auto;" src="%PUBLIC_URL%/ico/favicon.png">&nbsp;&nbsp;Loading...
+        <img style="width: 24px; height: auto;" src="./ico/favicon.png">&nbsp;&nbsp;Loading...
       </div>
     </div>
 
@@ -75,5 +77,7 @@
         <span style="color: white">...</span>
       </div>
     </footer>
+
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

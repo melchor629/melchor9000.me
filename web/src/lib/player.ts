@@ -111,7 +111,9 @@ class Player {
   }
 
   destroy() {
-    this.context.close().catch()
+    if (this.context.state !== 'closed') {
+      this.context.close().catch()
+    }
   }
 
   private async asyncLoad(name: string) {

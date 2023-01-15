@@ -36,17 +36,19 @@
     "react-toastify": "^9.0.1",
     "redux": "^4.0.1",
     "speakingurl": "^14.0.1",
-    "three": "^0.137.0",
-    "web-vitals": "^2.1.0"
+    "three": "^0.137.0"
   },
   "scripts": {
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "test": "exit 1",
+    "start": "parcel -p 3000 --dist-dir ./build src/index.html",
+    "build": "rm -r ./build ; parcel build --dist-dir ./build src/index.html",
     "lint": "eslint --ext ts,tsx,js,jsx src"
   },
   "devDependencies": {
+    "@parcel/packager-raw-url": "^2.8.2",
+    "@parcel/transformer-sass": "^2.8.2",
+    "@parcel/transformer-webmanifest": "^2.8.2",
+    "@tinijs/parcel-reporter-copy-public": "^0.0.2",
     "@types/bootstrap": "^5.1.2",
     "@types/jquery": "^3.3.29",
     "@types/luxon": "^2.0.0",
@@ -55,9 +57,11 @@
     "@types/react-dom": "^18.0.3",
     "@types/speakingurl": "^13.0.2",
     "@types/three": "^0.135.0",
+    "parcel": "^2.8.2",
+    "process": "^0.11.10",
     "prop-types": "^15.7.2",
-    "react-scripts": "5.0.1",
-    "sass": "^1.38.2"
+    "sass": "^1.38.2",
+    "sharp": "^0.31.3"
   },
   "browserslist": {
     "production": [

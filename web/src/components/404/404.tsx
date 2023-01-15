@@ -30,7 +30,7 @@ const PageNotFound = () => {
           width="100%"
           alt="me_irl not founding the page :("
           style={{ position: 'absolute', top: height / 2 - (width * 0.8) / 4 }}
-          src={`${process.env.PUBLIC_URL}/img/404.png`}
+          src={new URL('./404.png?as=webp&quality=80', import.meta.url).toString()}
         />
       </div>
       <div className="layer" data-depth="0.8">

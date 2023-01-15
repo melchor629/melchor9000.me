@@ -7,6 +7,7 @@ import AppRoutes from './routes'
 import { useSelector } from './redux'
 
 import './app.scss'
+import { publicUrl } from './lib/url'
 
 const App = () => {
   const {
@@ -51,7 +52,7 @@ const App = () => {
         titleTemplate="%s - The abode of melchor9000"
         defaultTitle="The abode of melchor9000"
       >
-        <base href={process.env.PUBLIC_URL} />
+        <base href={publicUrl} />
         <meta
           name="Description"
           content="The abode of melchor9000 - Personal webpage for Melchor Alejo Garau Madrigal

@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express'
 import fs from 'fs/promises'
-import * as firebase from 'firebase-admin'
+import firebase from 'firebase-admin'
 import { promisify } from 'util'
 import { handlerCatch } from '../utils/decorators/index.js'
 import renderPost from '../utils/logic/render-post.js'

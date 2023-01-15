@@ -5,13 +5,11 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
-import 'bootstrap'
 
 import App from './App'
 import Footer from './Footer'
 import i18n from './i18n'
 import LoadingSpinner from './components/load-spinner'
-import reportWebVitals from './report-web-vitals'
 import firebaseApp from './lib/firebase'
 
 const appRoot = createRoot(document.getElementById('root')!, { identifierPrefix: 'app' })
@@ -46,8 +44,3 @@ const footerRoot = createRoot(document.getElementById('footer')!, { identifierPr
 })()
 
 footerRoot.render(<StrictMode><Footer /></StrictMode>)
-
-// https://bit.ly/CRA-vitals
-reportWebVitals((e) => {
-  console.log('web-vitals', e)
-})
