@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "scripts": {
     "build": "tsc -p .",
-    "start": "npm run build && firebase serve --only functions",
+    "start": "npm run build && firebase serve --only functions -p 8081",
     "watch": "tsc --pretty -w -p .",
     "logs": "firebase functions:log",
     "lint": "eslint --ext js,ts,tsx src",
@@ -11,7 +11,7 @@
     "config:get": "firebase functions:config:get > .runtimeconfig.json"
   },
   "engines": {
-    "node": "16"
+    "node": "18"
   },
   "type": "module",
   "main": "./lib/index.js",
