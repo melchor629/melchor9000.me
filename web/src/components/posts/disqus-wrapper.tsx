@@ -1,7 +1,6 @@
+import { DiscussionEmbed } from 'disqus-react'
 import React, { useCallback, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-
-const { DiscussionEmbed } = require('disqus-react')
 
 interface DisqusWrapperProps {
   shortName: string

@@ -14,7 +14,7 @@ i18n
     },
     ns: ['translations'],
     defaultNS: 'translations',
-    debug: process.env.NODE_ENV !== 'production',
+    debug: import.meta.env.DEV,
     interpolation: { escapeValue: false },
     react: { useSuspense: true },
   })

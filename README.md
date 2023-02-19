@@ -6,7 +6,7 @@
 
 The web is deployed in Firebase, the source code of it can be found inside the `web` folder. There are some Firebase Functions that helps the web work, those can be found inside `functions`.
 
-To develop in local you need node 16.x and `npm` v7 or higher, also have installed globally `firebase-tools`. This repo uses npm workspaces. Useful commands:
+To develop in local you need node 18.x and `npm` v8 or higher, also have installed globally `firebase-tools`. This repo uses npm workspaces. Useful commands:
 
 - In root:
     - `npm run audit`: checks if there are any packages with security issues

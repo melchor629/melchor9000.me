@@ -3,8 +3,8 @@
 $enable-responsive-font-sizes: true;
 
 @import "material_design_colors";
-@import "npm:bootstrap/scss/bootstrap.scss";
-@import 'npm:@fortawesome/fontawesome-free/css/all.css';
+@import "bootstrap/scss/bootstrap.scss";
+@import '@fortawesome/fontawesome-free/css/all.css';
 
 /**
  * Body

@@ -31,7 +31,7 @@ const AboutMe = ({ t }: WithTranslation) => (
 
     <Helmet>
       <title>{t('about-me.title')}</title>
-      <meta name="Description" content={t('about-me.description')} />
+      <meta name="Description" content={t('about-me.description')!} />
     </Helmet>
 
     <h1 className="display-4 text-center d-none d-sm-block">

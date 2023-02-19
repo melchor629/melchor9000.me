@@ -1,7 +1,5 @@
+import { version } from '../package.json'
 import './footer.scss'
-
-// eslint-disable-next-line global-require
-const { version } = require('../package.json')
 
 const links = [
   { url: 'https://github.com/melchor629/melchor9000.me', key: 'code', fas: 'code' },

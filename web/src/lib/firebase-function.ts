@@ -1,10 +1,10 @@
 const region = 'europe-west1'
 
 const firebaseFunction = (funcName: string, path: string = '') => {
-  if (process.env.NODE_ENV === 'production') {
-    return `https://${region}-${process.env.REACT_APP_FIREBASE_PROJECT_ID}.cloudfunctions.net/${funcName}${path}`
+  if (import.meta.env.PROD) {
+    return `https://${region}-${import.meta.env.VITE_FIREBASE_PROJECT_ID}.cloudfunctions.net/${funcName}${path}`
   }
-  return `http://${window.location.hostname}:8081/${process.env.REACT_APP_FIREBASE_PROJECT_ID}/${region}/${funcName}${path}`
+  return `http://${window.location.hostname}:8081/${import.meta.env.VITE_FIREBASE_PROJECT_ID}/${region}/${funcName}${path}`
 }
 
 firebaseFunction.gallery = (path: string = '') => firebaseFunction('gallery', path)

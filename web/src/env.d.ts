@@ -1,4 +1,4 @@
-/// <reference types="react-scripts" />
+/// <reference types="vite/client" />
 
 declare module 'debounce' {
     type CancelableFunction<T extends Function> = T & { clear: () => void, flush: () => void }
@@ -11,16 +11,18 @@ declare module 'debounce' {
     ): CancelableFunction<T>
 }
 
-declare module NodeJS {
-  interface ProcessEnv {
-    readonly REACT_APP_FIREBASE_API_KEY?: string
-    readonly REACT_APP_FIREBASE_AUTH_DOMAIN?: string
-    readonly REACT_APP_FIREBASE_DATABASE_URL?: string
-    readonly REACT_APP_FIREBASE_PROJECT_ID?: string
-    readonly REACT_APP_FIREBASE_STORAGE_BUCKET?: string
-    readonly REACT_APP_FIREBASE_MESSAGING_SENDER_ID?: string
-    readonly REACT_APP_FIREBASE_APP_ID?: string
-  }
+interface ImportMetaEnv {
+  readonly VITE_FIREBASE_API_KEY?: string
+  readonly VITE_FIREBASE_AUTH_DOMAIN?: string
+  readonly VITE_FIREBASE_DATABASE_URL?: string
+  readonly VITE_FIREBASE_PROJECT_ID?: string
+  readonly VITE_FIREBASE_STORAGE_BUCKET?: string
+  readonly VITE_FIREBASE_MESSAGING_SENDER_ID?: string
+  readonly VITE_FIREBASE_APP_ID?: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
 }
 
 interface Document {

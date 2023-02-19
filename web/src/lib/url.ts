@@ -4,7 +4,7 @@ const join = (a: string, b: string) => {
   return `${aStripped}/${bStripped}`
 }
 
-export const publicUrl = (process.env.PUBLIC_URL || '/')
+export const publicUrl = (import.meta.env.BASE_URL || '/')
 export const assetsUrl = publicUrl
 
 export const absoluteUrl = (url: string) => (url.startsWith('http') ? url : join(publicUrl, url))

@@ -6,6 +6,9 @@ export const DefaultContainer = ({ children }: React.HTMLProps<HTMLDivElement>) 
   </div>
 )
 
-export function withDefaultContainer<P>(Element: React.ComponentType<P>) {
-  return (props: any) => <DefaultContainer>{React.createElement(Element, props)}</DefaultContainer>
+export function withDefaultContainer<P extends {} = {}>(Element: React.FC<P>) {
+  const WithDefaultContainer = (props: P) => (
+    <DefaultContainer>{React.createElement(Element, props)}</DefaultContainer>
+  )
+  return WithDefaultContainer
 }

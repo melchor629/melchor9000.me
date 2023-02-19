@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "build/dist",
-    "module": "esnext",
-    "target": "ES2017",
+    "module": "ESNext",
+    "target": "ESNext",
     "lib": [
       "esnext",
       "dom",
       "dom.iterable"
     ],
-    "sourceMap": true,
     "allowJs": true,
     "jsx": "react-jsx",
     "moduleResolution": "node",
-    "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -29,16 +26,8 @@
     "noEmit": true,
     "noFallthroughCasesInSwitch": true
   },
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "src/setupTests.ts"
-  ],
   "include": [
     "src"
-  ]
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

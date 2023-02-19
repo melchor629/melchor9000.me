@@ -272,10 +272,10 @@ export default class Home extends Component<IndexProps, StateProps> {
     const { darkMode, t, visualizationMode } = this.props
     if (prevDarkMode !== darkMode) {
       if (darkMode) {
-        const mensajes = t('.darkMode', { returnObjects: true })
+        const mensajes = t('.darkMode', { returnObjects: true }) as string []
         toast.info(mensajes[Math.trunc(Math.random() * mensajes.length)])
       } else {
-        const mensajes = t('.lightMode', { returnObjects: true })
+        const mensajes = t('.lightMode', { returnObjects: true }) as string []
         toast.info(mensajes[Math.trunc(Math.random() * mensajes.length)])
       }
     }

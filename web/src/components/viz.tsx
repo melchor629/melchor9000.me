@@ -312,7 +312,7 @@ const Viz = () => {
         from={{ opacity: 0, zIndex: -1 }}
         to={{ opacity: dragging ? 1 : 0, zIndex: dragging ? 1 : -1 }}
       >
-        {(style) => (
+        {(style: any) => (
           <animated.div
             style={{
               position: 'fixed',

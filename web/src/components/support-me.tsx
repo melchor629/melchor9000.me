@@ -9,7 +9,7 @@ const SupportMe = () => {
 
       <Helmet>
         <title>{t('support-me.title')}</title>
-        <meta name="Description" content={t('support-me.description')} />
+        <meta name="Description" content={t('support-me.description')!} />
       </Helmet>
 
       <div
