@@ -5,7 +5,7 @@
   "author": "melchor629 <melchor9000@gmail.com>",
   "license": "CC0",
   "devDependencies": {
-    "@types/node": "^16.0.0",
+    "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "audit-ci": "^6.1.0",
