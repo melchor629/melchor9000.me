@@ -58,7 +58,7 @@
     "process": "^0.11.10",
     "prop-types": "^15.7.2",
     "sass": "^1.38.2",
-    "sharp": "^0.31.3",
+    "sharp": "^0.32.6",
     "vite": "^4.1.5",
     "vite-plugin-checker": "^0.5.5"
   },
