@@ -18,7 +18,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.1.1",
     "jquery": "^3.4.1",
-    "katex": "^0.16.0",
+    "katex": "^0.16.10",
     "luxon": "^3.2.1",
     "masonry-layout": "^4.2.2",
     "nanoid": "^4.0.0",
