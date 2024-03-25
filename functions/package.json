@@ -19,7 +19,7 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.5",
     "etag": "^1.8.1",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
     "firebase-admin": "^11.0.0",
     "firebase-functions": "^4.1.1",
     "got": "^12.1.0",
