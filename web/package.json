@@ -21,7 +21,7 @@
     "katex": "^0.16.10",
     "luxon": "^3.2.1",
     "masonry-layout": "^4.2.2",
-    "nanoid": "^4.0.0",
+    "nanoid": "^5.0.9",
     "react": "^18.1.0",
     "react-cropper": "^2.1.4",
     "react-dom": "^18.1.0",
