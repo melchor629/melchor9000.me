@@ -2,19 +2,12 @@
 
 [Go to the webpage...](https://melchor9000.me)
 
-[![CD](https://github.com/melchor629/melchor9000.me/actions/workflows/cd.yml/badge.svg?branch=master&event=push)](https://github.com/melchor629/melchor9000.me/actions/workflows/cd.yml) [![CI](https://github.com/melchor629/melchor9000.me/actions/workflows/ci.yml/badge.svg?branch=dev&event=push)](https://github.com/melchor629/melchor9000.me/actions/workflows/ci.yml)
+The web is deployed at vercel, the source code of it can be found inside the `src` folder.
 
-The web is deployed in Firebase, the source code of it can be found inside the `web` folder. There are some Firebase Functions that helps the web work, those can be found inside `functions`.
+To develop in local you need node 22.x or higher. Useful commands:
 
-To develop in local you need node 18.x and `npm` v8 or higher, also have installed globally `firebase-tools`. This repo uses npm workspaces. Useful commands:
+- `npm run audit`: checks if there are any packages with security issues
+- `npm build`: builds web
+- `npm lint`: lints web
+- `npm run dev`: starts dev server
 
-- In root:
-    - `npm run audit`: checks if there are any packages with security issues
-    - `npm build`: builds functions and web
-    - `npm lint`: lints functions and web
-    - `npm run emulators`: runs firebase emulators (requires setup for storage)
-- For `functions`:
-    - `npm start -w functions`: starts a local Firebase Function emulator
-    - `npm run watch -w functions`: transpiles files when a change is found
-- For `web`:
-    - `npm start -w web`: starts a local development server

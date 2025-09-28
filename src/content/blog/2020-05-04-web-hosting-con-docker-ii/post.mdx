@@ -1,0 +1,572 @@
+import StyledImage from '@/components/styled-image'
+import StyledVideo from '@/components/styled-video'
+import architectureImage from './architecture.png'
+
+export { default as cover } from './cover.png'
+
+export const title = 'Web hosting con Docker II'
+export const date = '2020-05-05T15:00:00Z'
+export const categories = ['devops', 'docker']
+
+> Espera. ¿Otra vez?
+
+Hace tiempo ya del último post, y también del [post de Hosting con Docker][post]. A si que voy os voy a enseñar como estamos montando actualmente un web hosting simple usando de nuevo [Docker][docker], cualquier tipo de contenedor y [traefik][traefik].
+
+> Si no sabéis que es Docker, os recomiendo leer la primera sección del [post anterior sobre el tema][post]
+
+# Traefik
+
+## ¿Qué es [traefik][traefik]?
+
+Es un _reverse proxy_ con bastantes funcionalidades, como el de auto-configuración y obtención de certificados por [Let's Encrypt][lets-encrypt] automático. Vayamos por partes.
+
+## ¿Qué es un _reverse proxy_?
+
+Es un servidor que agrega un conjunto de servicios web (_oversimplification_) en un solo punto de entrada, permitiendo tener más de un servidor o servicio web en la misma máquina (o otras máquinas) y el usuario o cliente final solo tenga que acceder por ese único punto de entrada. La tarea del _reverse proxy_ es reenviar las peticiones que llegan al servidor web correspondiente dependiendo de una configuración pre-establecida (reglas). Con esto, conseguimos tener, por ejemplo, una web por dominio, pero todos hosteados en el mismo servidor o detrás de un cluster de servidores (pero eso no importa porque parecerá que están todos en el mismo sitio). Se puede llevar esto al siguiente nivel y tener más de un _reverse proxy_ detras de un balanceador de carga para repartir mejor la carga entre diversas máquinas (aunque esto no lo vamos a tratar). Con este componente, las posibilidades crecen en gran medida.
+
+Por tanto, [traefik][traefik] es uno de estos. La versión gratuita del programa tiene algunas limitaciones, pero no nos afecta para lo que voy a presentar. Hay otros como nginx o Caddy. Pero aquí nos centraremos en traefik.
+
+<StyledVideo
+  src={new URL('./what-is-reverse-proxy.mp4', import.meta.url).toString()}
+  controls
+  muted
+  playsInline
+  variant="fancy"
+/>
+
+## ¿Cómo se auto-configura [traefik][traefik]?
+
+Usa un método conocido como _configuration discovery_ en la que parte de la configuración está repartida en varios lugares y, ante un cambio de esa configuración (esté donde esté), el servidor se reconfigurará con esa nueva configuración. En este caso usaremos descubrimiento por _labels_ de docker y archivos de configuración. Lo interesante de los _labels_ de docker es que en el mismo `docker-compose.yaml` (o stack de Docker Swarm) se puede poner la configuración de traefik, y al levantar o parar los contenedores, se reconfigurará. En el caso de los archivos de configuración, sería similar: creas, modificas o borras un archivo entonces se reconfigura.
+
+## ¿Cómo funciona [traefik][traefik]?
+
+Esto es posible que sea dificil de entender, pero es importante para saber como configurar todo.
+
+Para empezar, traefik escucha en unos puertos, que él llama _entrypoints_. Esos puertos van a ser el `80` y el `443`, pero podrian haber mas sin problema. Cada _entrypoint_ tiene asociado un nombre, y una minima configuración. Estos _entrypoints_ son los que reciben las peticiones de internet.
+
+Una vez llega una petición, traefik tiene que llevar la petición a algún lugar. Aquí es cuando entra en juego los _routers_. Éstos son los encargados de llevar la petición al _service_ (servicio o servidor web, como queráis llamarlo) correspondiente, siempre que la petición encaje con las reglas de algún _router_. Por lo tanto, cada router tendrá una regla que permitirá _matchear_ una petición a él. Traefik tiene bastantes opciones para montar la regla del _router_, pero nosotros nos centraremos eh reglas que miran el `Host` (el dominio por el cual accedes a la web) y el `PathPrefix` (la parte del principio de la ruta de la URL). Entonces si un _router_ tiene una regla **Host(\`example.com\`)**, si entramos por la URL `https://example.com/home/` esa petición irá por ese router, pero si es `https://another.example.com/home/` no. Ya veremos más ejemplos después.
+
+¿Qué pasa si una petición no encaja con ningún _router_? Traefik te muestra un error 404 sencillo. También puedes montar un _router_ por defecto que se trague todas las peticiones y que muestre algo distinto en cambio (se explicará al final del post).
+
+Perfecto, tenemos ya una petición que ha encontrado su _router_ y se va a llevar al _service_ que tiene configurado. Los servicios (_services_) son los servidores/servicios web de detrás (no publicos generalmente) que van a recibir la petición y darán una respuesta. Digo "servidores" porque traefik trae incorporado un "load balancer" que permite tener más de un servidor web atendiendo peticiones. En la mayoría de ejemplos usaré solo 1 contenedor, pero se podría poner más de uno (siempre que la aplicación web lo soporte, y haya recursos en el servidor, y uses Swarm).
+
+El servicio da la respuesta a traefik y él la reenvía al usuario/cliente que ha accedido al servidor.
+
+Entonces, lo que tenemos que configurar son los _entrypoints_, los _routers_ y los _services_. Más o menos. Con docker, los servicios se auto-definen sin tener que configurar nada.
+
+<StyledVideo
+  src={new URL('./how-traefik-works.mp4', import.meta.url).toString()}
+  controls
+  muted
+  playsInline
+  variant="fancy"
+/>
+
+## ¿Cómo se configura [traefik][traefik]?
+
+Aquí tenemos dos tipos de configuraciones (clasificados por los creadores de traefik) que son la _configuración estática_ y la _configuración dinámica_.
+
+Empecemos por la _configuración estática_. Esta es la configuración que requiere reiniciar traefik para aplicar los cambios. En él se configuran algunos aspectos como los _entrypoints_, los _configuration providers_ o la configuración de _Let's Encrypt_. Normalmente lo encontraremos en `/etc/traefik/traefik.toml` (con sintaxis TOML) o `/etc/traefik/traefik.yaml` (con sintaxis YAML). Una vez configurado los _configuration providers_, el resto de configuración de traefik se queda en manos de éstos.
+
+La _configuración dinámica_ permite configurar _rotuers_, _services_ y _middlewares_ (no hemos hablado de ellos aún) usando los proveedores de configuración como archivos de configuración (en una carpeta determinada), docker, kubernetes, redis, consul... Como se ha comentado ya, usaremos solo la de Docker/Docker Swarm y ficheros. Esta configuración se puede alterar en cualquier momento y traefik se reconfigurará con los cambios aplicados.
+
+<StyledVideo
+  src={new URL('./how-traefik-is-configured.mp4', import.meta.url).toString()}
+  controls
+  muted
+  playsInline
+  variant="fancy"
+/>
+
+# Arquitectura del despliegue
+
+Ya sabemos como funciona traefik y alguno de los términos que usa para poder configurarlo. Ahora vamos a ver como se va a montar el sistema para su funcionamiento. Para esta arquitectura, no importará si se usa Docker Swarm o solo Docker, aunque a veces alguna configuración será ligeramente distinta si se despliega el servicio en Swarm o no.
+
+Para empezar, usaremos una red compartida entre traefik y todos los contenedores que serán accesibles desde traefik. Recomiendo crear la red manualmente y luego conectar todos los contenedores/servicios a esta red.
+
+Luego, se desplegará el servicio de traefik. Si se va a usar Swarm, recomiendo desplegarlo en Swarm. En caso contrario, como contenedor clásico es suficiente.
+
+A continuación, desplegaremos una base de datos MariaDB (similar a MySQL) con su propia red que también usaran los servidores web para alojar datos. No se requiere hacer esto si puede desplegar la base de datos en otro servidor.
+
+El resto de servidores web se irán conectando a esas redes de traefik y base de datos.
+
+<StyledImage
+  src={architectureImage}
+  alt="Architecture"
+  variant="fancy"
+/>
+
+# Manos a la obra: traefik
+
+Primero: la red. Escoge uno de los comandos dependiendo de cómo vas a desplegar los contenedores/servicios:
+
+```sh
+# solo Swarm
+docker network create -d overlay traefik_network
+# Swarm con contenedores clásicos
+docker network create -d overlay --attachable traefik_network
+# solo contenedores clásicos
+docker network create --attachable traefik_network
+```
+
+Después toca preparar la configuración de traefik para empezar con él. Se necesita una carpeta donde dejar esa configuración fuera del contenedor. Esa la llamaré `${TRAEFIK_CONFIG}` en los archivos, tendrás que cambiar ese texto por la ruta correcta fuera del contenedor.
+
+Aquí va el primer archivo `${TRAEFIK_CONFIG}/traefik.yaml`:
+
+```yaml
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: true
+
+entryPoints:
+  http:
+    address: ':80'
+    # (opcional) redirige SIEMPRE de HTTP a HTTPS - mas adelante mostrare una forma alternativa de hacerlo
+    http:
+      redirections:
+        entryPoint:
+          to: https
+          scheme: https
+  https:
+    address: ':443'
+    # esto configura por defecto el uso de HTTPS en este entrypoint (si no quieres eso, borra esto)
+    http:
+      tls:
+        # hace referencia a una configuración de TLS que veremos ahora
+        options: default
+        # y esto a Let's Encrypt
+        certResolver: le
+
+# activa un dashboard donde poder monitorizar algunas cosas de traefik
+api:
+  dashboard: true
+
+# log level: por defecto INFO, pero mientras estás montando cosas te recomiendo ponerlo en DEBUG
+log:
+  level: INFO
+
+# el access log (una entrada del log por cada petición que llega) - lo envio a ese "fichero" para poder
+# verlo en los logs del contenedor
+accessLog:
+  filePath: /dev/stderr
+
+# configuration providers
+providers:
+  # configuramos para usar docker
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    # este valor es un seguro: si se crea un contenedor, traefik no intentará configurarse para enrutar
+    exposedByDefault: false
+    # si un servicio tiene mas de una red, traefik escogerá siempre la que tenga ese nombre
+    network: traefik_network
+    # si no vas a usar swarm, no pongas esta linea !!
+    swarmMode: true
+  # configuramos para usaer ficheros (también)
+  file:
+    # ruta dentro del contenedor donde encontrarlos
+    directory: /etc/traefik/config
+    watch: true
+
+# configuración de Let's Encrypt
+certificatesResolvers:
+  le:
+    acme:
+      # pon aquí tu correo (o uno que quieras usar)
+      email: email@example.com
+      # los certificados se guardarán aquí
+      storage: '/etc/traefik/acme/acme.json'
+      httpChallenge:
+        entryPoint: http
+```
+
+Vale, perfecto, ya tenemos la configuración de traefik inicial. Pero ahora el problema está que con esta configuración no podemos acceder al dashboard (mencionado arriba), a si que vamos a empezar por configurarlo en un archivo `${TRAEFIK_CONFIG}/config/dashboard.yaml`:
+
+```yaml
+http:
+  routers:
+    dashboard:
+      # dentro de Host, pon el dominio que tengas para acceder - un ejemplo mio es majorcadevs.com
+      rule: Host(`example.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      # este servicio es interno de traefik (nótese el @internal)
+      service: api@internal
+      middlewares:
+        # ahora explicaré esto, w8
+        - basic-auth
+        - https-headers
+      # solo queremos que funcione por HTTPS
+      entryPoints:
+        - 'https'
+```
+
+Con eso, tendriamos para poder acceder al panel, a falta de los _middlewares_... Es el momento de explicar para que sirven y que valores tienen estos. Los _middlewares_ modifican las peticiones o las respuestas. El _middleware_ de `basic-auth` obligará a poner un usuario y contraseña para entrar a cualquier cosa de la API (modifica la respuesta). En cambio el de `https-headers` pone unas cabeceras HTTP para darle mayor seguridad a la conexión HTTPS (mira [Security Headers](https://securityheaders.com/) para mas info). A si que vamos a crear el archivo `${TRAEFIK_CONFIG}/config/middlewares.yaml`:
+
+```yaml
+http:
+  middlewares:
+    basic-auth:
+      basicAuth:
+        # este archivo se rellena con un comando que ahora explicaré
+        usersFile: /etc/traefik/admin.users
+        realm: pon-aquí-algun-valor-identificativo-tuyo
+    # este no lo pongas a menos que vayas a usar la forma alternativa de redirección HTTP -> HTTPS
+    https-redirect:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    https-headers:
+      headers:
+        # https://securityheaders.com/
+        sslRedirect: true
+        stsSeconds: 15552000
+        stsPreload: true
+        stsIncludeSubdomains: false
+        frameDeny: true
+        browserXssFilter: true
+        referrerPolicy: strict-origin
+        featurePolicy: "speaker 'self', fullscreen 'self'"
+        contentTypeNosniff: true
+```
+
+> Para rellenar el archivo de usuarios ese, usa el comando `htpasswd -nB <usuario>`. Cada ejecución te dará una linea que tendrás que añadir al archivo, que coincidirá con un usuario con su contraseña que podrá entrar. Tiene que guardar el archivo en `${TRAEFIK_CONFIG}/admin.users`, pero eres libre de cambiarlo a otra ruta :)
+
+Por último, pero no menos importante, `${TRAEFIK_CONFIG}/config/tls.yaml` (en el archivo de `traefik.yaml` he hecho referencia a este archivo sin que lo sepáis):
+
+```yaml
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+```
+
+Perfecto, ya tenemos una base, es hora de probar a arrancar el servicio. Si se va a usar Swarm partid de este archivo:
+
+```yaml
+version: '3.6'
+
+services:
+  traefik:
+    # mejor cambiar la version manualmente
+    image: traefik:v2.2
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "${TRAEFIK_CONFIG}:/etc/traefik/"
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    networks:
+      - "traefik_network"
+    deploy:
+      # no pongáis más de una replica, dará problemas con Let's Encrypt
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - "node.role == manager"
+
+networks:
+  traefik_network:
+    external: true
+```
+
+Para un despliegue con `docker-compose` y contenedores clásicos:
+
+```yaml
+version: '3.6'
+
+services:
+  traefik:
+    image: traefik:2.2
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "${TRAEFIK_CONFIG}:/etc/traefik/"
+    networks:
+      - traefik_network
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: on-failure
+
+networks:
+  traefik_network:
+    external: true
+```
+
+> Antes de arrancar nada, asegurate de tener los puertos abiertos correctamente y el dominio apuntando a tu servidor o router de casa.
+
+Una vez levantado, se pondrá la maquinária en marcha, se creará un certificado para el dominio y podrás acceder al dashboard en [https://example.com/dashboard/](https://example.com/dashboard). Si todo va bien claro. Si hay algún problema, revisa los logs.
+
+Ya tenemos desplegado traefik y estará listo para atender a las peticiones de las webs. Ahora toca desplegar las webs.
+
+# Antes de la primera web
+
+Para la web, usaremos de ejemplos los Wordpress del [anterior post][post]. Para ello necesitaremos desplegar un MySQL o MariaDB en algún lugar. Si desplegáis en la nube, sería interesante montarlo en un servidor separado para tener mayor rendimiento. En este post comentaré como desplegarlo en la misma máquina usando docker. También desplegaremos un [phpmyadmin][phpmyadmin] para poder administrar las base de datos sin mucho problema.
+
+Vamos a por la base de datos. En este post, desplegaremos un [MariaDB][docker-mariadb], pero podéis desplegar [MySQL][docker-mysql] sin problema. La base de datos estará en su propio archivo/stack y con su propia red. A si que primero crearemos una red que llamaremos `db_network` (usando uno de los comandos que he mencionado anteriormente) y desplegaremos la base de datos con este archivo para Swarm:
+
+```yaml
+version: '3.7'
+
+services:
+  db:
+    image: mariadb:10.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} # genera una contraseña segura para el usuario root
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - db_network
+    deploy:
+      replicas: 1
+      resources:
+        # limites para que no se vaya de madre el contenedor, podéis quitarlos o cambiarlos
+        limits:
+          cpus: '2'
+          memory: '2GB'
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 10s
+
+networks:
+  db_network:
+    external: true
+
+volumes:
+  mariadb_data:
+```
+
+o para `docker-compose`:
+
+```yaml
+version: '3.7'
+
+services:
+  mariadb:
+    image: mariadb:10.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD} # genera una contraseña segura para el usuario root
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - db_network
+    restart: on-failure
+
+networks:
+  db_network:
+    external: true
+
+volumes:
+  mariadb_data:
+```
+
+Levantad el servicio y aseguraos de que arranca sin problema (no debería haber ninguno). Y con esto ya tendríamos la base de datos en funcionamiento. Los datos de la base de datos se guardan en un lugar gestionado por docker, pero podéis cambiarlo a la ruta que quieran cambiando el valor de `volumes` por algo como: `/path/where/to/place/the/mysql/data:/var/lib/mysql`.
+
+Ahora es el momento de levantar `phpmyadmin`, para poder gestionar la base de datos remotamente y desde el navegador. Además de que podéis ofrecer este mismo servicio a los clientes para que ellos puedan mirar la base de datos suya. Antes de nada, debéis pensar cómo queréis acceder a la aplicación web (desde el punto de vista de URL). Recomiendo usar algo tipo [https://phpmyadmin.example.com](https://phpmyadmin.example.com) que queda muy profesional, y teniendo un dominio es tan facil como crear un registro `CNAME` para `phpmyadmin` que apunte al servidor/router de casa. El ejemplo usará ese dominio. Vamos a ello, para Swarm seria:
+
+```yaml
+version: '3.7'
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5
+    environment:
+      # URL con el dominio que se usará para acceder al PHPMyAdmin
+      PMA_ABSOLUTE_URI: 'https://phpmyadmin.example.com/'
+      # este host apunta al nombre del servicio que hayas puesto en el de MariaDB
+      # si usais un servidor separado, entonces poned el hostname del servidor
+      PMA_HOST: mariadb
+      UPLOAD_LIMIT: 16384kb
+    networks:
+      - traefik_network
+      - db_network
+    deploy:
+      # no he probado más de una réplica, pero podéis probar
+      replicas: 1
+      # Limites, para que no se vaya de madre el contenedor
+      resources:
+        limits:
+          # esto indica 2 nucleos
+          cpus: '2'
+          memory: '256MB'
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.phpmyadmin.entrypoints=https"
+        - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.example.com`)"
+        - "traefik.http.routers.phpmyadmin.middlewares=https-headers@file"
+        # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
+        - "traefik.http.routers.phpmyadmin.tls=true"
+        - "traefik.http.routers.phpmyadmin.tls.options=default"
+        - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+
+networks:
+  db_network:
+    external: true
+  traefik_network:
+    external: true
+```
+
+O la versión para `docker-compose.yaml`:
+
+```yaml
+version: '3.7'
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5
+    environment:
+      # URL con el dominio que se usará para acceder al PHPMyAdmin
+      PMA_ABSOLUTE_URI: 'https://phpmyadmin.example.com/'
+      # este host apunta al nombre del servicio que hayas puesto en el de MariaDB
+      # si usais un servidor separado, entonces poned el hostname del servidor
+      PMA_HOST: mariadb
+      UPLOAD_LIMIT: 16384kb
+    networks:
+      - traefik_network
+      - db_network
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.phpmyadmin.entrypoints=https"
+    - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.example.com`)"
+    - "traefik.http.routers.phpmyadmin.middlewares=https-headers@file"
+    # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
+    - "traefik.http.routers.phpmyadmin.tls=true"
+    - "traefik.http.routers.phpmyadmin.tls.options=default"
+
+networks:
+  db_network:
+    external: true
+  traefik_network:
+    external: true
+```
+
+Levantad el servicio, esperad a que aparezca en el dashboard de traefik, y dadle un rato a que se cree el certificado. Si todo ha ido bien, podréis acceder a `phpmyadmin` y hacer cualquier cosa con la base de datos. Al entrar, pedirá un usuario y contraseña, entonces ponéis `root` y la contraseña que hayáis puesto en MariaDB. Recomiendo configurar el almacenamiento de la configuración de PHPMyAdmin (debería salir alguna alerta por ahi al entrar).
+
+# La primera web
+
+Es hora de despelgar la web. Necesitaremos un paso previo que es crear un usuario y una base de datos en MySQL/MariaDB, y otro para almacenar los archivos de la web. Luego se podrá desplegar el Wordpress.
+
+Para crear el usuario y base de datos, accedemos al PHPMyAdmin como `root`. Una vez dentro vamos a "Cuentas de Usuario" > "Añade una cuenta de usuario" (está debajo de la tabla) y rellenamos con lo siguiente:
+
+1. **Nombre de usuario**: cualquier cosa, pero que tenga sentido con la web que vais a despelgar. Esto también será el nombre de la base de datos que se va a crear.
+2. **Nombre del servidor**: Dejadlo en `%`.
+3. **Contraseña**: Generad una con la aplicación web, con algún programa externo o manualmente. Intentad que sea medianamente segura.
+4. Busca la opción de "Crea una base de datos con el mismo nombre y otorga todos los permisos", que estará en la siguiente sección de la página, y activala.
+5. Baja al final y dale al botón.
+
+Ya tenemos creado un usuario y base de datos para la web :)
+
+Ya tenemos donde se va a guardar los datos en base de datos, ahora hace falta donde guardar los archivos. Se pueden usar `volumes` para que lo gestione Docker a su antojo, pero recomiendo crear una carpeta donde dejar los ficheros manualmente, para que tengan mayor control sobre ellos. Como sugerencia, guardaría los archivos en `/srv/web.example.com` (el dominio seria el nombre de la carpeta) para identificar las webs fácilmente.
+
+Y ahora si, ha llegado el momento que todos estábamos esperando (swarm primero, luego `docker-compose`):
+
+```yaml
+version: '3.7'
+
+services:
+  myweb:
+    image: wordpress:5-php7.4
+    volumes:
+      - /srv/web.example.com:/var/www/html:rw
+    networks:
+      - traefik_network
+      - db_network
+    deploy:
+      # no he probado más de una réplica, pero podéis probar
+      replicas: 1
+      # Limites, para que no se vaya de madre el contenedor
+      resources:
+        limits:
+          # esto indica 2 nucleos
+          cpus: '2'
+          memory: '512MB'
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.myweb.entrypoints=https"
+        - "traefik.http.routers.myweb.rule=Host(`web.example.com`)"
+        - "traefik.http.routers.myweb.middlewares=https-headers@file"
+        # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
+        - "traefik.http.routers.myweb.tls=true"
+        - "traefik.http.routers.myweb.tls.options=default"
+        - "traefik.http.services.myweb.loadbalancer.server.port=80"
+
+networks:
+  db_network:
+    external: true
+  traefik_network:
+    external: true
+```
+
+```yaml
+version: '3.7'
+
+services:
+  myweb:
+    image: wordpress:5-php7.4
+    volumes:
+      - /srv/web.example.com:/var/www/html:rw
+    networks:
+      - traefik_network
+      - db_network
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.myweb.entrypoints=https"
+    - "traefik.http.routers.myweb.rule=Host(`web.example.com`)"
+    - "traefik.http.routers.myweb.middlewares=https-headers@file"
+    # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
+    - "traefik.http.routers.myweb.tls=true"
+    - "traefik.http.routers.myweb.tls.options=default"
+
+networks:
+  db_network:
+    external: true
+  traefik_network:
+    external: true
+```
+
+Levantamos servicio, esperamos a que arranque, que aparezca en el dashboard y se genere el certificado. Al entrar, aparecerá el asistente de configuración de Wordpress. Rellenad con los datos de MariaDB y listo.
+
+> Si el diseño del asistente parece una web de los 90, entonces un script de Wordpress no se ha ejecutado. Editad el archivo `wp-config.php` con [este código de la wiki de Wordpress][wp-ssl]. Si el fichero no está, acabad de configurar MariaDB.
+
+# A partir de aquí...
+
+Y con esto se despliega una web en esta arquitectura. Con [ansible][ansible] se podría automatizar la creación una nueva web, usando una parte común (que es la de MySQL/MariaDB) y luego el qué desplegar (Wordpress, PrestaShop, un proyecto en Node.JS, otro servicio preparado para usarse en docker). Tampoco he mencionado el acceso via FTPS o SFTP para ver los archivos. No debería ser muy complicado montar algún sistema así, solo haría falta poder crear y borrar usuarios dentro del servidor FTPS/SFTP.
+
+Recomiendo a partir de aquí mirar como funcionan [las reglas de traefik][traefik-rules] para hacer reglas mas complejas. Y a la documentación en general para aprender más sobre [traefik][traefik].
+
+> **Aclaración**: todos los dominios de ejemplo que he puesto son eso, ejemplos. No hay nada que impida crear un contenedor Wordpress apuntando a un dominio completamente distinto al dominio que uses para algunas cosas. Por ejemplo, en mi caso `melchor9000.me` sería el dominio de mi web, `phpmyadmin.melchor9000.me` tener el PHPMyAdmin, pero podría hostear una web con un dominio tipo `raul.es`.
+
+Ya hemos visto como usar Docker o Docker Swarm para montarse un hosting simple. En el caso de Swarm, se pueden usar más de un servidor para ello (pero complica el modo en el que se acceden a los ficheros de las webs y lo suyo sería montar un servidor NFS que tenga esos ficheros compartidos entre todos los nodos del Swarm). La siguiente fase sería llevarlo a Kubernetes.
+
+# Recursos
+
+- Iconos:
+  - https://icons8.com/icon/22813/docker
+  - https://github.com/containous/traefik/blob/master/docs/content/assets/img/traefik.logo.png - altered logo without text
+  - https://mariadb.org/about/#logos-and-badges - altered logo without text
+  - https://www.php.net/download-logos.php
+  - https://httpd.apache.org - altered logo removing the text and leaving only the feather
+  - https://www.phpmyadmin.net
+- Videos:
+  - Realizados a mano usando Keynote (suit ofimática de Apple)
+- Imagenes:
+  - Portada realizada con Gimp
+  - Imágen de arquitectura realizada con Keynote
+
+  [post]: /blog/2018-02-04-web-hosting-con-docker
+  [docker]: https://www.docker.com
+  [traefik]: https://containo.us/traefik/
+  [lets-encrypt]: https://letsencrypt.org
+  [phpmyadmin]: https://www.phpmyadmin.net
+  [docker-mariadb]: https://hub.docker.com/_/mariadb
+  [docker-mysql]: https://hub.docker.com/_/mysql
+  [wp-ssl]: https://wordpress.org/support/article/administration-over-ssl/#using-a-reverse-proxy
+  [ansible]: https://ansible.com
+  [traefik-rules]: https://docs.traefik.io/routing/routers/#rule

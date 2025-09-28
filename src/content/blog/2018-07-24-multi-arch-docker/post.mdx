@@ -1,0 +1,152 @@
+import StyledImage from '@/components/styled-image'
+import image1 from './docker-desktop-with-multi-arch-support.png'
+import image2 from './no-multi-arch-support-on-arch-linux.png'
+import image3 from './multi-arch-support-on-arch-linux.jpg'
+import image4 from './hyperkit-vm-contents.png'
+import image5 from './binfmt-on-docker-desktop.png'
+import image6 from './working.png'
+
+export { default as cover } from './cover.png'
+
+export const title = 'Multi-arch Docker'
+export const date = '2018-07-23T11:00:00Z'
+export const categories = ['devops', 'docker']
+
+ > Image from [https://github.com/multiarch/crossbuild][1]
+
+Yesterday (July 22) I was trying to make a `Dockerfile` for arm for a Go project, since this one cannot be compiled for ARM (depends on libpcap from the system). Before trying to do it in my Raspberry Pi - because it's kind slow do this things on it - I wanted to look how some images are made for arm. Because of this, I went to the `golang` package for armv7 and I found this Jenkins: [https://doi-janky.infosiftr.net/job/multiarch/job/arm32v7/job/golang/][2]. If you click on the link, you will see a Jenkins with x86_64 nodes with some virtual machines (more or less).
+
+## binfmt_misc
+
+I though "Well if these people can make docker images from Intel/AMD CPUs, there should be something to make it work... 🤔". _Googling_ a bit, I end up with these post "[Building multi-arch docker images][3]". The post starts saying something about manifests - you can look for them on the internet, seems really impressive - and how to get it work on Docker (and then says that it is already there). But, after this, `binfmt_misc` appears. WHAT IS THIS!?!?!??? After that, the post says that _Docker for macOS_ already has support for this. _Really?_ I could not believe that. I wanted to see on my own...
+
+<StyledImage
+  src={image1}
+  alt="Debian for armv7 on Docker for Mac"
+  fit="none"
+/>
+
+See that? Is `Debian` image for armv7, running on macOS! Well, I wanted to try on Linux, but the result is a bit different:
+
+<StyledImage
+  src={image2}
+  alt="Debian for armv7 on Docker over Arch Linux"
+  variant="fancy"
+/>
+
+An error... Well, let's keep reading. The post continues saying that to make it work, we should run this `docker run --rm --privileged multiarch/qemu-user-static:register` and then add some qemu images on the docker files or run prepared images with that already in. It seems very complicated, isn't it? If Docker for macOS already does this, why my Linux cannot do the same? Mainly because Docker for Mac is just a Virtual Machine with Linux inside.
+
+## QEMU at rescue
+
+A couple of hours after, I googled about `binfmt_misc`. It is a Linux kernel's module that (in general) comes bundled in all the builds of the kernel. Allows the kernel to run arbitrary non-native binaries through an interpreter. I guess that module is what allows you to run a script (with the she-bang) as an executable and knows how to do it perfectly. "[Transparently running binaries from any architecture in Linux with QEMU and binfmt_misc][4]" is what I found. This post clarified me about everything. It's not about Docker, it's about the module, that allows to run arbitrary binaries (and so, Docker could simply take advantage of it). It's a good post, read it and then come again to mine's.
+
+How I did to run the Raspberry Pi `echo` (in fact, I did not get it run, but at last not failing with "weird binary format" error). As I'm on Arch, I look for packages with `binfmt`. This was the right thing [`binfmt-qemu-static`][5], just what I want - I thought. When installing, recommends you to install [`qemu-user-static`][6] too, so I did. The first package allows you to register the formats into `binfmt_misc` (the same thing that the docker image does from the post from above). The second one are the qemu binaries. With a restart (or maybe with `sudo systemctl restart systemd-binfmt`) you can run arm binaries without any problem. So I decided to try again with my container of Debian. Again, the same error, even though I can run arm binaries now.
+
+ > **Note**: at the end `binfmt-qemu-static` won't be needed.
+
+ > **Another note**: on Debian/Ubuntu, I suppose that with `qemu-user-static` (not `qemu-user`) is enough to get the emulators. Don't install `qemu-user-binfmt`.
+
+Meanwhile, looking in the _glorious_ Arch Linux wiki, I found that to enable custom binary formats, `none  /proc/sys/fs/binfmt_misc binfmt_misc defaults 0 0` should be written in `/etc/fstab`. I didn't check if that's not needed, but I wrote that. In addition, I tried the debian+python image from before, but mounting `qemu-arm-static` to see if it works, and:
+
+<StyledImage
+  src={image3}
+  alt="The same Debian+python image, but with the qemu emulator bound"
+  variant="fancy"
+/>
+
+Well, now I can run containers but not build images. Moreover, running them must be done with the explicit mount. "Something is missing", you may think. And it does.
+
+## "Reverse engineering" to Docker for Mac
+
+I though if it is possible to access to the VM inside hyperkit, maybe I could find something useful. Searching for it, I found this [incredible StackOverflow answer][7]. Well, I have to say this `screen` is quite bugged (you can't scroll), but it works, you can do things on the VM. Doing some `ls`s found this (literally this way):
+
+<StyledImage
+  src={image4}
+  alt="Hyperkit's VM with some interesting content"
+  fit="none"
+/>
+
+Reading `config.json` said that in `/etc/binfmt.d/` the kernel's module will find the configuration. I look for it and it doesn't exist. Then I noticed the `rootfs` and I looked inside it and it was there:
+
+<StyledImage
+  src={image5}
+  alt="Configuration for binfmt_misc"
+  fit="none"
+/>
+
+Only three entries: ARMv8 64 bit, ARMv7 and PowerPC 64 bit Little Endian. After that, I quickly compared the content of this file with the one provided by the `binfmt-qemu-static` package. For the shared entries, they were similar except for the end: the VM had an `CF` at the end. According to the [kernel's documentation][8], that sections means `flags`. The `C` is related with credentials and permissions (I guess), but the `F` is interesting: disables lazy loading of the interpreter. My understand that by enabling this, the interpreter can load before the containerization of the process, and so, the kernel can find the installed binaries on the system (the real one).
+
+## Trying for real
+
+Having `binfmt-qemu-static` installed yet, I copied the file `/usr/lib/binfmt.d/qemu-static.conf` and added at the end of all the `CF` tags. And then, delete once for all `binfmt-qemu-static`. I let you here the contents of the VM file if you prefer copy & paste:
+
+```
+:qemu-aarch64:M:0:\x7f\x45\x4c\x46\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\xb7:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-aarch64:CF
+:qemu-arm:M:0:\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm:CF
+:qemu-ppc64le:M:0:\x7f\x45\x4c\x46\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x15\x00:\xff\xff\xff\xff\xff\xff\xff\xfc\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\x00:/usr/bin/qemu-ppc64le:CF
+```
+
+Or if you prefer the full version from `binfmt-qemu-static`, here it is:
+
+```
+:qemu-aarch64:M::\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\xb7:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-aarch64-static:CF
+:qemu-alpha:M::\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x26\x90:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-alpha-static:CF
+:qemu-arm:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-arm-static:CF
+:qemu-armeb:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-armeb-static:CF
+:qemu-cris:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x4c\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-cris-static:CF
+:qemu-m68k:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x04:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-m68k-static:CF
+:qemu-microblaze:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\xba\xab:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-microblaze-static:CF
+:qemu-mips:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08:\xff\xff\xff\xff\xff\xff\xff\x00\xfe\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-mips-static:CF
+:qemu-mipsel:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x08\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xfe\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-mipsel-static:CF
+:qemu-ppc:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x14:\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-ppc-static:CF
+:qemu-ppc64:M::\x7fELF\x02\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x15:\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-ppc64-static:CF
+:qemu-ppc64abi32:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x15:\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-ppc64abi32-static:CF
+:qemu-s390x:M::\x7fELF\x02\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x16:\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-s390x-static:CF
+:qemu-sh4:M::\x7fELF\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x2a\x00:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff:/usr/bin/qemu-sh4-static:CF
+:qemu-sh4eb:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x2a:\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-sh4eb-static:CF
+:qemu-sparc:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x02:\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-sparc-static:CF
+:qemu-sparc32plus:M::\x7fELF\x01\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x12:\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-sparc32plus-static:CF
+:qemu-sparc64:M::\x7fELF\x02\x02\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x2b:\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff:/usr/bin/qemu-sparc64-static:CF
+```
+
+**Pay attention** that the routes of the interpreters (the path before the `CF` thing) should exist in you computer. Depending in what you installed, you may change them.
+
+Restart. Let's see if it works:
+
+<center>
+
+<StyledImage
+  src={image6}
+  alt="At last! Docker in Arch can run ARMv7 images"
+  variant="fancy"
+/>
+
+</center>
+
+**¡¡FIESTAAAA!!** Pardon, **IT WOOORKS!!**
+
+Now you can run containers for other architectures on your own Linux computer :)
+
+## Summary steps
+
+To get docker run containers for other architectures you need to follow these steps:
+
+  1. Install qemu emulators:
+    - **On Arch Linux**: Install [`qemu-user-static`][6] or [`qemu-user-static-deb`][9]
+    - **On Debian/Ubuntu family**: Install `qemu-user-static` (not `qemu-user`).
+  2. Create a file on `/usr/lib/binfmt.d/qemu-static.conf` and _copy & paste_ one of the files from above.
+    - **Pay attention with the emulator's routes**, the first one uses non-static binaries and the second, the static ones.
+    - Modify the routes to match the installed ones.
+  3. Reboot your computer
+  4. Try something like `docker container run --rm -it armv6/alpine uname -a`
+
+
+  [1]: https://github.com/multiarch/crossbuild
+  [2]: https://doi-janky.infosiftr.net/job/multiarch/job/arm32v7/job/golang/
+  [3]: https://lobradov.github.io/Building-docker-multiarch-images/
+  [4]: https://ownyourbits.com/2018/06/13/transparently-running-binaries-from-any-architecture-in-linux-with-qemu-and-binfmt_misc/
+  [5]: https://aur.archlinux.org/packages/binfmt-qemu-static/
+  [6]: https://aur.archlinux.org/packages/qemu-user-static/
+  [7]: https://stackoverflow.com/questions/39739560/how-to-access-the-vm-created-by-dockers-hyperkit
+  [8]: https://www.kernel.org/doc/html/v4.14/admin-guide/binfmt-misc.html
+  [9]: https://aur.archlinux.org/packages/qemu-user-static-deb/

@@ -1,0 +1,124 @@
+export { default as cover } from './cover.png'
+
+export const title = 'Un árbol de navidad para tu terminal'
+export const date = '2014-12-12T23:37:55Z'
+export const categories = ['programming', 'tui', 'linux']
+
+En estas fechas tan señaladas como son la navidad (_y los ejercicios de programación de la universidad_) hacen de este post algo (_ciertamente_) bonito:
+
+¿A que esta bonito? Pues ahi va el código:
+
+```c++
+#include <iostream>
+#include <curses.h>
+#include <signal.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+static void finish(int sig);
+void arbolDeNavidad();
+
+int main() {
+    //Si cerramos el programa a lo bestia, que la terminal
+    //vuelva a tener el mismo aspecto que antes...
+    signal(SIGINT, finish);
+    signal(SIGTERM, finish);
+
+    initscr();
+    keypad(stdscr, true);
+    nonl();
+    cbreak();
+    echo();
+
+    if(has_colors()) {
+        start_color();
+
+        //Asignación de olores, generalmente lo que necesitamos. El par 0 no
+        //puede ser redefinido
+        init_pair(1, COLOR_RED,    COLOR_BLACK);
+        init_pair(2, COLOR_GREEN,  COLOR_BLACK);
+        init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(3, COLOR_BLUE,   COLOR_BLACK);
+        init_pair(5, COLOR_CYAN,   COLOR_BLACK);
+        init_pair(6, COLOR_MAGENTA,COLOR_BLACK);
+        init_pair(7, COLOR_WHITE,  COLOR_BLACK);
+    } else {
+        endwin();
+        std::cout << "Esta terminal no permite el uso de colores." << std::endl;
+        std::cout << "Por tanto el programa se cerrará...\n";
+        finish(0);
+    }
+
+    arbolDeNavidad();
+
+    getch();
+    finish(0);
+}
+
+static void finish(int sig) {
+    endwin();
+    exit(0);
+}
+
+///////////////////////////////////////////////////////
+/// Aqui van las funciones para el arbol de navidad ///
+///////////////////////////////////////////////////////
+
+void colocarCursor(unsigned fila, unsigned filas) {
+    move(LINES/2 - filas/2 + fila - 2, COLS/2 - fila);
+}
+
+void imprimirArbol(unsigned filas) {
+    attrset(COLOR_PAIR(2));
+    for(unsigned i = 1; i <= filas; i++) {
+        colocarCursor(i, filas);
+        for(unsigned j = 0; j < 2*i-1; j++)
+            addch('*');
+    }
+
+    attrset(COLOR_PAIR(1));
+    colocarCursor(filas+1, filas);
+    for(unsigned i = 0; i < filas - 1; i++) addch(' ');
+    addstr("| |");
+    colocarCursor(filas+2, filas);
+    for(unsigned i = 0; i < filas; i++) addch(' ');
+    addstr("| |");
+}
+
+void imprimirMarco() {
+    static unsigned count;
+    for(int y = 0; y < LINES; y++) {
+        attrset(COLOR_PAIR((count + y) % 4 + 3));
+        mvaddch(y, 0, '|');
+        mvaddch(y, COLS - 1, '|');
+    }
+
+    for(int x = 0; x < COLS; x++) {
+        attrset(COLOR_PAIR((count + x) % 4 + 3));
+        mvaddch(0, x, '~');
+        mvaddch(LINES - 1, x, '~');
+    }
+
+    count++;
+    refresh();
+    usleep(500000);
+}
+
+void arbolDeNavidad() {
+    unsigned altura;
+
+    addstr("Altura del árbol: ");
+    scanw("%u", &altura);
+
+    move(0, 0);
+    for(int i = 0; i < COLS; i++) addch(' ');
+    imprimirArbol(altura);
+
+    //Bucle infinito para mostrar el marco cambiante. Se sale con CTRL+C
+    while(true) {
+        imprimirMarco();
+    }
+}
+```
+
+Para compilar, necesitas _curses_ (`sudo apt install libncurses5-dev` en Ubuntu y derivados). El comando para compilarlo es `g++ arbol.cpp -o arbol -lcurses`.

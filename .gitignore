@@ -1,37 +1,35 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-node_modules
+/node_modules
+/.pnp
+.pnp.js
 
 # testing
 /coverage
 
+# next.js
+/.next/
+/out/
+
 # production
-/web/build
-/functions/lib
+/build
 
 # misc
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.parcel-cache
+*.pem
 
+# debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Generated styles
-src/**/*.css
-#This one must not be ignored
-!src/lib/zoom.js/zoom.css
+# local env files
+.env*.local
 
-###
-.firebaserc
-.idea
-.vscode
-cors.json
-.firebase/
-*.log
-.runtimeconfig.json
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
