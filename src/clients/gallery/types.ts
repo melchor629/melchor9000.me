@@ -30,12 +30,10 @@ export type AssetItem = {
   description: string
   type: AssetType
   thumbHash: string | null
-  thumbUrl: URL
   createdAt: Date
 }
 
 export type Asset = AssetItem & {
-  url: URL
   exif: AssetExif | null
   location: AssetLocation | null
 }
@@ -45,7 +43,6 @@ export type AlbumItem = {
   title: string
   description: string
   coverAssetId: string | null
-  coverImageUrl: URL | null
   createdAt: Date
   updatedAt: Date
   lastPhotoTakenAt: Date | null

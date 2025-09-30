@@ -4,10 +4,10 @@ import StyledImage from '@/components/styled-image'
 
 const GalleryAlbumHeader = ({ album }: { readonly album: Album }) => (
   <Box sx={{ position: 'relative', top: -48, minHeight: '33vh', maxHeight: 600 }}>
-    {album.coverImageUrl && (
+    {album.coverAssetId && (
       <StyledImage
         alt="Album primary photo"
-        src={album.coverImageUrl.toString()}
+        src={`/gallery/${album.id}/${album.coverAssetId}/original`}
         priority
         fill
         fit="cover"

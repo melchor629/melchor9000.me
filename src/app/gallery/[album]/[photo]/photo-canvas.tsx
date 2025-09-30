@@ -24,7 +24,7 @@ export default function PhotoCanvas({
         title={photo.title}
         height={photo.exif!.height!}
         width={photo.exif!.width!}
-        url={photo.url.toString()}
+        url={`/gallery/${album.id}/${photo.id}/original`}
       />
       <PhotoCanvasPrevious>
         <IconButton component={Link} href={`./${prevPhotoId}`} disabled={!prevPhotoId}>

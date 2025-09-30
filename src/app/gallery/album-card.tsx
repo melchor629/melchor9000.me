@@ -20,7 +20,7 @@ export default async function AlbumCard({ album }: { readonly album: AlbumItem }
           <AlbumCardPhoto
             assetId={album.coverAssetId}
             thumbHash={photo.thumbHash}
-            thumbUrl={photo.thumbUrl}
+            thumbUrl={`/gallery/${album.id}/${photo.id}/thumbnail`}
           />
         )}
         <CardContent>

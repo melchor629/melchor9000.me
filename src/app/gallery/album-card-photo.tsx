@@ -5,7 +5,7 @@ import StyledImage from '@/components/styled-image'
 type Props = {
   readonly assetId: string | null
   readonly thumbHash?: string | null
-  readonly thumbUrl: URL
+  readonly thumbUrl: string
 }
 
 export default function AlbumCardPhoto({ assetId, thumbHash, thumbUrl }: Props) {
@@ -16,7 +16,7 @@ export default function AlbumCardPhoto({ assetId, thumbHash, thumbUrl }: Props) 
   return (
     <CardMedia component={Box} position="relative" height={140}>
       <StyledImage
-        src={thumbUrl.toString()}
+        src={thumbUrl}
         alt="Image that represents the album"
         sizes="(min-width: 400px) 315px, 100vw"
         fill

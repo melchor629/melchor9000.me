@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
         pathname: '/*',
       },
     ],
+    qualities: [85],
   },
   modularizeImports: {
     '@mui/icons-material': {

@@ -81,7 +81,7 @@ export default async function GalleryAlbum({ params }: Params) {
               id={asset.id}
               title={asset.title}
               thumbHash={asset.thumbHash}
-              thumbUrl={asset.thumbUrl.toString()}
+              thumbUrl={`/gallery/${album.id}/${asset.id}/thumbnail`}
             />
           ))}
         </Box>
