@@ -277,7 +277,6 @@ export const getAlbumList = async (): Promise<AlbumItem[]> => {
       createdAt: utils.toDate(p.date_create),
       updatedAt: utils.toDate(p.date_update),
       coverAssetId: p.primary,
-      coverImageUrl: utils.toUrl(p.primary_photo_extras!.url_o),
       lastPhotoTakenAt: null,
       count: utils.toNumber(p.count_photos),
     }))
@@ -305,12 +304,6 @@ export const getAlbum = async (albumId: string): Promise<Album | null> => {
     title: utils.getString(photoset.title),
     description: utils.getString(photoset.description),
     coverAssetId: photoset.primary,
-    coverImageUrl: utils.toUrl(utils.buildImageUrl({
-      farm: photoset.farm,
-      id: photoset.primary,
-      secret: photoset.secret,
-      server: photoset.server,
-    })),
     createdAt: utils.toDate(photoset.date_create),
     updatedAt: utils.toDate(photoset.date_update),
     lastPhotoTakenAt: null,
@@ -323,7 +316,6 @@ export const getAlbum = async (albumId: string): Promise<Album | null> => {
         description: '',
         createdAt: utils.toDate(photoset.date_create),
         thumbHash: null,
-        thumbUrl: utils.toUrl(utils.buildImageUrl(photo))!,
       }))
       .toSorted((a, b) => +b.createdAt - +a.createdAt),
   }
@@ -346,8 +338,6 @@ export const getAsset = async (assetId: string): Promise<Asset | null> => {
     description: utils.getString(photo.description),
     type: 'image',
     thumbHash: null,
-    thumbUrl: utils.toUrl(utils.buildImageUrl(photo))!,
-    url: new URL('https://example.com'),
     createdAt: new Date(photo.dates.taken),
     exif: exif
       ? {

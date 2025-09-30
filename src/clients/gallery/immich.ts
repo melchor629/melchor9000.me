@@ -87,8 +87,6 @@ export const getAsset = async (assetId: string): Promise<Asset | null> => {
     description: '',
     type: assetTypeMap[asset.type],
     thumbHash: asset.thumbhash,
-    thumbUrl: getAssetThumbnailUrl(asset.id)!,
-    url: getAssetUrl(asset.id)!,
     createdAt: new Date(asset.fileCreatedAt),
     exif: asset.exifInfo
       ? {
@@ -127,7 +125,6 @@ export const getAlbumList = async (): Promise<AlbumItem[]> => {
       title: album.albumName,
       description: album.description,
       coverAssetId: album.albumThumbnailAssetId,
-      coverImageUrl: getAssetThumbnailUrl(album.albumThumbnailAssetId),
       createdAt: new Date(album.createdAt),
       updatedAt: new Date(album.updatedAt),
       lastPhotoTakenAt: album.endDate ? new Date(album.endDate) : null,
@@ -147,7 +144,6 @@ export const getAlbum = async (albumId: string): Promise<Album | null> => {
     title: album.albumName,
     description: album.description,
     coverAssetId: album.albumThumbnailAssetId,
-    coverImageUrl: getAssetUrl(album.albumThumbnailAssetId),
     createdAt: new Date(album.createdAt),
     updatedAt: new Date(album.updatedAt),
     lastPhotoTakenAt: album.endDate ? new Date(album.endDate) : null,
@@ -159,7 +155,6 @@ export const getAlbum = async (albumId: string): Promise<Album | null> => {
         title: asset.originalFileName,
         description: '',
         thumbHash: asset.thumbhash,
-        thumbUrl: getAssetThumbnailUrl(asset.id)!,
         createdAt: new Date(asset.fileCreatedAt),
       }))
       .toSorted((a, b) => +b.createdAt - +a.createdAt),
