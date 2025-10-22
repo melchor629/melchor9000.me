@@ -3,11 +3,9 @@
 import { CardActionArea, type CardActionAreaProps } from '@mui/material'
 import Link from 'next/link'
 
-export type CardLinkAreaProps = CardActionAreaProps<'a'>
-const Component = CardActionArea<'a'>
+export type CardLinkAreaProps = CardActionAreaProps<'a'> & { readonly href: string }
 
 const CardLinkArea = (props: CardLinkAreaProps) =>
-  // eslint-disable-next-line jsx-a11y/anchor-has-content
-  <Component {...props} component="a" LinkComponent={Link} />
+  <CardActionArea {...props} href={props.href} LinkComponent={Link} />
 
 export default CardLinkArea

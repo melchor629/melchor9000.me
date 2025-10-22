@@ -22,9 +22,10 @@ import {
 
 export default function ShareLinks({ title }: { readonly title: string }) {
   const pathname = usePathname()
-  const thisUrl = useMemo(() => typeof window !== 'undefined'
-    ? new URL(pathname, window.location.origin).toString()
-    : pathname, [pathname])
+  const thisUrl = useMemo(() => new URL(
+    pathname,
+    typeof window !== 'undefined' ? window.location.origin : (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'),
+  ).toString(), [pathname])
   const twitterUrl = useMemo(() => `http://twitter.com/intent/tweet?${new URLSearchParams({
     text: title,
     url: thisUrl,
@@ -79,7 +80,7 @@ export default function ShareLinks({ title }: { readonly title: string }) {
         </IconButton>
       </Tooltip>
       <Tooltip title="Share post" disableInteractive>
-        <IconButton onClick={share} disabled={typeof navigator?.share === 'undefined'}>
+        <IconButton onClick={share}>
           <ShareIcon />
         </IconButton>
       </Tooltip>
