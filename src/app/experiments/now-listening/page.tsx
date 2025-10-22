@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material'
 import type { Metadata } from 'next'
-import { revalidateTag } from 'next/cache'
+import { updateTag } from 'next/cache'
 import { notFound } from 'next/navigation'
 import { getRecentTracks } from '@/clients/lastfm'
 import Container from '@/components/container'
@@ -39,7 +39,7 @@ export default async function NowListening({ params }: { readonly params: Promis
         refreshAction={async () => {
           'use server'
 
-          revalidateTag(`lastfm:recent-tracks:${user}`)
+          updateTag(`lastfm:recent-tracks:${user}`)
           return Promise.resolve()
         }}
       />

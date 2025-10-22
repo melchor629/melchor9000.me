@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
         pathname: '/*',
       },
     ],
-    qualities: [85],
+    qualities: [75, 90],
   },
   modularizeImports: {
     '@mui/icons-material': {
@@ -42,6 +42,7 @@ const nextConfig: NextConfig = {
     },
   },
   reactStrictMode: true,
+  reactCompiler: false,
 }
 
 const withMDX = createMDX({

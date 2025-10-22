@@ -1,20 +1,19 @@
 import {
   Card,
-  CardActionArea,
   CardContent,
   CardHeader,
   CardMedia,
   Chip,
   Stack,
 } from '@mui/material'
-import Link from 'next/link'
+import CardLinkArea from '@/components/card-link-area'
 import StyledImage from '@/components/styled-image'
 import type { BlogEntry } from '@/content/blog'
 
 export default function PostCard({ post }: { readonly post: BlogEntry }) {
   return (
     <Card>
-      <CardActionArea component={Link} href={`/blog/${post.slug}`}>
+      <CardLinkArea href={`/blog/${post.slug}`}>
         <CardHeader
           title={post.title}
           subheader={`Published at ${post.date.toLocaleString(['en-GB'], { dateStyle: 'full' })}`}
@@ -38,7 +37,7 @@ export default function PostCard({ post }: { readonly post: BlogEntry }) {
             {post.categories.length === 0 && <Chip label="no categories" variant="outlined" />}
           </Stack>
         </CardContent>
-      </CardActionArea>
+      </CardLinkArea>
     </Card>
   )
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import MuiLink from '@mui/material/Link'
 import Link from 'next/link'
 

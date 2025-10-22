@@ -1,7 +1,7 @@
 import { ArrowBack, NavigateBefore, NavigateNext } from '@mui/icons-material'
-import { IconButton, Tooltip } from '@mui/material'
-import Link from 'next/link'
+import { Tooltip } from '@mui/material'
 import type { Album, Asset } from '@/clients/gallery'
+import IconButtonLink from '@/components/icon-button-link'
 import Photo from './photo'
 import { PhotoCanvasBack, PhotoCanvasNext, PhotoCanvasPrevious, PhotoCanvasRoot } from './photo-canvas.styles'
 
@@ -27,14 +27,14 @@ export default function PhotoCanvas({
         url={`/gallery/${album.id}/${photo.id}/original`}
       />
       <PhotoCanvasPrevious>
-        <IconButton component={Link} href={`./${prevPhotoId}`} disabled={!prevPhotoId}>
+        <IconButtonLink href={`./${prevPhotoId}`} disabled={!prevPhotoId}>
           <NavigateBefore />
-        </IconButton>
+        </IconButtonLink>
       </PhotoCanvasPrevious>
       <PhotoCanvasNext>
-        <IconButton component={Link} href={`./${nextPhotoId}`} disabled={!nextPhotoId}>
+        <IconButtonLink href={`./${nextPhotoId}`} disabled={!nextPhotoId}>
           <NavigateNext />
-        </IconButton>
+        </IconButtonLink>
       </PhotoCanvasNext>
       <PhotoCanvasBack>
         <Tooltip
@@ -42,9 +42,9 @@ export default function PhotoCanvas({
           placement="right"
           disableInteractive
         >
-          <IconButton component={Link} href=".">
+          <IconButtonLink href=".">
             <ArrowBack />
-          </IconButton>
+          </IconButtonLink>
         </Tooltip>
       </PhotoCanvasBack>
     </PhotoCanvasRoot>

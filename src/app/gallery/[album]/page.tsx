@@ -1,12 +1,12 @@
 import { ArrowBack } from '@mui/icons-material'
 import {
   Box,
-  Container, IconButton, Tooltip, Typography,
+  Container, Tooltip, Typography,
 } from '@mui/material'
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getAlbum, getAlbumList } from '@/clients/gallery'
+import IconButtonLink from '@/components/icon-button-link'
 import GalleryAlbumHeader from './gallery-album-header'
 import GalleryPhoto from './gallery-photo'
 
@@ -54,9 +54,9 @@ export default async function GalleryAlbum({ params }: Params) {
       <Container sx={{ mt: -4, mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Tooltip title="Go to gallery" disableInteractive placement="right">
-            <IconButton size="small" LinkComponent={Link} href="/gallery">
+            <IconButtonLink size="small" href="/gallery">
               <ArrowBack fontSize="inherit" />
-            </IconButton>
+            </IconButtonLink>
           </Tooltip>
           <Typography variant="body2" color="text.secondary">
             {album.lastPhotoTakenAt

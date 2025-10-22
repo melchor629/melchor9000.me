@@ -78,13 +78,11 @@ export default function ShareLinks({ title }: { readonly title: string }) {
           <LinkIcon />
         </IconButton>
       </Tooltip>
-      {typeof navigator !== 'undefined' && typeof navigator.share !== 'undefined' && (
-        <Tooltip title="Share post" disableInteractive>
-          <IconButton onClick={share}>
-            <ShareIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      <Tooltip title="Share post" disableInteractive>
+        <IconButton onClick={share} disabled={typeof navigator?.share === 'undefined'}>
+          <ShareIcon />
+        </IconButton>
+      </Tooltip>
       <Tooltip title="Share on X (formely Twitter)" disableInteractive>
         <IconButton href={twitterUrl} target="_blank" rel="noopener noreferrer">
           <FaTwitter width={20} height={20} />

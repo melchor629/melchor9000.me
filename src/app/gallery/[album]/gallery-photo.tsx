@@ -1,8 +1,8 @@
 import {
-  Box, Card, CardActionArea, CardMedia, Tooltip,
+  Box, Card, CardMedia, Tooltip,
 } from '@mui/material'
-import Link from 'next/link'
 import { thumbHashToDataURL } from 'thumbhash'
+import CardLinkArea from '@/components/card-link-area'
 import StyledImage from '@/components/styled-image'
 
 type Props = {
@@ -38,7 +38,7 @@ export default function GalleryPhoto({
       slotProps={{ popper: popperProps }}
     >
       <Card>
-        <CardActionArea LinkComponent={Link} href={`/gallery/${albumId}/${id}`} sx={{ height: '100%' }}>
+        <CardLinkArea href={`/gallery/${albumId}/${id}`} sx={{ height: '100%' }}>
           <CardMedia component={Box} position="relative" pb="100%">
             <StyledImage
               src={thumbUrl}
@@ -50,7 +50,7 @@ export default function GalleryPhoto({
               blurDataURL={thumbHash ? thumbHashToDataURL(Buffer.from(thumbHash, 'base64')) : undefined}
             />
           </CardMedia>
-        </CardActionArea>
+        </CardLinkArea>
       </Card>
     </Tooltip>
   )

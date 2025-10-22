@@ -2,20 +2,19 @@ import { Photo } from '@mui/icons-material'
 import {
   Box,
   Card,
-  CardActionArea,
   CardContent,
   Chip,
   Typography,
 } from '@mui/material'
-import Link from 'next/link'
 import { getAsset, type AlbumItem } from '@/clients/gallery'
+import CardLinkArea from '@/components/card-link-area'
 import AlbumCardPhoto from './album-card-photo'
 
 export default async function AlbumCard({ album }: { readonly album: AlbumItem }) {
   const photo = album.coverAssetId ? await getAsset(album.coverAssetId) : null
   return (
     <Card>
-      <CardActionArea LinkComponent={Link} href={`/gallery/${album.id}`} sx={{ height: '100%' }}>
+      <CardLinkArea href={`/gallery/${album.id}`} sx={{ height: '100%' }}>
         {photo && (
           <AlbumCardPhoto
             assetId={album.coverAssetId}
@@ -46,7 +45,7 @@ export default async function AlbumCard({ album }: { readonly album: AlbumItem }
             {album.description}
           </Typography>
         </CardContent>
-      </CardActionArea>
+      </CardLinkArea>
     </Card>
   )
 }

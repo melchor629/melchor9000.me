@@ -28,7 +28,7 @@ export default function Photo({
         height={height}
         sizes="100vw"
         priority
-        quality={85}
+        quality={90}
         fit="contain"
         onLoad={useCallback(() => setImageLoading(false), [])}
       />

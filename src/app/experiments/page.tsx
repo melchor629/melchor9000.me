@@ -1,9 +1,10 @@
-import { Card, CardActionArea, CardHeader, Stack } from '@mui/material'
-import Link from 'next/link'
+import { Card, CardHeader, Stack } from '@mui/material'
+import type { Metadata } from 'next'
+import CardLinkArea from '@/components/card-link-area'
 import Container from '@/components/container'
 import PageHeader from '@/components/page-header'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Experiments',
 }
 
@@ -17,30 +18,30 @@ export default function Experiments() {
 
       <Stack gap={2}>
         <Card>
-          <CardActionArea LinkComponent={Link} href="/experiments/eugl">
+          <CardLinkArea href="/experiments/eugl">
             <CardHeader
               title="Espacio Euclídeo"
               subheader="During focused studies of algebra, the crazy idea of 'Euclideus Space' raised as a 'Star Field' screensaver-based representation. You can put yourself in it!"
             />
-          </CardActionArea>
+          </CardLinkArea>
         </Card>
 
         <Card>
-          <CardActionArea LinkComponent={Link} href="/experiments/now-listening">
+          <CardLinkArea href="/experiments/now-listening">
             <CardHeader
               title="What I am listening to?"
               subheader="Show a list of recently played songs, as well as the current one. Presented in a simple design."
             />
-          </CardActionArea>
+          </CardLinkArea>
         </Card>
 
         <Card>
-          <CardActionArea LinkComponent={Link} href="/experiments/viz">
+          <CardLinkArea href="/experiments/viz">
             <CardHeader
               title="Viz"
               subheader="Sound visualizer using wave or bars of the selected sound."
             />
-          </CardActionArea>
+          </CardLinkArea>
         </Card>
       </Stack>
     </Container>
