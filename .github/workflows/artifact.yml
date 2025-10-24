@@ -1,0 +1,55 @@
+name: artifact
+
+on:
+  push:
+    branches: ['master']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout actions
+        uses: actions/checkout@v5
+        with:
+          repository: melchor629/actions
+          ref: main
+          token: ${{ secrets.PAT_GITHUB }}
+          path: ./.github/actions
+          fetch-depth: 0
+
+      - name: Setup docker
+        uses: ./.github/actions/docker/prepare
+
+      - name: Build and push
+        uses: ./.github/actions/docker/push-ghcr
+        with:
+          image-name: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:prod
+          secrets: |
+            "FLICKR_API_KEY=${{ secrets.FLICKR_API_KEY }}"
+            "FLICKR_SECRET_KEY=${{ secrets.FLICKR_SECRET_KEY }}"
+            "FLICKR_USER_ID=${{ secrets.FLICKR_USER_ID }}"
+            "LASTFM_API_KEY=${{ secrets.LASTFM_API_KEY }}"
+            "LASTFM_SECRET_KEY=${{ secrets.LASTFM_SECRET_KEY }}"
+            "IMMICH_API_KEY=${{ secrets.IMMICH_API_KEY }}"
+            "IMMICH_URL=${{ secrets.IMMICH_URL }}"
+            "BUILD_ID=${{ github.sha }}"
+
+      - name: Deploy
+        uses: ./.github/actions/deploy/po
+        with:
+          project: melchor9000.me

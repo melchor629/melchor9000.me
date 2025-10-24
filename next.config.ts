@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
     emotion: false,
     removeConsole: true,
   },
+  generateBuildId: async () => {
+    if (process.env.BUILD_ID) {
+      return process.env.BUILD_ID
+    }
+
+    const childProcess = await import('node:child_process')
+    return childProcess.execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim()
+  },
   images: {
     remotePatterns: [
       {
@@ -41,6 +49,7 @@ const nextConfig: NextConfig = {
       transform: '@mui/material/{{member}}',
     },
   },
+  output: 'standalone',
   reactStrictMode: true,
   reactCompiler: false,
 }
