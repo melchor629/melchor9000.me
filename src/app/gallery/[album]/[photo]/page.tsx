@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getAsset, getAlbum, getAlbumList } from '@/clients/gallery'
+import { getAsset, getAlbum } from '@/clients/gallery'
 import PhotoCanvas from './photo-canvas'
 import PhotoInfo from './photo-info'
 
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   }
 }
 
-export async function generateStaticParams(): Promise<PromiseResolvedType<Params['params']>[]> {
+/* export async function generateStaticParams(): Promise<PromiseResolvedType<Params['params']>[]> {
   const albums = await getAlbumList()
   return Promise.all(
     albums.map(async ({ id: albumId }) => {
@@ -40,7 +40,7 @@ export async function generateStaticParams(): Promise<PromiseResolvedType<Params
       return []
     }),
   ).then((r) => r.flat())
-}
+} */
 
 export default async function GalleryPhotoAlbum({ params }: Params) {
   const { album: albumId, photo: photoId } = await params

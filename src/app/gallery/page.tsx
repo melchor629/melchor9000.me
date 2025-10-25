@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Gallery() {
-  const albums = await getAlbumList()
+  const albums = await getAlbumList().catch(() => [])
 
   return (
     <Container>

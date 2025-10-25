@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getAlbum, getAlbumList } from '@/clients/gallery'
+import { getAlbum } from '@/clients/gallery'
 import IconButtonLink from '@/components/icon-button-link'
 import GalleryAlbumHeader from './gallery-album-header'
 import GalleryPhoto from './gallery-photo'
@@ -35,10 +35,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   }
 }
 
-export async function generateStaticParams(): Promise<PromiseResolvedType<Params['params']>[]> {
+/* export async function generateStaticParams(): Promise<PromiseResolvedType<Params['params']>[]> {
   const albums = await getAlbumList()
   return albums.map((album) => ({ album: album.id }))
-}
+} */
 
 export default async function GalleryAlbum({ params }: Params) {
   const { album: albumId } = await params
