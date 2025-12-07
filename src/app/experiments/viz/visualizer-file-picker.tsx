@@ -1,7 +1,7 @@
 import { AudioFile, Close } from '@mui/icons-material'
 import { Button, IconButton } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { type ChangeEvent, type DragEvent, useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { type ChangeEvent, type DragEvent, useCallback, useRef, useState } from 'react'
 import HiddenInput from '@/components/hidden-input'
 import AudioContextHelper from './audio-context-helper'
 
@@ -31,16 +31,13 @@ export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFi
   const [dragging, setDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useLayoutEffect(() => {
-    helper.unload('s')
-    if (file == null) return setBuffer(null)
-
+  const loadBuffer = useCallback((file: File) => {
     setLoading(true)
     helper.load('s', file)
       .then(setBuffer)
       .catch(() => {})
       .finally(() => setLoading(false))
-  }, [helper, file, setBuffer])
+  }, [helper, setBuffer])
 
   return (
     <Container
@@ -60,9 +57,10 @@ export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFi
         if (e.dataTransfer.files.length > 0) {
           if (e.dataTransfer.files[0].type.startsWith('audio/')) {
             setFile(e.dataTransfer.files[0])
+            loadBuffer(e.dataTransfer.files[0])
           }
         }
-      }, [])}
+      }, [loadBuffer])}
     >
       <Button
         color="inherit"
@@ -80,8 +78,9 @@ export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFi
         disabled={!file || loading}
         onClick={useCallback(() => {
           setFile(null)
+          setBuffer(null)
           inputRef.current!.value = ''
-        }, [])}
+        }, [setBuffer])}
       >
         <Close />
       </IconButton>
@@ -94,8 +93,9 @@ export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFi
           const { files } = e.currentTarget
           if (files?.length) {
             setFile(files[0])
+            loadBuffer(files[0])
           }
-        }, [])}
+        }, [loadBuffer])}
       />
     </Container>
   )

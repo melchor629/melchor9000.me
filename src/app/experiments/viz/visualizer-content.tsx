@@ -26,6 +26,7 @@ export default function VisualizerContent() {
 
   useLayoutEffect(() => {
     const helper = new AudioContextHelper()
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHelper(helper)
     return () => {
       void helper[Symbol.asyncDispose]()

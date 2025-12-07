@@ -4,7 +4,7 @@ FROM base AS deps
 
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci --force
+RUN npm ci
 
 
 FROM base AS builder

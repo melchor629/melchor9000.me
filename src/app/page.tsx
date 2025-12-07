@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
+  // eslint-disable-next-line react-hooks/purity
   const random = Math.random()
 
   return (

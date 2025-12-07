@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: 24.x
         cache: 'npm'
-    - run: npm ci --force
+    - run: npm ci
     - run: npx next typegen
     - run: npm run check
     - run: npm run lint
