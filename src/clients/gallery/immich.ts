@@ -118,7 +118,7 @@ export const getAsset = async (assetId: string): Promise<Asset | null> => {
 }
 
 export const getAlbumList = async (): Promise<AlbumItem[]> => {
-  const albumList = await handleError(() => getAllAlbums({ shared: true })) ?? []
+  const albumList = (await handleError(() => getAllAlbums({ shared: true }))) ?? []
   return albumList
     .map((album): AlbumItem => ({
       id: album.id,

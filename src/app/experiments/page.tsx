@@ -15,8 +15,10 @@ export default function Experiments() {
         title="Experiments"
         subtitle="A place where you can find dragons…"
       />
-
-      <Stack gap={2}>
+      <Stack sx={{
+        gap: 2,
+      }}
+      >
         <Card>
           <CardLinkArea href="/experiments/eugl">
             <CardHeader

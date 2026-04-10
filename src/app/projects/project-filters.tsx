@@ -55,7 +55,13 @@ export default function ProjectFilters({
           label="Techs"
           onChange={useCallback((e: SelectChangeEvent<ProjectEntry['technologies']>) => Array.isArray(e.target.value) && onChange('techs', e.target.value), [onChange])}
           renderValue={useCallback((selected: ProjectEntry['technologies']) => (
-            <Stack gap={0.5} flexWrap="wrap" direction="row">
+            <Stack
+              direction="row"
+              sx={{
+                gap: 0.5,
+                flexWrap: 'wrap',
+              }}
+            >
               {selected.map((value) => (
                 <Chip key={value} label={value} size="small" />
               ))}

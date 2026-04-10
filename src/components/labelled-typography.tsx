@@ -14,15 +14,20 @@ export default function LabelledTypography({ label, size, ...props }: LabelledTy
     <Box sx={{ display: 'inline-block' }}>
       <Typography
         variant="body2"
-        color="text.secondary"
-        fontSize={(size === 'small' && '0.75rem') || (size === 'large' && '1rem') || undefined}
-        sx={{ userSelect: 'none' }}
+        sx={{
+          color: 'text.secondary',
+          fontSize: (size === 'small' && '0.75rem') || (size === 'large' && '1rem') || undefined,
+          userSelect: 'none',
+        }}
       >
         {label}
       </Typography>
       <Typography
         {...props}
-        fontSize={(size === 'small' && '0.875rem') || (size === 'large' && '1.25rem') || undefined}
+        sx={{
+          ...props.sx,
+          fontSize: (size === 'small' && '0.875rem') || (size === 'large' && '1.25rem') || undefined,
+        }}
       />
     </Box>
   )

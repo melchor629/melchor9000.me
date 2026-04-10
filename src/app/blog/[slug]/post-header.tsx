@@ -8,7 +8,14 @@ export default function PostHeader({ blogPost }: { readonly blogPost: BlogEntry 
   return (
     <Box component="header" sx={{ textAlign: 'center', mb: { xs: 4, md: 6 } }}>
       <Typography variant="h2" gutterBottom>{blogPost.title}</Typography>
-      <Stack direction="row" gap={1} justifyContent="center" mb={2}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1,
+          justifyContent: 'center',
+          mb: 2,
+        }}
+      >
         {blogPost.categories.map((c) => <Chip key={c} label={c} size="small" variant="outlined" />)}
       </Stack>
       <PostCoverFigure>
@@ -20,7 +27,12 @@ export default function PostHeader({ blogPost }: { readonly blogPost: BlogEntry 
           priority
         />
       </PostCoverFigure>
-      <Box component="section" mt={4}>
+      <Box
+        component="section"
+        sx={{
+          mt: 4,
+        }}
+      >
         <Typography variant="subtitle1" gutterBottom>
           <span>Created at&nbsp;</span>
           <time dateTime={blogPost.date.toISOString().split('T')[0]}>

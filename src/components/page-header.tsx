@@ -18,8 +18,23 @@ const PageHeaderRoot = styled('div', {
 
 const PageHeader = ({ subtitle, title }: PageHeaderProps) => (
   <PageHeaderRoot>
-    <Typography variant="h2" mb={1}>{title}</Typography>
-    <Typography variant="h5" gutterBottom color="text.secondary">{subtitle}</Typography>
+    <Typography
+      variant="h2"
+      sx={{
+        mb: 1,
+      }}
+    >
+      {title}
+    </Typography>
+    <Typography
+      variant="h5"
+      gutterBottom
+      sx={{
+        color: 'text.secondary',
+      }}
+    >
+      {subtitle}
+    </Typography>
   </PageHeaderRoot>
 )
 

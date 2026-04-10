@@ -28,13 +28,14 @@ export default async function NowListening({ params }: { readonly params: Promis
         title="Now Listening"
         subtitle={`What is ${user} listening to?`}
       />
-
-      <Stack gap={1.5}>
+      <Stack sx={{
+        gap: 1.5,
+      }}
+      >
         {info.map((track) => (
           <TrackCard key={track.nowPlaying ? 'np' : +track.scrobbledAt!} track={track} />
         ))}
       </Stack>
-
       <Tricks
         refreshAction={async () => {
           'use server'

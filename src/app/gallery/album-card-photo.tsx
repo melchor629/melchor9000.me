@@ -14,7 +14,7 @@ export default function AlbumCardPhoto({ assetId, thumbHash, thumbUrl }: Props) 
   }
 
   return (
-    <CardMedia component={Box} position="relative" height={140}>
+    <CardMedia component="div" sx={{ position: 'relative', height: 140 }}>
       <StyledImage
         src={thumbUrl}
         alt="Image that represents the album"

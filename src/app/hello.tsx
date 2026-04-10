@@ -38,7 +38,12 @@ export default function Hello({ random }: { readonly random: number }) {
       <Typography variant="h3">
         melchor9000
       </Typography>
-      <Typography variant="h4" color="text.secondary">
+      <Typography
+        variant="h4"
+        sx={{
+          color: 'text.secondary',
+        }}
+      >
         Melchor Garau Madrigal
       </Typography>
       <HelloPhoto random={random} />

@@ -50,7 +50,6 @@ export default async function GalleryAlbum({ params }: Params) {
   return (
     <>
       <GalleryAlbumHeader album={album} />
-
       <Container sx={{ mt: -4, mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Tooltip title="Go to gallery" disableInteractive placement="right">
@@ -58,7 +57,12 @@ export default async function GalleryAlbum({ params }: Params) {
               <ArrowBack fontSize="inherit" />
             </IconButtonLink>
           </Tooltip>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {album.lastPhotoTakenAt
               ? `Last photo taken ${album.lastPhotoTakenAt.toLocaleDateString('en', { dateStyle: 'short' })}`
               : `Last update ${album.updatedAt.toLocaleString('en', { dateStyle: 'short' })}`}

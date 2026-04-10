@@ -41,7 +41,13 @@ export default async function AlbumCard({ album }: { readonly album: AlbumItem }
               label={album.count}
             />
           </Box>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
+          <Typography
+            variant="body2"
+            gutterBottom
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {album.description}
           </Typography>
         </CardContent>

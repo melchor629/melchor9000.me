@@ -28,8 +28,22 @@ export default function TrackCard({ track }: { readonly track: RecentTrackItem }
         />
         <Box sx={{ position: 'relative', px: 2, py: 1, width: '100%' }}>
           <Typography variant="h5">{track.title}</Typography>
-          <Typography variant="subtitle1" color="text.secondary">{track.artist}</Typography>
-          <Typography variant="subtitle2" color="text.secondary">{track.album}</Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            {track.artist}
+          </Typography>
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            {track.album}
+          </Typography>
 
           <Box sx={{ position: 'absolute', top: 0, right: 0, mt: 1, mr: 1 }}>
             {track.nowPlaying && (

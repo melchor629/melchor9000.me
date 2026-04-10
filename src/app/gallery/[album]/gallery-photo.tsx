@@ -1,5 +1,5 @@
 import {
-  Box, Card, CardMedia, Tooltip,
+  Card, CardMedia, Tooltip,
 } from '@mui/material'
 import { thumbHashToDataURL } from 'thumbhash'
 import CardLinkArea from '@/components/card-link-area'
@@ -39,7 +39,7 @@ export default function GalleryPhoto({
     >
       <Card>
         <CardLinkArea href={`/gallery/${albumId}/${id}`} sx={{ height: '100%' }}>
-          <CardMedia component={Box} position="relative" pb="100%">
+          <CardMedia sx={{ position: 'relative', pb: '100%' }}>
             <StyledImage
               src={thumbUrl}
               alt={title}

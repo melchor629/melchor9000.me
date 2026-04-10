@@ -32,7 +32,12 @@ export default function PostCard({ post }: { readonly post: BlogEntry }) {
           />
         </CardMedia>
         <CardContent>
-          <Stack direction="row" gap={1}>
+          <Stack
+            direction="row"
+            sx={{
+              gap: 1,
+            }}
+          >
             {post.categories.map((c) => <Chip key={c} label={c} variant="outlined" />)}
             {post.categories.length === 0 && <Chip label="no categories" variant="outlined" />}
           </Stack>
