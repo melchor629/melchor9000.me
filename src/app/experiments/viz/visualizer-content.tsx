@@ -1,7 +1,7 @@
 'use client'
 
 import { styled } from '@mui/material/styles'
-import { useLayoutEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import Container from '@/components/container'
 import PageHeader from '@/components/page-header'
 import AudioContextHelper from './audio-context-helper'
@@ -24,6 +24,15 @@ export default function VisualizerContent() {
   const [audioSource, setAudioSource] = useState<AudioBufferSourceNode | null>(null)
   const [mode, setMode] = useState<'bars' | 'wave' | 'spectogram'>('bars')
 
+  const setBuffer = useCallback((buffer: AudioBuffer | null) => {
+    setAudioBuffer(buffer)
+    setAudioSource(as => {
+      as?.stop()
+      as?.disconnect()
+      return null
+    })
+  }, [])
+
   useLayoutEffect(() => {
     const helper = new AudioContextHelper()
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -40,7 +49,7 @@ export default function VisualizerContent() {
         subtitle="Drag (to here) or select (using the below button) a compatible song and let the magic happen. Any mp3 or wav file should work fine. mp4/m4a files depend on the platform but should work fine. opus should work too. ogg/oga and flac might be work on Chrome/Firefox. m4a with ALAC should work on Safari."
       />
 
-      {helper && <VisualizerFilePicker helper={helper} setBuffer={setAudioBuffer} />}
+      {helper && <VisualizerFilePicker helper={helper} setBuffer={setBuffer} />}
 
       {helper && (
         <VisualizerControls

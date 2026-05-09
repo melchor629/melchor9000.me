@@ -39,11 +39,13 @@ export default function VisualizerControls({ buffer, context, mode, setMode, set
   }, [buffer, context, gainNode, setSource, startPosition])
 
   const stop = useCallback(() => {
-    source?.stop(0)
-    source?.disconnect()
+    if (source) {
+      source.stop(0)
+      source.disconnect()
+      setSource(null)
+    }
     setStartPosition(null)
     setStartTime(null)
-    setSource(null)
     setCurrentPosition(0)
   }, [setSource, source])
 
@@ -82,10 +84,9 @@ export default function VisualizerControls({ buffer, context, mode, setMode, set
     return () => clearInterval(id)
   }, [context, startTime, startPosition, changingPosition])
 
-  useEffect(() => {
+  if (!source && startTime) {
     stop()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [buffer])
+  }
 
   return (
     <div>
