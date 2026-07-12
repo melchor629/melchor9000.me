@@ -17,7 +17,7 @@
     "@fortawesome/fontawesome-svg-core": "^7.0.0",
     "@fortawesome/free-brands-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^3.0.0",
-    "@immich/sdk": "^2.0.0",
+    "@immich/sdk": "^3.0.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "@mui/icons-material": "^9.0.0",

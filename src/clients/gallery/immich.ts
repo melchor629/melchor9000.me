@@ -5,6 +5,7 @@ import {
   getAlbumInfo,
   getAllAlbums,
   getAssetInfo,
+  searchAssets,
   isHttpError,
   viewAsset,
 } from '@immich/sdk'
@@ -118,7 +119,7 @@ export const getAsset = async (assetId: string): Promise<Asset | null> => {
 }
 
 export const getAlbumList = async (): Promise<AlbumItem[]> => {
-  const albumList = (await handleError(() => getAllAlbums({ shared: true }))) ?? []
+  const albumList = (await handleError(() => getAllAlbums({ isShared: true }))) ?? []
   return albumList
     .map((album): AlbumItem => ({
       id: album.id,
@@ -139,6 +140,11 @@ export const getAlbum = async (albumId: string): Promise<Album | null> => {
     return null
   }
 
+  const { assets } = (await handleError(() => searchAssets({
+    metadataSearchDto: {
+      albumIds: [albumId],
+    },
+  })))!
   return {
     id: album.id,
     title: album.albumName,
@@ -148,7 +154,7 @@ export const getAlbum = async (albumId: string): Promise<Album | null> => {
     updatedAt: new Date(album.updatedAt),
     lastPhotoTakenAt: album.endDate ? new Date(album.endDate) : null,
     count: album.assetCount,
-    assets: album.assets
+    assets: assets.items
       .map((asset): AssetItem => ({
         id: asset.id,
         type: assetTypeMap[asset.type],
