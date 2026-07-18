@@ -136,14 +136,14 @@ export default function Capture({ onImageChange }: Props) {
     if (e?.target.files?.[0]) {
       setLoading(true)
       const reader = new FileReader()
-      reader.onload = () => {
+      reader.addEventListener('load', () => {
         setLoading(false)
         if (typeof reader.result === 'string') {
           setInitial(false)
           setImageToCrop(reader.result)
         }
-      }
-      reader.onerror = () => setLoading(false)
+      })
+      reader.addEventListener('error', () => setLoading(false))
       reader.readAsDataURL(e.target.files[0])
     }
   }, [])
@@ -156,7 +156,6 @@ export default function Capture({ onImageChange }: Props) {
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <Button
             component="label"
-            role={undefined}
             tabIndex={-1}
             loading={loading}
             color="inherit"

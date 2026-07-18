@@ -9,11 +9,11 @@ type Props = {
   variant?: 'fancy' | 'plain'
 }
 
-const ignoredProps = ['fit', 'noGrow', 'variant']
+const ignoredProps = new Set(['fit', 'noGrow', 'variant'])
 
 const StyledImage = styled(Image, {
   name: 'StyledImage',
-  shouldForwardProp: (propName) => typeof propName !== 'string' || !ignoredProps.includes(propName),
+  shouldForwardProp: (propName) => typeof propName !== 'string' || !ignoredProps.has(propName),
 })<Props>(({ fit }) => ({
   objectFit: fit,
   width: '100%',

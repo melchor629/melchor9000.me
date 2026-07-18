@@ -23,7 +23,7 @@ export default function Photo({
     <>
       <StyledImage
         alt={title}
-        src={url.toString()}
+        src={url}
         width={width}
         height={height}
         sizes="100vw"

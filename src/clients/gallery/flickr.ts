@@ -69,6 +69,7 @@ const doRequest = async <T>(request: Record<string, unknown>): Promise<T> => {
   return response.json() as T
 }
 
+// oxlint-disable-next-line typescript/no-unnecessary-type-parameters
 const protoFunc = <Params extends object, DataType>(method: string) =>
   (params: Params) => doRequest<DataType>({ ...(params as object), method })
 

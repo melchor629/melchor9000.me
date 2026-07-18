@@ -57,8 +57,8 @@ export default function AppBar() {
   const [chilled, setChilled] = useState(true)
   const [invisibleToolbarRef, setInvisibleToolbarRef] = useState<HTMLElement | null>(null)
   const currentRoute = useMemo(() => (
-    [...routes]
-      .sort((a, b) => (
+    routes
+      .toSorted((a, b) => (
         a.path.length === b.path.length
           ? a.path.localeCompare(b.path)
           : b.path.length - a.path.length

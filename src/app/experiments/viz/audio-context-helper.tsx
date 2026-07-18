@@ -22,8 +22,8 @@ async function readAudioFile(file: File) {
 
   const { promise, reject, resolve } = Promise.withResolvers<ArrayBuffer>()
   const reader = new FileReader()
-  reader.onload = () => resolve(reader.result as ArrayBuffer)
-  reader.onerror = () => reject(new Error(`Failed reading file: ${reader.error!.message}`, { cause: reader.error }))
+  reader.addEventListener('load', () => resolve(reader.result as ArrayBuffer))
+  reader.addEventListener('error', () => reject(new Error(`Failed reading file: ${reader.error!.message}`, { cause: reader.error })))
   reader.readAsArrayBuffer(file)
   return promise
 }

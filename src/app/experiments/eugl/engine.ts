@@ -110,7 +110,7 @@ const prepareGeometry = (width: number, height: number) => {
   }
 
   // Los ordenamos de lejos a cerca para evitar un mal rendering
-  espacio = espacio.sort((a, b) => Math.sign(Math.round(b.lengthSq() - a.lengthSq())))
+  espacio = espacio.toSorted((a, b) => Math.sign(Math.round(b.lengthSq() - a.lengthSq())))
   // Los guardamos en la GPU
   for (let i = 0; i < nEucl; i += 1) {
     positions.setXYZ(i, espacio[i].x, espacio[i].y, espacio[i].z)

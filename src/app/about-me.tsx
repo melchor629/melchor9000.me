@@ -144,7 +144,7 @@ export default function AboutMe({ random }: { readonly random: number }) {
         <Image src={image} alt="A photography of myself" />
         <FigureCaption sx={{ textAlign: 'end' }}>
           It&apos;s me -&nbsp;
-          <span role="img" aria-label="Camera emoji">📷</span>
+          <span aria-label="Camera emoji">📷</span>
           &nbsp;
           {photographer}
         </FigureCaption>

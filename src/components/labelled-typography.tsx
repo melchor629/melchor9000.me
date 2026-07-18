@@ -1,12 +1,13 @@
 'use client'
 
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, type Theme } from '@mui/material'
+import type { SystemStyleObject } from '@mui/system'
 import type { ComponentPropsWithRef } from 'react'
 
-type LabelledTypographyProps = ComponentPropsWithRef<typeof Typography> & {
+type LabelledTypographyProps = Omit<ComponentPropsWithRef<typeof Typography>, 'sx' | 'fontSize'> & {
   readonly label: string
-  readonly fontSize?: undefined
   readonly size?: 'small' | 'large'
+  readonly sx?: SystemStyleObject<Theme>
 }
 
 export default function LabelledTypography({ label, size, ...props }: LabelledTypographyProps) {
