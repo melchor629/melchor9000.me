@@ -2,10 +2,7 @@ import type { ProjectEntry } from '../types'
 
 const youtubeAudioApi = Object.freeze({
   description: 'Small API around yt-dlp.',
-  technologies: [
-    'Python',
-    'Flask',
-  ],
+  technologies: ['Python', 'Flask'],
   title: 'youtube-audio-api',
   links: {
     repo: 'https://github.com/melchor629/youtubedl-audio-api',

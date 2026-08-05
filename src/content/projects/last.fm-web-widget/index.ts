@@ -3,10 +3,7 @@ import image from './widget.png'
 
 const lastFmWebWidget = Object.freeze({
   description: 'Simple widget which shows your recent scrobblings. Customizable theme.',
-  technologies: [
-    'JavaScript',
-    'jQuery',
-  ],
+  technologies: ['JavaScript', 'jQuery'],
   title: 'LastFM Web Widget',
   image,
   links: {

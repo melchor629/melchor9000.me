@@ -20,27 +20,29 @@ $$\{(x, y, z) \in \Bbb R ^3 /-AN/10 < x < AN/10, -ALT/10 < y < ALT/10, -(ALT+AN)
 según el eje de coordenadas usados por el engine (_luego hablaremos de Three.js_). A partir de ahora llamaremos a $ALTURA - ALT$ y a $$ANCHURA - AN$$. Esos puntos se generan aleatoriamente. El código asociado a esto es:
 
 ```js
-var espacio = [];
-for(var i = 0; i < nEucl; i++) {
-    espacio.push(new THREE.Vector3(
-        Math.random() * width / 20 - width / 40,
-        Math.random() * height / 20 - height / 40,
-        -Math.random() * (width + height))
-    );
+var espacio = []
+for (var i = 0; i < nEucl; i++) {
+  espacio.push(
+    new THREE.Vector3(
+      (Math.random() * width) / 20 - width / 40,
+      (Math.random() * height) / 20 - height / 40,
+      -Math.random() * (width + height),
+    ),
+  )
 }
 
 //Los ordenamos de lejos a cerca para evitar un mal rendering
-espacio = espacio.sort(function(a, b) {
-    return Math.sign(Math.round(b.lengthSq() - a.lengthSq()));
-});
+espacio = espacio.sort(function (a, b) {
+  return Math.sign(Math.round(b.lengthSq() - a.lengthSq()))
+})
 ```
 
 Una vez tengamos todos esos puntos, solo hay que representarlos continuamente. Eso si, he puesto que si la ventana no está enfocada (_en primer plano_) entonces no renderice nada. La cámara además avanza en cada fotograba a una velocidad de $$25u/s$$. Si se sale del escenario, vuelve a empezar desde el principio.
 
 ```js
 // dejamos un margen como "delay"
-if(z > max + 50) {
-    camera.position.z = 5;
+if (z > max + 50) {
+  camera.position.z = 5
 }
 ```
 
@@ -50,73 +52,59 @@ Pero, ¿cómo hago para decirle a la GPU que tiene que representar y como? Ahi e
 
 ```javascript
 //Creamos la escena y la cámara
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+var scene = new THREE.Scene()
+var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100)
 ```
 
 Creamos una escena que contendrá todos los objetos y la cámara. Dicha cámara tendrá una representación de Perspectiva, es decir, como todas las cámaras que usamos. Con un [FOV](https://en.wikipedia.org/wiki/Field_of_view) de 45º. Y el objeto más lejano que se puede ver estará a 100 unidades (_de algo, imaginad metros_). Luego tenemos que preparar el contexto de OpenGL (WebGL):
 
 ```javascript
 //Preparamos WebGL
-var renderer = new THREE.WebGLRenderer({ alpha: true });
-var gl = renderer.context;
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x121212);
-renderer.setPixelRatio(window.devicePixelRatio);
-$('.container').first().append(renderer.domElement);
-gl.enable(gl.CULL_FACE);
-gl.enable(gl.BLEND);
-gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+var renderer = new THREE.WebGLRenderer({ alpha: true })
+var gl = renderer.context
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setClearColor(0x121212)
+renderer.setPixelRatio(window.devicePixelRatio)
+$('.container').first().append(renderer.domElement)
+gl.enable(gl.CULL_FACE)
+gl.enable(gl.BLEND)
+gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 ```
-A este contexto le indicamos que vamos a usar transparencia (`alpha: true` _y las lineas de_ `gl.enable(gl.BLEND)` _y la siguiente_) y cual va a ser el tamaño del objeto donde dibujar (_canvas_), y aplicamos algunas optimizaciones (*CULL_FACE*). Y lo más importante: añadimos el `canvas` al documento.
 
-Por que si, creo el lugar donde almacenar todas las texturas y el `TextureLoader`  de Three.js en las siguientes lineas.
+A este contexto le indicamos que vamos a usar transparencia (`alpha: true` _y las lineas de_ `gl.enable(gl.BLEND)` _y la siguiente_) y cual va a ser el tamaño del objeto donde dibujar (_canvas_), y aplicamos algunas optimizaciones (_CULL_FACE_). Y lo más importante: añadimos el `canvas` al documento.
 
-Bien, ahora empezamos a crear lo tocho del asunto: los planos y donde estarán ubicados. Yo he usado lo que se conoce como *Instancing*, no es mas que un mismo objeto renderizado varias veces (entre comillas). Esto ahorra muchas llamadas de OpenGL y hace que vaya todo más rápido. Creamos un objeto `THREE.InstancedBufferGeometry` que almacenará la geometría del plano, las coordenadas de las texturas y donde estarán todos los planos. Lo primero que hago es guardar la geometría del plano. El atributo lo llamamos `position`, esto nos permite acceder desde los Shaders a esa información (_luego veremos Shaders_). El plano está compuesto de dos triángulos (_la GPU le gustan mas los triángulos que los cuadrados_):
+Por que si, creo el lugar donde almacenar todas las texturas y el `TextureLoader` de Three.js en las siguientes lineas.
+
+Bien, ahora empezamos a crear lo tocho del asunto: los planos y donde estarán ubicados. Yo he usado lo que se conoce como _Instancing_, no es mas que un mismo objeto renderizado varias veces (entre comillas). Esto ahorra muchas llamadas de OpenGL y hace que vaya todo más rápido. Creamos un objeto `THREE.InstancedBufferGeometry` que almacenará la geometría del plano, las coordenadas de las texturas y donde estarán todos los planos. Lo primero que hago es guardar la geometría del plano. El atributo lo llamamos `position`, esto nos permite acceder desde los Shaders a esa información (_luego veremos Shaders_). El plano está compuesto de dos triángulos (_la GPU le gustan mas los triángulos que los cuadrados_):
 
 ```javascript
 //Un plano compuesto por dos caras triangulares
-var vertices = new THREE.BufferAttribute(new Float32Array([
-  -1,  1, 0,
-  -1, -1, 0,
-   1,  1, 0,
-  -1, -1, 0,
-   1, -1, 0,
-   1,  1, 0
-]), 3);
-geometry.addAttribute('position', vertices);
+var vertices = new THREE.BufferAttribute(
+  new Float32Array([-1, 1, 0, -1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0]),
+  3,
+)
+geometry.addAttribute('position', vertices)
 ```
 
 Se indica los vértices que formarán los dos triángulos. (El dibujo es sensacional)
 
-<StyledImage
-  src={image1}
-  alt="/img/posts/plano-gl.png"
-  variant="fancy"
-/>
+<StyledImage src={image1} alt="/img/posts/plano-gl.png" variant="fancy" />
 
 En la siguientes lineas, se guardan las coordenadas para las texturas (_como representamos la textura sobre la superficie del objeto_):
 
 ```javascript
 //Las coordenadas UV para texturas
-var uv = new THREE.BufferAttribute(new Float32Array([
-    0, 1,
-    0, 0,
-    1, 1,
-    0, 0,
-    1, 0,
-    1, 1
-]), 2);
-geometry.addAttribute('uv', uv);
+var uv = new THREE.BufferAttribute(new Float32Array([0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1]), 2)
+geometry.addAttribute('uv', uv)
 ```
 
 Después de todo esto, hay que ordenar los puntos. Para renderizar bien los objetos transparentes, hay que renderizar primero los más lejanos y luego los más cercanos relativamente desde el origen. Entonces (L191):
 
 ```javascript
 //Los ordenamos de lejos a cerca para evitar un mal rendering
-espacio = espacio.sort(function(a, b) {
-    return Math.sign(Math.round(b.lengthSq() - a.lengthSq()));
-});
+espacio = espacio.sort(function (a, b) {
+  return Math.sign(Math.round(b.lengthSq() - a.lengthSq()))
+})
 ```
 
 Ordena los puntos de más lejos a mas cerca. Así evitamos que salgan planos transparentes selectivamente. Es importante guardar los vectores en la GPU :) El atributo lo hemos llamado `offset`.
@@ -165,42 +153,51 @@ void main() {
 }
 ```
 
-Este es el código del Fragment Shader.  Como extra, recibe dos argumentos que asignamos nosotros, un float opacidad y ese `sampler2D` (_es el tipo de las texturas en los Shaders_). La tarea del Fragment Shader es la de pintar la pantalla (simplificación extrema). La GPU llama a este programa para cada pixel de cada cara de cada objeto. En él hay que decirle que tiene que pintar. Este shader (el de arriba) coge la textura que se le pasa por la variable `texture` en las coordenadas `uvFrag` (mas o menos). Eso lo guardamos en la salida `gl_FragColor`. Luego cambiamos el valor alpha (_transparencia_) dependiendo del valor de _opacity_. Además, si el objeto está entrando (véase que su valor Z es mayor o igual a 90 unidades), le aplicamos una transición de entrada bonita, para que no aparezcan los planos de la nada.
+Este es el código del Fragment Shader. Como extra, recibe dos argumentos que asignamos nosotros, un float opacidad y ese `sampler2D` (_es el tipo de las texturas en los Shaders_). La tarea del Fragment Shader es la de pintar la pantalla (simplificación extrema). La GPU llama a este programa para cada pixel de cada cara de cada objeto. En él hay que decirle que tiene que pintar. Este shader (el de arriba) coge la textura que se le pasa por la variable `texture` en las coordenadas `uvFrag` (mas o menos). Eso lo guardamos en la salida `gl_FragColor`. Luego cambiamos el valor alpha (_transparencia_) dependiendo del valor de _opacity_. Además, si el objeto está entrando (véase que su valor Z es mayor o igual a 90 unidades), le aplicamos una transición de entrada bonita, para que no aparezcan los planos de la nada.
 
 Ahora solo falta juntar los dos programas para hacer Shader como tal:
 
 ```javascript
 //Cargamos el shader
 var material = new THREE.RawShaderMaterial({
-    uniforms: {
-        opacity: { value: 1.0 },
-        texture: { value: null }
-    },
-    transparent: true,
-    vertexShader: document.querySelector("#vertexShader").innerText,
-    fragmentShader: document.querySelector("#fragmentShader").innerText
-});
+  uniforms: {
+    opacity: { value: 1.0 },
+    texture: { value: null },
+  },
+  transparent: true,
+  vertexShader: document.querySelector('#vertexShader').innerText,
+  fragmentShader: document.querySelector('#fragmentShader').innerText,
+})
 ```
 
 Creamos el objeto y al escenario:
 
 ```javascript
-plane = new THREE.Mesh(geometry, material);
-plane.frustumCulled = false; //Asi no desaparece el tema
-scene.add(plane); //Todo listo
+plane = new THREE.Mesh(geometry, material)
+plane.frustumCulled = false //Asi no desaparece el tema
+scene.add(plane) //Todo listo
 ```
+
 Con esto estamos casi listos para renderizar. Solo falta cargar las texturas. Esto con texture loader es relativamente fácil:
 
 ```js
-textureLoader.load('/assets/img/eu/euklid.png', function(texture) {
-    textures.euklid = texture;
-    material.uniforms.texture.value = texture;
-    material.needsUpdate = true;
-});
-textureLoader.load('/assets/img/eu/doge.png', function(texture) { textures.doge = texture; });
-textureLoader.load('/assets/img/eu/melchor.png', function(texture) { textures.melchor = texture; });
-textureLoader.load('/assets/img/eu/pato.png', function(texture) { textures.pato = texture; });
-textureLoader.load('/assets/img/eu/fallout-pipboy.png', function(texture) { textures.fallout_pipboy = texture; });
+textureLoader.load('/assets/img/eu/euklid.png', function (texture) {
+  textures.euklid = texture
+  material.uniforms.texture.value = texture
+  material.needsUpdate = true
+})
+textureLoader.load('/assets/img/eu/doge.png', function (texture) {
+  textures.doge = texture
+})
+textureLoader.load('/assets/img/eu/melchor.png', function (texture) {
+  textures.melchor = texture
+})
+textureLoader.load('/assets/img/eu/pato.png', function (texture) {
+  textures.pato = texture
+})
+textureLoader.load('/assets/img/eu/fallout-pipboy.png', function (texture) {
+  textures.fallout_pipboy = texture
+})
 ```
 
 ## Hora de renderizar
@@ -248,10 +245,10 @@ Si se cambia el tamaño de la ventana, eso hay que manejarlo para que todo se ve
 
 ```js
 const resizeObserver = new ResizeObserver(([el]) => {
-    const { height, width } = el.contentRect
-    camera.aspect = width / height
-    camera.updateProjectionMatrix()
-    renderer.setSize(width, height)
+  const { height, width } = el.contentRect
+  camera.aspect = width / height
+  camera.updateProjectionMatrix()
+  renderer.setSize(width, height)
 })
 // referencia al div donde está el canvas, si ese cambia, cambiamos el canvas
 resizeObserver.observe(container, { box: 'content-box' })
@@ -263,19 +260,19 @@ return resizeObserver
 > Nota: esta parte está algo cambiada, ver siguiente sección.
 
 ```javascript
-document.querySelector('#customImg').addEventListener('change', function() {
-    if(this.files && this.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            textureLoader.load(e.target.result, function(texture) {
-                if(textures.custom) textures.custom.dispose();
-                textures.custom = texture;
-                material.uniforms.texture.value = texture;
-            });
-        };
-        reader.readAsDataURL(this.files[0]);
+document.querySelector('#customImg').addEventListener('change', function () {
+  if (this.files && this.files[0]) {
+    var reader = new FileReader()
+    reader.onload = function (e) {
+      textureLoader.load(e.target.result, function (texture) {
+        if (textures.custom) textures.custom.dispose()
+        textures.custom = texture
+        material.uniforms.texture.value = texture
+      })
     }
-});
+    reader.readAsDataURL(this.files[0])
+  }
+})
 ```
 
 Usando la API del DOM (el documento de la página web), esperamos a que el usuario seleccione una foto, cuando lo haya hecho, le decimos al navegador que queremos leer el archivo (`FileReader`). Cuando haya leído (`reader.onload`) es cuando tiene que decirle a Three.js que cargue la textura y la ponga como la visible. Finalmente le indicamos que lea la imagen (`reader.readAsDataURL`). `e.target.result` contiene una URL a la imagen (_pero no al archivo local_).

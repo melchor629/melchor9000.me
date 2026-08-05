@@ -8,7 +8,9 @@ interface NextLinkProps extends React.ComponentPropsWithoutRef<typeof MuiLink> {
 }
 
 const NextLink = ({ children, href, ...props }: NextLinkProps) => (
-  <MuiLink component={Link} href={href} {...props}>{children}</MuiLink>
+  <MuiLink component={Link} href={href} {...props}>
+    {children}
+  </MuiLink>
 )
 
 export default NextLink

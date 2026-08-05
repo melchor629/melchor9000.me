@@ -2,10 +2,9 @@ import type { ProjectEntry } from '../types'
 
 const traefikErrorPage = Object.freeze({
   title: 'traefik-error-page',
-  technologies: [
-    'golang',
-  ],
-  description: 'Custom middleware for Traefik that expands the oficial error middleware, with a twist.',
+  technologies: ['golang'],
+  description:
+    'Custom middleware for Traefik that expands the oficial error middleware, with a twist.',
   links: {
     repo: 'https://github.com/melchor629/traefik-error-page',
   },

@@ -4,7 +4,11 @@ import NowListening from '../now-listening'
 
 export const instant = false
 
-export async function generateMetadata({ params }: { params: Promise<{ user: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ user: string }>
+}): Promise<Metadata> {
   const { user } = await params
   return {
     title: 'Now Listening',
@@ -12,8 +16,10 @@ export async function generateMetadata({ params }: { params: Promise<{ user: str
   }
 }
 
-export default async function NowListeningOther({ params }: PageProps<'/experiments/now-listening/[user]'>) {
-  "use cache"
+export default async function NowListeningOther({
+  params,
+}: PageProps<'/experiments/now-listening/[user]'>) {
+  'use cache'
   cacheLife('minutes')
   const { user } = await params
   return <NowListening user={user} />

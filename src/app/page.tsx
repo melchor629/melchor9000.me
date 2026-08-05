@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { connection } from 'next/server'
+import { Suspense } from 'react'
 import AboutMe from './about-me'
 import Hello from './hello'
-import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Home',

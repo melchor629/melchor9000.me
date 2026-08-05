@@ -23,7 +23,10 @@ export type ProjectFiltersProps = {
     showDiscontinued: boolean
     techs: ProjectEntry['technologies']
   }
-  readonly onChange: <T extends keyof ProjectFiltersProps['values']>(name: T, value: ProjectFiltersProps['values'][T]) => void
+  readonly onChange: <T extends keyof ProjectFiltersProps['values']>(
+    name: T,
+    value: ProjectFiltersProps['values'][T],
+  ) => void
   readonly allTechs: ProjectEntry['technologies']
 }
 
@@ -53,20 +56,27 @@ export default function ProjectFilters({
           multiple
           value={techs}
           label="Techs"
-          onChange={useCallback((e: SelectChangeEvent<ProjectEntry['technologies']>) => Array.isArray(e.target.value) && onChange('techs', e.target.value), [onChange])}
-          renderValue={useCallback((selected: ProjectEntry['technologies']) => (
-            <Stack
-              direction="row"
-              sx={{
-                gap: 0.5,
-                flexWrap: 'wrap',
-              }}
-            >
-              {selected.map((value) => (
-                <Chip key={value} label={value} size="small" />
-              ))}
-            </Stack>
-          ), [])}
+          onChange={useCallback(
+            (e: SelectChangeEvent<ProjectEntry['technologies']>) =>
+              Array.isArray(e.target.value) && onChange('techs', e.target.value),
+            [onChange],
+          )}
+          renderValue={useCallback(
+            (selected: ProjectEntry['technologies']) => (
+              <Stack
+                direction="row"
+                sx={{
+                  gap: 0.5,
+                  flexWrap: 'wrap',
+                }}
+              >
+                {selected.map((value) => (
+                  <Chip key={value} label={value} size="small" />
+                ))}
+              </Stack>
+            ),
+            [],
+          )}
           MenuProps={{
             slotProps: {
               paper: {
@@ -117,13 +127,16 @@ export default function ProjectFilters({
         </MenuItem>
       </TextField>
       <FormControlLabel
-        control={(
+        control={
           <Checkbox
             size="small"
             checked={showDiscontinued}
-            onChange={useMemo(() => (e) => onChange('showDiscontinued', e.target.checked), [onChange])}
+            onChange={useMemo(
+              () => (e) => onChange('showDiscontinued', e.target.checked),
+              [onChange],
+            )}
           />
-        )}
+        }
         label="Show discontinued"
       />
     </Box>

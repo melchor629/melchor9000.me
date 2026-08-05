@@ -1,11 +1,9 @@
 'use client'
 
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import CssBaseline from '@mui/material/CssBaseline'
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript'
-import {
-  ThemeProvider as CssVarsProvider,
-} from '@mui/material/styles'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
+import { ThemeProvider as CssVarsProvider } from '@mui/material/styles'
 import theme from './theme'
 
 const ThemeProvider = ({ children }: { readonly children: React.ReactNode }) => (

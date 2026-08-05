@@ -41,9 +41,7 @@ const sysadminTechs = {
   forFun: ['Jenkins', 'Ansible'],
 }
 
-const TechStack = (
-  { techs: { forFun, primary, secondary } }: { readonly techs: typeof langs },
-) => (
+const TechStack = ({ techs: { forFun, primary, secondary } }: { readonly techs: typeof langs }) => (
   <Box
     sx={{
       display: 'flex',
@@ -54,9 +52,15 @@ const TechStack = (
       pb: '1px',
     }}
   >
-    {primary.map((l) => <Chip key={l} label={l} variant="outlined" color="primary" />)}
-    {secondary.map((l) => <Chip key={l} label={l} variant="outlined" />)}
-    {forFun.map((l) => <Chip key={l} label={l} variant="outlined" sx={{ color: 'text.secondary' }} />)}
+    {primary.map((l) => (
+      <Chip key={l} label={l} variant="outlined" color="primary" />
+    ))}
+    {secondary.map((l) => (
+      <Chip key={l} label={l} variant="outlined" />
+    ))}
+    {forFun.map((l) => (
+      <Chip key={l} label={l} variant="outlined" sx={{ color: 'text.secondary' }} />
+    ))}
   </Box>
 )
 
@@ -64,7 +68,7 @@ const KnowledgeCard = ({
   children,
   techs,
   title,
-}: React.PropsWithChildren<{ readonly title: string, readonly techs: typeof langs }>) => (
+}: React.PropsWithChildren<{ readonly title: string; readonly techs: typeof langs }>) => (
   <Card elevation={2}>
     <CardContent>
       <Typography variant="h4" gutterBottom>
@@ -96,9 +100,8 @@ export default function AboutMe({ random }: { readonly random: number }) {
           <Typography gutterBottom>
             I am a Software Engineer (Computer Science speciallization focused on Software
             development and magament), studied in&nbsp;
-            <em>Universidad de Málaga</em>
-            . My main attraction is frontend development, but I like to tinker with other languages
-            for small game development or system programming.
+            <em>Universidad de Málaga</em>. My main attraction is frontend development, but I like
+            to tinker with other languages for small game development or system programming.
           </Typography>
         </KnowledgeCard>
 

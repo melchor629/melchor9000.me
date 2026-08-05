@@ -1,6 +1,4 @@
-import {
-  Card, CardMedia, Tooltip,
-} from '@mui/material'
+import { Card, CardMedia, Tooltip } from '@mui/material'
 import { thumbHashToDataURL } from 'thumbhash'
 import CardLinkArea from '@/components/card-link-area'
 import StyledImage from '@/components/styled-image'
@@ -22,13 +20,7 @@ const popperProps = {
   ],
 }
 
-export default function GalleryPhoto({
-  albumId,
-  id,
-  thumbHash,
-  thumbUrl,
-  title,
-}: Props) {
+export default function GalleryPhoto({ albumId, id, thumbHash, thumbUrl, title }: Props) {
   return (
     <Tooltip
       title={title}
@@ -47,7 +39,9 @@ export default function GalleryPhoto({
               fill
               fit="cover"
               placeholder={thumbHash ? 'blur' : 'empty'}
-              blurDataURL={thumbHash ? thumbHashToDataURL(Buffer.from(thumbHash, 'base64')) : undefined}
+              blurDataURL={
+                thumbHash ? thumbHashToDataURL(Buffer.from(thumbHash, 'base64')) : undefined
+              }
             />
           </CardMedia>
         </CardLinkArea>

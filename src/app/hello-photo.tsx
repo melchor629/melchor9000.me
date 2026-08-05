@@ -21,19 +21,9 @@ const images = [
   },
   {
     mood: 'normal',
-    urls: [
-      normal1,
-      normal2,
-      normal3,
-      normal4,
-      normal5,
-      normal6,
-      normal7,
-      normal8,
-      normal9,
-    ],
+    urls: [normal1, normal2, normal3, normal4, normal5, normal6, normal7, normal8, normal9],
   },
-] satisfies Array<{ date?: [day: number, month: number], mood: string, urls: StaticImageData[] }>
+] satisfies Array<{ date?: [day: number, month: number]; mood: string; urls: StaticImageData[] }>
 
 const HelloPhotoContainer = styled(Box, { name: 'HelloPhotoContainer' })(({ theme }) => ({
   marginTop: theme.spacing(2),
@@ -61,10 +51,13 @@ export default function HelloPhoto({ random }: { readonly random: number }) {
     return url
   }, [mood, imageNum])
 
-  const nextPhoto = useCallback((e: React.MouseEvent<HTMLImageElement>) => {
-    e.preventDefault()
-    setImageNum((v) => (v + 1) % mood.urls.length)
-  }, [mood.urls.length])
+  const nextPhoto = useCallback(
+    (e: React.MouseEvent<HTMLImageElement>) => {
+      e.preventDefault()
+      setImageNum((v) => (v + 1) % mood.urls.length)
+    },
+    [mood.urls.length],
+  )
 
   return (
     <HelloPhotoContainer>

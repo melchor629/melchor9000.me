@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from 'next'
+import { Suspense } from 'react'
 import AppBar, { AppBarSkeleton } from '@/components/app-bar'
 import Providers from '@/components/providers'
 import { publicUrl } from '@/config'
 import { robotoFlex, robotoMono } from '@/theme/fonts'
-import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: {

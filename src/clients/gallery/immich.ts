@@ -9,12 +9,7 @@ import {
   isHttpError,
   viewAsset,
 } from '@immich/sdk'
-import type {
-  AssetItem,
-  Asset,
-  AlbumItem,
-  Album,
-} from './types'
+import type { AssetItem, Asset, AlbumItem, Album } from './types'
 
 const immichUrl = process.env.IMMICH_URL
 const immichApiKey = process.env.IMMICH_API_KEY
@@ -45,8 +40,13 @@ const handleError = async <T>(fn: () => Promise<T>, retries = maxRetries): Promi
   } catch (ex) {
     if (isHttpError(ex) && ex.status === 404) {
       return null
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    } else if (retries > 0 && ex instanceof TypeError && ex.cause instanceof AggregateError && ex.cause.errors[0]?.code === 'ETIMEDOUT') {
+    } else if (
+      retries > 0 &&
+      ex instanceof TypeError &&
+      ex.cause instanceof AggregateError &&
+      // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      ex.cause.errors[0]?.code === 'ETIMEDOUT'
+    ) {
       await new Promise((resolve) => setTimeout(resolve, (maxRetries - retries) * 250))
       return await handleError(fn, retries - 1)
     }
@@ -106,15 +106,16 @@ export const getAsset = async (assetId: string): Promise<Asset | null> => {
           colorSpace: null as string | null,
         }
       : null,
-    location: asset.exifInfo?.latitude && asset.exifInfo?.longitude
-      ? {
-          latitude: asset.exifInfo.latitude,
-          longitude: asset.exifInfo.longitude,
-          city: asset.exifInfo.city || null,
-          state: asset.exifInfo.state || null,
-          country: asset.exifInfo.country || null,
-        }
-      : null,
+    location:
+      asset.exifInfo?.latitude && asset.exifInfo?.longitude
+        ? {
+            latitude: asset.exifInfo.latitude,
+            longitude: asset.exifInfo.longitude,
+            city: asset.exifInfo.city || null,
+            state: asset.exifInfo.state || null,
+            country: asset.exifInfo.country || null,
+          }
+        : null,
   }
 }
 
@@ -140,11 +141,13 @@ export const getAlbum = async (albumId: string): Promise<Album | null> => {
     return null
   }
 
-  const { assets } = (await handleError(() => searchAssets({
-    metadataSearchDto: {
-      albumIds: [albumId],
-    },
-  })))!
+  const { assets } = (await handleError(() =>
+    searchAssets({
+      metadataSearchDto: {
+        albumIds: [albumId],
+      },
+    }),
+  ))!
   return {
     id: album.id,
     title: album.albumName,
@@ -173,9 +176,11 @@ export const fetchAsset = async (assetId: string): Promise<Blob | null> => {
 }
 
 export const fetchAssetThumbnail = async (assetId: string): Promise<Blob | null> => {
-  const content = await handleError(() => viewAsset({
-    id: assetId,
-    size: AssetMediaSize.Thumbnail,
-  }))
+  const content = await handleError(() =>
+    viewAsset({
+      id: assetId,
+      size: AssetMediaSize.Thumbnail,
+    }),
+  )
   return content
 }

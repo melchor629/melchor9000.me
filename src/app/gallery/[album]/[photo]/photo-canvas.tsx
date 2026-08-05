@@ -3,7 +3,12 @@ import { Tooltip } from '@mui/material'
 import type { Album, Asset } from '@/clients/gallery'
 import IconButtonLink from '@/components/icon-button-link'
 import Photo from './photo'
-import { PhotoCanvasBack, PhotoCanvasNext, PhotoCanvasPrevious, PhotoCanvasRoot } from './photo-canvas.styles'
+import {
+  PhotoCanvasBack,
+  PhotoCanvasNext,
+  PhotoCanvasPrevious,
+  PhotoCanvasRoot,
+} from './photo-canvas.styles'
 
 type PhotoCanvasProps = {
   readonly album: Album
@@ -12,12 +17,7 @@ type PhotoCanvasProps = {
   readonly nextPhotoId: string | null
 }
 
-export default function PhotoCanvas({
-  album,
-  nextPhotoId,
-  photo,
-  prevPhotoId,
-}: PhotoCanvasProps) {
+export default function PhotoCanvas({ album, nextPhotoId, photo, prevPhotoId }: PhotoCanvasProps) {
   return (
     <PhotoCanvasRoot>
       <Photo
@@ -37,11 +37,7 @@ export default function PhotoCanvas({
         </IconButtonLink>
       </PhotoCanvasNext>
       <PhotoCanvasBack>
-        <Tooltip
-          title={`Back to ${album.title}`}
-          placement="right"
-          disableInteractive
-        >
+        <Tooltip title={`Back to ${album.title}`} placement="right" disableInteractive>
           <IconButtonLink href=".">
             <ArrowBack />
           </IconButtonLink>

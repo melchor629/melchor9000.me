@@ -22,7 +22,7 @@ export default melchor629Oxlint({
           rules: {
             'import/prefer-default-export': 'off',
           },
-        }
+        },
       ],
     },
   ],

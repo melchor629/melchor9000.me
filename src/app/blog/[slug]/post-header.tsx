@@ -7,7 +7,9 @@ import ShareLinks from './share-links'
 export default function PostHeader({ blogPost }: { readonly blogPost: BlogEntry }) {
   return (
     <Box component="header" sx={{ textAlign: 'center', mb: { xs: 4, md: 6 } }}>
-      <Typography variant="h2" gutterBottom>{blogPost.title}</Typography>
+      <Typography variant="h2" gutterBottom>
+        {blogPost.title}
+      </Typography>
       <Stack
         direction="row"
         sx={{
@@ -16,16 +18,12 @@ export default function PostHeader({ blogPost }: { readonly blogPost: BlogEntry 
           mb: 2,
         }}
       >
-        {blogPost.categories.map((c) => <Chip key={c} label={c} size="small" variant="outlined" />)}
+        {blogPost.categories.map((c) => (
+          <Chip key={c} label={c} size="small" variant="outlined" />
+        ))}
       </Stack>
       <PostCoverFigure>
-        <StyledImage
-          src={blogPost.cover}
-          alt="Blog post cover"
-          fill
-          fit="cover"
-          priority
-        />
+        <StyledImage src={blogPost.cover} alt="Blog post cover" fill fit="cover" priority />
       </PostCoverFigure>
       <Box
         component="section"

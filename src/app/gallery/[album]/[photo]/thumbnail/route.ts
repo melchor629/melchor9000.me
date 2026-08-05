@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { fetchAssetThumbnail } from '@/clients/gallery'
 
-type Params = { readonly params: Promise<{ album: string, photo: string }> }
+type Params = { readonly params: Promise<{ album: string; photo: string }> }
 
 export async function GET(_: NextRequest, { params }: Params) {
   const { photo } = await params

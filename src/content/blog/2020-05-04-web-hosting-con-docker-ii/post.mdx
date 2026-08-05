@@ -90,11 +90,7 @@ A continuación, desplegaremos una base de datos MariaDB (similar a MySQL) con s
 
 El resto de servidores web se irán conectando a esas redes de traefik y base de datos.
 
-<StyledImage
-  src={architectureImage}
-  alt="Architecture"
-  variant="fancy"
-/>
+<StyledImage src={architectureImage} alt="Architecture" variant="fancy" />
 
 # Manos a la obra: traefik
 
@@ -154,7 +150,7 @@ accessLog:
 providers:
   # configuramos para usar docker
   docker:
-    endpoint: "unix:///var/run/docker.sock"
+    endpoint: 'unix:///var/run/docker.sock'
     # este valor es un seguro: si se crea un contenedor, traefik no intentará configurarse para enrutar
     exposedByDefault: false
     # si un servicio tiene mas de una red, traefik escogerá siempre la que tenga ese nombre
@@ -248,8 +244,8 @@ services:
     # mejor cambiar la version manualmente
     image: traefik:v2.2
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "${TRAEFIK_CONFIG}:/etc/traefik/"
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - '${TRAEFIK_CONFIG}:/etc/traefik/'
     ports:
       - target: 80
         published: 80
@@ -260,7 +256,7 @@ services:
         protocol: tcp
         mode: host
     networks:
-      - "traefik_network"
+      - 'traefik_network'
     deploy:
       # no pongáis más de una replica, dará problemas con Let's Encrypt
       replicas: 1
@@ -268,7 +264,7 @@ services:
         condition: on-failure
       placement:
         constraints:
-          - "node.role == manager"
+          - 'node.role == manager'
 
 networks:
   traefik_network:
@@ -284,13 +280,13 @@ services:
   traefik:
     image: traefik:2.2
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "${TRAEFIK_CONFIG}:/etc/traefik/"
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
+      - '${TRAEFIK_CONFIG}:/etc/traefik/'
     networks:
       - traefik_network
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     restart: on-failure
 
 networks:
@@ -397,14 +393,14 @@ services:
           cpus: '2'
           memory: '256MB'
       labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.phpmyadmin.entrypoints=https"
-        - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.example.com`)"
-        - "traefik.http.routers.phpmyadmin.middlewares=https-headers@file"
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.phpmyadmin.entrypoints=https'
+        - 'traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.example.com`)'
+        - 'traefik.http.routers.phpmyadmin.middlewares=https-headers@file'
         # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
-        - "traefik.http.routers.phpmyadmin.tls=true"
-        - "traefik.http.routers.phpmyadmin.tls.options=default"
-        - "traefik.http.services.phpmyadmin.loadbalancer.server.port=80"
+        - 'traefik.http.routers.phpmyadmin.tls=true'
+        - 'traefik.http.routers.phpmyadmin.tls.options=default'
+        - 'traefik.http.services.phpmyadmin.loadbalancer.server.port=80'
 
 networks:
   db_network:
@@ -432,13 +428,13 @@ services:
       - traefik_network
       - db_network
     labels:
-    - "traefik.enable=true"
-    - "traefik.http.routers.phpmyadmin.entrypoints=https"
-    - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.example.com`)"
-    - "traefik.http.routers.phpmyadmin.middlewares=https-headers@file"
-    # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
-    - "traefik.http.routers.phpmyadmin.tls=true"
-    - "traefik.http.routers.phpmyadmin.tls.options=default"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.phpmyadmin.entrypoints=https'
+      - 'traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.example.com`)'
+      - 'traefik.http.routers.phpmyadmin.middlewares=https-headers@file'
+      # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
+      - 'traefik.http.routers.phpmyadmin.tls=true'
+      - 'traefik.http.routers.phpmyadmin.tls.options=default'
 
 networks:
   db_network:
@@ -488,14 +484,14 @@ services:
           cpus: '2'
           memory: '512MB'
       labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.myweb.entrypoints=https"
-        - "traefik.http.routers.myweb.rule=Host(`web.example.com`)"
-        - "traefik.http.routers.myweb.middlewares=https-headers@file"
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.myweb.entrypoints=https'
+        - 'traefik.http.routers.myweb.rule=Host(`web.example.com`)'
+        - 'traefik.http.routers.myweb.middlewares=https-headers@file'
         # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
-        - "traefik.http.routers.myweb.tls=true"
-        - "traefik.http.routers.myweb.tls.options=default"
-        - "traefik.http.services.myweb.loadbalancer.server.port=80"
+        - 'traefik.http.routers.myweb.tls=true'
+        - 'traefik.http.routers.myweb.tls.options=default'
+        - 'traefik.http.services.myweb.loadbalancer.server.port=80'
 
 networks:
   db_network:
@@ -516,13 +512,13 @@ services:
       - traefik_network
       - db_network
     labels:
-    - "traefik.enable=true"
-    - "traefik.http.routers.myweb.entrypoints=https"
-    - "traefik.http.routers.myweb.rule=Host(`web.example.com`)"
-    - "traefik.http.routers.myweb.middlewares=https-headers@file"
-    # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
-    - "traefik.http.routers.myweb.tls=true"
-    - "traefik.http.routers.myweb.tls.options=default"
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.myweb.entrypoints=https'
+      - 'traefik.http.routers.myweb.rule=Host(`web.example.com`)'
+      - 'traefik.http.routers.myweb.middlewares=https-headers@file'
+      # estos dos labels son solo si no está activado el HTTPS desde traefik.yaml
+      - 'traefik.http.routers.myweb.tls=true'
+      - 'traefik.http.routers.myweb.tls.options=default'
 
 networks:
   db_network:

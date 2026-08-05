@@ -17,15 +17,18 @@ export default function ProjectCard({ project }: { readonly project: ProjectEntr
       <CardHeader
         title={project.title}
         subheader={project.technologies.join(', ')}
-        action={(project.status.status === 'archived' && (
-          <Tooltip title={`Archived at ${project.status.finished}`} disableInteractive>
-            <Archive color="disabled" />
-          </Tooltip>
-        )) || (project.status.status === 'discontinued' && (
-          <Tooltip title={`Discontinued at ${project.status.finished}`} disableInteractive>
-            <Cancel color="disabled" />
-          </Tooltip>
-        ))}
+        action={
+          (project.status.status === 'archived' && (
+            <Tooltip title={`Archived at ${project.status.finished}`} disableInteractive>
+              <Archive color="disabled" />
+            </Tooltip>
+          )) ||
+          (project.status.status === 'discontinued' && (
+            <Tooltip title={`Discontinued at ${project.status.finished}`} disableInteractive>
+              <Cancel color="disabled" />
+            </Tooltip>
+          ))
+        }
       />
       {project.image && (
         <CardMedia component="div" sx={{ position: 'relative', pb: '50%' }}>
@@ -40,9 +43,21 @@ export default function ProjectCard({ project }: { readonly project: ProjectEntr
       )}
       <CardContent>{project.description}</CardContent>
       <CardActions>
-        {project.links.repo && <Button size="small" href={project.links.repo} target="_blank">Code</Button>}
-        {project.links.web && <Button size="small" href={project.links.web} target="_blank">Web</Button>}
-        {project.links.demo && <Button size="small" href={project.links.demo} target="_blank">Demo</Button>}
+        {project.links.repo && (
+          <Button size="small" href={project.links.repo} target="_blank">
+            Code
+          </Button>
+        )}
+        {project.links.web && (
+          <Button size="small" href={project.links.web} target="_blank">
+            Web
+          </Button>
+        )}
+        {project.links.demo && (
+          <Button size="small" href={project.links.demo} target="_blank">
+            Demo
+          </Button>
+        )}
       </CardActions>
     </Card>
   )

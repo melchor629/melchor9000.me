@@ -9,10 +9,7 @@ const speedy = Object.freeze({
     </>
   ),
   title: 'speedy',
-  technologies: [
-    'golang',
-    'Docker',
-  ],
+  technologies: ['golang', 'Docker'],
   links: {
     repo: 'https://github.com/melchor629/speedy',
   },

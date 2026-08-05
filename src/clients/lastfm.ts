@@ -31,7 +31,7 @@ export interface RecentTrackItem {
   readonly artist?: string
   readonly album?: string
   readonly title: string
-  readonly albumArtImages: ReadonlyArray<{ url: string, size: string }>
+  readonly albumArtImages: ReadonlyArray<{ url: string; size: string }>
   readonly nowPlaying: boolean
   readonly scrobbledAt: Date | null
   readonly mbid: string
@@ -62,18 +62,23 @@ export const getRecentTracks = async (username: string, count: number = 10) => {
     throw new Error(`LastFM response error: ${res.status}`)
   }
 
-  const { recenttracks: { track } } = await res.json() as { recenttracks: { track: RecentTrack[] } }
-  const mappedTracks = track.map((t): RecentTrackItem => Object.freeze({
-    artist: t.artist?.name,
-    album: t.album?.['#text'],
-    title: t.name,
-    albumArtImages: t.image?.map((i) => ({
-      url: i['#text'],
-      size: i.size,
-    })) ?? [],
-    nowPlaying: !!t['@attr']?.nowplaying,
-    scrobbledAt: t.date ? new Date(t.date.uts * 1000) : null,
-    mbid: t.mbid,
-  }))
+  const {
+    recenttracks: { track },
+  } = (await res.json()) as { recenttracks: { track: RecentTrack[] } }
+  const mappedTracks = track.map((t): RecentTrackItem =>
+    Object.freeze({
+      artist: t.artist?.name,
+      album: t.album?.['#text'],
+      title: t.name,
+      albumArtImages:
+        t.image?.map((i) => ({
+          url: i['#text'],
+          size: i.size,
+        })) ?? [],
+      nowPlaying: !!t['@attr']?.nowplaying,
+      scrobbledAt: t.date ? new Date(t.date.uts * 1000) : null,
+      mbid: t.mbid,
+    }),
+  )
   return Object.freeze(mappedTracks)
 }

@@ -3,9 +3,7 @@ import image from './asdf.png'
 
 const raytracer = Object.freeze({
   title: 'raytracer',
-  technologies: [
-    'rust',
-  ],
+  technologies: ['rust'],
   description: 'Simple CPU raytracer written in rust.',
   image,
   imageFit: 'cover',

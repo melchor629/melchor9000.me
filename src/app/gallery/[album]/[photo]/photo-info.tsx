@@ -1,16 +1,13 @@
-import {
-  Box,
-  Container,
-  Link as MuiLink,
-  Typography,
-} from '@mui/material'
+import { Box, Container, Link as MuiLink, Typography } from '@mui/material'
 import type { Asset } from '@/clients/gallery'
 import LabelledTypography from '@/components/labelled-typography'
 
 export default function PhotoInfo({ photo }: { readonly photo: Asset }) {
   return (
     <Container sx={{ py: 6 }}>
-      <Typography variant="h4" gutterBottom>{photo.title || photo.id}</Typography>
+      <Typography variant="h4" gutterBottom>
+        {photo.title || photo.id}
+      </Typography>
       {photo.description && (
         <Typography variant="subtitle1" gutterBottom>
           {photo.description}

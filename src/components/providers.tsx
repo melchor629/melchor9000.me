@@ -7,9 +7,7 @@ import ThemeProvider from '@/theme'
 export default function Providers({ children }: React.PropsWithChildren) {
   return (
     <QueryClientProvider client={useMemo(() => new QueryClient(), [])}>
-      <ThemeProvider>
-        {children}
-      </ThemeProvider>
+      <ThemeProvider>{children}</ThemeProvider>
     </QueryClientProvider>
   )
 }

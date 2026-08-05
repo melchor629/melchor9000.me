@@ -26,7 +26,7 @@ export default function VisualizerContent() {
 
   const setBuffer = useCallback((buffer: AudioBuffer | null) => {
     setAudioBuffer(buffer)
-    setAudioSource(as => {
+    setAudioSource((as) => {
       as?.stop()
       as?.disconnect()
       return null

@@ -9,15 +9,13 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
+import { styled } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import { styled } from '@mui/material/styles'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {
-  useCallback, useLayoutEffect, useMemo, useState,
-} from 'react'
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react'
 
 const StyledMuiAppBar = styled(MuiAppBar, {
   name: 'StyledMuiAppBar',
@@ -56,15 +54,17 @@ export default function AppBar() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [chilled, setChilled] = useState(true)
   const [invisibleToolbarRef, setInvisibleToolbarRef] = useState<HTMLElement | null>(null)
-  const currentRoute = useMemo(() => (
-    routes
-      .toSorted((a, b) => (
-        a.path.length === b.path.length
-          ? a.path.localeCompare(b.path)
-          : b.path.length - a.path.length
-      ))
-      .find((p) => p.path === '/' ? currentPath === '/' : currentPath.startsWith(p.path))
-  ), [currentPath])
+  const currentRoute = useMemo(
+    () =>
+      routes
+        .toSorted((a, b) =>
+          a.path.length === b.path.length
+            ? a.path.localeCompare(b.path)
+            : b.path.length - a.path.length,
+        )
+        .find((p) => (p.path === '/' ? currentPath === '/' : currentPath.startsWith(p.path))),
+    [currentPath],
+  )
 
   const handleDrawerToggle = useCallback(() => setDrawerOpen((v) => !v), [])
 
@@ -73,25 +73,25 @@ export default function AppBar() {
       return () => {}
     }
 
-    const intersectionObserver = new IntersectionObserver(([entry]) => {
-      setChilled(entry.isIntersecting)
-    }, { threshold: 0.5 })
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        setChilled(entry.isIntersecting)
+      },
+      { threshold: 0.5 },
+    )
     intersectionObserver.observe(invisibleToolbarRef)
     return () => intersectionObserver.disconnect()
   }, [invisibleToolbarRef])
 
   return (
     <>
-      <StyledMuiAppBar
-        component="nav"
-        className={chilled ? 'chilled' : ''}
-      >
+      <StyledMuiAppBar component="nav" className={chilled ? 'chilled' : ''}>
         <Toolbar variant="dense">
           <Tooltip
             open={drawerOpen}
             arrow
             placement="bottom-start"
-            title={(
+            title={
               <div>
                 <List>
                   {routes.map(({ name, path }) => (
@@ -109,7 +109,7 @@ export default function AppBar() {
                   ))}
                 </List>
               </div>
-            )}
+            }
             slotProps={{
               tooltip: {
                 sx: { padding: 0 },
@@ -136,11 +136,7 @@ export default function AppBar() {
               <MenuIcon />
             </IconButton>
           </Tooltip>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             melchor9000.me
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'inline-flex' }, columnGap: 1 }}>
@@ -166,9 +162,7 @@ export default function AppBar() {
 }
 
 export const AppBarSkeleton = () => (
-  <StyledMuiAppBar
-    component="nav"
-  >
+  <StyledMuiAppBar component="nav">
     <Toolbar variant="dense" />
   </StyledMuiAppBar>
 )

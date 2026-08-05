@@ -62,15 +62,18 @@ const withMDX = createMDX({
       ['remark-math', {}],
     ],
     rehypePlugins: [
-      ['rehype-highlight', {
-        subset: false,
-        ignoreMissing: true,
-        // NOTE: do not work in next 15 using turbo
-        /* languages: {
+      [
+        'rehype-highlight',
+        {
+          subset: false,
+          ignoreMissing: true,
+          // NOTE: do not work in next 15 using turbo
+          /* languages: {
           ...commonLanguages,
           glsl: glslLanguage,
         }, */
-      }],
+        },
+      ],
       ['rehype-katex', {}],
     ],
   },

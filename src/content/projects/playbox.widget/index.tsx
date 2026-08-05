@@ -5,16 +5,14 @@ import image from './screenshot.jpg'
 const playboxWidget = Object.freeze({
   image,
   imageFit: 'cover',
-  technologies: [
-    'JavaScript',
-    'Objective-C',
-    'Swift',
-  ],
+  technologies: ['JavaScript', 'Objective-C', 'Swift'],
   title: 'Playbox.widget',
   description: (
     <>
       Widget for&nbsp;
-      <Link href="http://tracesof.net/uebersicht/" target="_blank" rel="noreferrer">Übersicht</Link>
+      <Link href="http://tracesof.net/uebersicht/" target="_blank" rel="noreferrer">
+        Übersicht
+      </Link>
       &nbsp;which shows the album artwork, the progress and song metadata of the song you are
       listening to right now from players iTunes/Music, Spotify or VOX.
     </>

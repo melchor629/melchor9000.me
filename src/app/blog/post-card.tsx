@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Chip,
-  Stack,
-} from '@mui/material'
+import { Card, CardContent, CardHeader, CardMedia, Chip, Stack } from '@mui/material'
 import CardLinkArea from '@/components/card-link-area'
 import StyledImage from '@/components/styled-image'
 import type { BlogEntry } from '@/content/blog'
@@ -38,7 +31,9 @@ export default function PostCard({ post }: { readonly post: BlogEntry }) {
               gap: 1,
             }}
           >
-            {post.categories.map((c) => <Chip key={c} label={c} variant="outlined" />)}
+            {post.categories.map((c) => (
+              <Chip key={c} label={c} variant="outlined" />
+            ))}
             {post.categories.length === 0 && <Chip label="no categories" variant="outlined" />}
           </Stack>
         </CardContent>

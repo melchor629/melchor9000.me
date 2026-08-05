@@ -2,10 +2,9 @@ import type { ProjectEntry } from '../types'
 
 const brainfuckInRust = Object.freeze({
   title: 'brainfuck-in-rust',
-  technologies: [
-    'rust',
-  ],
-  description: 'Brainfuck esoteric language implemented in Rust. Has an interpreter and a small transpiler to C.',
+  technologies: ['rust'],
+  description:
+    'Brainfuck esoteric language implemented in Rust. Has an interpreter and a small transpiler to C.',
   links: {
     repo: 'https://github.com/melchor629/brainfuck-in-rust',
   },

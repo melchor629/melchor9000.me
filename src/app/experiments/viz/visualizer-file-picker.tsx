@@ -10,20 +10,22 @@ type VisualizerFilePickerProps = Readonly<{
   setBuffer: (buffer: AudioBuffer | null) => void
 }>
 
-const Container = styled('div')(({ theme }) => theme.unstable_sx({
-  px: 1,
-  mb: 1,
-  border: '1px dashed',
-  borderColor: 'transparent',
-  borderRadius: 1,
-  transition: theme.transitions.create('border-color', {
-    duration: theme.transitions.duration.short,
-  }),
+const Container = styled('div')(({ theme }) =>
+  theme.unstable_sx({
+    px: 1,
+    mb: 1,
+    border: '1px dashed',
+    borderColor: 'transparent',
+    borderRadius: 1,
+    transition: theme.transitions.create('border-color', {
+      duration: theme.transitions.duration.short,
+    }),
 
-  '&.dragging': {
-    borderColor: 'primary.main',
-  },
-}))
+    '&.dragging': {
+      borderColor: 'primary.main',
+    },
+  }),
+)
 
 export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFilePickerProps) {
   const [file, setFile] = useState<File | null>(null)
@@ -31,13 +33,17 @@ export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFi
   const [dragging, setDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const loadBuffer = useCallback((file: File) => {
-    setLoading(true)
-    helper.load('s', file)
-      .then(setBuffer)
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [helper, setBuffer])
+  const loadBuffer = useCallback(
+    (file: File) => {
+      setLoading(true)
+      helper
+        .load('s', file)
+        .then(setBuffer)
+        .catch(() => {})
+        .finally(() => setLoading(false))
+    },
+    [helper, setBuffer],
+  )
 
   return (
     <Container
@@ -51,16 +57,19 @@ export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFi
         e.preventDefault()
         setDragging(false)
       }, [])}
-      onDrop={useCallback((e: DragEvent) => {
-        e.preventDefault()
-        setDragging(false)
-        if (e.dataTransfer.files.length > 0) {
-          if (e.dataTransfer.files[0].type.startsWith('audio/')) {
-            setFile(e.dataTransfer.files[0])
-            loadBuffer(e.dataTransfer.files[0])
+      onDrop={useCallback(
+        (e: DragEvent) => {
+          e.preventDefault()
+          setDragging(false)
+          if (e.dataTransfer.files.length > 0) {
+            if (e.dataTransfer.files[0].type.startsWith('audio/')) {
+              setFile(e.dataTransfer.files[0])
+              loadBuffer(e.dataTransfer.files[0])
+            }
           }
-        }
-      }, [loadBuffer])}
+        },
+        [loadBuffer],
+      )}
     >
       <Button
         color="inherit"
@@ -89,13 +98,16 @@ export default function VisualizerFilePicker({ helper, setBuffer }: VisualizerFi
         type="file"
         name="sound-file"
         accept="audio/*"
-        onChange={useCallback((e: ChangeEvent<HTMLInputElement>) => {
-          const { files } = e.currentTarget
-          if (files?.length) {
-            setFile(files[0])
-            loadBuffer(files[0])
-          }
-        }, [loadBuffer])}
+        onChange={useCallback(
+          (e: ChangeEvent<HTMLInputElement>) => {
+            const { files } = e.currentTarget
+            if (files?.length) {
+              setFile(files[0])
+              loadBuffer(files[0])
+            }
+          },
+          [loadBuffer],
+        )}
       />
     </Container>
   )

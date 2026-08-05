@@ -14,10 +14,13 @@ export default function ProjectsContent({ projects }: Props) {
   const [sortBy, setSortBy] = useState('name-asc')
   const [showDiscontinued, setShowDiscontinued] = useState(false)
   const [techs, setTechs] = useState<ProjectEntry['technologies']>([])
-  const availableTechs = useMemo(() => (
-    [...new Set(projects.flatMap(([, project]) => project.technologies))]
-      .toSorted((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
-  ), [projects])
+  const availableTechs = useMemo(
+    () =>
+      [...new Set(projects.flatMap(([, project]) => project.technologies))].toSorted((a, b) =>
+        a.localeCompare(b, undefined, { sensitivity: 'base' }),
+      ),
+    [projects],
+  )
   const filteredProjects = useMemo(() => {
     let filtered = projects
     if (!showDiscontinued) {
@@ -29,12 +32,12 @@ export default function ProjectsContent({ projects }: Props) {
     }
 
     if (sortBy === 'name-asc') {
-      filtered = filtered.toSorted(
-        ([, a], [, b]) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }),
+      filtered = filtered.toSorted(([, a], [, b]) =>
+        a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }),
       )
     } else if (sortBy === 'name-desc') {
-      filtered = filtered.toSorted(
-        ([, a], [, b]) => b.title.localeCompare(a.title, undefined, { sensitivity: 'base' }),
+      filtered = filtered.toSorted(([, a], [, b]) =>
+        b.title.localeCompare(a.title, undefined, { sensitivity: 'base' }),
       )
     } else if (sortBy === 'started-asc') {
       filtered = filtered.toSorted(
@@ -66,12 +69,7 @@ export default function ProjectsContent({ projects }: Props) {
         onChange={onFilterChange}
         allTechs={availableTechs}
       />
-      <Masonry
-        columns={{ xs: 1, md: 2, lg: 3 }}
-        defaultColumns={3}
-        defaultHeight={550}
-        spacing={2}
-      >
+      <Masonry columns={{ xs: 1, md: 2, lg: 3 }} defaultColumns={3} defaultHeight={550} spacing={2}>
         {filteredProjects.map(([key, project]) => (
           <ProjectCard key={key} project={project} />
         ))}

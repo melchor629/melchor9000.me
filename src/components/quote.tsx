@@ -35,10 +35,11 @@ const BlockQuoteContent = styled('div', {
   flexGrow: 1,
 })
 
-const BlockQuote = ({ children, ...props }: ComponentPropsWithRef<'blockquote'>) =>
+const BlockQuote = ({ children, ...props }: ComponentPropsWithRef<'blockquote'>) => (
   <BlockQuoteRoot {...props}>
     <BlockQuoteIcon />
     <BlockQuoteContent>{children}</BlockQuoteContent>
   </BlockQuoteRoot>
+)
 
 export default BlockQuote

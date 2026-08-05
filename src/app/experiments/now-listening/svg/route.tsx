@@ -8,12 +8,7 @@ type NowListeningSvgProps = {
   readonly songName: string
 }
 
-const NowListeningSvg = ({
-  artistName,
-  imageUrl,
-  songName,
-  status,
-}: NowListeningSvgProps) => (
+const NowListeningSvg = ({ artistName, imageUrl, songName, status }: NowListeningSvgProps) => (
   <div
     style={{
       display: 'flex',
@@ -21,11 +16,14 @@ const NowListeningSvg = ({
       padding: '10px',
       width: '100%',
       height: '100%',
-      fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji',
+      fontFamily:
+        '-apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji',
     }}
   >
-    {/* eslint-disable-next-line @next/next/no-img-element */}
-    {imageUrl && <img src={imageUrl} alt="Album cover" style={{ width: 100, height: 100, borderRadius: 5 }} />}
+    {imageUrl && (
+      /* oxlint-disable-next-line @next/next/no-img-element */
+      <img src={imageUrl} alt="Album cover" style={{ width: 100, height: 100, borderRadius: 5 }} />
+    )}
     {!imageUrl && (
       <div
         style={{
@@ -92,12 +90,16 @@ export const GET = async (_: Request, { params }: { params: Promise<{ user?: str
     return new Response(null, { status: 404 })
   }
 
-  const track = tracks.find((t) => t.nowPlaying)
-    ?? tracks[Math.trunc(tracks.length * Math.random())]
+  const track =
+    tracks.find((t) => t.nowPlaying) ?? tracks[Math.trunc(tracks.length * Math.random())]
   return new ImageResponse(
     <NowListeningSvg
       songName={track.title}
-      status={track.scrobbledAt ? `Was playing at ${track.scrobbledAt.toLocaleString('es-ES')}:` : 'Vibing to:'}
+      status={
+        track.scrobbledAt
+          ? `Was playing at ${track.scrobbledAt.toLocaleString('es-ES')}:`
+          : 'Vibing to:'
+      }
       artistName={track.artist}
       imageUrl={track.albumArtImages.at(-1)?.url}
     />,

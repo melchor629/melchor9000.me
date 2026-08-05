@@ -3,11 +3,10 @@ import image from './dadiskactivity.png'
 
 const dadiskactivity = Object.freeze({
   image,
-  description: 'Top-bar icon for macOS that shows the read and write speed for a specific hard drive on your system.',
+  description:
+    'Top-bar icon for macOS that shows the read and write speed for a specific hard drive on your system.',
   title: 'DADiskActivity',
-  technologies: [
-    'Objective-C',
-  ],
+  technologies: ['Objective-C'],
   status: {
     started: '2013-11-01',
     finished: '2018-08-15',

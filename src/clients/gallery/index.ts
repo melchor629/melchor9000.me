@@ -15,10 +15,4 @@ function getImpl() {
 
 const impl = await getImpl()
 
-export const {
-  fetchAsset,
-  fetchAssetThumbnail,
-  getAlbum,
-  getAlbumList,
-  getAsset,
-} = impl
+export const { fetchAsset, fetchAssetThumbnail, getAlbum, getAlbumList, getAsset } = impl

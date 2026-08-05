@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
+import { cacheLife } from 'next/cache'
 import { notFound } from 'next/navigation'
 import { getAsset, getAlbum } from '@/clients/gallery'
 import PhotoCanvas from './photo-canvas'
 import PhotoInfo from './photo-info'
-import { cacheLife } from 'next/cache'
 
 type Params = PageProps<'/gallery/[album]/[photo]'>
 

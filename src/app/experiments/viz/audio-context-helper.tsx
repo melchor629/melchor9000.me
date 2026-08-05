@@ -23,7 +23,9 @@ async function readAudioFile(file: File) {
   const { promise, reject, resolve } = Promise.withResolvers<ArrayBuffer>()
   const reader = new FileReader()
   reader.addEventListener('load', () => resolve(reader.result as ArrayBuffer))
-  reader.addEventListener('error', () => reject(new Error(`Failed reading file: ${reader.error!.message}`, { cause: reader.error })))
+  reader.addEventListener('error', () =>
+    reject(new Error(`Failed reading file: ${reader.error!.message}`, { cause: reader.error })),
+  )
   reader.readAsArrayBuffer(file)
   return promise
 }
@@ -40,11 +42,7 @@ function sliceAudioBuffer(context: AudioContext, buffer: AudioBuffer, start = 0,
 
   const sampleStart = Math.round(start * buffer.sampleRate)
   const sampleLength = Math.round(((end ?? buffer.duration) - start) * buffer.sampleRate)
-  const newBuffer = context.createBuffer(
-    buffer.numberOfChannels,
-    1,
-    buffer.sampleRate,
-  )
+  const newBuffer = context.createBuffer(buffer.numberOfChannels, 1, buffer.sampleRate)
 
   for (let channel = 0; channel < buffer.numberOfChannels; channel += 1) {
     const allSamples = buffer.getChannelData(channel)
@@ -84,10 +82,17 @@ export default class AudioContextHelper {
     this.#buffers.delete(name)
   }
 
-  getNode(name: string | AudioBuffer, { end, start = 0 }: { start?: number, end?: number } = {}): AudioBufferSourceNode {
-    let buffer = typeof name === 'string'
-      ? this.#buffers.get(name) ?? ((): never => { throw new Error(`Audio ${name} has not been loaded`) })()
-      : name
+  getNode(
+    name: string | AudioBuffer,
+    { end, start = 0 }: { start?: number; end?: number } = {},
+  ): AudioBufferSourceNode {
+    let buffer =
+      typeof name === 'string'
+        ? (this.#buffers.get(name) ??
+          ((): never => {
+            throw new Error(`Audio ${name} has not been loaded`)
+          })())
+        : name
     buffer = sliceAudioBuffer(this.#context, buffer, start, end)
     const source = this.#context.createBufferSource()
     source.buffer = buffer

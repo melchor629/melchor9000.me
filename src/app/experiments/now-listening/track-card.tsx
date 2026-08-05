@@ -1,11 +1,5 @@
 import { MusicNote, Speaker } from '@mui/icons-material'
-import {
-  Box,
-  Card,
-  CardMedia,
-  Tooltip,
-  Typography,
-} from '@mui/material'
+import { Box, Card, CardMedia, Tooltip, Typography } from '@mui/material'
 import { type RecentTrackItem } from '@/clients/lastfm'
 
 export default function TrackCard({ track }: { readonly track: RecentTrackItem }) {

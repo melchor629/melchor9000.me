@@ -6,18 +6,21 @@ const youtubeAudioWeb = Object.freeze({
   description: (
     <>
       Web app which allows you to listen to Youtube videos. Developed by all members of&nbsp;
-      <Link href="https://github.com/MajorcaDevs" target="_blank" rel="noreferrer">MajorcaDevs</Link>
+      <Link href="https://github.com/MajorcaDevs" target="_blank" rel="noreferrer">
+        MajorcaDevs
+      </Link>
       &nbsp;and uses&nbsp;
-      <Link href="https://github.com/melchor629/youtubedl-audio-api" target="_blank" rel="noreferrer">
+      <Link
+        href="https://github.com/melchor629/youtubedl-audio-api"
+        target="_blank"
+        rel="noreferrer"
+      >
         youtubedl-audio-api
       </Link>
       &nbsp;project which offers the backend API for the web app to work.
     </>
   ),
-  technologies: [
-    'JavaScript',
-    'React',
-  ],
+  technologies: ['JavaScript', 'React'],
   title: 'youtubeAudio',
   image,
   imageFit: 'cover',

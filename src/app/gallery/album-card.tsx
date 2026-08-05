@@ -1,11 +1,5 @@
 import { Photo } from '@mui/icons-material'
-import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Typography,
-} from '@mui/material'
+import { Box, Card, CardContent, Chip, Typography } from '@mui/material'
 import { getAsset, type AlbumItem } from '@/clients/gallery'
 import CardLinkArea from '@/components/card-link-area'
 import AlbumCardPhoto from './album-card-photo'
@@ -34,12 +28,7 @@ export default async function AlbumCard({ album }: { readonly album: AlbumItem }
             <Typography gutterBottom variant="h6" component="div">
               {album.title}
             </Typography>
-            <Chip
-              variant="outlined"
-              size="small"
-              icon={<Photo />}
-              label={album.count}
-            />
+            <Chip variant="outlined" size="small" icon={<Photo />} label={album.count} />
           </Box>
           <Typography
             variant="body2"

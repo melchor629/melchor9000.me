@@ -11,12 +11,7 @@ type PhotoProps = {
   readonly height: number
 }
 
-export default function Photo({
-  height,
-  title,
-  url,
-  width,
-}: PhotoProps) {
+export default function Photo({ height, title, url, width }: PhotoProps) {
   const [imageLoading, setImageLoading] = useState(true)
 
   return (

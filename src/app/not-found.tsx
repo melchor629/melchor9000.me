@@ -23,10 +23,8 @@ export default function NotFound() {
         Really?
       </Typography>
       <Typography variant="subtitle1" gutterBottom color="textDisabled">
-        Whatever you are looking for is not here...
-        Try looking in another place, or go&nbsp;
-        <NextLink href="/">home</NextLink>
-        .
+        Whatever you are looking for is not here... Try looking in another place, or go&nbsp;
+        <NextLink href="/">home</NextLink>.
       </Typography>
     </Box>
   )

@@ -50,11 +50,16 @@ const Visualizer = ({ audioContext, audioSource, mode }: VisualizerProps) => {
     leave: { opacity: 0 },
   })
 
-  const getCanvasSize = useCallback((): [number, number] =>
-    container
-      ? [container.clientWidth * window.devicePixelRatio, container.clientHeight * window.devicePixelRatio]
-      : [0, 0]
-  , [container])
+  const getCanvasSize = useCallback(
+    (): [number, number] =>
+      container
+        ? [
+            container.clientWidth * window.devicePixelRatio,
+            container.clientHeight * window.devicePixelRatio,
+          ]
+        : [0, 0],
+    [container],
+  )
 
   const drawBars = useCallback(() => {
     audioAnalyzer.fftSize = 512
@@ -71,7 +76,7 @@ const Visualizer = ({ audioContext, audioSource, mode }: VisualizerProps) => {
       canvasContext.fillStyle = computedStyle.getPropertyValue('--me-palette-primary-500')
       const barWidth = width / bufferLength
       for (let i = 0; i < bufferLength; i += 1) {
-        const barHeight = height * dataArray[i] / 256
+        const barHeight = (height * dataArray[i]) / 256
         canvasContext.fillRect(i * (barWidth + 1), height - barHeight, barWidth, barHeight)
       }
 
@@ -162,9 +167,10 @@ const Visualizer = ({ audioContext, audioSource, mode }: VisualizerProps) => {
       redrawRef.current = null
     }
 
-    const finalMode = mode === 'random'
-      ? (['bars', 'wave', 'spectogram'] as const)[Math.trunc(Math.random() * 2)]
-      : mode
+    const finalMode =
+      mode === 'random'
+        ? (['bars', 'wave', 'spectogram'] as const)[Math.trunc(Math.random() * 2)]
+        : mode
     if (finalMode === 'bars' || mode == null) {
       drawBars()
     } else if (finalMode === 'wave') {
@@ -174,13 +180,16 @@ const Visualizer = ({ audioContext, audioSource, mode }: VisualizerProps) => {
     }
   }, [drawBars, drawSpectrogram, drawWave, mode])
 
-  const fillCanvasRef = useCallback((canvas: HTMLCanvasElement | null) => {
-    canvasRef.current = canvas
-    if (canvas && container) {
-      canvas.width = container.clientWidth * window.devicePixelRatio
-      canvas.height = container.clientHeight * window.devicePixelRatio
-    }
-  }, [container])
+  const fillCanvasRef = useCallback(
+    (canvas: HTMLCanvasElement | null) => {
+      canvasRef.current = canvas
+      if (canvas && container) {
+        canvas.width = container.clientWidth * window.devicePixelRatio
+        canvas.height = container.clientHeight * window.devicePixelRatio
+      }
+    },
+    [container],
+  )
 
   useLayoutEffect(() => {
     return () => {
@@ -226,12 +235,9 @@ const Visualizer = ({ audioContext, audioSource, mode }: VisualizerProps) => {
 
   return (
     <VisualizerRoot ref={setContainer}>
-      {transitions((style, value) => value && (
-        <VisualizerCanvas
-          ref={fillCanvasRef}
-          style={style}
-        />
-      ))}
+      {transitions(
+        (style, value) => value && <VisualizerCanvas ref={fillCanvasRef} style={style} />,
+      )}
     </VisualizerRoot>
   )
 }

@@ -15,10 +15,7 @@ export default async function NowListening({ user }: { readonly user: string }) 
 
   return (
     <Container>
-      <PageHeader
-        title="Now Listening"
-        subtitle={`What is ${user} listening to?`}
-      />
+      <PageHeader title="Now Listening" subtitle={`What is ${user} listening to?`} />
       <Stack sx={{ gap: 1.5 }}>
         {info.map((track) => (
           <TrackCard key={track.nowPlaying ? 'np' : +track.scrobbledAt!} track={track} />

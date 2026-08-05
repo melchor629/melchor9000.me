@@ -4,7 +4,7 @@ export const title = 'Web hosting con Docker'
 export const date = '2018-02-04T11:30:00Z'
 export const categories = ['devops', 'docker']
 
- > Espera. Un momento. ¿Web hosting con qué?
+> Espera. Un momento. ¿Web hosting con qué?
 
 Hoy vengo a hablaros sobre un reciente experimento de web hosting, semi-automatizado,
 usando la nueva tecnología en auge de los **contenedores**. Pero antes de entrar en
@@ -89,8 +89,8 @@ como método de acceso a los archivos, ya que `ftps` requiere certificados y pue
 
 Hacer un hueco en el dispositivo de almacenamiento para colocar todas las webs.
 
- > **Observación**: A partir de ahora, voy a suponer que ya sabes algo de [Docker][3],
- del a distro que has escogido y de Linux.
+> **Observación**: A partir de ahora, voy a suponer que ya sabes algo de [Docker][3],
+> del a distro que has escogido y de Linux.
 
 ## Configuración del sistema base
 
@@ -129,7 +129,7 @@ puesta en [MariaDB][8], y `PMA_HOST` que será el nombre del contenedor (luego q
 
 Para que todo vaya perfecto, usaremos una red propia. Yo lo he llamado `dbnet`. Y como
 uso `docker-compose`, para el resto de contenedores, la red es `nginxproxy_dbnet`. El nombre
-viene dado por el nombre de la carpeta + _ + nombre de la red: `nginxproxy` es el nombre de
+viene dado por el nombre de la carpeta + \_ + nombre de la red: `nginxproxy` es el nombre de
 la carpeta, y `dbnet` el nombre de la red → `nginxproxy_dbnet`.
 
 `docker-compose` permite definir varios contenedores de forma rápida y sencilla, y gestionarlos
@@ -146,17 +146,17 @@ services:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     environment:
       - DEFAULT_HOST=default.local #Esta variable de entorno dice cual es el contendor por defecto
       - ENABLE_IPV6=true #IPv6, espero pronto poderlo usar ;)
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro #Configuración extra
-      - "/etc/nginx/vhost.d/"
-      - "/usr/share/nginx/html"
-      - "/etc/nginx/certs"
+      - '/etc/nginx/vhost.d/'
+      - '/usr/share/nginx/html'
+      - '/etc/nginx/certs'
     networks:
       - dbnet
 
@@ -166,11 +166,11 @@ services:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: letsencrypt-nginx-proxy-companion
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - '/var/run/docker.sock:/var/run/docker.sock:ro'
     volumes_from:
-      - "nginx-proxy"
+      - 'nginx-proxy'
     depends_on:
-      - "nginx-proxy"
+      - 'nginx-proxy'
 
   #Máquina de pruebas, tiene el domonio whoami.local
   #Se puede probar con curl -H "Host: whoami.local" tuservidor.es
@@ -181,7 +181,7 @@ services:
     networks:
       - dbnet
     depends_on:
-      - "letsencrypt-companion"
+      - 'letsencrypt-companion'
 
   #Servidor de base de datos
   mariadb:
@@ -201,14 +201,14 @@ services:
     environment:
       - VIRTUAL_HOST=phpmyadmin.local
       - PMA_ARBITRARY=1
-      - "PMA_ABSOLUTE_URI=http://phpmyadmin.local"
+      - 'PMA_ABSOLUTE_URI=http://phpmyadmin.local'
       - MYSQL_ROOT_PASSWORD=UNA-CONTRASEÑA
       - PMA_HOST=mariadb
     networks:
       - dbnet
     depends_on:
-      - "letsencrypt-companion"
-      - "mariadb"
+      - 'letsencrypt-companion'
+      - 'mariadb'
 
 #Nuestra maravillosa red compartida
 networks:
@@ -226,9 +226,10 @@ ahi va, `my_proxy.conf`:
 server_tokens off;
 client_max_body_size 100m;
 ```
- > **Nota**: Si hubiera que usar este sistema en un entorno mas descentralizado, este archivo
-formaria parte de la imagen, y la base de datos estaria en un volumen virtual de Docker (no
-como ahora, que es compartir una carpeta real).
+
+> **Nota**: Si hubiera que usar este sistema en un entorno mas descentralizado, este archivo
+> formaria parte de la imagen, y la base de datos estaria en un volumen virtual de Docker (no
+> como ahora, que es compartir una carpeta real).
 
 Para levantar todo, solo hace falta ejecutar `docker-compose up -d` estando en el directorio
 del `.yml`. También se puede desplegar con `swarm`, aunque requiere prestar atención a la **nota**.
@@ -284,13 +285,13 @@ con [la guia de iniciación][19] de Docker
 
 Ahora es cuando podemos empezar a poner webs nuevas. Para mi servidor, sigo los siguientes pasos:
 
- 1. Creo una carpeta donde almacenar todo (en `/home`)
- 2. Creo un usuario con `useradd -g www-data -d "CARPETA" -M "NOMBRE_USUARIO"` y
- `echo -e "CONTRASEÑA\nCONTRASEÑA" | passwd "$1" > /dev/null 2>&1`
- 3. Me aseguro que toda la carpeta tiene el dueño correcto `chown -R www-data:www-data "CAREPTA"`
- 4. Creo el archivo `docker-compose.yml`
- 5. Creo un usuario y una base de datos en el servidor de base de datos
- 6. Levanto el contenedor con `docker-compose up -d`
+1.  Creo una carpeta donde almacenar todo (en `/home`)
+2.  Creo un usuario con `useradd -g www-data -d "CARPETA" -M "NOMBRE_USUARIO"` y
+    `echo -e "CONTRASEÑA\nCONTRASEÑA" | passwd "$1" > /dev/null 2>&1`
+3.  Me aseguro que toda la carpeta tiene el dueño correcto `chown -R www-data:www-data "CAREPTA"`
+4.  Creo el archivo `docker-compose.yml`
+5.  Creo un usuario y una base de datos en el servidor de base de datos
+6.  Levanto el contenedor con `docker-compose up -d`
 
 A todo esto, hay que tener en el usuario real un usuario y grupo `www-data`. Su id es 33.
 
@@ -337,11 +338,11 @@ networks:
     external: true
 ```
 
- > **Observación**: El [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security)
-es un protocolo que fuerza al navegador a usar HTTPS. Se recomienda no deshabilitarlo, pero
-en ocasiones, la web no cumple con los requisitos para que pueda estar activo (carga
-contenido por HTTP, por ejemplo) y hay que deshabilitarlo para que HTTPS funcione bien y
-carguen las webs.
+> **Observación**: El [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security)
+> es un protocolo que fuerza al navegador a usar HTTPS. Se recomienda no deshabilitarlo, pero
+> en ocasiones, la web no cumple con los requisitos para que pueda estar activo (carga
+> contenido por HTTP, por ejemplo) y hay que deshabilitarlo para que HTTPS funcione bien y
+> carguen las webs.
 
 Ahora, ya puedes gestionar tantas webs como quieras, teniendo como base un mismo servidor.
 Tan facil como arrancar con `docker-compose up -d` y parar con `docker-compose down`.
@@ -369,24 +370,24 @@ con el uso de volumenes (no _bind mounts_). También se deberia usar un servidor
 contenedor. De esta forma, se podria usar el potencial de [Docker swarm][20] e incluso de
 [Kubernetes][21].
 
-  [1]: https://en.wikipedia.org/wiki/Virtual_machine
-  [2]: https://linuxcontainers.org
-  [3]: https://www.docker.com
-  [4]: https://cloud.google.com/container-engine/
-  [5]: https://www.heroku.com
-  [6]: https://www.docker.com/community-edition#/download
-  [7]: https://www.docker.com/pricing
-  [8]: https://mariadb.com
-  [9]: https://www.phpmyadmin.net
-  [10]: https://github.com/jwilder/nginx-proxy
-  [11]: http://nginx.org
-  [12]: https://github.com/jwilder/docker-gen
-  [13]: https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
-  [14]: https://letsencrypt.org
-  [15]: https://docs.docker.com/compose/install/
-  [16]: https://jenkins.io
-  [17]: https://codex.wordpress.org/Administration_Over_SSL#Using_a_Reverse_Proxy
-  [18]: https://docs.docker.com/storage/
-  [19]: https://docs.docker.com/get-started/part2/#dockerfile
-  [20]: https://docs.docker.com/get-started/part4/
-  [21]: https://kubernetes.io
+[1]: https://en.wikipedia.org/wiki/Virtual_machine
+[2]: https://linuxcontainers.org
+[3]: https://www.docker.com
+[4]: https://cloud.google.com/container-engine/
+[5]: https://www.heroku.com
+[6]: https://www.docker.com/community-edition#/download
+[7]: https://www.docker.com/pricing
+[8]: https://mariadb.com
+[9]: https://www.phpmyadmin.net
+[10]: https://github.com/jwilder/nginx-proxy
+[11]: http://nginx.org
+[12]: https://github.com/jwilder/docker-gen
+[13]: https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
+[14]: https://letsencrypt.org
+[15]: https://docs.docker.com/compose/install/
+[16]: https://jenkins.io
+[17]: https://codex.wordpress.org/Administration_Over_SSL#Using_a_Reverse_Proxy
+[18]: https://docs.docker.com/storage/
+[19]: https://docs.docker.com/get-started/part2/#dockerfile
+[20]: https://docs.docker.com/get-started/part4/
+[21]: https://kubernetes.io

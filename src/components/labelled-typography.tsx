@@ -27,7 +27,8 @@ export default function LabelledTypography({ label, size, ...props }: LabelledTy
         {...props}
         sx={{
           ...props.sx,
-          fontSize: (size === 'small' && '0.875rem') || (size === 'large' && '1.25rem') || undefined,
+          fontSize:
+            (size === 'small' && '0.875rem') || (size === 'large' && '1.25rem') || undefined,
         }}
       />
     </Box>

@@ -1,6 +1,13 @@
 import { BarChart, Pause, PlayArrow, ShowChart, Stop } from '@mui/icons-material'
 import { Box, FormControlLabel, IconButton, Radio, RadioGroup, Slider } from '@mui/material'
-import { type ChangeEvent, type SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  type ChangeEvent,
+  type SyntheticEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 
 type VisualizerControlsProps = Readonly<{
   buffer: AudioBuffer | null
@@ -14,7 +21,14 @@ type VisualizerControlsProps = Readonly<{
 const BarIcon = <BarChart />
 const WaveIcon = <ShowChart />
 
-export default function VisualizerControls({ buffer, context, mode, setMode, setSource, source }: VisualizerControlsProps) {
+export default function VisualizerControls({
+  buffer,
+  context,
+  mode,
+  setMode,
+  setSource,
+  source,
+}: VisualizerControlsProps) {
   const [startPosition, setStartPosition] = useState<number | null>(null)
   const [startTime, setStartTime] = useState<number | null>(null)
   const [currentPosition, setCurrentPosition] = useState(0)
@@ -25,18 +39,22 @@ export default function VisualizerControls({ buffer, context, mode, setMode, set
     return node
   }, [context])
 
-  const play = useCallback((otherStartPosition?: number | SyntheticEvent) => {
-    if (!buffer) return
+  const play = useCallback(
+    (otherStartPosition?: number | SyntheticEvent) => {
+      if (!buffer) return
 
-    const source = new AudioBufferSourceNode(context, { buffer })
-    const startPos = typeof otherStartPosition === 'number' ? otherStartPosition : startPosition ?? 0
-    source.connect(gainNode)
-    source.start(0, startPos)
-    setSource(source)
-    setStartPosition(startPos)
-    setCurrentPosition(startPos)
-    setStartTime(context.currentTime)
-  }, [buffer, context, gainNode, setSource, startPosition])
+      const source = new AudioBufferSourceNode(context, { buffer })
+      const startPos =
+        typeof otherStartPosition === 'number' ? otherStartPosition : (startPosition ?? 0)
+      source.connect(gainNode)
+      source.start(0, startPos)
+      setSource(source)
+      setStartPosition(startPos)
+      setCurrentPosition(startPos)
+      setStartTime(context.currentTime)
+    },
+    [buffer, context, gainNode, setSource, startPosition],
+  )
 
   const stop = useCallback(() => {
     if (source) {
@@ -64,12 +82,15 @@ export default function VisualizerControls({ buffer, context, mode, setMode, set
     setCurrentPosition(value)
   }, [])
 
-  const changePosition = useCallback((_: Event | SyntheticEvent, value: number) => {
-    setChangingPosition(false)
-    setCurrentPosition(value)
-    source?.stop(0)
-    play(value)
-  }, [play, source])
+  const changePosition = useCallback(
+    (_: Event | SyntheticEvent, value: number) => {
+      setChangingPosition(false)
+      setCurrentPosition(value)
+      source?.stop(0)
+      play(value)
+    },
+    [play, source],
+  )
 
   useEffect(() => {
     if (startTime == null || startPosition == null || changingPosition) {
@@ -77,7 +98,7 @@ export default function VisualizerControls({ buffer, context, mode, setMode, set
     }
 
     const updater = () => {
-      setCurrentPosition((context.currentTime - startTime) + startPosition)
+      setCurrentPosition(context.currentTime - startTime + startPosition)
     }
 
     const id = setInterval(updater, 100)
@@ -110,9 +131,15 @@ export default function VisualizerControls({ buffer, context, mode, setMode, set
           valueLabelDisplay="auto"
           valueLabelFormat={useCallback((x: number) => `${Math.trunc(x * 100)}%`, [])}
           sx={{ width: '20%', minWidth: 100 }}
-          onChange={useCallback((_: Event, value: number) => {
-            gainNode.gain.exponentialRampToValueAtTime(value - 1 || 0.01, context.currentTime + 0.1)
-          }, [gainNode, context])}
+          onChange={useCallback(
+            (_: Event, value: number) => {
+              gainNode.gain.exponentialRampToValueAtTime(
+                value - 1 || 0.01,
+                context.currentTime + 0.1,
+              )
+            },
+            [gainNode, context],
+          )}
           disabled={buffer == null}
         />
       </Box>
@@ -132,12 +159,27 @@ export default function VisualizerControls({ buffer, context, mode, setMode, set
         </IconButton>
         <RadioGroup
           value={mode}
-          onChange={useCallback((e: ChangeEvent<HTMLInputElement>) => setMode(e.target.value as never), [setMode])}
+          onChange={useCallback(
+            (e: ChangeEvent<HTMLInputElement>) => setMode(e.target.value as never),
+            [setMode],
+          )}
           sx={{ flexDirection: 'row', gap: 1, '& > label': { margin: 0 } }}
         >
-          <FormControlLabel value="bars" control={<Radio icon={BarIcon} checkedIcon={BarIcon} />} label="" />
-          <FormControlLabel value="wave" control={<Radio icon={WaveIcon} checkedIcon={WaveIcon} />} label="" />
-          <FormControlLabel value="spectogram" control={<Radio icon={WaveIcon} checkedIcon={WaveIcon} />} label="" />
+          <FormControlLabel
+            value="bars"
+            control={<Radio icon={BarIcon} checkedIcon={BarIcon} />}
+            label=""
+          />
+          <FormControlLabel
+            value="wave"
+            control={<Radio icon={WaveIcon} checkedIcon={WaveIcon} />}
+            label=""
+          />
+          <FormControlLabel
+            value="spectogram"
+            control={<Radio icon={WaveIcon} checkedIcon={WaveIcon} />}
+            label=""
+          />
         </RadioGroup>
       </Box>
     </div>

@@ -1,8 +1,5 @@
 import { ArrowBack } from '@mui/icons-material'
-import {
-  Box,
-  Container, Tooltip, Typography,
-} from '@mui/material'
+import { Box, Container, Tooltip, Typography } from '@mui/material'
 import type { Metadata } from 'next'
 import { cacheLife } from 'next/cache'
 import { notFound } from 'next/navigation'
@@ -30,7 +27,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       type: 'website',
       title: `${album.title} - Gallery`,
       description: album.description,
-      images: album.coverAssetId ? `/gallery/${albumId}/${album.coverAssetId}/thumbnail` : undefined,
+      images: album.coverAssetId
+        ? `/gallery/${albumId}/${album.coverAssetId}/thumbnail`
+        : undefined,
       url: `/gallery/${albumId}`,
     },
   }
@@ -82,16 +81,18 @@ export default async function GalleryAlbum({ params }: Params) {
             rowGap: 2,
           }}
         >
-          {album.assets.filter((asset) => asset.type === 'image').map((asset) => (
-            <GalleryPhoto
-              key={asset.id}
-              albumId={albumId}
-              id={asset.id}
-              title={asset.title}
-              thumbHash={asset.thumbHash}
-              thumbUrl={`/gallery/${album.id}/${asset.id}/thumbnail`}
-            />
-          ))}
+          {album.assets
+            .filter((asset) => asset.type === 'image')
+            .map((asset) => (
+              <GalleryPhoto
+                key={asset.id}
+                albumId={albumId}
+                id={asset.id}
+                title={asset.title}
+                thumbHash={asset.thumbHash}
+                thumbUrl={`/gallery/${album.id}/${asset.id}/thumbnail`}
+              />
+            ))}
         </Box>
       </Container>
     </>

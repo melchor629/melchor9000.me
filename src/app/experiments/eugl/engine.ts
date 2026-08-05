@@ -59,54 +59,27 @@ const prepareGeometry = (width: number, height: number) => {
   geometry.instanceCount = nEucl
 
   // Plano compuesto por dos caras triangulares
-  const vertices = new BufferAttribute(new Float32Array([
-    -1,
-    1,
-    0,
-    -1,
-    -1,
-    0,
-    1,
-    1,
-    0,
-    -1,
-    -1,
-    0,
-    1,
-    -1,
-    0,
-    1,
-    1,
-    0,
-  ]), 3)
+  const vertices = new BufferAttribute(
+    new Float32Array([-1, 1, 0, -1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, 1, 1, 0]),
+    3,
+  )
   geometry.setAttribute('position', vertices)
 
   // Las coordenadas UV para texturas
-  const uv = new BufferAttribute(new Float32Array([
-    0,
-    1,
-    0,
-    0,
-    1,
-    1,
-    0,
-    0,
-    1,
-    0,
-    1,
-    1,
-  ]), 2)
+  const uv = new BufferAttribute(new Float32Array([0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1]), 2)
   geometry.setAttribute('uv', uv)
 
   // Creamos nEucl posiciones aleatorias
   const positions = new InstancedBufferAttribute(new Float32Array(nEucl * 3), 3, true, 1)
   let espacio = []
   for (let i = 0; i < nEucl; i += 1) {
-    espacio.push(new Vector3(
-      Math.random() * (width / 20) - width / 40,
-      Math.random() * (height / 20) - height / 40,
-      -Math.random() * max,
-    ))
+    espacio.push(
+      new Vector3(
+        Math.random() * (width / 20) - width / 40,
+        Math.random() * (height / 20) - height / 40,
+        -Math.random() * max,
+      ),
+    )
   }
 
   // Los ordenamos de lejos a cerca para evitar un mal rendering
@@ -144,14 +117,7 @@ const prepareMesh = (geometry: InstancedBufferGeometry, material: RawShaderMater
 
 const textureLoader = new TextureLoader()
 const prepareTextures = async () => {
-  const [
-    euklid,
-    doge,
-    melchor,
-    pato,
-    falloutPipboy,
-    thincc,
-  ] = await Promise.all([
+  const [euklid, doge, melchor, pato, falloutPipboy, thincc] = await Promise.all([
     textureLoader.loadAsync('/img/eu/euklid.png'),
     textureLoader.loadAsync('/img/eu/doge.png'),
     textureLoader.loadAsync('/img/eu/melchor.png'),
@@ -217,9 +183,8 @@ const prepareScene = (width: number, height: number, defaultTexture: Texture) =>
   return scene
 }
 
-const prepareCamera = (width: number, height: number) => (
+const prepareCamera = (width: number, height: number) =>
   new PerspectiveCamera(45, width / height, 0.1, 110)
-)
 
 const prepareResizeObserver = (
   container: HTMLElement,
@@ -279,7 +244,12 @@ const registerEventHandlers = (
         const container = canvas.parentElement!
         void container.requestFullscreen({ navigationUI: 'hide' })
       }
-    } else if (e.code === 'KeyW' || e.code === 'ArrowUp' || e.code === 'KeyS' || e.code === 'ArrowDown') {
+    } else if (
+      e.code === 'KeyW' ||
+      e.code === 'ArrowUp' ||
+      e.code === 'KeyS' ||
+      e.code === 'ArrowDown'
+    ) {
       setMoveSpeed(0)
     }
   }
@@ -348,14 +318,7 @@ const createEngine = async (container: HTMLElement, manual: boolean) => {
     const delta = (time - lastTime) / 1000
     lastTime = time
 
-    moveStuff(
-      delta,
-      scene,
-      camera,
-      width,
-      height,
-      manual ? moveSpeed : undefined,
-    )
+    moveStuff(delta, scene, camera, width, height, manual ? moveSpeed : undefined)
 
     renderer.render(scene, camera)
 

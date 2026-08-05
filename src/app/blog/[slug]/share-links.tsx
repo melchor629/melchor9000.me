@@ -1,37 +1,35 @@
 'use client'
 
-import {
-  Email as EmailIcon,
-  Link as LinkIcon,
-  Share as ShareIcon,
-} from '@mui/icons-material'
-import {
-  Box,
-  IconButton,
-  Tooltip,
-} from '@mui/material'
+import { Email as EmailIcon, Link as LinkIcon, Share as ShareIcon } from '@mui/icons-material'
+import { Box, IconButton, Tooltip } from '@mui/material'
 import { usePathname } from 'next/navigation'
 import { useCallback, useMemo } from 'react'
-import {
-  FaLinkedin,
-  FaReddit,
-  FaTelegram,
-  FaTwitter,
-  FaWhatsapp,
-} from '@/components/fa-icons'
+import { FaLinkedin, FaReddit, FaTelegram, FaTwitter, FaWhatsapp } from '@/components/fa-icons'
 
 export default function ShareLinks({ title }: { readonly title: string }) {
   const pathname = usePathname()
-  const thisUrl = useMemo(() => new URL(
-    pathname,
-    typeof window !== 'undefined' ? window.location.origin : (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3000'),
-  ).toString(), [pathname])
-  const twitterUrl = useMemo(() => `http://twitter.com/intent/tweet?${new URLSearchParams({
-    text: title,
-    url: thisUrl,
-    via: 'melchor629',
-    related: 'melchor629:Melchor Garau Madrigal',
-  })}`, [title, thisUrl])
+  const thisUrl = useMemo(
+    () =>
+      new URL(
+        pathname,
+        typeof window !== 'undefined'
+          ? window.location.origin
+          : process.env.VERCEL_PROJECT_PRODUCTION_URL
+            ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+            : 'http://localhost:3000',
+      ).toString(),
+    [pathname],
+  )
+  const twitterUrl = useMemo(
+    () =>
+      `http://twitter.com/intent/tweet?${new URLSearchParams({
+        text: title,
+        url: thisUrl,
+        via: 'melchor629',
+        related: 'melchor629:Melchor Garau Madrigal',
+      })}`,
+    [title, thisUrl],
+  )
   const telegramUrl = useMemo(() => `tg://msg_url?url=${encodeURIComponent(thisUrl)}`, [thisUrl])
   const whatsAppUrl = useMemo(
     () => `whatsapp://send?text=${encodeURIComponent(`${title}: ${thisUrl}`)}`,
@@ -66,10 +64,12 @@ export default function ShareLinks({ title }: { readonly title: string }) {
   }, [thisUrl])
 
   const share = useCallback(() => {
-    navigator.share({
-      title,
-      url: thisUrl,
-    }).catch(() => {})
+    navigator
+      .share({
+        title,
+        url: thisUrl,
+      })
+      .catch(() => {})
   }, [thisUrl, title])
 
   return (

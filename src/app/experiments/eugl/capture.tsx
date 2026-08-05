@@ -112,15 +112,17 @@ export default function Capture({ onImageChange }: Props) {
     setInitial(false)
     setLoading(true)
     new Promise((resolve) => setTimeout(resolve, 225))
-      .then(() => navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: {
-          facingMode: 'user',
-          backgroundBlur: { ideal: true },
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-        },
-      }))
+      .then(() =>
+        navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: {
+            facingMode: 'user',
+            backgroundBlur: { ideal: true },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
+        }),
+      )
       .then((stream) => {
         streamRef.current = stream
         videoRef.current!.srcObject = stream
@@ -154,18 +156,9 @@ export default function Capture({ onImageChange }: Props) {
         <CaptureButtons>
           <Button onClick={startCapture}>Take a snap!</Button>
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <Button
-            component="label"
-            tabIndex={-1}
-            loading={loading}
-            color="inherit"
-          >
+          <Button component="label" tabIndex={-1} loading={loading} color="inherit">
             Select file
-            <HiddenInput
-              type="file"
-              accept="image/*"
-              onChange={selectedFile}
-            />
+            <HiddenInput type="file" accept="image/*" onChange={selectedFile} />
           </Button>
         </CaptureButtons>
       </CaptureRoot>
@@ -176,15 +169,15 @@ export default function Capture({ onImageChange }: Props) {
     return (
       <CaptureRoot elevation={4}>
         {loading && <CircularProgress variant="indeterminate" color="primary" />}
-        <CaptureVideo
-          ref={videoRef}
-          show={!loading}
-          onClick={capture}
-        />
+        <CaptureVideo ref={videoRef} show={!loading} onClick={capture} />
         {!loading && (
           <CaptureButtons>
-            <Button color="primary" onClick={capture}>Capture!</Button>
-            <Button color="inherit" onClick={cancel}>Cancel</Button>
+            <Button color="primary" onClick={capture}>
+              Capture!
+            </Button>
+            <Button color="inherit" onClick={cancel}>
+              Cancel
+            </Button>
           </CaptureButtons>
         )}
       </CaptureRoot>
@@ -203,8 +196,12 @@ export default function Capture({ onImageChange }: Props) {
         aspectRatio={{ minimum: 1, maximum: 1 }}
       />
       <CaptureButtons>
-        <Button color="primary" onClick={crop}>Use it!</Button>
-        <Button color="inherit" onClick={cancel}>Cancel</Button>
+        <Button color="primary" onClick={crop}>
+          Use it!
+        </Button>
+        <Button color="inherit" onClick={cancel}>
+          Cancel
+        </Button>
       </CaptureButtons>
     </CaptureRoot>
   )
