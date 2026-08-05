@@ -3,7 +3,7 @@ import { Box, Container, Tooltip, Typography } from '@mui/material'
 import type { Metadata } from 'next'
 import { cacheLife } from 'next/cache'
 import { notFound } from 'next/navigation'
-import { getAlbum } from '@/clients/gallery'
+import { getAlbum, getAlbumList } from '@/clients/gallery'
 import IconButtonLink from '@/components/icon-button-link'
 import GalleryAlbumHeader from './gallery-album-header'
 import GalleryPhoto from './gallery-photo'
@@ -13,6 +13,8 @@ type Params = PageProps<'/gallery/[album]'>
 export const instant = false
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  'use cache'
+
   const { album: albumId } = await params
   const album = await getAlbum(albumId)
   if (!album) {
@@ -35,10 +37,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   }
 }
 
-/* export async function generateStaticParams(): Promise<PromiseResolvedType<Params['params']>[]> {
+export async function generateStaticParams(): Promise<Awaited<Params['params']>[]> {
   const albums = await getAlbumList()
   return albums.map((album) => ({ album: album.id }))
-} */
+}
 
 export default async function GalleryAlbum({ params }: Params) {
   'use cache'
