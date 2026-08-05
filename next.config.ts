@@ -6,6 +6,7 @@ import type { NextConfig } from 'next'
 // metadata https://www.boar.is/p/nextjs-metadata
 
 const nextConfig: NextConfig = {
+  cacheComponents: true,
   compiler: {
     emotion: false,
     removeConsole: true,

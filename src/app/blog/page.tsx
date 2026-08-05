@@ -1,9 +1,12 @@
+"use cache"
+
 import Grid from '@mui/material/Grid'
 import type { Metadata } from 'next'
 import Container from '@/components/container'
 import PageHeader from '@/components/page-header'
 import { getBlogPosts } from '@/content/blog'
 import PostCard from './post-card'
+import { cacheLife } from 'next/cache'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -11,6 +14,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Blog() {
+  cacheLife('days')
   const blogPosts = await getBlogPosts()
   return (
     <Container>

@@ -17,9 +17,10 @@ interface ProjectEntryFinishedStatus {
   readonly status: 'archived' | 'discontinued'
 }
 
-type ProjectMonthDate = '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12'
-type ProjectDayDate = '01' | '02' | '03' | '04' | '05' | '06' | '07' | '08' | '09' | '10' | '11' | '12' | '13' | '14' | '15' | '16' | '17' | '18' | '19' | '20' | '21' | '22' | '23' | '24' | '25' | '26' | '27' | '28' | '29' | '30' | '31'
-type ProjectDate = `20${number}-${ProjectMonthDate}-${ProjectDayDate}`
+type Digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+type ProjectMonthDate = Exclude<`0${Digit}` | `1${0 | 1 | 2}`, '00'>
+type ProjectDayDate = Exclude<`${0 | 1 | 2}${Digit}` | '30' | '31', '00'>
+type ProjectDate = `20${Digit}${Digit}-${ProjectMonthDate}-${ProjectDayDate}`
 type ProjectTechnology =
   | 'angular.js'
   | 'C++'

@@ -3,10 +3,11 @@ import { notFound } from 'next/navigation'
 import { getAsset, getAlbum } from '@/clients/gallery'
 import PhotoCanvas from './photo-canvas'
 import PhotoInfo from './photo-info'
+import { cacheLife } from 'next/cache'
 
-type Params = { readonly params: Promise<{ album: string, photo: string }> }
+type Params = PageProps<'/gallery/[album]/[photo]'>
 
-export const revalidate = 86400
+export const instant = false
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { album, photo: photoId } = await params
@@ -43,6 +44,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 } */
 
 export default async function GalleryPhotoAlbum({ params }: Params) {
+  'use cache'
+
+  cacheLife('days')
   const { album: albumId, photo: photoId } = await params
   const [photo, album] = await Promise.all([getAsset(photoId), getAlbum(albumId)])
 

@@ -3,8 +3,6 @@ import { fetchAsset } from '@/clients/gallery'
 
 type Params = { readonly params: Promise<{ album: string, photo: string }> }
 
-export const revalidate = 0
-
 export async function GET(_: NextRequest, { params }: Params) {
   const { photo } = await params
   const blob = await fetchAsset(photo)

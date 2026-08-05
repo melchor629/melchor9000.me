@@ -10,4 +10,3 @@ To develop in local you need node 22.x or higher. Useful commands:
 - `npm build`: builds web
 - `npm lint`: lints web
 - `npm run dev`: starts dev server
-

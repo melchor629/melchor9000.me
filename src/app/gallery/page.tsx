@@ -1,11 +1,12 @@
+'use cache'
+
 import { Box } from '@mui/material'
 import type { Metadata } from 'next'
+import { cacheLife } from 'next/cache'
 import { getAlbumList } from '@/clients/gallery'
 import Container from '@/components/container'
 import PageHeader from '@/components/page-header'
 import AlbumCard from './album-card'
-
-export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Gallery',
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Gallery() {
+  cacheLife('hours')
   const albums = await getAlbumList().catch(() => [])
 
   return (

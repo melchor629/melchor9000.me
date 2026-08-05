@@ -7,8 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint src",
-    "check": "tsc -p . --noEmit"
+    "lint": "oxlint src"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
@@ -39,17 +38,19 @@
     "remark-math": "^6.0.0",
     "three": "^0.166.1",
     "thumbhash": "^0.1.1",
-    "typescript": "^6.0.0"
+    "typescript": "^7.0.0"
   },
   "devDependencies": {
-    "@melchor629/eslint-config": "^0.4.0",
-    "@next/eslint-plugin-next": "^16.0.0",
+    "@melchor629/oxfmt-config": "^0.1.0-beta.1",
+    "@melchor629/oxlint-config": "^0.1.0-beta.2",
     "@types/mdx": "^2.0.13",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.166.0",
-    "eslint": "^9.0.0"
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.74.0",
+    "oxlint-tsgolint": "^7.0.2000"
   },
   "engines": {
     "node": "^24"

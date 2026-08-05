@@ -1,9 +1,10 @@
+import type { Metadata } from 'next'
 import Container from '@/components/container'
 import PageHeader from '@/components/page-header'
 import projects from '@/content/projects'
 import ProjectsContent from './projects-content'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Projects',
 }
 

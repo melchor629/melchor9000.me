@@ -14,6 +14,7 @@ import {
   FaTwitter,
 } from '@/components/fa-icons'
 import HelloPhoto from './hello-photo'
+import { Skeleton } from '@mui/material'
 
 const HelloContainer = styled(Box, { name: 'Hello' })(({ theme }) => ({
   minHeight: 'calc(100lvh - 48px)',
@@ -32,7 +33,7 @@ const SocialsLinkContainer = styled(Box, { name: 'Hello', slot: 'socials' })(({ 
   marginTop: theme.spacing(1),
 }))
 
-export default function Hello({ random }: { readonly random: number }) {
+export default function Hello({ random }: { readonly random?: number }) {
   return (
     <HelloContainer>
       <Typography variant="h3">
@@ -46,7 +47,8 @@ export default function Hello({ random }: { readonly random: number }) {
       >
         Melchor Garau Madrigal
       </Typography>
-      <HelloPhoto random={random} />
+      {random && <HelloPhoto random={random} />}
+      {!random && <Skeleton sx={{ width: 256, height: 256 }} variant="circular" />}
       <SocialsLinkContainer>
         <IconButton component="a" href="https://github.com/melchor629" target="_blank" rel="noreferrer">
           <FaGithub />

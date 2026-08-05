@@ -8,8 +8,6 @@ type NowListeningSvgProps = {
   readonly songName: string
 }
 
-export const revalidate = 30000
-
 const NowListeningSvg = ({
   artistName,
   imageUrl,

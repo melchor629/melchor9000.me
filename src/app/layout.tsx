@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import AppBar from '@/components/app-bar'
+import AppBar, { AppBarSkeleton } from '@/components/app-bar'
 import Providers from '@/components/providers'
 import { publicUrl } from '@/config'
 import { robotoFlex, robotoMono } from '@/theme/fonts'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: {
@@ -33,7 +34,9 @@ export default function RootLayout({ children }: React.PropsWithChildren) {
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoFlex.variable} ${robotoMono.variable}`}>
         <Providers>
-          <AppBar />
+          <Suspense fallback={<AppBarSkeleton />}>
+            <AppBar />
+          </Suspense>
           <div role="presentation" style={{ minHeight: 'calc(100lvh - 48px)' }}>
             {children}
           </div>

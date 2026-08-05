@@ -4,15 +4,16 @@ import {
   Container, Tooltip, Typography,
 } from '@mui/material'
 import type { Metadata } from 'next'
+import { cacheLife } from 'next/cache'
 import { notFound } from 'next/navigation'
 import { getAlbum } from '@/clients/gallery'
 import IconButtonLink from '@/components/icon-button-link'
 import GalleryAlbumHeader from './gallery-album-header'
 import GalleryPhoto from './gallery-photo'
 
-type Params = { readonly params: Promise<{ album: string }> }
+type Params = PageProps<'/gallery/[album]'>
 
-export const revalidate = 3600
+export const instant = false
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { album: albumId } = await params
@@ -41,6 +42,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 } */
 
 export default async function GalleryAlbum({ params }: Params) {
+  'use cache'
+
+  cacheLife('hours')
   const { album: albumId } = await params
   const album = await getAlbum(albumId)
   if (!album) {

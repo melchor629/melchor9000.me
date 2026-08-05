@@ -164,3 +164,11 @@ export default function AppBar() {
     </>
   )
 }
+
+export const AppBarSkeleton = () => (
+  <StyledMuiAppBar
+    component="nav"
+  >
+    <Toolbar variant="dense" />
+  </StyledMuiAppBar>
+)
