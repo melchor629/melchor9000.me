@@ -49,6 +49,9 @@ const nextConfig: NextConfig = {
     '@mui/material': {
       transform: '@mui/material/{{member}}',
     },
+    '@icons-pack/react-simple-icons': {
+      transform: '@icons-pack/react-simple-icons/icons/{{member}}'
+    },
   },
   output: 'standalone',
   reactStrictMode: true,

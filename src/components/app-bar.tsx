@@ -42,9 +42,9 @@ const StyledMuiAppBar = styled(MuiAppBar, {
 
 const routes = [
   { name: 'About Me', path: '/' },
-  { name: 'Blog', path: '/blog' },
   { name: 'Gallery', path: '/gallery' },
   { name: 'Projects', path: '/projects' },
+  { name: 'Blog', path: '/blog' },
   { name: 'Experiments', path: '/experiments' },
   { name: 'Support Me!', path: '/support-me' },
 ]

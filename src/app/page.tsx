@@ -3,6 +3,7 @@ import { connection } from 'next/server'
 import { Suspense } from 'react'
 import AboutMe from './about-me'
 import Hello from './hello'
+import TechStack from './tech-stack'
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -16,6 +17,7 @@ async function Home() {
   return (
     <>
       <Hello random={random} />
+      <TechStack />
       <AboutMe random={random} />
     </>
   )

@@ -1,6 +1,7 @@
 import asyncNet from './async-net'
 import brainfuckInRust from './brainfuck-in-rust'
 import butt from './butt'
+import casitaMelchor9000Me from './casita.melchor9000.me'
 import chromecasterGui from './chromecaster-gui'
 import dadiskactivity from './dadiskactivity'
 import dockerDnscryptProxy from './docker-dnscrypt-proxy'
@@ -28,6 +29,7 @@ const projects: Projects = Object.freeze({
   asyncNet,
   brainfuckInRust,
   butt,
+  casitaMelchor9000Me,
   chromecasterGui,
   dadiskactivity,
   dockerDnscryptProxy,
