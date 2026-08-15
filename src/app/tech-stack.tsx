@@ -106,7 +106,7 @@ const TechStackItem = ({ icon: Icon, label, link, size = 'medium' }: TechStackIt
   </Box>
 )
 
-const TechStackSection = ({ children }: PropsWithChildren) =>
+const TechStackSection = ({ children }: PropsWithChildren) => (
   <Box
     sx={{
       display: 'flex',
@@ -116,6 +116,7 @@ const TechStackSection = ({ children }: PropsWithChildren) =>
   >
     {children}
   </Box>
+)
 
 export default function TechStack() {
   return (
@@ -137,7 +138,12 @@ export default function TechStack() {
       >
         <TechStackSection>
           <TechStackItem label="React" icon={SiReact} link="https://react.dev" />
-          <TechStackItem label="Next.js" icon={SiNextdotjs} link="https://nextjs.org" size="small" />
+          <TechStackItem
+            label="Next.js"
+            icon={SiNextdotjs}
+            link="https://nextjs.org"
+            size="small"
+          />
           <TechStackItem
             label="React Router"
             icon={SiReactrouter}
@@ -168,12 +174,21 @@ export default function TechStack() {
           <TechStackItem label="Docker" icon={SiDocker} link="https://docker.com" size="small" />
           <TechStackItem label="AWS" icon={SiIcloud} link="https://aws.amazon.com" size="small" />
           <TechStackItem label="Kubernetes" icon={SiKubernetes} link="https://kubernetes.io" />
-          <TechStackItem label=".NET · C#" icon={SiDotnet} link="https://dotnet.microsoft.com/en-us/" />
+          <TechStackItem
+            label=".NET · C#"
+            icon={SiDotnet}
+            link="https://dotnet.microsoft.com/en-us/"
+          />
         </TechStackSection>
         <TechStackSection>
           <TechStackItem label="Vite" icon={SiVite} link="https://vite.dev" size="small" />
           <TechStackItem label="Vitest" icon={SiVitest} link="https://vitest.dev" size="small" />
-          <TechStackItem label="psql" icon={SiPostgresql} link="https://www.postgresql.org" size="small" />
+          <TechStackItem
+            label="psql"
+            icon={SiPostgresql}
+            link="https://www.postgresql.org"
+            size="small"
+          />
           <TechStackItem label="Fastify" icon={SiFastify} link="https://fastify.dev" size="small" />
           <TechStackItem label="node.js" icon={SiNodedotjs} link="https://nodejs.org" />
           <TechStackItem label="Rust" icon={SiRust} link="https://rust-lang.org" size="small" />

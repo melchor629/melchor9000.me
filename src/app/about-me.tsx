@@ -68,8 +68,8 @@ export default function AboutMe({ random }: { readonly random: number }) {
             <em>Universidad de Málaga</em> from 2014 to 2018.
           </Typography>
           <Typography gutterBottom>
-            My area of specialization is <strong>Frontend</strong> as Web developer. Still
-            I find myself trying new technologies every time to time.
+            My area of specialization is <strong>Frontend</strong> as Web developer. Still I find
+            myself trying new technologies every time to time.
           </Typography>
           <Typography>
             Other roles I participate in my work is <strong>Backend</strong> developer and
@@ -89,22 +89,16 @@ export default function AboutMe({ random }: { readonly random: number }) {
           </Typography>
         </KnowledgeCard>
 
-        <KnowledgeCard
-          title="Photographer"
-        >
+        <KnowledgeCard title="Photographer">
           <Typography gutterBottom>
             Another of my hobbies is photography. Take a look at my&nbsp;
             <NextLink href="/gallery">Gallery</NextLink>
             &nbsp;which contain some of my work.
           </Typography>
-          <Typography>
-            Currently driving a Canon EOS 1300D and OnePlus Nord 4.
-          </Typography>
+          <Typography>Currently driving a Canon EOS 1300D and OnePlus Nord 4.</Typography>
         </KnowledgeCard>
 
-        <KnowledgeCard
-          title="Music connoisieur"
-        >
+        <KnowledgeCard title="Music connoisieur">
           <Typography gutterBottom>
             I listen to quite a lot of music, of several genres. I am not a connoisieur thought.
             Look at my last.fm or Spotify for more.

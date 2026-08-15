@@ -50,7 +50,7 @@ const nextConfig: NextConfig = {
       transform: '@mui/material/{{member}}',
     },
     '@icons-pack/react-simple-icons': {
-      transform: '@icons-pack/react-simple-icons/icons/{{member}}'
+      transform: '@icons-pack/react-simple-icons/icons/{{member}}',
     },
   },
   output: 'standalone',

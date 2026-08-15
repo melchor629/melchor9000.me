@@ -1,7 +1,8 @@
 import type { ProjectEntry } from '../types'
 
 const casitaMelchor9000Me = Object.freeze({
-  description: 'Home Services hosting a variety of stuff. Using node for backend and react for frontend, with a custom-made UI library. Some services uses a hand-tailored full-stack framework for SSR.',
+  description:
+    'Home Services hosting a variety of stuff. Using node for backend and react for frontend, with a custom-made UI library. Some services uses a hand-tailored full-stack framework for SSR.',
   technologies: ['node.js', 'React', 'TypeScript'],
   title: 'casita.melchor9000.me',
   links: {
