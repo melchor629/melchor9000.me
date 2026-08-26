@@ -8,7 +8,10 @@ export default async function AlbumCard({ album }: { readonly album: AlbumItem }
   const photo = album.coverAssetId ? await getAsset(album.coverAssetId) : null
   return (
     <Card>
-      <CardLinkArea href={`/gallery/${album.id}`} sx={{ height: '100%' }}>
+      <CardLinkArea
+        href={`/gallery/${album.id}`}
+        sx={{ height: '100%' }}
+      >
         {photo && (
           <AlbumCardPhoto
             assetId={album.coverAssetId}
@@ -25,10 +28,19 @@ export default async function AlbumCard({ album }: { readonly album: AlbumItem }
               gap: 1,
             }}
           >
-            <Typography gutterBottom variant="h6" component="div">
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="div"
+            >
               {album.title}
             </Typography>
-            <Chip variant="outlined" size="small" icon={<Photo />} label={album.count} />
+            <Chip
+              variant="outlined"
+              size="small"
+              icon={<Photo />}
+              label={album.count}
+            />
           </Box>
           <Typography
             variant="body2"

@@ -11,7 +11,10 @@ export const metadata: Metadata = {
 export default function Experiments() {
   return (
     <Container>
-      <PageHeader title="Experiments" subtitle="A place where you can find dragons…" />
+      <PageHeader
+        title="Experiments"
+        subtitle="A place where you can find dragons…"
+      />
       <Stack
         sx={{
           gap: 2,

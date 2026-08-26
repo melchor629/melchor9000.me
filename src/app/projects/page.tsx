@@ -11,7 +11,10 @@ export const metadata: Metadata = {
 export default function Projects() {
   return (
     <Container>
-      <PageHeader title="Projects" subtitle="Personal projects I made or collaborated to." />
+      <PageHeader
+        title="Projects"
+        subtitle="Personal projects I made or collaborated to."
+      />
       <ProjectsContent projects={Object.entries(projects)} />
     </Container>
   )

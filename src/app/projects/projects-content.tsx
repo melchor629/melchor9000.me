@@ -69,9 +69,17 @@ export default function ProjectsContent({ projects }: Props) {
         onChange={onFilterChange}
         allTechs={availableTechs}
       />
-      <Masonry columns={{ xs: 1, md: 2, lg: 3 }} defaultColumns={3} defaultHeight={550} spacing={2}>
+      <Masonry
+        columns={{ xs: 1, md: 2, lg: 3 }}
+        defaultColumns={3}
+        defaultHeight={550}
+        spacing={2}
+      >
         {filteredProjects.map(([key, project]) => (
-          <ProjectCard key={key} project={project} />
+          <ProjectCard
+            key={key}
+            project={project}
+          />
         ))}
       </Masonry>
     </>

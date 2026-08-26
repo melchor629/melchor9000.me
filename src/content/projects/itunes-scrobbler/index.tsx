@@ -9,7 +9,11 @@ const itunesScrobbler = Object.freeze({
   description: (
     <>
       Simple and straightforward&nbsp;
-      <Link href="https://last.fm" target="_blank" rel="noreferrer">
+      <Link
+        href="https://last.fm"
+        target="_blank"
+        rel="noreferrer"
+      >
         Last.fm
       </Link>
       &nbsp;scrobbling app for macOS. Scrobbles from iTunes and Music apps, as well as VOX. The app

@@ -40,7 +40,10 @@ export default async function Gallery() {
         }}
       >
         {albums.map((album) => (
-          <AlbumCard key={album.id} album={album} />
+          <AlbumCard
+            key={album.id}
+            album={album}
+          />
         ))}
       </Box>
     </Container>

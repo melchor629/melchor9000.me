@@ -32,7 +32,10 @@ const GalleryAlbumHeader = ({ album }: { readonly album: Album }) => (
         textShadow: '0 0 6px black',
       }}
     >
-      <Typography variant="h2" gutterBottom>
+      <Typography
+        variant="h2"
+        gutterBottom
+      >
         {album.title}
       </Typography>
       <Typography variant="subtitle1">{album.description}</Typography>

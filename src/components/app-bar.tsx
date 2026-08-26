@@ -85,7 +85,10 @@ export default function AppBar() {
 
   return (
     <>
-      <StyledMuiAppBar component="nav" className={chilled ? 'chilled' : ''}>
+      <StyledMuiAppBar
+        component="nav"
+        className={chilled ? 'chilled' : ''}
+      >
         <Toolbar variant="dense">
           <Tooltip
             open={drawerOpen}
@@ -95,7 +98,10 @@ export default function AppBar() {
               <div>
                 <List>
                   {routes.map(({ name, path }) => (
-                    <ListItem key={name} disablePadding>
+                    <ListItem
+                      key={name}
+                      disablePadding
+                    >
                       <ListItemButton
                         LinkComponent={Link}
                         href={path}
@@ -136,7 +142,11 @@ export default function AppBar() {
               <MenuIcon />
             </IconButton>
           </Tooltip>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
             melchor9000.me
           </Typography>
           <Box sx={{ display: { xs: 'none', md: 'inline-flex' }, columnGap: 1 }}>
@@ -156,7 +166,10 @@ export default function AppBar() {
         </Toolbar>
       </StyledMuiAppBar>
 
-      <Toolbar ref={setInvisibleToolbarRef} variant="dense" />
+      <Toolbar
+        ref={setInvisibleToolbarRef}
+        variant="dense"
+      />
     </>
   )
 }

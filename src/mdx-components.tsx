@@ -11,16 +11,40 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
     h1: ({ ref, ...props }) => (
-      <Typography {...props} variant="h3" component="h1" gutterBottom sx={{ mt: 4 }} />
+      <Typography
+        {...props}
+        variant="h3"
+        component="h1"
+        gutterBottom
+        sx={{ mt: 4 }}
+      />
     ),
     h2: ({ ref, ...props }) => (
-      <Typography {...props} variant="h4" component="h2" gutterBottom sx={{ mt: 3 }} />
+      <Typography
+        {...props}
+        variant="h4"
+        component="h2"
+        gutterBottom
+        sx={{ mt: 3 }}
+      />
     ),
     h3: ({ ref, ...props }) => (
-      <Typography {...props} variant="h5" component="h3" gutterBottom sx={{ mt: 2 }} />
+      <Typography
+        {...props}
+        variant="h5"
+        component="h3"
+        gutterBottom
+        sx={{ mt: 2 }}
+      />
     ),
     h4: ({ ref, ...props }) => (
-      <Typography {...props} variant="h6" component="h4" gutterBottom sx={{ mt: 1.5 }} />
+      <Typography
+        {...props}
+        variant="h6"
+        component="h4"
+        gutterBottom
+        sx={{ mt: 1.5 }}
+      />
     ),
     h5: () => null,
     h6: () => null,
@@ -36,13 +60,26 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     blockquote: ({ ref, ...props }) => <BlockQuote {...props} />,
     pre: ({ ref, ...props }) => <CodeBlock {...props} />,
-    code: ({ ref, ...props }) => <Code {...props} sx={{ color: 'secondary.main' }} />,
+    code: ({ ref, ...props }) => (
+      <Code
+        {...props}
+        sx={{ color: 'secondary.main' }}
+      />
+    ),
     a: (props) =>
       // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access
       (props.href as string).startsWith('/') ? (
-        <NextLink {...props} prefetch />
+        <NextLink
+          {...props}
+          prefetch
+        />
       ) : (
-        <NextLink {...props} target="_blank" referrerPolicy="origin" rel="noopener" />
+        <NextLink
+          {...props}
+          target="_blank"
+          referrerPolicy="origin"
+          rel="noopener"
+        />
       ),
   }
 }

@@ -11,12 +11,57 @@ import { FontAwesomeIcon, type FontAwesomeIconProps } from '@fortawesome/react-f
 
 type IconProps = Omit<FontAwesomeIconProps, 'icon'>
 
-export const FaGithub = (props: IconProps) => <FontAwesomeIcon icon={faGithub} {...props} />
-export const FaInstagram = (props: IconProps) => <FontAwesomeIcon icon={faInstagram} {...props} />
-export const FaLastfm = (props: IconProps) => <FontAwesomeIcon icon={faLastfm} {...props} />
-export const FaLinkedin = (props: IconProps) => <FontAwesomeIcon icon={faLinkedin} {...props} />
-export const FaReddit = (props: IconProps) => <FontAwesomeIcon icon={faReddit} {...props} />
-export const FaSpotify = (props: IconProps) => <FontAwesomeIcon icon={faSpotify} {...props} />
-export const FaTelegram = (props: IconProps) => <FontAwesomeIcon icon={faTelegram} {...props} />
-export const FaTwitter = (props: IconProps) => <FontAwesomeIcon icon={faTwitter} {...props} />
-export const FaWhatsapp = (props: IconProps) => <FontAwesomeIcon icon={faWhatsapp} {...props} />
+export const FaGithub = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faGithub}
+    {...props}
+  />
+)
+export const FaInstagram = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faInstagram}
+    {...props}
+  />
+)
+export const FaLastfm = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faLastfm}
+    {...props}
+  />
+)
+export const FaLinkedin = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faLinkedin}
+    {...props}
+  />
+)
+export const FaReddit = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faReddit}
+    {...props}
+  />
+)
+export const FaSpotify = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faSpotify}
+    {...props}
+  />
+)
+export const FaTelegram = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faTelegram}
+    {...props}
+  />
+)
+export const FaTwitter = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faTwitter}
+    {...props}
+  />
+)
+export const FaWhatsapp = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faWhatsapp}
+    {...props}
+  />
+)

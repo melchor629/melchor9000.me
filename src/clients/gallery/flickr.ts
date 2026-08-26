@@ -382,22 +382,22 @@ export const getAsset = async (assetId: string): Promise<Asset | null> => {
           cameraMaker: utils.getString(exif.exif.find((e) => e.tag === 'Make')?.raw) || null,
           exposure: utils.getString(exif.exif.find((e) => e.tag === 'ExposureTime')?.raw) || null,
           aperture:
-            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'FNumber')?.raw)) ||
-            null,
+            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'FNumber')?.raw))
+            || null,
           iso: utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'ISO')?.raw)) || null,
           focalLength:
-            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'FocalLength')?.raw)) ||
-            null,
+            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'FocalLength')?.raw))
+            || null,
           exposureMode:
             utils.getString(exif.exif.find((e) => e.tag === 'ExposureMode')?.raw) || null,
           flash: utils.getString(exif.exif.find((e) => e.tag === 'Flash')?.raw) || null,
           colorSpace: utils.getString(exif.exif.find((e) => e.tag === 'ColorSpace')?.raw) || null,
           width:
-            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'ImageWidth')?.raw)) ||
-            null,
+            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'ImageWidth')?.raw))
+            || null,
           height:
-            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'ImageHeight')?.raw)) ||
-            null,
+            utils.toNumber(utils.getString(exif.exif.find((e) => e.tag === 'ImageHeight')?.raw))
+            || null,
           lensModel: null,
           orientation: photo.rotation.toString(),
         }
@@ -439,10 +439,10 @@ export const fetchAsset = async (assetId: string): Promise<Blob | null> => {
     sizes: { size: sizes },
   } = await getPhotoSizes({ photo_id: assetId })
   const photoSize =
-    sizes.find((p) => p.label === 'Original') ??
-    sizes.find((p) => p.label === 'Large 2048') ??
-    sizes.find((p) => p.label === 'Large 1600') ??
-    sizes.find((p) => p.label === 'Large')!
+    sizes.find((p) => p.label === 'Original')
+    ?? sizes.find((p) => p.label === 'Large 2048')
+    ?? sizes.find((p) => p.label === 'Large 1600')
+    ?? sizes.find((p) => p.label === 'Large')!
   const response = await fetch(photoSize.url)
   if (!response.ok) {
     return null

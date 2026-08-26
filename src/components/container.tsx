@@ -6,7 +6,11 @@ type Props = PropsWithChildren<{
 }>
 
 const Container = ({ children, component = 'div' }: Props) => (
-  <MuiContainer component={component} maxWidth="lg" sx={{ py: 2 }}>
+  <MuiContainer
+    component={component}
+    maxWidth="lg"
+    sx={{ py: 2 }}
+  >
     {children}
   </MuiContainer>
 )

@@ -34,7 +34,10 @@ const KnowledgeCard = ({
 }: React.PropsWithChildren<{ readonly title: string }>) => (
   <Card elevation={6}>
     <CardContent>
-      <Typography variant="h4" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+      >
         {title}
       </Typography>
       {children}
@@ -50,7 +53,10 @@ export default function AboutMe({ random }: { readonly random: number }) {
 
   return (
     <Container>
-      <Typography variant="h2" sx={{ textAlign: 'center', mt: 2, mb: 4 }}>
+      <Typography
+        variant="h2"
+        sx={{ textAlign: 'center', mt: 2, mb: 4 }}
+      >
         About me
       </Typography>
       <Box
@@ -107,7 +113,10 @@ export default function AboutMe({ random }: { readonly random: number }) {
       </Box>
 
       <Figure sx={{ mb: 8 }}>
-        <Image src={image} alt="A photography of myself" />
+        <Image
+          src={image}
+          alt="A photography of myself"
+        />
         <FigureCaption sx={{ textAlign: 'end' }}>
           It&apos;s me -&nbsp;
           <span aria-label="Camera emoji">📷</span>

@@ -6,7 +6,11 @@ const youtubeAudioWeb = Object.freeze({
   description: (
     <>
       Web app which allows you to listen to Youtube videos. Developed by all members of&nbsp;
-      <Link href="https://github.com/MajorcaDevs" target="_blank" rel="noreferrer">
+      <Link
+        href="https://github.com/MajorcaDevs"
+        target="_blank"
+        rel="noreferrer"
+      >
         MajorcaDevs
       </Link>
       &nbsp;and uses&nbsp;

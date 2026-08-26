@@ -5,7 +5,12 @@ import { styled } from '@mui/material/styles'
 import type { ComponentPropsWithRef } from 'react'
 
 const Code = styled(
-  (props: ComponentPropsWithRef<typeof Typography>) => <Typography {...props} component="code" />,
+  (props: ComponentPropsWithRef<typeof Typography>) => (
+    <Typography
+      {...props}
+      component="code"
+    />
+  ),
   {
     name: 'Code',
     slot: 'root',

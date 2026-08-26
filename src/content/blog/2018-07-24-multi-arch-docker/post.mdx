@@ -20,11 +20,19 @@ Yesterday (July 22) I was trying to make a `Dockerfile` for arm for a Go project
 
 I though "Well if these people can make docker images from Intel/AMD CPUs, there should be something to make it work... 🤔". _Googling_ a bit, I end up with these post "[Building multi-arch docker images][3]". The post starts saying something about manifests - you can look for them on the internet, seems really impressive - and how to get it work on Docker (and then says that it is already there). But, after this, `binfmt_misc` appears. WHAT IS THIS!?!?!??? After that, the post says that _Docker for macOS_ already has support for this. _Really?_ I could not believe that. I wanted to see on my own...
 
-<StyledImage src={image1} alt="Debian for armv7 on Docker for Mac" fit="none" />
+<StyledImage
+  src={image1}
+  alt="Debian for armv7 on Docker for Mac"
+  fit="none"
+/>
 
 See that? Is `Debian` image for armv7, running on macOS! Well, I wanted to try on Linux, but the result is a bit different:
 
-<StyledImage src={image2} alt="Debian for armv7 on Docker over Arch Linux" variant="fancy" />
+<StyledImage
+  src={image2}
+  alt="Debian for armv7 on Docker over Arch Linux"
+  variant="fancy"
+/>
 
 An error... Well, let's keep reading. The post continues saying that to make it work, we should run this `docker run --rm --privileged multiarch/qemu-user-static:register` and then add some qemu images on the docker files or run prepared images with that already in. It seems very complicated, isn't it? If Docker for macOS already does this, why my Linux cannot do the same? Mainly because Docker for Mac is just a Virtual Machine with Linux inside.
 
@@ -52,11 +60,19 @@ Well, now I can run containers but not build images. Moreover, running them must
 
 I though if it is possible to access to the VM inside hyperkit, maybe I could find something useful. Searching for it, I found this [incredible StackOverflow answer][7]. Well, I have to say this `screen` is quite bugged (you can't scroll), but it works, you can do things on the VM. Doing some `ls`s found this (literally this way):
 
-<StyledImage src={image4} alt="Hyperkit's VM with some interesting content" fit="none" />
+<StyledImage
+  src={image4}
+  alt="Hyperkit's VM with some interesting content"
+  fit="none"
+/>
 
 Reading `config.json` said that in `/etc/binfmt.d/` the kernel's module will find the configuration. I look for it and it doesn't exist. Then I noticed the `rootfs` and I looked inside it and it was there:
 
-<StyledImage src={image5} alt="Configuration for binfmt_misc" fit="none" />
+<StyledImage
+  src={image5}
+  alt="Configuration for binfmt_misc"
+  fit="none"
+/>
 
 Only three entries: ARMv8 64 bit, ARMv7 and PowerPC 64 bit Little Endian. After that, I quickly compared the content of this file with the one provided by the `binfmt-qemu-static` package. For the shared entries, they were similar except for the end: the VM had an `CF` at the end. According to the [kernel's documentation][8], that sections means `flags`. The `C` is related with credentials and permissions (I guess), but the `F` is interesting: disables lazy loading of the interpreter. My understand that by enabling this, the interpreter can load before the containerization of the process, and so, the kernel can find the installed binaries on the system (the real one).
 
@@ -99,7 +115,11 @@ Restart. Let's see if it works:
 
 <center>
 
-<StyledImage src={image6} alt="At last! Docker in Arch can run ARMv7 images" variant="fancy" />
+<StyledImage
+  src={image6}
+  alt="At last! Docker in Arch can run ARMv7 images"
+  variant="fancy"
+/>
 
 </center>
 

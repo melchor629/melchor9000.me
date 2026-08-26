@@ -18,11 +18,24 @@ export default async function Blog() {
   const blogPosts = await getBlogPosts()
   return (
     <Container>
-      <PageHeader title="Blog" subtitle="Posts about programming and related stuff" />
-      <Grid container rowSpacing={2} columnSpacing={1}>
+      <PageHeader
+        title="Blog"
+        subtitle="Posts about programming and related stuff"
+      />
+      <Grid
+        container
+        rowSpacing={2}
+        columnSpacing={1}
+      >
         {blogPosts.map((post) => (
-          <Grid key={post.slug} size={{ xs: 12, md: 6, lg: 4 }}>
-            <PostCard key={post.slug} post={post} />
+          <Grid
+            key={post.slug}
+            size={{ xs: 12, md: 6, lg: 4 }}
+          >
+            <PostCard
+              key={post.slug}
+              post={post}
+            />
           </Grid>
         ))}
       </Grid>

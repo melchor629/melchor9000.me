@@ -245,10 +245,10 @@ const registerEventHandlers = (
         void container.requestFullscreen({ navigationUI: 'hide' })
       }
     } else if (
-      e.code === 'KeyW' ||
-      e.code === 'ArrowUp' ||
-      e.code === 'KeyS' ||
-      e.code === 'ArrowDown'
+      e.code === 'KeyW'
+      || e.code === 'ArrowUp'
+      || e.code === 'KeyS'
+      || e.code === 'ArrowDown'
     ) {
       setMoveSpeed(0)
     }

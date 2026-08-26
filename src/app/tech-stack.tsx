@@ -121,7 +121,10 @@ const TechStackSection = ({ children }: PropsWithChildren) => (
 export default function TechStack() {
   return (
     <Container>
-      <Typography variant="h2" sx={{ textAlign: 'center', mt: 2, mb: 4 }}>
+      <Typography
+        variant="h2"
+        sx={{ textAlign: 'center', mt: 2, mb: 4 }}
+      >
         Technologies
       </Typography>
       <Box
@@ -137,7 +140,11 @@ export default function TechStack() {
         }}
       >
         <TechStackSection>
-          <TechStackItem label="React" icon={SiReact} link="https://react.dev" />
+          <TechStackItem
+            label="React"
+            icon={SiReact}
+            link="https://react.dev"
+          />
           <TechStackItem
             label="Next.js"
             icon={SiNextdotjs}
@@ -156,7 +163,12 @@ export default function TechStack() {
             link="https://tanstack.com/query/latest"
             size="small"
           />
-          <TechStackItem label="MUI" icon={SiMui} link="https://mui.com" size="small" />
+          <TechStackItem
+            label="MUI"
+            icon={SiMui}
+            link="https://mui.com"
+            size="small"
+          />
           <TechStackItem
             label="Tailwind"
             icon={SiTailwindcss}
@@ -171,9 +183,23 @@ export default function TechStack() {
           />
         </TechStackSection>
         <TechStackSection>
-          <TechStackItem label="Docker" icon={SiDocker} link="https://docker.com" size="small" />
-          <TechStackItem label="AWS" icon={SiIcloud} link="https://aws.amazon.com" size="small" />
-          <TechStackItem label="Kubernetes" icon={SiKubernetes} link="https://kubernetes.io" />
+          <TechStackItem
+            label="Docker"
+            icon={SiDocker}
+            link="https://docker.com"
+            size="small"
+          />
+          <TechStackItem
+            label="AWS"
+            icon={SiIcloud}
+            link="https://aws.amazon.com"
+            size="small"
+          />
+          <TechStackItem
+            label="Kubernetes"
+            icon={SiKubernetes}
+            link="https://kubernetes.io"
+          />
           <TechStackItem
             label=".NET · C#"
             icon={SiDotnet}
@@ -181,18 +207,47 @@ export default function TechStack() {
           />
         </TechStackSection>
         <TechStackSection>
-          <TechStackItem label="Vite" icon={SiVite} link="https://vite.dev" size="small" />
-          <TechStackItem label="Vitest" icon={SiVitest} link="https://vitest.dev" size="small" />
+          <TechStackItem
+            label="Vite"
+            icon={SiVite}
+            link="https://vite.dev"
+            size="small"
+          />
+          <TechStackItem
+            label="Vitest"
+            icon={SiVitest}
+            link="https://vitest.dev"
+            size="small"
+          />
           <TechStackItem
             label="psql"
             icon={SiPostgresql}
             link="https://www.postgresql.org"
             size="small"
           />
-          <TechStackItem label="Fastify" icon={SiFastify} link="https://fastify.dev" size="small" />
-          <TechStackItem label="node.js" icon={SiNodedotjs} link="https://nodejs.org" />
-          <TechStackItem label="Rust" icon={SiRust} link="https://rust-lang.org" size="small" />
-          <TechStackItem label="Linux" icon={SiLinux} link="https://kernel.org/" size="small" />
+          <TechStackItem
+            label="Fastify"
+            icon={SiFastify}
+            link="https://fastify.dev"
+            size="small"
+          />
+          <TechStackItem
+            label="node.js"
+            icon={SiNodedotjs}
+            link="https://nodejs.org"
+          />
+          <TechStackItem
+            label="Rust"
+            icon={SiRust}
+            link="https://rust-lang.org"
+            size="small"
+          />
+          <TechStackItem
+            label="Linux"
+            icon={SiLinux}
+            link="https://kernel.org/"
+            size="small"
+          />
         </TechStackSection>
       </Box>
     </Container>

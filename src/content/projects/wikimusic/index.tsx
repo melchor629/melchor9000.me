@@ -9,7 +9,11 @@ const wikimusic = Object.freeze({
     <>
       University project which consists in an Android app that searches information about artists,
       albums or song using&nbsp;
-      <Link href="https://lasfm.com" target="_blank" rel="noreferrer">
+      <Link
+        href="https://lasfm.com"
+        target="_blank"
+        rel="noreferrer"
+      >
         Last.FM
       </Link>
       &nbsp;API. Requieres Android 4.4 o higher.

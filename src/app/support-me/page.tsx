@@ -18,11 +18,18 @@ export default function SupportMe() {
       }}
     >
       <div>
-        <PageHeader title="Support me!" subtitle="If you like my work, pay me a coffee 😉" />
+        <PageHeader
+          title="Support me!"
+          subtitle="If you like my work, pay me a coffee 😉"
+        />
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           <div>
-            <Link href="https://ko-fi.com/G2G71SLJU" target="_blank" rel="noopener noreferrer">
+            <Link
+              href="https://ko-fi.com/G2G71SLJU"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 height={36}

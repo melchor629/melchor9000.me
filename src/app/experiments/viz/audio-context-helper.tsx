@@ -88,8 +88,8 @@ export default class AudioContextHelper {
   ): AudioBufferSourceNode {
     let buffer =
       typeof name === 'string'
-        ? (this.#buffers.get(name) ??
-          ((): never => {
+        ? (this.#buffers.get(name)
+          ?? ((): never => {
             throw new Error(`Audio ${name} has not been loaded`)
           })())
         : name

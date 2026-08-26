@@ -236,7 +236,13 @@ const Visualizer = ({ audioContext, audioSource, mode }: VisualizerProps) => {
   return (
     <VisualizerRoot ref={setContainer}>
       {transitions(
-        (style, value) => value && <VisualizerCanvas ref={fillCanvasRef} style={style} />,
+        (style, value) =>
+          value && (
+            <VisualizerCanvas
+              ref={fillCanvasRef}
+              style={style}
+            />
+          ),
       )}
     </VisualizerRoot>
   )

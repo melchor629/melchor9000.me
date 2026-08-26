@@ -27,17 +27,27 @@ export default function PhotoCanvas({ album, nextPhotoId, photo, prevPhotoId }: 
         url={`/gallery/${album.id}/${photo.id}/original`}
       />
       <PhotoCanvasPrevious>
-        <IconButtonLink href={`./${prevPhotoId}`} disabled={!prevPhotoId}>
+        <IconButtonLink
+          href={`./${prevPhotoId}`}
+          disabled={!prevPhotoId}
+        >
           <NavigateBefore />
         </IconButtonLink>
       </PhotoCanvasPrevious>
       <PhotoCanvasNext>
-        <IconButtonLink href={`./${nextPhotoId}`} disabled={!nextPhotoId}>
+        <IconButtonLink
+          href={`./${nextPhotoId}`}
+          disabled={!nextPhotoId}
+        >
           <NavigateNext />
         </IconButtonLink>
       </PhotoCanvasNext>
       <PhotoCanvasBack>
-        <Tooltip title={`Back to ${album.title}`} placement="right" disableInteractive>
+        <Tooltip
+          title={`Back to ${album.title}`}
+          placement="right"
+          disableInteractive
+        >
           <IconButtonLink href=".">
             <ArrowBack />
           </IconButtonLink>

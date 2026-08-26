@@ -73,44 +73,110 @@ export default function ShareLinks({ title }: { readonly title: string }) {
   }, [thisUrl, title])
 
   return (
-    <Box component="section" sx={{ display: 'flex', justifyContent: 'center', gap: 0.5 }}>
-      <Tooltip title="Copy link" disableInteractive>
+    <Box
+      component="section"
+      sx={{ display: 'flex', justifyContent: 'center', gap: 0.5 }}
+    >
+      <Tooltip
+        title="Copy link"
+        disableInteractive
+      >
         <IconButton onClick={copyLink}>
           <LinkIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Share post" disableInteractive>
+      <Tooltip
+        title="Share post"
+        disableInteractive
+      >
         <IconButton onClick={share}>
           <ShareIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Share on X (formely Twitter)" disableInteractive>
-        <IconButton href={twitterUrl} target="_blank" rel="noopener noreferrer">
-          <FaTwitter width={20} height={20} />
+      <Tooltip
+        title="Share on X (formely Twitter)"
+        disableInteractive
+      >
+        <IconButton
+          href={twitterUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaTwitter
+            width={20}
+            height={20}
+          />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Share on Reddit" disableInteractive>
-        <IconButton href={redditUrl} target="_blank" rel="noopener noreferrer">
-          <FaReddit width={20} height={20} />
+      <Tooltip
+        title="Share on Reddit"
+        disableInteractive
+      >
+        <IconButton
+          href={redditUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaReddit
+            width={20}
+            height={20}
+          />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Share on Telegram" disableInteractive>
-        <IconButton href={telegramUrl} target="_blank" rel="noopener noreferrer">
-          <FaTelegram width={20} height={20} />
+      <Tooltip
+        title="Share on Telegram"
+        disableInteractive
+      >
+        <IconButton
+          href={telegramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaTelegram
+            width={20}
+            height={20}
+          />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Share on WhatsApp" disableInteractive>
-        <IconButton href={whatsAppUrl} target="_blank" rel="noopener noreferrer">
-          <FaWhatsapp width={20} height={20} />
+      <Tooltip
+        title="Share on WhatsApp"
+        disableInteractive
+      >
+        <IconButton
+          href={whatsAppUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaWhatsapp
+            width={20}
+            height={20}
+          />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Share on LinkedIn" disableInteractive>
-        <IconButton href={linkedinUrl} target="_blank" rel="noopener noreferrer">
-          <FaLinkedin width={20} height={20} />
+      <Tooltip
+        title="Share on LinkedIn"
+        disableInteractive
+      >
+        <IconButton
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FaLinkedin
+            width={20}
+            height={20}
+          />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Send through email" disableInteractive>
-        <IconButton href={emailUrl} target="_blank" rel="noopener noreferrer">
+      <Tooltip
+        title="Send through email"
+        disableInteractive
+      >
+        <IconButton
+          href={emailUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <EmailIcon />
         </IconButton>
       </Tooltip>

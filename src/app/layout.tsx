@@ -31,13 +31,19 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+    >
       <body className={`${robotoFlex.variable} ${robotoMono.variable}`}>
         <Providers>
           <Suspense fallback={<AppBarSkeleton />}>
             <AppBar />
           </Suspense>
-          <div role="presentation" style={{ minHeight: 'calc(100lvh - 48px)' }}>
+          <div
+            role="presentation"
+            style={{ minHeight: 'calc(100lvh - 48px)' }}
+          >
             {children}
           </div>
         </Providers>

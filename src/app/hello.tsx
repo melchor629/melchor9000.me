@@ -46,7 +46,12 @@ export default function Hello({ random }: { readonly random?: number }) {
         Melchor Garau Madrigal
       </Typography>
       {random && <HelloPhoto random={random} />}
-      {!random && <Skeleton sx={{ width: 256, height: 256 }} variant="circular" />}
+      {!random && (
+        <Skeleton
+          sx={{ width: 256, height: 256 }}
+          variant="circular"
+        />
+      )}
       <SocialsLinkContainer>
         <IconButton
           component="a"

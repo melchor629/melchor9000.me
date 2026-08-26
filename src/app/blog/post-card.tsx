@@ -15,7 +15,10 @@ export default function PostCard({ post }: { readonly post: BlogEntry }) {
             content: { sx: { width: '100%' } },
           }}
         />
-        <CardMedia component="div" sx={{ position: 'relative', pb: '50%' }}>
+        <CardMedia
+          component="div"
+          sx={{ position: 'relative', pb: '50%' }}
+        >
           <StyledImage
             src={post.cover}
             alt={`Cover image for blog post titled ${post.title}`}
@@ -32,9 +35,18 @@ export default function PostCard({ post }: { readonly post: BlogEntry }) {
             }}
           >
             {post.categories.map((c) => (
-              <Chip key={c} label={c} variant="outlined" />
+              <Chip
+                key={c}
+                label={c}
+                variant="outlined"
+              />
             ))}
-            {post.categories.length === 0 && <Chip label="no categories" variant="outlined" />}
+            {post.categories.length === 0 && (
+              <Chip
+                label="no categories"
+                variant="outlined"
+              />
+            )}
           </Stack>
         </CardContent>
       </CardLinkArea>

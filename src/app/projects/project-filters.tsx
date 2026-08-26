@@ -49,7 +49,11 @@ export default function ProjectFilters({
         )}
         sx={{ flexGrow: 1, minWidth: 300 }}
       /> */}
-      <FormControl sx={{ flexGrow: 1, minWidth: 300 }} size="small" margin="dense">
+      <FormControl
+        sx={{ flexGrow: 1, minWidth: 300 }}
+        size="small"
+        margin="dense"
+      >
         <InputLabel htmlFor="techs">Techs</InputLabel>
         <Select
           name="techs"
@@ -71,7 +75,11 @@ export default function ProjectFilters({
                 }}
               >
                 {selected.map((value) => (
-                  <Chip key={value} label={value} size="small" />
+                  <Chip
+                    key={value}
+                    label={value}
+                    size="small"
+                  />
                 ))}
               </Stack>
             ),
@@ -86,8 +94,15 @@ export default function ProjectFilters({
           }}
         >
           {allTechs.map((tech) => (
-            <MenuItem key={tech} value={tech} sx={{ py: 0.125 }}>
-              <Checkbox checked={techs.includes(tech)} size="small" />
+            <MenuItem
+              key={tech}
+              value={tech}
+              sx={{ py: 0.125 }}
+            >
+              <Checkbox
+                checked={techs.includes(tech)}
+                size="small"
+              />
               <ListItemText primary={tech} />
             </MenuItem>
           ))}
@@ -114,16 +129,28 @@ export default function ProjectFilters({
         }}
       >
         <MenuItem value="name-asc">
-          <ListItemText primary="Name" secondary="Ascending" />
+          <ListItemText
+            primary="Name"
+            secondary="Ascending"
+          />
         </MenuItem>
         <MenuItem value="name-desc">
-          <ListItemText primary="Name" secondary="Descending" />
+          <ListItemText
+            primary="Name"
+            secondary="Descending"
+          />
         </MenuItem>
         <MenuItem value="started-asc">
-          <ListItemText primary="Started" secondary="Ascending" />
+          <ListItemText
+            primary="Started"
+            secondary="Ascending"
+          />
         </MenuItem>
         <MenuItem value="started-desc">
-          <ListItemText primary="Started" secondary="Descending" />
+          <ListItemText
+            primary="Started"
+            secondary="Descending"
+          />
         </MenuItem>
       </TextField>
       <FormControlLabel

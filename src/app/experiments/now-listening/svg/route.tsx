@@ -22,7 +22,11 @@ const NowListeningSvg = ({ artistName, imageUrl, songName, status }: NowListenin
   >
     {imageUrl && (
       /* oxlint-disable-next-line @next/next/no-img-element */
-      <img src={imageUrl} alt="Album cover" style={{ width: 100, height: 100, borderRadius: 5 }} />
+      <img
+        src={imageUrl}
+        alt="Album cover"
+        style={{ width: 100, height: 100, borderRadius: 5 }}
+      />
     )}
     {!imageUrl && (
       <div

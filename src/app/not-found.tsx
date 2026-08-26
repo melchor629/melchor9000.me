@@ -16,13 +16,24 @@ export default function NotFound() {
         userSelect: 'none',
       }}
     >
-      <Typography variant="h2" gutterBottom>
+      <Typography
+        variant="h2"
+        gutterBottom
+      >
         What are you looking for?
       </Typography>
-      <Typography variant="h3" gutterBottom color="textSecondary">
+      <Typography
+        variant="h3"
+        gutterBottom
+        color="textSecondary"
+      >
         Really?
       </Typography>
-      <Typography variant="subtitle1" gutterBottom color="textDisabled">
+      <Typography
+        variant="subtitle1"
+        gutterBottom
+        color="textDisabled"
+      >
         Whatever you are looking for is not here... Try looking in another place, or go&nbsp;
         <NextLink href="/">home</NextLink>.
       </Typography>

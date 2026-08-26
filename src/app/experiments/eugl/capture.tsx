@@ -152,13 +152,25 @@ export default function Capture({ onImageChange }: Props) {
 
   if (initial) {
     return (
-      <CaptureRoot elevation={4} small>
+      <CaptureRoot
+        elevation={4}
+        small
+      >
         <CaptureButtons>
           <Button onClick={startCapture}>Take a snap!</Button>
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <Button component="label" tabIndex={-1} loading={loading} color="inherit">
+          <Button
+            component="label"
+            tabIndex={-1}
+            loading={loading}
+            color="inherit"
+          >
             Select file
-            <HiddenInput type="file" accept="image/*" onChange={selectedFile} />
+            <HiddenInput
+              type="file"
+              accept="image/*"
+              onChange={selectedFile}
+            />
           </Button>
         </CaptureButtons>
       </CaptureRoot>
@@ -168,14 +180,29 @@ export default function Capture({ onImageChange }: Props) {
   if (!imageToCrop) {
     return (
       <CaptureRoot elevation={4}>
-        {loading && <CircularProgress variant="indeterminate" color="primary" />}
-        <CaptureVideo ref={videoRef} show={!loading} onClick={capture} />
+        {loading && (
+          <CircularProgress
+            variant="indeterminate"
+            color="primary"
+          />
+        )}
+        <CaptureVideo
+          ref={videoRef}
+          show={!loading}
+          onClick={capture}
+        />
         {!loading && (
           <CaptureButtons>
-            <Button color="primary" onClick={capture}>
+            <Button
+              color="primary"
+              onClick={capture}
+            >
               Capture!
             </Button>
-            <Button color="inherit" onClick={cancel}>
+            <Button
+              color="inherit"
+              onClick={cancel}
+            >
               Cancel
             </Button>
           </CaptureButtons>
@@ -196,10 +223,16 @@ export default function Capture({ onImageChange }: Props) {
         aspectRatio={{ minimum: 1, maximum: 1 }}
       />
       <CaptureButtons>
-        <Button color="primary" onClick={crop}>
+        <Button
+          color="primary"
+          onClick={crop}
+        >
           Use it!
         </Button>
-        <Button color="inherit" onClick={cancel}>
+        <Button
+          color="inherit"
+          onClick={cancel}
+        >
           Cancel
         </Button>
       </CaptureButtons>

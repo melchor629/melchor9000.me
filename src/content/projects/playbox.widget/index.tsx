@@ -10,7 +10,11 @@ const playboxWidget = Object.freeze({
   description: (
     <>
       Widget for&nbsp;
-      <Link href="http://tracesof.net/uebersicht/" target="_blank" rel="noreferrer">
+      <Link
+        href="http://tracesof.net/uebersicht/"
+        target="_blank"
+        rel="noreferrer"
+      >
         Übersicht
       </Link>
       &nbsp;which shows the album artwork, the progress and song metadata of the song you are

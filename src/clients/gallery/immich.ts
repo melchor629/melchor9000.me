@@ -41,11 +41,11 @@ const handleError = async <T>(fn: () => Promise<T>, retries = maxRetries): Promi
     if (isHttpError(ex) && ex.status === 404) {
       return null
     } else if (
-      retries > 0 &&
-      ex instanceof TypeError &&
-      ex.cause instanceof AggregateError &&
+      retries > 0
+      && ex instanceof TypeError
+      && ex.cause instanceof AggregateError
       // oxlint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      ex.cause.errors[0]?.code === 'ETIMEDOUT'
+      && ex.cause.errors[0]?.code === 'ETIMEDOUT'
     ) {
       await new Promise((resolve) => setTimeout(resolve, (maxRetries - retries) * 250))
       return await handleError(fn, retries - 1)

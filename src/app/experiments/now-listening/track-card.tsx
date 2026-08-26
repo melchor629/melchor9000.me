@@ -41,13 +41,19 @@ export default function TrackCard({ track }: { readonly track: RecentTrackItem }
 
           <Box sx={{ position: 'absolute', top: 0, right: 0, mt: 1, mr: 1 }}>
             {track.nowPlaying && (
-              <Tooltip title="Now playing" disableInteractive>
+              <Tooltip
+                title="Now playing"
+                disableInteractive
+              >
                 <Speaker />
               </Tooltip>
             )}
             {track.scrobbledAt != null && (
               <Tooltip title={`Scrobbled at ${track.scrobbledAt.toLocaleString()}`}>
-                <MusicNote color="inherit" sx={{ color: 'text.secondary' }} />
+                <MusicNote
+                  color="inherit"
+                  sx={{ color: 'text.secondary' }}
+                />
               </Tooltip>
             )}
           </Box>

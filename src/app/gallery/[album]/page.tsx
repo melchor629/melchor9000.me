@@ -57,8 +57,15 @@ export default async function GalleryAlbum({ params }: Params) {
       <GalleryAlbumHeader album={album} />
       <Container sx={{ mt: -4, mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Tooltip title="Go to gallery" disableInteractive placement="right">
-            <IconButtonLink size="small" href="/gallery">
+          <Tooltip
+            title="Go to gallery"
+            disableInteractive
+            placement="right"
+          >
+            <IconButtonLink
+              size="small"
+              href="/gallery"
+            >
               <ArrowBack fontSize="inherit" />
             </IconButtonLink>
           </Tooltip>

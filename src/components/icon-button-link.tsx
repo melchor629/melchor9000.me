@@ -3,8 +3,8 @@
 import { IconButton, type IconButtonProps } from '@mui/material'
 import Link from 'next/link'
 
-export type IconButtonLinkProps = IconButtonProps &
-  Readonly<{
+export type IconButtonLinkProps = IconButtonProps
+  & Readonly<{
     href: string
     target?: IconButtonProps<'a'>['target']
     referrerPolicy?: IconButtonProps<'a'>['referrerPolicy']
@@ -17,7 +17,11 @@ const IconButtonLink = ({
   target,
   ...props
 }: IconButtonLinkProps) => (
-  <Link href={href} target={target} referrerPolicy={referrerPolicy}>
+  <Link
+    href={href}
+    target={target}
+    referrerPolicy={referrerPolicy}
+  >
     <IconButton {...props}>{children}</IconButton>
   </Link>
 )

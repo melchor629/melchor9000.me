@@ -145,16 +145,25 @@ export default function VisualizerControls({
       </Box>
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
         {startTime == null && (
-          <IconButton onClick={play} disabled={buffer == null}>
+          <IconButton
+            onClick={play}
+            disabled={buffer == null}
+          >
             <PlayArrow />
           </IconButton>
         )}
         {startTime != null && (
-          <IconButton onClick={pause} disabled={buffer == null}>
+          <IconButton
+            onClick={pause}
+            disabled={buffer == null}
+          >
             <Pause />
           </IconButton>
         )}
-        <IconButton onClick={stop} disabled={buffer == null}>
+        <IconButton
+          onClick={stop}
+          disabled={buffer == null}
+        >
           <Stop />
         </IconButton>
         <RadioGroup
@@ -167,17 +176,32 @@ export default function VisualizerControls({
         >
           <FormControlLabel
             value="bars"
-            control={<Radio icon={BarIcon} checkedIcon={BarIcon} />}
+            control={
+              <Radio
+                icon={BarIcon}
+                checkedIcon={BarIcon}
+              />
+            }
             label=""
           />
           <FormControlLabel
             value="wave"
-            control={<Radio icon={WaveIcon} checkedIcon={WaveIcon} />}
+            control={
+              <Radio
+                icon={WaveIcon}
+                checkedIcon={WaveIcon}
+              />
+            }
             label=""
           />
           <FormControlLabel
             value="spectogram"
-            control={<Radio icon={WaveIcon} checkedIcon={WaveIcon} />}
+            control={
+              <Radio
+                icon={WaveIcon}
+                checkedIcon={WaveIcon}
+              />
+            }
             label=""
           />
         </RadioGroup>

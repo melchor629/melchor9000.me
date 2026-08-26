@@ -30,7 +30,10 @@ export default function GalleryPhoto({ albumId, id, thumbHash, thumbUrl, title }
       slotProps={{ popper: popperProps }}
     >
       <Card>
-        <CardLinkArea href={`/gallery/${albumId}/${id}`} sx={{ height: '100%' }}>
+        <CardLinkArea
+          href={`/gallery/${albumId}/${id}`}
+          sx={{ height: '100%' }}
+        >
           <CardMedia sx={{ position: 'relative', pb: '100%' }}>
             <StyledImage
               src={thumbUrl}
