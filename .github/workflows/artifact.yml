@@ -50,6 +50,7 @@ jobs:
             "BUILD_ID=${{ github.sha }}"
 
       - name: Deploy
-        uses: ./.github/actions/deploy/po
+        uses: ./.github/actions/deploy/md
         with:
           project: melchor9000.me
+          service: melchor9000-prod
