@@ -42,18 +42,18 @@
     "typescript": "^7.0.0"
   },
   "devDependencies": {
-    "@melchor629/oxfmt-config": "^0.1.0-beta.4",
-    "@melchor629/oxlint-config": "^0.1.0-beta.2",
+    "@melchor629/oxfmt-config": "^0.1.0-beta.5",
+    "@melchor629/oxlint-config": "^0.1.0-beta.6",
     "@types/mdx": "^2.0.13",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.185.4",
-    "oxfmt": "^0.72.0",
+    "oxfmt": "^0.74.0",
     "oxlint": "^1.74.0",
     "oxlint-tsgolint": "^7.0.2000"
   },
   "engines": {
-    "node": "^24"
+    "node": "^24 || ^26"
   }
 }

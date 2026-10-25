@@ -39,6 +39,7 @@ const HelloPhotoContainer = styled(Box, { name: 'HelloPhotoContainer' })(({ them
 
 export default function HelloPhoto({ random }: { readonly random: number }) {
   const mood = useMemo(() => {
+    // oxlint-disable-next-line react/purity
     const today = new Date()
     const month = today.getMonth() + 1
     const day = today.getDate()
