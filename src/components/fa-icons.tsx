@@ -1,3 +1,4 @@
+import { faBluesky } from '@fortawesome/free-brands-svg-icons/faBluesky'
 import { faGithub } from '@fortawesome/free-brands-svg-icons/faGithub'
 import { faInstagram } from '@fortawesome/free-brands-svg-icons/faInstagram'
 import { faLastfm } from '@fortawesome/free-brands-svg-icons/faLastfm'
@@ -11,6 +12,12 @@ import { FontAwesomeIcon, type FontAwesomeIconProps } from '@fortawesome/react-f
 
 type IconProps = Omit<FontAwesomeIconProps, 'icon'>
 
+export const FaBluesky = (props: IconProps) => (
+  <FontAwesomeIcon
+    icon={faBluesky}
+    {...props}
+  />
+)
 export const FaGithub = (props: IconProps) => (
   <FontAwesomeIcon
     icon={faGithub}

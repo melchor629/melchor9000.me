@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "oxfmt --check && oxlint src"
+    "lint": "oxfmt --check && oxlint src",
+    "fix": "oxfmt && oxlint src --fix"
   },
   "dependencies": {
     "@emotion/cache": "^11.11.0",
@@ -37,21 +38,21 @@
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
-    "three": "^0.185.1",
+    "three": "^0.187.0",
     "thumbhash": "^0.1.1",
     "typescript": "^7.0.0"
   },
   "devDependencies": {
-    "@melchor629/oxfmt-config": "^0.1.0-beta.5",
-    "@melchor629/oxlint-config": "^0.1.0-beta.6",
+    "@melchor629/oxfmt-config": "^0.1.0",
+    "@melchor629/oxlint-config": "^0.1.0",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^24.0.0",
+    "@types/node": "^26.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@types/three": "^0.185.4",
-    "oxfmt": "^0.74.0",
-    "oxlint": "^1.74.0",
-    "oxlint-tsgolint": "^7.0.2000"
+    "@types/three": "^0.187.0",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
+    "oxlint-tsgolint": "^7.0.2005"
   },
   "engines": {
     "node": "^24 || ^26"

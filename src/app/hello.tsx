@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import {
+  FaBluesky,
   FaGithub,
   FaInstagram,
   FaLastfm,
@@ -68,6 +69,14 @@ export default function Hello({ random }: { readonly random?: number }) {
           rel="noreferrer"
         >
           <FaTwitter />
+        </IconButton>
+        <IconButton
+          component="a"
+          href="https://bsky.app/profile/melchor629.bsky.social"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <FaBluesky />
         </IconButton>
         <IconButton
           component="a"

@@ -155,8 +155,9 @@ export default function AppBar() {
                 key={name}
                 LinkComponent={Link}
                 href={path}
-                color={!chilled && path === currentRoute?.path ? 'primary' : 'inherit'}
-                variant={path === currentRoute?.path ? 'contained' : 'text'}
+                size="small"
+                color={path === currentRoute?.path ? 'primary' : 'inherit'}
+                variant={path === currentRoute?.path && !chilled ? 'contained' : 'text'}
                 sx={{ px: 1 }}
               >
                 {name}
