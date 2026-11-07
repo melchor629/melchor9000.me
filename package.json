@@ -50,7 +50,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.187.0",
-    "oxfmt": "^0.75.0",
+    "oxfmt": "^0.77.0",
     "oxlint": "^1.90.0",
     "oxlint-tsgolint": "^7.0.2005"
   },
